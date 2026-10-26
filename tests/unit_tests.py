@@ -1941,6 +1941,45 @@ def test_recover_wild_text_default_tags():
     assert result is not None
 
 
+def test_recover_wild_text_list_after_colon():
+    "regression #431: a list introduced by a paragraph ending in a colon is recovered in the default mode"
+    intro = "The personal information we collect about you may be used to:"
+    items = "".join(f"<item><span>{t}</span></item>" for t in ("provide services as requested", "conduct data analysis"))
+    other = "<list><item>Home</item><item>Contact</item></list>"
+    htmlstring = f"<body><div><p>{intro}</p><list>{items}</list><p>Unrelated closing paragraph.</p>{other}</div></body>"
+
+    def recovered(options):
+        result = recover_wild_text(html.fromstring(htmlstring), etree.Element("body"), options)
+        return "".join(result.itertext())
+
+    text = recovered(core.Extractor())
+    assert intro in text
+    assert "conduct data analysis" in text
+    # a list without such an introduction is still left out
+    assert "Contact" not in text
+    # precision mode is unchanged
+    assert "conduct data analysis" not in recovered(core.Extractor(precision=True))
+
+    # the rest of the text is short: the recovered list counts toward the rescue lengths
+    body, text = extract_content(html.fromstring(htmlstring), core.Extractor())
+    assert intro in text
+    assert "conduct data analysis" in text
+
+    # the rest is long enough on its own: the list is left out of the length that gates the later rescues
+    closing = "Unrelated closing paragraph. " + "Some more words here. " * 12
+    long_html = htmlstring.replace("Unrelated closing paragraph.", closing)
+    body, text = extract_content(html.fromstring(long_html), core.Extractor())
+    assert "conduct data analysis" in "".join(body.itertext())
+    assert intro in text
+    assert "conduct data analysis" not in text
+
+    # once the cascade has chosen, the list is counted and the marker is gone
+    for doc in (htmlstring, long_html):
+        result = extract(doc, output_format="xml", config=ZERO_CONFIG)
+        assert "conduct data analysis" in result
+        assert "deferred" not in result
+
+
 _MED_REF = '<ref target="/x">' + "x" * 250 + "</ref>"
 _BIG_REF = '<ref target="/x">' + "x" * 600 + "</ref>"
 # 60% link density at ~600 chars: kept by the 0.8 (medium) threshold, removed by the 0.5 (large) threshold
@@ -3046,6 +3085,75 @@ def test_recall_escalation_justext():
     assert result.count("Message number") == 8
 
 
+def _formatted_comment_doc(comment):
+    article = "".join(
+        f"<p>Article paragraph number {i} with plenty of text to be extracted properly by the main extractor here.</p>"
+        for i in range(6)
+    )
+    return (
+        f'<html><body><article>{article}</article><div id="comments"><div class="comment">{comment}</div></div></body></html>'
+    )
+
+
+@pytest.mark.parametrize("output_format", ["txt", "markdown", "json", "xml"])
+@pytest.mark.parametrize("fast", [False, True])
+def test_comments_keep_inline_formatting_in_paragraph(output_format, fast):
+    first = "I really love this post, thanks a lot for sharing it with everybody here."
+    second = "Another reader also found this article useful and left a separate comment."
+    document = _formatted_comment_doc(
+        f"<p>I really  <b>love</b>   this post, <i>thanks</i>  a lot for sharing it with everybody here.</p><p>{second}</p>"
+    )
+    result = extract(document, output_format=output_format, include_formatting=True, include_comments=True, fast=fast)
+    assert result is not None
+    if output_format == "xml":
+        tree = etree.fromstring(result)
+        comments = tree.find("comments")
+        assert comments is not None
+        assert [elem.tag for elem in comments] == ["p", "p"]
+        assert "".join(comments[0].itertext()) == first
+        assert [elem.get("rend") for elem in comments[0]] == ["#b", "#i"]
+        assert comments[1].text == second
+    else:
+        if output_format == "json":
+            result = json.loads(result)["comments"]
+            expected = first
+        else:
+            expected = "I really **love** this post, *thanks* a lot for sharing it with everybody here."
+        assert result.count(expected) == 1
+        assert result.count(second) == 1
+
+
+@pytest.mark.parametrize(
+    "comment,expected",
+    [
+        (
+            "<p><b>Really <i>useful</i></b> article for everybody reading it today.</p>",
+            "Really useful article for everybody reading it today.",
+        ),
+        (
+            "<p>Hyper<b>link</b>ed words stay connected in this reader comment.</p>",
+            "Hyperlinked words stay connected in this reader comment.",
+        ),
+        (
+            "<p>  I really  <b>love</b>   this post, <i>thanks</i>  a lot for sharing it with everybody here.  </p>",
+            "I really love this post, thanks a lot for sharing it with everybody here.",
+        ),
+    ],
+)
+def test_comments_preserve_nested_inline_text(comment, expected):
+    document = extract_with_metadata(_formatted_comment_doc(comment), include_formatting=True, include_comments=True)
+    assert document is not None
+    assert [elem.tag for elem in document.commentsbody] == ["p"]
+    assert "".join(document.commentsbody[0].itertext()) == expected
+
+
+def test_comments_without_formatting_still_preserve_text():
+    comment = "<p>I really <b>love</b> this post, <i>thanks</i> a lot for sharing it with everybody here.</p>"
+    result = extract(_formatted_comment_doc(comment), include_formatting=False, include_comments=True)
+    assert result is not None
+    assert result.count("I really love this post, thanks a lot for sharing it with everybody here.") == 1
+
+
 _DFP_JSONLD = (
     '<script type="application/ld+json">{"@context":"https://schema.org",'
     '"@type":"DiscussionForumPosting","headline":"Test thread"}</script>'
@@ -4016,6 +4124,23 @@ def test_markdown_link_angle_bracket_targets():
     assert _md(gt) == "[t](<http://x.com/a\\>b>)"
     lt = b'<body><graphic src="http://x.com/a&lt;b" alt="A"/></body>'
     assert _md(lt) == "![A](<http://x.com/a\\<b>)"
+
+
+@pytest.mark.parametrize("include_formatting", [False, True])
+def test_xmltotxt_decodes_text_but_preserves_urls(include_formatting):
+    target = "https://example.org/?region=us&section=2&times=3&literal=&copy;"
+    escaped = target.replace("&", "&amp;")
+    tree = etree.fromstring(
+        f'<body><p>It&amp;rsquo;s <ref target="{escaped}">AT&amp;amp;T</ref> '
+        "&amp;#169; &amp;#xA9; &amp;lt;tag&amp;gt; &amp;notanentity;.</p>"
+        f'<graphic src="{escaped}" title="It&amp;rsquo;s" alt="AT&amp;amp;T"/></body>'
+    )
+    before = etree.tostring(tree)
+    tag = r"\<tag>" if include_formatting else "<tag>"
+    separator = "\n\n" if include_formatting else "\n"
+    expected = f"It’s [AT&T]({target}) © © {tag} &notanentity;.{separator}![It’s AT&T]({target})"
+    assert xml.xmltotxt(tree, include_formatting).strip() == expected
+    assert etree.tostring(tree) == before
 
 
 def test_xmltotxt_no_mutation():

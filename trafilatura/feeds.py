@@ -49,6 +49,7 @@ FEED_TYPES = {
 }
 
 FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
+RSS_ROOT = re.compile(r"<(?:rss|(?:\w+:)?RDF)\b")
 
 LINK_ATTRS = re.compile(r"""<link\s+(?:[^>"']|"[^"]*"|'[^']*')*["']?/?>""")
 LINK_ATTRIBUTES = re.compile(r"""\s([\w:-]+)\s*=\s*(["'])(.*?)\2""", re.DOTALL)
@@ -92,6 +93,22 @@ def is_potential_feed(feed_string: str) -> bool:
         return True
     beginning = feed_string[:100]
     return "<rss" in beginning or "<feed" in beginning
+
+
+def has_rss_root(feed_string: str) -> bool:
+    "Check if the root element, after the XML declaration, comments and doctype, is an RSS one."
+    # a linear scan: a regex with nested repetitions can backtrack exponentially
+    pos, length = 0, len(feed_string)
+    while True:
+        while pos < length and (feed_string[pos].isspace() or feed_string[pos] == "\ufeff"):
+            pos += 1
+        if not feed_string.startswith(("<?", "<!"), pos):
+            return RSS_ROOT.match(feed_string, pos) is not None
+        closing = "-->" if feed_string.startswith("<!--", pos) else ">"
+        end = feed_string.find(closing, pos)
+        if end == -1:
+            return False
+        pos = end + len(closing)
 
 
 def handle_link_list(linklist: list[str], params: FeedParameters) -> list[str]:
@@ -140,6 +157,10 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
         else:
             LOGGER.debug("Possibly invalid feed: %s", params.domain)
         return []
+
+    # RSS first when the root says so: the HTML of its items can contain <link .../> tags
+    if "<link>" in feed_string and has_rss_root(feed_string):
+        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)]
 
     # Atom
     if LINK_ATTRS.search(feed_string):

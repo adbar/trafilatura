@@ -290,6 +290,13 @@ def test_url():
         assert extract_url(html.fromstring(doc)) == "https://example.org/p"
 
 
+def test_clean_and_trim_preserves_url_fields():
+    target = "https://example.org/?region=us&section=2&times=3&literal=&amp;copy;"
+    metadata = Document.from_dict({"url": f"  {target}\n", "image": target, "description": "  Tom &amp; Jerry\n"})
+    metadata.clean_and_trim()
+    assert (metadata.url, metadata.image, metadata.description) == (target, target, "Tom & Jerry")
+
+
 def test_description():
     """Test the extraction of descriptions"""
     metadata = extract_metadata('<html><head><meta itemprop="description" content="Description"/></head><body></body></html>')
