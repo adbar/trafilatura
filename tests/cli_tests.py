@@ -525,6 +525,41 @@ def test_file_processing_continues_after_error(tmp_path, caplog):
     assert cli_utils._process_file(str(valid), args, -1, options) is None
 
 
+def test_missing_input_directory_is_logged(tmp_path, caplog):
+    source = tmp_path / "missing"
+    args = cli.parse_args(["--input-dir", str(source), "--parallel", "1"])
+    with pytest.raises(SystemExit) as error:
+        cli.process_args(args)
+    assert error.value.code == 1
+    assert repr(str(source)) in caplog.text
+
+
+def test_unreadable_directory_does_not_skip_readable_files(tmp_path, caplog, monkeypatch):
+    source = tmp_path / "inputs"
+    blocked = source / "blocked"
+    blocked.mkdir(parents=True)
+    readable = source / "readable"
+    readable.mkdir()
+    (readable / "page.html").write_bytes(Path(RESOURCES_DIR, "httpbin_sample.html").read_bytes())
+    scandir = os.scandir
+
+    def deny_blocked(directory):
+        if directory == str(blocked):
+            raise PermissionError(13, "Permission denied", directory)
+        return scandir(directory)
+
+    monkeypatch.setattr(os, "scandir", deny_blocked)
+    output = tmp_path / "output"
+    args = cli.parse_args(["--input-dir", str(source), "--output-dir", str(output), "--parallel", "1", "--fast"])
+    with pytest.raises(SystemExit) as error:
+        cli.process_args(args)
+    assert error.value.code == 1
+    assert repr(str(blocked)) in caplog.text
+    results = list(output.rglob("*.txt"))
+    assert len(results) == 1
+    assert "blacksmith" in results[0].read_text(encoding="utf-8")
+
+
 def test_file_processing(tmp_path):
     "Test file processing pipeline on actual directories."
     backup = settings.MAX_FILES_PER_DIRECTORY
