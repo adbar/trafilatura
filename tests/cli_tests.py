@@ -384,7 +384,7 @@ def test_sysoutput():
     testargs = ["", "-i", "myinputdir/", "-o", "test/", "--keep-dirs"]
     args = cli.parse_args(testargs[1:])
     filepath, destdir = cli_utils.determine_output_path(args, "testfile.txt", "")
-    assert filepath == "test/testfile.txt"
+    assert filepath == path.join("test", "testfile.txt")
     # test hash as output file name
     assert args.keep_dirs is True
     args.keep_dirs = False
@@ -729,3 +729,18 @@ def test_probing():
         assert f2.getvalue().strip() == url
     else:
         assert f.getvalue().strip() == url
+
+
+@pytest.mark.parametrize("relative_input", [False, True])
+def test_keep_dirs_local_batch(tmp_path, monkeypatch, relative_input):
+    """Kept paths stay relative to the input directory, beneath the output directory."""
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    monkeypatch.chdir(tmp_path)
+    input_arg = Path("input") if relative_input else input_dir
+    args = cli.parse_args(["--input-dir", str(input_arg), "--output-dir", str(output_dir), "--keep-dirs"])
+    for relative_path in (Path("article.html"), Path("nested", "article.txt")):
+        output_path, destination_dir = cli_utils.determine_output_path(args, str(input_arg / relative_path), "")
+        expected = output_dir / relative_path.with_suffix(".txt")
+        assert output_path == str(expected)
+        assert destination_dir == str(expected.parent)
