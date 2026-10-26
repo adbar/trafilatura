@@ -33,7 +33,7 @@ from urllib.parse import unquote, urlsplit
 try:
     from tqdm import tqdm
 
-    HAS_TQDM = True
+    HAS_TQDM = True  # pragma: no cover
 except ImportError:
     HAS_TQDM = False
 

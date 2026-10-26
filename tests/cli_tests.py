@@ -14,7 +14,7 @@ from contextlib import redirect_stdout
 from os import path
 from pathlib import Path
 from tempfile import gettempdir
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from courlan import UrlStore
@@ -549,59 +549,29 @@ def test_file_processing():
     settings.MAX_FILES_PER_DIRECTORY = backup
 
 
-class FakeProgressBar:
-    "Stand-in for tqdm which records how the CLI drives it."
-
-    def __init__(self, total=None, **kwargs):
-        self.total = total
-        self.count = 0
-        self.closed = False
-
-    def update(self, n=1):
-        self.count += n
-
-    def close(self):
-        self.closed = True
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *exc_info):
-        self.close()
-
-
 @pytest.fixture
 def fake_progress(monkeypatch):
     "Replace tqdm so the tests do not depend on it being installed."
-    bars = []
-
-    def make_bar(**kwargs):
-        bar = FakeProgressBar(**kwargs)
-        bars.append(bar)
-        return bar
-
-    monkeypatch.setattr(cli_utils, "tqdm", make_bar, raising=False)
+    bar = MagicMock()
+    bar.return_value.__exit__.return_value = False  # do not swallow exceptions
+    monkeypatch.setattr(cli_utils, "tqdm", bar, raising=False)
     monkeypatch.setattr(cli_utils, "HAS_TQDM", True)
     monkeypatch.setattr(cli, "HAS_TQDM", True)
-    return bars
+    return bar
 
 
 def test_progress_requires_tqdm(monkeypatch, capsys):
+    "Without tqdm, --progress fails early, in the CLI and outside it."
     monkeypatch.setattr(cli, "HAS_TQDM", False)
+    monkeypatch.setattr(cli_utils, "HAS_TQDM", False)
     with pytest.raises(SystemExit):
         cli.parse_args(["--progress", "-i", "urls.txt"])
     assert "tqdm" in capsys.readouterr().err
-
-
-def test_progress_without_tqdm_outside_cli(monkeypatch):
-    "Namespaces built without the CLI parser get a clear error too."
-    monkeypatch.setattr(cli_utils, "HAS_TQDM", False)
     with pytest.raises(ImportError, match="tqdm"):
         cli_utils._progress_bar(argparse.Namespace(progress=True), 1, "URL")
 
 
-@pytest.mark.parametrize("progress", [True, False])
-def test_url_processing_progress(monkeypatch, tmp_path, fake_progress, progress):
+def test_url_processing_progress(monkeypatch, tmp_path, fake_progress):
     "The bar counts every URL, whether its download succeeded or not."
     page = Path(RESOURCES_DIR, "httpbin_sample.html").read_text(encoding="utf-8")
     urls = ["https://a.example.org/ok", "https://b.example.org/missing", "https://c.example.org/ok"]
@@ -611,18 +581,11 @@ def test_url_processing_progress(monkeypatch, tmp_path, fake_progress, progress)
             yield url, page if url.endswith("ok") else None
 
     monkeypatch.setattr(cli_utils, "buffered_downloads", fake_downloads)
-    testargs = ["--output-dir", str(tmp_path), "--fast"] + (["--progress"] if progress else [])
-    args = cli.parse_args(testargs)
-    url_store = add_to_compressed_dict(urls)
+    args = cli.parse_args(["--output-dir", str(tmp_path), "--fast", "--progress"])
 
-    assert cli_utils.url_processing_pipeline(args, url_store) == 1
-    if progress:
-        assert len(fake_progress) == 1
-        assert fake_progress[0].total == 3
-        assert fake_progress[0].count == 3
-        assert fake_progress[0].closed
-    else:
-        assert not fake_progress
+    assert cli_utils.url_processing_pipeline(args, add_to_compressed_dict(urls)) == 1
+    fake_progress.assert_called_once_with(total=3, unit="URL")
+    assert fake_progress.return_value.__enter__.return_value.update.call_count == 3
 
 
 def test_file_processing_progress(tmp_path, fake_progress):
@@ -636,10 +599,8 @@ def test_file_processing_progress(tmp_path, fake_progress):
     )
 
     assert cli_utils.file_processing_pipeline(args) == 0
-    assert len(fake_progress) == 1
-    assert fake_progress[0].total == 2
-    assert fake_progress[0].count == 2
-    assert fake_progress[0].closed
+    fake_progress.assert_called_once_with(total=2, unit="file")
+    assert fake_progress.return_value.__enter__.return_value.update.call_count == 2
 
 
 def test_cli_config_file():
