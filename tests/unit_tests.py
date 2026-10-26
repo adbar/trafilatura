@@ -4087,6 +4087,23 @@ def test_markdown_link_angle_bracket_targets():
     assert _md(lt) == "![A](<http://x.com/a\\<b>)"
 
 
+@pytest.mark.parametrize("include_formatting", [False, True])
+def test_xmltotxt_decodes_text_but_preserves_urls(include_formatting):
+    target = "https://example.org/?region=us&section=2&times=3&literal=&copy;"
+    escaped = target.replace("&", "&amp;")
+    tree = etree.fromstring(
+        f'<body><p>It&amp;rsquo;s <ref target="{escaped}">AT&amp;amp;T</ref> '
+        "&amp;#169; &amp;#xA9; &amp;lt;tag&amp;gt; &amp;notanentity;.</p>"
+        f'<graphic src="{escaped}" title="It&amp;rsquo;s" alt="AT&amp;amp;T"/></body>'
+    )
+    before = etree.tostring(tree)
+    tag = r"\<tag>" if include_formatting else "<tag>"
+    separator = "\n\n" if include_formatting else "\n"
+    expected = f"It’s [AT&T]({target}) © © {tag} &notanentity;.{separator}![It’s AT&T]({target})"
+    assert xml.xmltotxt(tree, include_formatting).strip() == expected
+    assert etree.tostring(tree) == before
+
+
 def test_xmltotxt_no_mutation():
     "xmltotxt must not mutate its input tree (math/emphasis passes run on a deepcopy)."
     tree = etree.fromstring(b'<body><p>formula \\(x\\) <hi rend="#b"><hi rend="#i">y</hi></hi></p></body>')
