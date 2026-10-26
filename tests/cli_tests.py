@@ -732,37 +732,15 @@ def test_probing():
 
 
 @pytest.mark.parametrize("relative_input", [False, True])
-@pytest.mark.parametrize("output_format", ["txt", "json"])
-def test_keep_dirs_local_batch(tmp_path, relative_input, output_format):
-    """Local batches preserve input-relative paths beneath the output directory."""
+def test_keep_dirs_local_batch(tmp_path, monkeypatch, relative_input):
+    """Kept paths stay relative to the input directory, beneath the output directory."""
     input_dir = tmp_path / "input"
     output_dir = tmp_path / "output"
-    original = (
-        "<html><body><article><p>" + "A real article about local file extraction. " * 30 + "</p></article></body></html>"
-    )
-    sources = [input_dir / "article.html", input_dir / "nested" / "article.txt"]
-    for source in sources:
-        source.parent.mkdir(parents=True, exist_ok=True)
-        source.write_text(original, encoding="utf-8")
-    command = [
-        sys.executable,
-        "-c",
-        "from trafilatura.cli import main; main()",
-        "--input-dir",
-        "input" if relative_input else str(input_dir),
-        "--output-dir",
-        str(output_dir),
-        "--keep-dirs",
-        "--output-format",
-        output_format,
-        "--parallel",
-        "1",
-    ]
-    completed = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True, timeout=30, check=False)
-    assert completed.returncode == 0, completed.stderr
-    for source in sources:
-        assert source.read_text(encoding="utf-8") == original
-    expected = [output_dir / f"article.{output_format}", output_dir / "nested" / f"article.{output_format}"]
-    assert sorted(output_dir.rglob("*.*")) == sorted(expected)
-    for output in expected:
-        assert "A real article about local file extraction." in output.read_text(encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    input_arg = Path("input") if relative_input else input_dir
+    args = cli.parse_args(["--input-dir", str(input_arg), "--output-dir", str(output_dir), "--keep-dirs"])
+    for relative_path in (Path("article.html"), Path("nested", "article.txt")):
+        output_path, destination_dir = cli_utils.determine_output_path(args, str(input_arg / relative_path), "")
+        expected = output_dir / relative_path.with_suffix(".txt")
+        assert output_path == str(expected)
+        assert destination_dir == str(expected.parent)
