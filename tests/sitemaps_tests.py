@@ -443,6 +443,24 @@ def test_sitemap_locations_do_not_expand_entities(location):
     assert not sitemap.urls
 
 
+@pytest.mark.parametrize("index", [False, True])
+@pytest.mark.parametrize(
+    "location",
+    ["\n    {url}\n  ", " {url}", "{url}\t", "\n  <![CDATA[{url}]]>\n"],
+)
+def test_sitemap_locations_ignore_surrounding_whitespace(location, index):
+    """Pretty-printed locations are not dropped because of their indentation."""
+    root, child = ("sitemapindex", "sitemap") if index else ("urlset", "url")
+    url = "https://example.org/nested.xml" if index else "https://example.org/page"
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.content = (
+        f'<{root} xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f"<{child}><loc>{location.format(url=url)}</loc></{child}></{root}>"
+    )
+    sitemap.extract_sitemap_links()
+    assert (sitemap.sitemap_urls, sitemap.urls) == (([url], []) if index else ([], [url]))
+
+
 def test_sitemap_namespace_link_limit(monkeypatch):
     """Namespaced extraction keeps the existing maximum-location bound."""
     monkeypatch.setattr(sitemaps, "MAX_LINKS", 1)
