@@ -28,6 +28,7 @@ LOGGER = logging.getLogger(__name__)
 
 SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
 XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
+SCHEME_AND_WWW = re.compile(r"^https?://(?:www\.)?", re.IGNORECASE)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(
     r"(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\."
@@ -291,7 +292,11 @@ def sitemap_search(
         if sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
             sleep(sleep_time)
 
-    sitemap.urls = filter_urls(sitemap.urls, urlfilter)
+    if urlfilter is not None:
+        # subpage filter: the sitemap may use another scheme or host form (www.) than the input URL
+        prefix = SCHEME_AND_WWW.sub("", urlfilter)
+        sitemap.urls = [u for u in sitemap.urls if SCHEME_AND_WWW.sub("", u).startswith(prefix)]
+    sitemap.urls = filter_urls(sitemap.urls, None)
 
     LOGGER.debug("%s sitemap links found for %s", len(sitemap.urls), domainname)
     return sitemap.urls
