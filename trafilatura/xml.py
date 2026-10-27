@@ -808,9 +808,9 @@ def process_element(
             elif not in_cell and not (tag == "lb" and in_item and _opens_item(element)):
                 returnlist.append("\n")
         elif tag not in ("cell", "item"):
-            # cells still need to append vertical bars
-            if in_cell:
-                _append_tail(element, returnlist, in_cell, in_item)
+            # a textless inline element still carries its tail: an empty permalink
+            # anchor must not swallow the heading text that follows it (#1024)
+            _append_tail(element, returnlist, in_cell, in_item, include_formatting, list_positions)
             return
 
     last_in_item = in_item and _closes_container(element, "item")

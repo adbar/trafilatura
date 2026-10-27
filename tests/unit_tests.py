@@ -1313,6 +1313,15 @@ def test_links():
     assert extract(mydoc, fast=True, config=ZERO_CONFIG, favor_precision=True) == ""
 
 
+def test_empty_anchor_keeps_heading_text():
+    """An empty permalink anchor must not drop the heading text after it (#1024)."""
+    paragraph = "Lorem ipsum dolor sit amet consectetur adipiscing elit. " * 5
+    htmlstring = f'<html><body><article><h2><a href="#install"></a>Installation</h2><p>{paragraph}</p></article></body></html>'
+    assert extract(htmlstring, output_format="markdown", include_links=True).startswith("## Installation")
+    assert extract(htmlstring, output_format="txt", include_links=True).startswith("Installation")
+    assert '"text": "Installation' in extract(htmlstring, output_format="json", include_links=True)
+
+
 def test_tei():
     """test TEI-related functions"""
     # open local resources to avoid redownloading at each run
