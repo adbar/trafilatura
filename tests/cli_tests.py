@@ -30,7 +30,7 @@ pytestmark = pytest.mark.usefixtures("mock_network")
 settings.MAX_FILES_PER_DIRECTORY = 1
 
 
-def test_parser():
+def test_parser(tmp_path):
     """test argument parsing for the command-line interface"""
     testargs = ["", "-fvv", "--xmltei", "--no-tables", "-u", "https://www.example.org"]
     args = cli.parse_args(testargs[1:])
@@ -71,7 +71,7 @@ def test_parser():
     args = cli.map_args(args)
     assert args.only_with_metadata is True
     # process_args
-    args.input_dir = "/dev/null"
+    args.input_dir = str(tmp_path)
     args.verbose = 1
     args.blacklist = path.join(RESOURCES_DIR, "list-discard.txt")
     cli.process_args(args)
@@ -96,7 +96,7 @@ def test_parser():
         cli.process_args(args)
     assert len(f.getvalue()) == 0
     # input directory
-    testargs = ["", "--input-dir", "resources/test/"]
+    testargs = ["", "--input-dir", str(tmp_path)]
     args = cli.parse_args(testargs[1:])
     f = io.StringIO()
     with redirect_stdout(f):
@@ -384,7 +384,7 @@ def test_sysoutput():
     testargs = ["", "-i", "myinputdir/", "-o", "test/", "--keep-dirs"]
     args = cli.parse_args(testargs[1:])
     filepath, destdir = cli_utils.determine_output_path(args, "testfile.txt", "")
-    assert filepath == "test/testfile.txt"
+    assert filepath == path.join("test", "testfile.txt")
     # test hash as output file name
     assert args.keep_dirs is True
     args.keep_dirs = False
@@ -525,6 +525,41 @@ def test_file_processing_continues_after_error(tmp_path, caplog):
     assert cli_utils._process_file(str(valid), args, -1, options) is None
 
 
+def test_missing_input_directory_is_logged(tmp_path, caplog):
+    source = tmp_path / "missing"
+    args = cli.parse_args(["--input-dir", str(source), "--parallel", "1"])
+    with pytest.raises(SystemExit) as error:
+        cli.process_args(args)
+    assert error.value.code == 1
+    assert repr(str(source)) in caplog.text
+
+
+def test_unreadable_directory_does_not_skip_readable_files(tmp_path, caplog, monkeypatch):
+    source = tmp_path / "inputs"
+    blocked = source / "blocked"
+    blocked.mkdir(parents=True)
+    readable = source / "readable"
+    readable.mkdir()
+    (readable / "page.html").write_bytes(Path(RESOURCES_DIR, "httpbin_sample.html").read_bytes())
+    scandir = os.scandir
+
+    def deny_blocked(directory):
+        if directory == str(blocked):
+            raise PermissionError(13, "Permission denied", directory)
+        return scandir(directory)
+
+    monkeypatch.setattr(os, "scandir", deny_blocked)
+    output = tmp_path / "output"
+    args = cli.parse_args(["--input-dir", str(source), "--output-dir", str(output), "--parallel", "1", "--fast"])
+    with pytest.raises(SystemExit) as error:
+        cli.process_args(args)
+    assert error.value.code == 1
+    assert repr(str(blocked)) in caplog.text
+    results = list(output.rglob("*.txt"))
+    assert len(results) == 1
+    assert "blacksmith" in results[0].read_text(encoding="utf-8")
+
+
 def test_pipeline_excludes_nested_destinations(tmp_path, monkeypatch):
     from concurrent.futures import ThreadPoolExecutor
 
@@ -562,13 +597,13 @@ def test_directory_alias_excludes_nested_destination(tmp_path, alias_input):
     ]
 
 
-def test_file_processing():
+def test_file_processing(tmp_path):
     "Test file processing pipeline on actual directories."
     backup = settings.MAX_FILES_PER_DIRECTORY
     settings.MAX_FILES_PER_DIRECTORY = 0
 
     # dry-run file processing pipeline
-    testargs = ["", "--parallel", "1", "--input-dir", "/dev/null"]
+    testargs = ["", "--parallel", "1", "--input-dir", str(tmp_path)]
     args = cli.parse_args(testargs[1:])
     cli_utils.file_processing_pipeline(args)
     # file processing pipeline on resources/
@@ -766,3 +801,18 @@ def test_probing():
         assert f2.getvalue().strip() == url
     else:
         assert f.getvalue().strip() == url
+
+
+@pytest.mark.parametrize("relative_input", [False, True])
+def test_keep_dirs_local_batch(tmp_path, monkeypatch, relative_input):
+    """Kept paths stay relative to the input directory, beneath the output directory."""
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    monkeypatch.chdir(tmp_path)
+    input_arg = Path("input") if relative_input else input_dir
+    args = cli.parse_args(["--input-dir", str(input_arg), "--output-dir", str(output_dir), "--keep-dirs"])
+    for relative_path in (Path("article.html"), Path("nested", "article.txt")):
+        output_path, destination_dir = cli_utils.determine_output_path(args, str(input_arg / relative_path), "")
+        expected = output_dir / relative_path.with_suffix(".txt")
+        assert output_path == str(expected)
+        assert destination_dir == str(expected.parent)
