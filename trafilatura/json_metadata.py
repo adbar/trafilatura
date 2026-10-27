@@ -82,7 +82,7 @@ JSON_AUTHOR_REMOVE = re.compile(
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
 JSON_TYPE = re.compile(r'"@type"\s*:\s*"([^"]*)"', re.DOTALL)
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
-JSON_SCHEMA_ORG = re.compile(r"^https?://schema\.org", flags=re.IGNORECASE)
+JSON_SCHEMA_ORG = re.compile(r"^https?://(?:www\.)?schema\.org", flags=re.IGNORECASE)
 JSON_UNICODE_REPLACE = re.compile(r"\\u([0-9a-fA-F]{4})")
 
 AUTHOR_ATTRS = ("givenName", "additionalName", "familyName")
@@ -206,6 +206,18 @@ def process_parent(parent: Any, metadata: Document) -> Document:
     return metadata
 
 
+def is_schema_org_context(context: Any) -> bool:
+    """Tell if a JSON-LD @context refers to schema.org: a string, an object
+    with a schema.org @vocab, or a list containing one of these."""
+    if isinstance(context, str):
+        return bool(JSON_SCHEMA_ORG.match(context))
+    if isinstance(context, dict):
+        return is_schema_org_context(context.get("@vocab"))
+    if isinstance(context, list):
+        return any(is_schema_org_context(item) for item in context)
+    return False
+
+
 def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Document:
     """Parse and extract metadata from JSON-LD data.
 
@@ -221,7 +233,7 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Docu
     for parent in schema:
         context = parent.get("@context")
 
-        if context and isinstance(context, str) and JSON_SCHEMA_ORG.match(context):
+        if is_schema_org_context(context):
             if "@graph" in parent:
                 parents.extend(as_list(parent["@graph"]))
             elif (
