@@ -50,6 +50,8 @@ from trafilatura.readability_lxml import Document as ReadabilityDocument
 from trafilatura.readability_lxml import is_probably_readerable
 from trafilatura.settings import MANUALLY_CLEANED, TAG_CATALOG, use_config
 from trafilatura.utils import (
+    INVALID_XML_CHARREFS,
+    INVALID_XML_CHARS,
     LANGID_FLAG,
     detect_encoding,
     is_dubious_html,
@@ -4705,3 +4707,48 @@ def test_convert_tags_links_off_keeps_contained_links(options):
     options.tables = False
     converted = convert_tags(html.fromstring(doc), options)
     assert [ref.text for ref in converted.iter("ref")] == ["para"]
+
+
+@pytest.mark.parametrize(
+    "ref",
+    [
+        "&#1;",
+        "&#8;",
+        "&#11;",
+        "&#12;",
+        "&#31;",
+        "&#001;",
+        "&#x1;",
+        "&#X1F;",
+        "&#x0001;",
+        "&#65534;",
+        "&#65535;",
+        "&#xFFFE;",
+        "&#xffff;",
+        "&#1",
+    ],
+)
+def test_invalid_charref_does_not_discard_document(ref):
+    "regression #1009: a numeric reference to an XML-illegal character used to make extract() return None"
+    text = "Some article text. " * 30
+    page = f"<html><body><article><p>{text}{ref}</p></article></body></html>"
+    for output_format in ("txt", "xml", "json", "markdown"):
+        result = extract(page, output_format=output_format)
+        assert result is not None
+        assert "Some article text." in result
+
+
+def test_invalid_charref_pattern():
+    "Only references to the characters INVALID_XML_CHARS strips are matched, in any spelling."
+    for codepoint in range(0x10020):
+        if 0xD800 <= codepoint < 0xE000:
+            continue
+        expected = INVALID_XML_CHARS.fullmatch(chr(codepoint)) is not None
+        for template in ("&#{0};", "&#{0:07d};", "&#x{0:x};", "&#x{0:X};", "&#x{0:07x};", "&#{0}", "&#x{0:x}"):
+            reference = template.format(codepoint)
+            assert (INVALID_XML_CHARREFS.sub("", reference) == "") is expected, reference
+    # valid references and following text are left alone
+    assert (
+        INVALID_XML_CHARREFS.sub("", "&#9;&#10;&#13;&#32;&#039;&#x1F600;&#123;&#x10000;&#xFFFF0;&#1x")
+        == "&#9;&#10;&#13;&#32;&#039;&#x1F600;&#123;&#x10000;&#xFFFF0;x"
+    )
