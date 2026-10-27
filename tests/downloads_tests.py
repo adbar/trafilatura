@@ -327,6 +327,51 @@ def test_urllib3_live_page_retries(monkeypatch):
         server.server_close()
 
 
+def test_urllib3_read_timeout_not_retried(monkeypatch):
+    "A read timeout ends the request at once, as with pycurl, instead of being retried with backoff."
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    hits = []
+
+    class _Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            hits.append(self.command)
+            sleep(2)  # longer than DOWNLOAD_TIMEOUT
+            try:
+                self.send_response(200)
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+            except OSError:
+                pass  # the client has given up
+
+        def do_HEAD(self):
+            self.do_GET()
+
+        def log_message(self, *_args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    url = f"http://127.0.0.1:{server.server_port}/"
+    config = use_config()
+    config.set("DEFAULT", "SSRF_PROTECTION", "off")
+    config.set("DEFAULT", "DOWNLOAD_TIMEOUT", "1")
+    naps = []
+    monkeypatch.setattr(dl.urllib3.util.retry.time, "sleep", naps.append)
+
+    try:
+        with patch.object(dl, "HAS_PYCURL", False):
+            assert fetch_url(url, config=config) is None
+        assert hits == ["GET"]
+        assert _urllib3_is_live_page(url, config) is False
+        assert hits == ["GET", "HEAD"]
+        assert naps == []
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
 def test_no_ssl_pool():
     "no_ssl skips cert verification in the urllib3 pool; the default verifies."
     insecure = _initiate_pool(DEFAULT_CONFIG, no_ssl=True)

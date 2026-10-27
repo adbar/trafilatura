@@ -186,6 +186,8 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
         total=max_redirects,
         redirect=max_redirects,  # raise_on_redirect=False,
         connect=0,
+        # a read timeout already took DOWNLOAD_TIMEOUT, don't wait it out again
+        read=0,
         backoff_factor=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2,
         backoff_max=MAX_BACKOFF,
         retry_after_max=MAX_BACKOFF,
@@ -366,6 +368,7 @@ def _urllib3_is_live_page(url: str, config: ConfigParser = DEFAULT_CONFIG) -> bo
             retries=urllib3.util.Retry(
                 total=config.getint("DEFAULT", "MAX_REDIRECTS"),
                 connect=0,
+                read=0,
                 raise_on_redirect=False,
                 status_forcelist=FORCE_STATUS,
                 backoff_factor=1,
