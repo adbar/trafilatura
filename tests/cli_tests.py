@@ -501,6 +501,16 @@ def test_cli_pipeline():
     assert result.endswith("</html>")
 
 
+def test_input_files_with_bom(tmp_path):
+    urls = tmp_path / "urls.txt"
+    urls.write_bytes(b"\xef\xbb\xbfhttps://example.org/a\nhttps://example.org/b\n")
+    args = cli.parse_args(["-i", str(urls)])
+    assert cli_utils.load_input_urls(args) == ["https://example.org/a", "https://example.org/b"]
+    blacklist = tmp_path / "blacklist.txt"
+    blacklist.write_bytes(b"\xef\xbb\xbfhttps://example.org/a\n")
+    assert cli_utils.load_blacklist(str(blacklist)) == {"example.org/a"}
+
+
 def test_file_processing_continues_after_error(tmp_path, caplog):
     source = tmp_path / "inputs"
     source.mkdir()

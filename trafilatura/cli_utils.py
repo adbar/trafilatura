@@ -79,7 +79,7 @@ def load_input_urls(args: argparse.Namespace) -> list[str]:
     if args.input_file:
         try:
             # optional: errors='strict', buffering=1
-            with Path(args.input_file).open(encoding="utf-8") as inputfile:
+            with Path(args.input_file).open(encoding="utf-8-sig") as inputfile:
                 input_urls.extend(line.strip() for line in inputfile)
         except UnicodeDecodeError:
             sys.exit("ERROR: system, file type or buffer encoding")
@@ -98,7 +98,7 @@ def load_input_urls(args: argparse.Namespace) -> list[str]:
 
 def load_blacklist(filename: str) -> set[str]:
     "Read list of unwanted URLs."
-    with Path(filename).open(encoding="utf-8") as inputfh:
+    with Path(filename).open(encoding="utf-8-sig") as inputfh:
         # if validate_url(url)[0] is True:
         return {URL_BLACKLIST_REGEX.sub("", line.strip()) for line in inputfh}
 
