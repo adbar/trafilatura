@@ -430,6 +430,34 @@ def test_sitemap_namespace_scope():
     assert sitemap.urls == ["https://example.org/page"]
 
 
+@pytest.mark.parametrize(
+    "namespace",
+    [
+        "http://www.google.com/schemas/sitemap/0.84",
+        "https://www.sitemaps.org/schemas/sitemap/0.9",
+        "http://www.sitemaps.org/schemas/sitemap/0.9/",
+        "http://www.sitemaps.org/schemas/sitemap/0.90",
+    ],
+)
+@pytest.mark.parametrize("prefix", ["", "sm:"])
+@pytest.mark.parametrize("index", [False, True])
+def test_sitemap_namespace_variants(namespace, prefix, index):
+    """Legacy, https and trailing-slash sitemap namespaces are accepted, extension locations are not."""
+    root, child = ("sitemapindex", "sitemap") if index else ("urlset", "url")
+    url = "https://example.org/nested.xml" if index else "https://example.org/page"
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.current_url = "https://example.org/sitemap.xml"
+    sitemap.content = (
+        f'<{prefix}{root} xmlns{":" + prefix[:-1] if prefix else ""}="{namespace}"'
+        ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">'
+        f"<{prefix}{child}><{prefix}loc>{url}</{prefix}loc>"
+        "<image:image><image:loc>https://example.org/image.jpg</image:loc></image:image>"
+        f"</{prefix}{child}></{prefix}{root}>"
+    )
+    sitemap.process()
+    assert (sitemap.sitemap_urls, sitemap.urls) == (([url], []) if index else ([], [url]))
+
+
 @pytest.mark.parametrize("location", ["&external;", "https://example.org/&external;", "https://example.org/<nested/>"])
 def test_sitemap_locations_do_not_expand_entities(location):
     """Location extraction does not resolve entities or concatenate child markup."""
