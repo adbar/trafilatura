@@ -98,6 +98,16 @@ def test_atom_extraction():
         ('<link href="https://example.org/updates/latest" rel="self"/>', []),
         ("<link rel='self' href='https://example.org/updates/latest'/>", []),
         ('<link href="https://example.org/updates/latest" type="application/atom+xml"/>', []),
+        ('<link rel="replies" type="text/html" href="https://example.org/post#comments"/>', []),
+        ('<link rel="enclosure" type="audio/mpeg" href="https://example.org/episode.mp3"/>', []),
+        ('<link rel="edit" href="https://example.org/edit/post"/>', []),
+        (
+            (
+                '<entry><link rel="alternate" type="text/html" href="https://example.org/post-1"/>\n'
+                '<link rel="replies" type="text/html" href="https://example.org/post-1#comments"/></entry>'
+            ),
+            ["https://example.org/post-1"],
+        ),
     ],
 )
 def test_atom_link_attributes(link, expected):
