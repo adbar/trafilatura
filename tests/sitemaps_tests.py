@@ -321,6 +321,10 @@ def test_robotstxt():
     assert sitemaps.extract_robots_sitemaps("sitemap: http://[::1\nsitemap: /sitemap.xml", baseurl) == [
         "https://httpbun.com/sitemap.xml"
     ]
+    # robots.txt files above 10000 characters are still read
+    long_robots = "User-agent: *\n" + "Disallow: /private/\n" * 600 + "Sitemap: https://example.org/sitemap.xml\n"
+    assert len(long_robots) > 10000
+    assert sitemaps.extract_robots_sitemaps(long_robots, baseurl) == ["https://example.org/sitemap.xml"]
 
 
 def test_sitemap_index_with_target_lang():
