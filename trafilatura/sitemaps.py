@@ -33,6 +33,8 @@ WHITELISTED_PLATFORMS = re.compile(
     r"(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\."
 )
 
+# byte order mark and whitespace tolerated before the XML declaration or root element
+LEADING_SPACE = "\ufeff \t\r\n"
 SITEMAP_FORMAT = re.compile(r"^.{0,5}<\?xml|<(?:[\w.-]+:)?(?:sitemapindex|sitemap|urlset)\b")
 DETECT_SITEMAP_LINK = re.compile(r"\.xml(\..{2,4})?$|\.xml[?#]")
 DETECT_LINKS = re.compile(r'https?://[^\s<"]+')
@@ -87,7 +89,7 @@ class SitemapObject:
     def fetch(self) -> None:
         "Fetch a sitemap over the network."
         LOGGER.debug("fetching sitemap: %s", self.current_url)
-        self.content = fetch_url(self.current_url, config=self.config) or ""
+        self.content = (fetch_url(self.current_url, config=self.config) or "").lstrip(LEADING_SPACE)
         self.seen.add(self.current_url)
 
     def handle_link(self, link: str, *, is_sitemap: bool | None = None) -> None:
@@ -220,7 +222,7 @@ def parse_sitemap(
         return []
     sitemap = SitemapObject(baseurl, domainname, [], target_lang, external)
     sitemap.current_url = url
-    sitemap.content = content.lstrip("\ufeff \t\r\n")
+    sitemap.content = content.lstrip(LEADING_SPACE)
     try:
         sitemap.process()
     except UnicodeEncodeError:
@@ -305,6 +307,8 @@ def is_plausible_sitemap(url: str, contents: str | None) -> bool:
 
     # strip query and fragments
     url = SCRUB_REGEX.sub("", url)
+    if isinstance(contents, str):
+        contents = contents.lstrip(LEADING_SPACE)
 
     # check content
     if (
