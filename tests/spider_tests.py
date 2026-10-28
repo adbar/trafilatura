@@ -310,10 +310,10 @@ def test_scheme_upgrade():
 def test_host_redirect():
     "A homepage redirecting to another host keeps the crawl on the start host, links resolved against the start URL."
     spider.URL_STORE = UrlStore()
-    html = '<html><body><a href="/p1.html">x</a><a href="https://www.host-redirect.org/p2.html">y</a></body></html>'
+    html = '<html><body><a href="/p1.html">x</a><a href="https://other-host.org/p2.html">y</a></body></html>'
 
     def fake_fetch_response(url, *, decode=False, config=None, **kw):
-        return Response(html.encode(), 200, "https://www.host-redirect.org/")
+        return Response(html.encode(), 200, "https://other-host.org/")
 
     with (
         patch.object(spider, "fetch_response", fake_fetch_response),
@@ -322,6 +322,52 @@ def test_host_redirect():
         params = spider.init_crawl("http://host-redirect.org")
     assert params.base == "http://host-redirect.org"
     assert spider.URL_STORE.find_unvisited_urls(params.base) == ["http://host-redirect.org/p1.html"]
+
+
+def test_is_same_site():
+    "Besides a scheme upgrade, only a leading www may differ after a redirect."
+    assert spider.is_same_site("http://Example.org:8080", "https://www.example.org:8080")
+    assert not spider.is_same_site("https://example.org", "https://www2.example.org")
+    assert not spider.is_same_site("https://example.org", "https://www.example.org:8443")
+    assert not spider.is_same_site("https://example.org", "http://example.org")
+
+
+def test_www_redirect():
+    "A homepage redirect between the bare domain and its www twin moves the crawl to the redirected host."
+    for start, homepage in [
+        ("https://twin-redirect.org", "https://www.twin-redirect.org/"),
+        ("https://www.twin-redirect.org", "https://twin-redirect.org/"),
+        ("http://twin-redirect.org", "https://www.twin-redirect.org/"),
+        ("http://www.twin-redirect.org", "https://twin-redirect.org/"),
+    ]:
+        spider.URL_STORE = UrlStore()
+        base = homepage.rstrip("/")
+        html = f'<html><body><a href="{base}/p1.html">x</a><a href="/p2.html">y</a></body></html>'
+        with (
+            patch.object(spider, "fetch_response", return_value=Response(html.encode(), 200, homepage)),
+            patch.object(spider, "get_rules", return_value=None),
+        ):
+            params = spider.init_crawl(start)
+        assert params.base == params.ref == base
+        todo = spider.URL_STORE.find_unvisited_urls(params.base)
+        assert f"{base}/p1.html" in todo
+        assert f"{base}/p2.html" in todo
+
+    # the crawl stays within the directory of the start URL
+    spider.URL_STORE = UrlStore()
+    html = '<html><body><a href="https://www.twin-redirect.org/blog/p1.html">x</a><a href="https://www.twin-redirect.org/about">y</a></body></html>'
+    with (
+        patch.object(
+            spider, "fetch_response", return_value=Response(html.encode(), 200, "https://www.twin-redirect.org/blog/")
+        ),
+        patch.object(spider, "get_rules", return_value=None),
+    ):
+        params = spider.init_crawl("https://twin-redirect.org/blog/")
+    assert params.base == "https://www.twin-redirect.org"
+    assert params.ref == "https://www.twin-redirect.org/blog"
+    todo = spider.URL_STORE.find_unvisited_urls(params.base)
+    assert "https://www.twin-redirect.org/blog/p1.html" in todo
+    assert "https://www.twin-redirect.org/about" not in todo
 
 
 def test_focused_crawler():
