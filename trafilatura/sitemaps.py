@@ -9,6 +9,7 @@ from configparser import ConfigParser
 from itertools import islice
 from re import Pattern
 from time import sleep
+from urllib.parse import urlsplit
 
 from courlan import (
     clean_url,
@@ -271,7 +272,7 @@ def sitemap_search(
         sitemapurls = []
         # set url filter to target subpages
         if len(url) > len(baseurl) + 2:
-            urlfilter = url
+            urlfilter = urlsplit(url).path
 
     sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external, config)
 

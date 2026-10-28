@@ -65,6 +65,24 @@ def test_search_returns_sorted_unique_urls(monkeypatch, nested, plain_text):
     assert sitemaps.sitemap_search(root) == expected
 
 
+@pytest.mark.parametrize(
+    ("page_url", "sitemap_url"),
+    [
+        ("https://theguardian.com/world", "https://www.theguardian.com/world/article"),
+        ("https://www.theguardian.com/world", "http://theguardian.com/world/article"),
+    ],
+)
+def test_search_filters_subpage_paths_across_host_variants(monkeypatch, page_url, sitemap_url):
+    content = f"<urlset><url><loc>{sitemap_url}</loc></url></urlset>"
+
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: content if url.endswith("/sitemap.xml") else None)
+    monkeypatch.setattr(sitemaps, "find_robots_sitemaps", lambda baseurl, config: [])
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+
+    assert sitemaps.sitemap_search(page_url) == [sitemap_url]
+
+
 @pytest.mark.parametrize("namespace", ["", ' xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'])
 @pytest.mark.parametrize("index", [False, True])
 def test_location_kind_comes_from_xml_structure(monkeypatch, namespace, index):
