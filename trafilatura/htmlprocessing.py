@@ -101,6 +101,10 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
             parent = tfoot.getparent()
             if parent is not None and parent.tag == "table":
                 parent.append(tfoot)
+        # the cells of a head row group are header cells even when written as <td>,
+        # which can no longer be told once <thead> is stripped
+        for cell in tree.iterfind(".//thead/tr/td"):
+            cell.tag = "th"
     if options.images:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list -= PRESERVE_IMG_CLEANING
