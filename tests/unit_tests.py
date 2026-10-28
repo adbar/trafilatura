@@ -1313,6 +1313,51 @@ def test_links():
     assert extract(mydoc, fast=True, config=ZERO_CONFIG, favor_precision=True) == ""
 
 
+@pytest.mark.parametrize("links", [False, True])
+@pytest.mark.parametrize(
+    "heading",
+    [
+        'Install<a class="headerlink" href="#install">¶</a>ation',
+        '<a class="doc-anchor" href="#installation">§</a>Installation',
+        'Install<a class="extra headerlink extra" href="#install"> ¶ </a>ation',
+    ],
+)
+def test_heading_permalink_symbols(links, heading):
+    "Decorative documentation permalinks carry no heading content, but their tails do."
+    paragraph = "Some text. " * 30
+    document = f"<html><body><article><h2>{heading}</h2><p>{paragraph}</p></article></body></html>"
+    for output_format in ("markdown", "txt", "xml"):
+        result = extract(document, output_format=output_format, include_links=links)
+        if output_format == "markdown":
+            assert result.startswith("## Installation\n")
+        elif output_format == "txt":
+            assert result.startswith("Installation\n")
+        else:
+            assert '<head rend="h2">Installation</head>' in result
+
+
+@pytest.mark.parametrize("links", [False, True])
+@pytest.mark.parametrize(
+    "content",
+    [
+        '<h2>Read<a class="headerlink" href="#section">¶ Section</a></h2>',
+        '<h2>Read<a class="headerlink" href="https://example.org/#section">§</a></h2>',
+        '<h2>Read<a class="not-headerlink" href="#section">¶</a></h2>',
+        '<h2>Read<a href="#section">§</a></h2>',
+        '<h2>Read<a class="headerlink" href="">¶</a></h2>',
+        '<h2>Read<a class="headerlink" href="#">§</a></h2>',
+        "<h2>Literal ¶ and §</h2>",
+        '<p>Prose<a class="headerlink" href="#section">¶</a> and §</p>',
+    ],
+)
+def test_heading_permalink_symbols_preserve_content(links, content):
+    "Meaningful links, ordinary symbols and non-heading links must survive."
+    paragraph = "Some text. " * 30
+    document = f"<html><body><article>{content}<p>{paragraph}</p></article></body></html>"
+    result = extract(document, output_format="xml", include_links=links)
+    assert html.fromstring(content).text_content() in "".join(etree.fromstring(result.encode()).itertext())
+
+
 def test_tei():
     """test TEI-related functions"""
     # open local resources to avoid redownloading at each run

@@ -415,6 +415,17 @@ def convert_link(elem: HtmlElement, base_url: str | None) -> None:
 
 def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) -> HtmlElement:
     "Simplify markup and convert relevant HTML tags to an XML standard."
+    # Documentation permalinks are decoration; remove them before their classes disappear.
+    for heading in tree.iter("h1", "h2", "h3", "h4", "h5", "h6"):
+        for anchor in list(heading.iterchildren("a")):
+            target = anchor.get("href", "")
+            if (
+                target.startswith("#")
+                and len(target) > 1
+                and {"headerlink", "doc-anchor"}.intersection(anchor.get("class", "").split())
+                and anchor.text_content().strip() in {"¶", "§"}
+            ):
+                delete_element(anchor)
     # delete links for faster processing
     if not options.links:
         containers = ("div", "li", "p", "table") if options.tables else ("div", "li", "p")
