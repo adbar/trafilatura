@@ -130,7 +130,7 @@ def probe_alternative_homepage(
 ) -> tuple[str | None, str | None, str | None]:
     "Check if the homepage is redirected and return appropriate values."
     response = fetch_response(homepage, decode=False, config=config)
-    if not response or not response.data:
+    if not response or not response.data or response.status != 200:
         return None, None, None
 
     if response.url != homepage:
@@ -234,7 +234,7 @@ def process_response(
     params: CrawlParameters,
 ) -> None:
     """Convert urllib3 response object and extract links."""
-    if response is None or not response.data:
+    if response is None or not response.data or response.status != 200:
         return
     # add final document URL to known_links
     URL_STORE.add_urls([response.url], visited=True)

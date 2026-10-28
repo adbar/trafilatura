@@ -284,6 +284,27 @@ def test_crawl_page():
     ## TODO: find a better page for language tests
 
 
+def test_error_pages():
+    "Links found on responses other than 200 must not reach the crawl frontier."
+    spider.URL_STORE = UrlStore()
+    base_url = "https://error-pages.org"
+    html = b'<html><body><a href="/from-error">x</a></body></html>'
+    params = spider.CrawlParameters(base_url)
+
+    for status in (404, 500):
+        spider.process_response(Response(html, status, f"{base_url}/missing"), params)
+    assert spider.URL_STORE.find_known_urls(base_url) == []
+
+    spider.process_response(Response(html, 200, f"{base_url}/found"), params)
+    assert sorted(spider.URL_STORE.find_known_urls(base_url)) == [f"{base_url}/found", f"{base_url}/from-error"]
+
+    # a homepage with an error status counts as unreachable
+    with patch.object(spider, "fetch_response", return_value=Response(html, 404, f"{base_url}/")):
+        assert spider.probe_alternative_homepage(f"{base_url}/") == (None, None, None)
+    with patch.object(spider, "fetch_response", return_value=Response(html, 200, f"{base_url}/")):
+        assert spider.probe_alternative_homepage(f"{base_url}/")[2] == base_url
+
+
 def test_scheme_upgrade():
     "An http crawl of a site redirecting to https must follow the upgrade and keep its links."
     spider.URL_STORE = UrlStore()
