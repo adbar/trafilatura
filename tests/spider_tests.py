@@ -173,6 +173,43 @@ def test_process_links():
     assert spider.is_still_navigation(todo) is True
 
 
+def test_process_links_fragments():
+    "Fragment variants identify the same resource without changing query strings."
+    base = "https://example.org"
+    paths = ["/page", "/page#comments", "/page#top", "/page?item=1#top", "/page?item=2#top", "/page?item=%23top"]
+    html = "".join(f'<a href="{path}">link</a>' for path in paths)
+    store = UrlStore(compressed=False, strict=False)
+    with patch.object(spider, "URL_STORE", store), patch.object(spider, "get_rules", return_value=None):
+        params = spider.CrawlParameters(base)
+        expected = {base + path for path in ("/page", "/page?item=1", "/page?item=2", "/page?item=%23top")}
+        spider.process_links(html, params, base)
+        assert set(store.find_unvisited_urls(base)) == expected
+        spider.process_links(html, params, base)
+        assert set(store.find_unvisited_urls(base)) == expected
+        assert len(store.find_unvisited_urls(base)) == len(expected)
+        store = UrlStore(compressed=False, strict=False)
+        store.add_urls([base + "/page"], visited=True)
+        spider.URL_STORE = store
+        spider.process_links(html, params, base)
+        assert set(store.find_unvisited_urls(base)) == expected - {base + "/page"}
+
+
+def test_process_links_fragment_navigation():
+    "Normalize before validation and navigation prioritization."
+    base = "https://example.org"
+    html = '<a href="/page">page</a><a href="/tag/topic#top">nav</a><a href="#local">local</a>'
+    store = UrlStore(compressed=False, strict=False)
+    store.add_urls([base + "/"], visited=True)
+    with patch.object(spider, "URL_STORE", store), patch.object(spider, "get_rules", return_value=None):
+        params = spider.CrawlParameters(base)
+        with patch.object(
+            spider.CrawlParameters, "is_valid_link", autospec=True, side_effect=spider.CrawlParameters.is_valid_link
+        ) as validate:
+            spider.process_links(html, params, base)
+        assert all("#" not in call.args[1] for call in validate.call_args_list)
+        assert store.find_unvisited_urls(base) == [base + "/tag/topic", base + "/page"]
+
+
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
     url = "https://httpbun.com/html"
