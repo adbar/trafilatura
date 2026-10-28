@@ -167,7 +167,10 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
         links = []
         for match in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS):
             attributes = {attr[1]: attr[3] for attr in LINK_ATTRIBUTES.finditer(match[0])}
-            if attributes.get("href") and attributes.get("rel") != "self" and "atom+xml" not in attributes.get("type", ""):
+            # the page of an entry is its "alternate" link, the default when rel is missing (RFC 4287):
+            # self, enclosure (media files), replies (comments), edit, license or hub links are not articles
+            rel = attributes.get("rel", "alternate").strip().lower()
+            if attributes.get("href") and rel == "alternate" and "atom+xml" not in attributes.get("type", ""):
                 links.append(attributes["href"])
         return links
 
