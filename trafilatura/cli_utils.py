@@ -66,6 +66,7 @@ INPUT_URLS_ARGS = ["URL", "crawl", "explore", "probe", "feed", "sitemap"]
 
 EXTENSION_MAPPING = {
     "csv": ".csv",
+    "html": ".html",
     "json": ".json",
     "xml": ".xml",
     "xmltei": ".xml",

@@ -355,6 +355,11 @@ def test_sysoutput():
     filepath2, destdir2 = cli_utils.determine_output_path(args, args.output_dir, "", new_filename="AAZZ")
     assert filepath2.endswith("AAZZ.json")
     assert "you-touch-my-tralala" in destdir2
+    # test html output
+    args2.json, args2.html = False, True
+    args2 = cli.map_args(args2)
+    filepath2, _ = cli_utils.determine_output_path(args, args.output_dir, "", new_filename="AAZZ")
+    assert filepath2.endswith("AAZZ.html")
     # test directory counter
     # doesn't work the same on Windows
     if os.name != "nt":
