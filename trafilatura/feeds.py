@@ -55,7 +55,7 @@ LINK_ATTRS = re.compile(r"""<link\s+(?:[^>"']|"[^"]*"|'[^']*')*["']?/?>""")
 LINK_ATTRIBUTES = re.compile(r"""\s([\w:-]+)\s*=\s*(["'])(.*?)\2""", re.DOTALL)
 LINK_ELEMENTS = re.compile(r"<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>", re.DOTALL)
 
-BLACKLIST = re.compile(r"\bcomments\b")  # no comment feed
+BLACKLIST = re.compile(r"\bcomments\b|/wp-json/")  # no comment feed, no WordPress REST API
 
 LINK_VALIDATION_RE = re.compile(
     r"\.(?:atom|rdf|rss|xml)$|"

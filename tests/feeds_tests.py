@@ -395,6 +395,22 @@ def test_determine_feed_type_normalization():
     ]
 
 
+def test_determine_feed_wp_json():
+    "WordPress REST API links share the JSON Feed type but are not feeds."
+    params = FeedParameters("https://example.org", "example.org", "")
+    htmlstring = (
+        "<html><head>"
+        '<link rel="alternate" type="application/json" href="https://example.org/wp-json/wp/v2/posts/42"/>'
+        '<link rel="alternate" type="application/rss+xml" href="https://example.org/feed/"/>'
+        '<link rel="alternate" type="application/feed+json" href="https://example.org/feed.json"/>'
+        "</head><body/></html>"
+    )
+    assert determine_feed(htmlstring, params) == [
+        "https://example.org/feed/",
+        "https://example.org/feed.json",
+    ]
+
+
 def test_try_homepage_forwards_args():
     "Regression: try_homepage must forward external and sleep_time, not reset them."
     captured = {}
