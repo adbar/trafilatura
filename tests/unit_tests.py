@@ -3822,6 +3822,16 @@ from openai_function_call import openai_function</code>"""
     testresult = extract(medium_ssr, config=ZERO_CONFIG, output_format="xml")
     assert expected in testresult
     assert "quote" not in testresult
+    # Python-Markdown's codehilite extension wraps Pygments output in div.codehilite
+    codehilite = """<div><p>Code:</p>
+<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span></pre></div></div>"""
+    expected = """<code>import os
+base_dir = os.getcwd()</code>"""
+    testresult = extract(codehilite, config=ZERO_CONFIG, output_format="xml")
+    assert expected in testresult
+    assert "quote" not in testresult
+    assert "base_dir = os.getcwd()" in extract(codehilite, config=ZERO_CONFIG, output_format="markdown")
     code_el = """<div><p>Code:</p>
     <pre><code><span>my code</span></code></pre>"""
     expected = """<code>my code</code>"""
