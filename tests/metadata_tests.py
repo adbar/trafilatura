@@ -344,6 +344,11 @@ def test_sitename():
         ('<html><head><meta name="article:publisher" content="The Newspaper"/></head><body/></html>', "The Newspaper"),
         ('<html><head><meta property="article:publisher" content="The Newspaper"/></head><body/></html>', "The Newspaper"),
         ("<html><head><title>sitemaps.org - Home</title></head><body/></html>", "sitemaps.org"),
+        ("<html><head><title>Hello World | example.com</title></head><body/></html>", "example.com"),
+        # a title segment with a dot is only a site name if it looks like a host name
+        ("<html><head><title>Mr. Smith goes to Washington | Example News</title></head><body/></html>", None),
+        ("<html><head><title>Version 2.0 released - Foo Project</title></head><body/></html>", None),
+        ("<html><head><title>Foo Project - v2.0</title></head><body/></html>", None),
         # fallback: derive the site name from the URL host
         (
             '<html><head><meta property="og:url" content="https://www.example.org/article"/></head><body/></html>',
