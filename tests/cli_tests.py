@@ -11,7 +11,7 @@ import random
 import re
 import subprocess
 import sys
-from contextlib import redirect_stdout
+from contextlib import nullcontext, redirect_stdout
 from os import path
 from pathlib import Path
 from tempfile import gettempdir
@@ -646,6 +646,7 @@ def fake_progress(monkeypatch):
     bar = MagicMock()
     bar.return_value.__exit__.return_value = False  # do not swallow exceptions
     monkeypatch.setattr(cli_utils, "tqdm", bar, raising=False)
+    monkeypatch.setattr(cli_utils, "logging_redirect_tqdm", nullcontext, raising=False)
     monkeypatch.setattr(cli_utils, "HAS_TQDM", True)
     monkeypatch.setattr(cli, "HAS_TQDM", True)
     return bar
@@ -658,8 +659,8 @@ def test_progress_requires_tqdm(monkeypatch, capsys):
     with pytest.raises(SystemExit):
         cli.parse_args(["--progress", "-i", "urls.txt"])
     assert "tqdm" in capsys.readouterr().err
-    with pytest.raises(ImportError, match="tqdm"):
-        cli_utils._progress_bar(argparse.Namespace(progress=True), 1, "URL")
+    with pytest.raises(ImportError, match="tqdm"), cli_utils._progress_bar(argparse.Namespace(progress=True), 1, "URL"):
+        pass
 
 
 def test_url_processing_progress(monkeypatch, tmp_path, fake_progress):
@@ -679,19 +680,31 @@ def test_url_processing_progress(monkeypatch, tmp_path, fake_progress):
     assert fake_progress.return_value.__enter__.return_value.update.call_count == 3
 
 
-def test_file_processing_progress(tmp_path, fake_progress):
+def test_file_processing_progress(tmp_path, caplog, monkeypatch, fake_progress):
+    "The bar total comes from the processing walk: nested outputs skipped, walk errors logged once."
     source = tmp_path / "inputs"
-    source.mkdir()
+    blocked = source / "blocked"
+    blocked.mkdir(parents=True)
     page = Path(RESOURCES_DIR, "httpbin_sample.html").read_bytes()
-    for name in ("one.html", "two.html"):
+    for name in ("one.html", "two.html", "output/old.html"):
+        (source / name).parent.mkdir(exist_ok=True)
         (source / name).write_bytes(page)
+    scandir = os.scandir
+
+    def deny_blocked(directory):
+        if directory == str(blocked):
+            raise PermissionError(13, "Permission denied", directory)
+        return scandir(directory)
+
+    monkeypatch.setattr(os, "scandir", deny_blocked)
     args = cli.parse_args(
-        ["--input-dir", str(source), "--output-dir", str(tmp_path / "output"), "--parallel", "1", "--progress"]
+        ["--input-dir", str(source), "--output-dir", str(source / "output"), "--parallel", "1", "--progress"]
     )
 
-    assert cli_utils.file_processing_pipeline(args) == 0
+    assert cli_utils.file_processing_pipeline(args) == 1
     fake_progress.assert_called_once_with(total=2, unit="file")
     assert fake_progress.return_value.__enter__.return_value.update.call_count == 2
+    assert caplog.text.count("Cannot read input directory") == 1
 
 
 def test_cli_config_file():
