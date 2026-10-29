@@ -713,6 +713,56 @@ def test_input_filtering():
     assert url_store.get_known_domains() == ["https://test.info"]
 
 
+@pytest.mark.parametrize("mode", ["feed", "sitemap"])
+def test_discovery_blacklist(mode):
+    "URLs found by feed or sitemap discovery are subject to the blacklist."
+    found = ["https://example.org/drop", "https://example.org/keep"]
+    args = cli.parse_args([f"--{mode}", "https://example.org/", "--list"])
+    args.blacklist = {"example.org/drop"}
+    target = "find_feed_urls" if mode == "feed" else "sitemap_search"
+    f = io.StringIO()
+    with patch.object(cli_utils, target, return_value=found), redirect_stdout(f):
+        cli_utils.cli_discovery(args)
+    assert f.getvalue().split() == ["https://example.org/keep"]
+
+
+def test_crawler_blacklist():
+    "URLs found by the crawler are neither fetched nor listed if they are blacklisted."
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    html = b'<html><body><a href="/drop">x</a><a href="/keep">y</a></body></html>'
+    fetched = []
+
+    def fake_downloads(bufferlist, threads, options=None):
+        for url in bufferlist:
+            fetched.append(url)
+            yield url, Response(html, 200, url)
+
+    args = cli.parse_args(["--crawl", "https://example.org/", "--list"])
+    args.blacklist = {"example.org/drop"}
+    f = io.StringIO()
+    with (
+        patch.object(spider, "fetch_response", return_value=Response(html, 200, "https://example.org/")),
+        patch.object(spider, "get_rules", return_value=None),
+        patch.object(cli_utils, "buffered_response_downloads", fake_downloads),
+        redirect_stdout(f),
+    ):
+        cli_utils.cli_crawler(args)
+    assert "https://example.org/drop" not in fetched
+    assert "https://example.org/keep" in fetched
+    assert "https://example.org/drop" not in f.getvalue().split()
+    assert "https://example.org/keep" in f.getvalue().split()
+
+    # blacklisted input URLs are not crawled
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    args = cli.parse_args(["--crawl", "https://example.org/drop", "--list"])
+    args.blacklist = {"example.org/drop"}
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args)
+    assert f.getvalue().strip() == ""
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+
+
 def test_crawling():
     "Test crawling and exploration functions."
 

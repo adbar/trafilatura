@@ -103,6 +103,11 @@ def load_blacklist(filename: str) -> set[str]:
         return {URL_BLACKLIST_REGEX.sub("", line.strip()) for line in inputfh}
 
 
+def is_blacklisted(url: str, blacklist: set[str] | None) -> bool:
+    "Check if a URL is in the list of unwanted URLs."
+    return blacklist is not None and URL_BLACKLIST_REGEX.sub("", url) in blacklist
+
+
 def load_input_dict(args: argparse.Namespace) -> UrlStore:
     "Read input list of URLs to process and build a domain-aware dictionary."
     inputlist = load_input_urls(args)
@@ -322,7 +327,8 @@ def cli_discovery(args: argparse.Namespace) -> int:
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
             if future.result() is not None:
-                url_store.add_urls(future.result())
+                # discovered URLs are subject to the same blacklist as the input
+                add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_store=url_store)
                 # empty buffer in order to spare memory
                 if args.list and len(url_store.get_known_domains()) >= args.parallel:
                     with lock:
@@ -369,7 +375,7 @@ def cli_crawler(
 
     # load input URLs
     if url_store is None:
-        spider.URL_STORE.add_urls(load_input_urls(args))
+        add_to_compressed_dict(load_input_urls(args), blacklist=args.blacklist, url_store=spider.URL_STORE)
     else:
         spider.URL_STORE = url_store
 
@@ -387,6 +393,8 @@ def cli_crawler(
     # iterate until the threshold is reached
     while not spider.URL_STORE.done:
         bufferlist, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time)
+        # links found while crawling are not filtered on insertion
+        bufferlist = [u for u in bufferlist if not is_blacklisted(u, args.blacklist)]
         for url, result in buffered_response_downloads(bufferlist, args.parallel, options=options):
             if result and isinstance(result, Response):
                 # not necessarily registered, e.g. after a cross-host homepage redirect
@@ -399,7 +407,7 @@ def cli_crawler(
         if any(c >= n for c in spider.URL_STORE.get_all_counts()):
             break
 
-    print("\n".join(u for u in spider.URL_STORE.dump_urls()))
+    print("\n".join(u for u in spider.URL_STORE.dump_urls() if not is_blacklisted(u, args.blacklist)))
 
 
 def probe_homepage(args: argparse.Namespace) -> None:
