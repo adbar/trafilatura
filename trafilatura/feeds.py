@@ -207,9 +207,13 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> list[str]:
     # most common case + websites like geo.de
     feed_urls = [
         link.get("href", "")
-        for link in tree.xpath('//link[@rel="alternate"][@href]')
+        for link in tree.xpath("//link[@rel][@href]")
+        # rel is a case-insensitive list of space-separated keywords (e.g. "Alternate", "alternate feed")
+        if "alternate" in link.get("rel", "").lower().split()
         # normalize the type attribute (e.g. "application/rss+xml; charset=UTF-8")
-        if link.get("type", "").split(";")[0].strip().lower() in FEED_TYPES or LINK_VALIDATION_RE.search(link.get("href", ""))
+        and (
+            link.get("type", "").split(";")[0].strip().lower() in FEED_TYPES or LINK_VALIDATION_RE.search(link.get("href", ""))
+        )
     ]
 
     # backup

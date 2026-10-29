@@ -2653,6 +2653,14 @@ def test_table_footer_after_body():
     )
 
 
+def test_table_head_td_cells():
+    "Cells of a <thead> row are header cells even when written as <td>."
+    table = "<table><thead><tr>{0}Item{1}{0}Qty{1}</tr></thead><tbody><tr><td>Cable</td><td>12</td></tr></tbody></table>"
+    result = _table_txt(table.format("<td>", "</td>"))
+    assert "| Item | Qty | \n|---|---|\n| Cable | 12 |" in result
+    assert result == _table_txt(table.format("<th>", "</th>"))
+
+
 @pytest.mark.parametrize("bad_span", ['span="2"', 'span="2.1"', 'span="-1"', 'span="abc"'])
 def test_table_bad_span_attr_treated_as_colspan1(bad_span):
     "Non-colspan span attributes are ignored (colspan=1); trailing pad fills to max_cols."
@@ -3822,6 +3830,16 @@ from openai_function_call import openai_function</code>"""
     testresult = extract(medium_ssr, config=ZERO_CONFIG, output_format="xml")
     assert expected in testresult
     assert "quote" not in testresult
+    # Python-Markdown's codehilite extension wraps Pygments output in div.codehilite
+    codehilite = """<div><p>Code:</p>
+<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span></pre></div></div>"""
+    expected = """<code>import os
+base_dir = os.getcwd()</code>"""
+    testresult = extract(codehilite, config=ZERO_CONFIG, output_format="xml")
+    assert expected in testresult
+    assert "quote" not in testresult
+    assert "base_dir = os.getcwd()" in extract(codehilite, config=ZERO_CONFIG, output_format="markdown")
     code_el = """<div><p>Code:</p>
     <pre><code><span>my code</span></code></pre>"""
     expected = """<code>my code</code>"""

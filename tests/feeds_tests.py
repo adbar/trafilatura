@@ -395,6 +395,27 @@ def test_determine_feed_type_normalization():
     ]
 
 
+def test_determine_feed_rel_keywords():
+    "rel is a case-insensitive list of keywords: any spelling that contains alternate must be recognized."
+    params = FeedParameters("https://example.org", "example.org", "https://example.org")
+    htmlstring = (
+        "<html><head>"
+        '<link rel="Alternate" type="application/rss+xml" href="/capital.xml"/>'
+        '<link rel="ALTERNATE" type="application/rss+xml" href="/upper.xml"/>'
+        '<link rel="alternate feed" type="application/atom+xml" href="/tokens.xml"/>'
+        '<link rel=" alternate " type="application/rss+xml" href="/spaces.xml"/>'
+        '<link rel="stylesheet" type="text/css" href="/style.css"/>'
+        '<link rel="alternative" type="application/rss+xml" href="/not-a-keyword.xml"/>'
+        "</head><body/></html>"
+    )
+    assert determine_feed(htmlstring, params) == [
+        "https://example.org/capital.xml",
+        "https://example.org/upper.xml",
+        "https://example.org/tokens.xml",
+        "https://example.org/spaces.xml",
+    ]
+
+
 def test_determine_feed_wp_json():
     "WordPress REST API links share the JSON Feed type but are not feeds."
     params = FeedParameters("https://example.org", "example.org", "")
