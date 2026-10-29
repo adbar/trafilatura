@@ -7,6 +7,7 @@ import logging
 import sys
 from collections import deque
 from unittest.mock import patch
+from urllib.robotparser import RobotFileParser
 
 import pytest
 from courlan import UrlStore
@@ -368,6 +369,23 @@ def test_www_redirect():
     todo = spider.URL_STORE.find_unvisited_urls(params.base)
     assert "https://www.twin-redirect.org/blog/p1.html" in todo
     assert "https://www.twin-redirect.org/about" not in todo
+
+
+def test_www_redirect_keeps_rules_and_homepage():
+    "After a redirect to the www twin, robots.txt rules follow the new base and the homepage is not queued again."
+    spider.URL_STORE = UrlStore()
+    rules = RobotFileParser()
+    rules.parse(["User-agent: *", "Crawl-delay: 7"])
+    homepage = "https://www.twin-rules.org/"
+    html = f'<html><body><a href="{homepage}p1.html">x</a></body></html>'
+    with (
+        patch.object(spider, "fetch_response", return_value=Response(html.encode(), 200, homepage)),
+        patch.object(spider, "get_rules", return_value=rules),
+    ):
+        params = spider.init_crawl("https://twin-rules.org")
+    assert params.base == "https://www.twin-rules.org"
+    assert spider.URL_STORE.get_crawl_delay(params.base) == 7
+    assert homepage not in spider.URL_STORE.find_unvisited_urls(params.base)
 
 
 def test_focused_crawler():

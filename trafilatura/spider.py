@@ -301,8 +301,9 @@ def crawl_page(
             if is_same_site(params.base, new_base_url):
                 params.ref = params.ref.replace(params.base, new_base_url, 1)
                 params.base = new_base_url
+                URL_STORE.store_rules(params.base, params.rules)
             # register potentially new homepage
-            URL_STORE.add_urls([homepage])
+            URL_STORE.add_urls([homepage], visited=get_base_url(homepage) == params.base)
             # resolve links against the final URL unless the redirect left the crawled host
             process_links(htmlstring, params, url=homepage if get_base_url(homepage) == params.base else url)
     else:
