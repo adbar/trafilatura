@@ -809,8 +809,10 @@ def process_element(
                 returnlist.append("\n")
         elif tag not in ("cell", "item"):
             # a textless inline element still carries its tail: an empty permalink
-            # anchor must not swallow the heading text that follows it (#1024)
-            _append_tail(element, returnlist, in_cell, in_item, include_formatting, list_positions)
+            # anchor must not swallow the heading text that follows it (#1024);
+            # whitespace-only tails only matter inside cells
+            if in_cell or text_chars_test(element.tail):
+                _append_tail(element, returnlist, in_cell, in_item, include_formatting, list_positions)
             return
 
     last_in_item = in_item and _closes_container(element, "item")
