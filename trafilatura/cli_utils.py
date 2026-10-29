@@ -55,7 +55,7 @@ from .utils import (
 
 LOGGER = logging.getLogger(__name__)
 
-random.seed(345)  # make generated file names reproducible
+_FILENAME_RANDOM = random.Random(345)  # reproducible names without changing caller RNG state
 CHAR_CLASS = string.ascii_letters + string.digits
 
 STRIP_EXTENSION = re.compile(r"\.[a-z]{2,5}$")
@@ -138,7 +138,7 @@ def determine_counter_dir(dirname: str, c: int) -> str:
 def get_writable_path(destdir: str, extension: str) -> tuple[str, str]:
     "Find a writable path and return it along with its random file name."
     while True:
-        filename = "".join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
+        filename = "".join(_FILENAME_RANDOM.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
         output_path = os.path.join(destdir, filename + extension)
         # not Path.exists: it raises on an unreadable parent, and the dir status is checked later
         if not os.path.exists(output_path):  # noqa: PTH110

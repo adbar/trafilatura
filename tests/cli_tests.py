@@ -6,6 +6,7 @@ import gzip
 import io
 import logging
 import os
+import random
 import re
 import subprocess
 import sys
@@ -24,6 +25,14 @@ from trafilatura.utils import LANGID_FLAG
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 RESOURCES_DIR = path.join(path.abspath(path.dirname(__file__)), "resources")
+
+
+def test_random_filenames_leave_callers_random_state_unchanged(tmp_path):
+    """Generating a filename must not advance the caller's random state."""
+    state = random.getstate()
+    cli_utils.get_writable_path(str(tmp_path), ".txt")
+    assert random.getstate() == state
+
 
 pytestmark = pytest.mark.usefixtures("mock_network")
 
