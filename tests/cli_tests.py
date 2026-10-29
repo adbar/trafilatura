@@ -352,15 +352,39 @@ def test_csv_stdout_has_no_blank_records(tmp_path, output_args):
     result = subprocess.run(
         [sys.executable, "-m", "trafilatura.cli", *output_args, "--input-dir", str(input_dir)],
         capture_output=True,
-        text=True,
         check=True,
     )
-    rows = list(csv.reader(io.StringIO(result.stdout), delimiter="\t"))
+    rows = list(csv.reader(io.StringIO(result.stdout.decode("utf-8"), newline=""), delimiter="\t"))
     assert [len(row) for row in rows] == [11, 11]
     assert {row[7] for row in rows} == {
         "Document 1 with some long enough text, here and there.",
         "Document 2 with some long enough text, here and there.",
     }
+    expected = io.StringIO(newline="")
+    csv.writer(expected, delimiter="\t").writerows(rows)
+    assert result.stdout == expected.getvalue().encode("utf-8")
+
+
+@pytest.mark.parametrize("newline", [None, "", "\r\n"])
+def test_csv_stdout_preserves_serialized_bytes(newline):
+    args = cli.parse_args(["--csv"])
+    rows = [["first\nsecond", "valué"], ["third", 'quoted "value"']]
+    serialized = io.StringIO(newline="")
+    csv.writer(serialized, delimiter="\t").writerows(rows)
+    # A TextIOWrapper with newline="\r\n" reproduces Windows translation on any OS.
+    with io.TextIOWrapper(io.BytesIO(), encoding="utf-8", newline=newline) as stdout, redirect_stdout(stdout):
+        for row in rows:
+            record = io.StringIO(newline="")
+            csv.writer(record, delimiter="\t").writerow(row)
+            cli_utils.write_result(record.getvalue(), args)
+        stdout.flush()
+        actual = stdout.buffer.getvalue()
+    assert actual == serialized.getvalue().encode("utf-8")
+    assert list(csv.reader(io.StringIO(actual.decode("utf-8"), newline=""), delimiter="\t")) == rows
+    # Redirection to a text-only stream still works.
+    with redirect_stdout(io.StringIO(newline="")) as stdout:
+        cli_utils.write_result(serialized.getvalue(), args)
+    assert stdout.getvalue() == serialized.getvalue()
 
 
 @pytest.mark.parametrize("output_format", ["txt", "json", "xml"])
@@ -373,7 +397,10 @@ def test_non_csv_stdout_keeps_record_separator(capsys, output_format):
 
 def test_csv_file_keeps_serialized_newline(tmp_path):
     args = cli.parse_args(["--csv", "-o", str(tmp_path)])
-    record = '"first\nsecond"\tvalue\r\n'
+    serialized = io.StringIO(newline="")
+    rows = [["first\nsecond", "valué"]]
+    csv.writer(serialized, delimiter="\t").writerows(rows)
+    record = serialized.getvalue()
     cli_utils.write_result(record, args, new_filename="record")
     assert (tmp_path / "record.csv").read_bytes() == record.encode("utf-8")
 

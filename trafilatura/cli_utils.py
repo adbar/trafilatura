@@ -209,12 +209,19 @@ def write_result(
     if result is None:
         return
     if args.output_dir is None:
-        sys.stdout.write(result if args.output_format == "csv" else result + "\n")
+        if args.output_format == "csv" and hasattr(sys.stdout, "buffer"):
+            # CSV already owns its newlines, including those inside quoted fields.
+            sys.stdout.flush()
+            sys.stdout.buffer.write(result.encode(sys.stdout.encoding or "utf-8", errors=sys.stdout.errors or "strict"))
+            sys.stdout.flush()
+        else:
+            sys.stdout.write(result if args.output_format == "csv" else result + "\n")
     else:
         destination_path, destination_dir = determine_output_path(args, orig_filename, result, counter, new_filename)
         # check the directory status
         if check_outputdir_status(destination_dir) is True:
-            with Path(destination_path).open(mode="w", encoding="utf-8") as outputfile:
+            newline = "" if args.output_format == "csv" else None
+            with Path(destination_path).open(mode="w", encoding="utf-8", newline=newline) as outputfile:
                 outputfile.write(result)
 
 
