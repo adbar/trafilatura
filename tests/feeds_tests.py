@@ -417,11 +417,12 @@ def test_determine_feed_rel_keywords():
 
 
 def test_determine_feed_wp_json():
-    "WordPress REST API links share the JSON Feed type but are not feeds."
+    "WordPress REST API links (pretty or plain permalinks) share the JSON Feed type but are not feeds."
     params = FeedParameters("https://example.org", "example.org", "")
     htmlstring = (
         "<html><head>"
         '<link rel="alternate" type="application/json" href="https://example.org/wp-json/wp/v2/posts/42"/>'
+        '<link rel="alternate" type="application/json" href="https://example.org/?rest_route=/wp/v2/posts/42"/>'
         '<link rel="alternate" type="application/rss+xml" href="https://example.org/feed/"/>'
         '<link rel="alternate" type="application/feed+json" href="https://example.org/feed.json"/>'
         "</head><body/></html>"
