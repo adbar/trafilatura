@@ -143,6 +143,18 @@ def _append_block(parent: _Element, processed: _Element | None, source: _Element
             last.tail = before + tail
 
 
+def _list_start(element: _Element) -> str | None:
+    "Return the start number of an ordered list if it is a usable one other than 1."
+    if element.get("rend") != "ol":
+        return None
+    try:
+        start = int(element.get("start", "").strip())
+    except ValueError:
+        return None
+    # CommonMark takes 0 to 999999999 as list start
+    return str(start) if start != 1 and 0 <= start < 10**9 else None
+
+
 def update_elem_rendition(elem: _Element, new_elem: _Element) -> None:
     "Copy the rend attribute from an existing element to a new one."
     if rend_attr := elem.get("rend"):
@@ -206,6 +218,8 @@ def handle_lists(element: _Element, options: Extractor) -> _Element | None:
     element.tag = "done"
     if is_text_element(processed_element):
         update_elem_rendition(element, processed_element)
+        if start := _list_start(element):
+            processed_element.set("start", start)
         return processed_element
     return None
 
