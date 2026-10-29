@@ -415,6 +415,36 @@ def test_sitemap_namespaces(prefix, declaration, index):
     assert (sitemap.sitemap_urls, sitemap.urls) == (([url], []) if index else ([], [url]))
 
 
+@pytest.mark.parametrize(
+    "namespace",
+    [
+        "http://www.google.com/schemas/sitemap/0.84",
+        "https://www.sitemaps.org/schemas/sitemap/0.9",
+        "http://www.sitemaps.org/schemas/sitemap/0.9/",
+    ],
+)
+@pytest.mark.parametrize("index", [False, True])
+def test_sitemap_namespace_variants(namespace, index):
+    """Legacy and alternative spellings of the sitemap namespace are accepted."""
+    root, child = ("sitemapindex", "sitemap") if index else ("urlset", "url")
+    url = "https://example.org/nested.xml" if index else "https://example.org/p1"
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.content = f'<{root} xmlns="{namespace}"><{child}><loc>{url}</loc></{child}></{root}>'
+    sitemap.extract_sitemap_links()
+    assert (sitemap.sitemap_urls, sitemap.urls) == (([url], []) if index else ([], [url]))
+    if not index:
+        assert sitemaps.parse_sitemap(sitemap.content, "https://example.org/sitemap.xml") == [url]
+
+
+@pytest.mark.parametrize("namespace", ["urn:other", "http://www.sitemaps.org/schemas/sitemap/0.8"])
+def test_sitemap_foreign_namespace(namespace):
+    """Locations in other namespaces are still ignored."""
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.content = f'<urlset xmlns="{namespace}"><url><loc>https://example.org/p1</loc></url></urlset>'
+    sitemap.extract_sitemap_links()
+    assert not sitemap.urls
+
+
 def test_sitemap_namespace_scope():
     """Ignore extension locations even when a prefix is rebound locally."""
     sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])

@@ -26,7 +26,9 @@ from .utils import safe_relative_url
 
 LOGGER = logging.getLogger(__name__)
 
-SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
+# sitemap protocol namespaces (current and legacy Google one), compared without scheme, "www." and trailing slash
+SITEMAP_NAMESPACES = {"sitemaps.org/schemas/sitemap/0.9", "google.com/schemas/sitemap/0.84"}
+NAMESPACE_PREFIX = re.compile(r"^https?://(?:www\.)?")
 XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(
@@ -46,6 +48,11 @@ GUESSES = [
     "sitemap_index.xml",
     "sitemap_news.xml",
 ]
+
+
+def is_sitemap_namespace(namespace: str | None) -> bool:
+    "Check if an XML namespace is absent or one of the sitemap protocol namespaces."
+    return namespace is None or NAMESPACE_PREFIX.sub("", namespace).rstrip("/") in SITEMAP_NAMESPACES
 
 
 class SitemapObject:
@@ -158,17 +165,18 @@ class SitemapObject:
             return
         if tree is None:
             return
-        for element in islice(tree.iter("loc", f"{{{SITEMAP_NAMESPACE}}}loc"), MAX_LINKS):
+        locations = (e for e in tree.iter("{*}loc") if is_sitemap_namespace(etree.QName(e).namespace))
+        for element in islice(locations, MAX_LINKS):
             # Entity references and nested markup are not part of a location URL.
             location = (element.text or "").strip()
             if len(element) == 0 and location.startswith("http"):
                 parent = element.getparent()
-                parent_tag = parent.tag if parent is not None else None
                 is_sitemap = None
-                if parent_tag in ("sitemap", f"{{{SITEMAP_NAMESPACE}}}sitemap"):
-                    is_sitemap = True
-                elif parent_tag in ("url", f"{{{SITEMAP_NAMESPACE}}}url"):
-                    is_sitemap = False
+                if parent is not None and is_sitemap_namespace((parent_tag := etree.QName(parent)).namespace):
+                    if parent_tag.localname == "sitemap":
+                        is_sitemap = True
+                    elif parent_tag.localname == "url":
+                        is_sitemap = False
                 self.handle_link(location, is_sitemap=is_sitemap)
 
     def process(self) -> None:
