@@ -209,7 +209,7 @@ def write_result(
     if result is None:
         return
     if args.output_dir is None:
-        sys.stdout.write(result + "\n")
+        sys.stdout.write(result if args.output_format == "csv" else result + "\n")
     else:
         destination_path, destination_dir = determine_output_path(args, orig_filename, result, counter, new_filename)
         # check the directory status

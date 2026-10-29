@@ -2,6 +2,7 @@
 Unit tests for the command-line interface.
 """
 
+import csv
 import gzip
 import io
 import logging
@@ -336,6 +337,45 @@ def test_cli_examine_error(monkeypatch, capsys):
     html = "<html><body><article><p>" + "content " * 20 + "</p></article></body></html>"
     assert cli.examine(html, args) is None
     assert "kaboom" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("output_args", [["--csv"], ["--output-format", "csv"]])
+def test_csv_stdout_has_no_blank_records(tmp_path, output_args):
+    input_dir = tmp_path / "input"
+    input_dir.mkdir()
+    for number in (1, 2):
+        (input_dir / f"{number}.html").write_text(
+            f"<html><body><article><p>Document {number} with some long enough text, here and there.</p>"
+            "</article></body></html>",
+            encoding="utf-8",
+        )
+    result = subprocess.run(
+        [sys.executable, "-m", "trafilatura.cli", *output_args, "--input-dir", str(input_dir)],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    rows = list(csv.reader(io.StringIO(result.stdout), delimiter="\t"))
+    assert [len(row) for row in rows] == [11, 11]
+    assert {row[7] for row in rows} == {
+        "Document 1 with some long enough text, here and there.",
+        "Document 2 with some long enough text, here and there.",
+    }
+
+
+@pytest.mark.parametrize("output_format", ["txt", "json", "xml"])
+def test_non_csv_stdout_keeps_record_separator(capsys, output_format):
+    args = cli.parse_args(["--output-format", output_format])
+    cli_utils.write_result("first", args)
+    cli_utils.write_result("second", args)
+    assert capsys.readouterr().out == "first\nsecond\n"
+
+
+def test_csv_file_keeps_serialized_newline(tmp_path):
+    args = cli.parse_args(["--csv", "-o", str(tmp_path)])
+    record = '"first\nsecond"\tvalue\r\n'
+    cli_utils.write_result(record, args, new_filename="record")
+    assert (tmp_path / "record.csv").read_bytes() == record.encode("utf-8")
 
 
 def test_sysoutput():
