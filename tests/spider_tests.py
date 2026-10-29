@@ -324,6 +324,27 @@ def test_host_redirect():
     assert spider.URL_STORE.find_unvisited_urls(params.base) == ["http://host-redirect.org/p1.html"]
 
 
+def test_error_pages():
+    "Links are only extracted from 200 responses, a homepage with an error status is unreachable."
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    params = spider.CrawlParameters("https://error-pages.org/")
+    page = b'<html><body><a href="/from-error">x</a></body></html>'
+
+    spider.process_response(Response(page, 404, "https://error-pages.org/missing"), params)
+    assert spider.URL_STORE.find_known_urls("https://error-pages.org") == ["https://error-pages.org/missing"]
+    assert not spider.URL_STORE.find_unvisited_urls("https://error-pages.org")
+
+    spider.process_response(Response(page, 200, "https://error-pages.org/found"), params)
+    assert spider.URL_STORE.find_unvisited_urls("https://error-pages.org") == ["https://error-pages.org/from-error"]
+
+    for status in (404, 500):
+        with patch.object(spider, "fetch_response", return_value=Response(page, status, "https://error-pages.org/")):
+            assert spider.probe_alternative_homepage("https://error-pages.org/") == (None, None, None)
+    with patch.object(spider, "fetch_response", return_value=Response(page, 200, "https://error-pages.org/")):
+        assert spider.probe_alternative_homepage("https://error-pages.org/")[2] == "https://error-pages.org"
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+
+
 def test_focused_crawler():
     "Test the whole focused crawler mechanism."
     spider.URL_STORE = UrlStore()
