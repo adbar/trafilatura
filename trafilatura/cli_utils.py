@@ -217,11 +217,12 @@ def write_result(
         if args.output_format == "csv" and isinstance(sys.stdout, TextIOWrapper) and sys.stdout not in _CSV_STDOUTS:
             # CSV owns all newlines. Configure each stream once, keeping text writes.
             encoding = sys.stdout.encoding
-            if codecs.lookup(encoding).name == "utf-8-sig":
+            codec = codecs.lookup(encoding).name
+            if codec in {"utf-8-sig", "utf-16", "utf-32"}:
                 # reconfigure resets encoders on pipes: emit any initial signature
                 # through the existing encoder, then continue without another BOM.
                 sys.stdout.write("")
-                encoding = "utf-8"
+                encoding = "utf-8" if codec == "utf-8-sig" else f"{codec}-{'le' if sys.byteorder == 'little' else 'be'}"
             sys.stdout.reconfigure(encoding=encoding, errors=sys.stdout.errors, newline="")
             _CSV_STDOUTS.add(sys.stdout)
         sys.stdout.write(result if args.output_format == "csv" else result + "\n")
