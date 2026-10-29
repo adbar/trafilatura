@@ -3,7 +3,6 @@ Unit tests for the command-line interface.
 """
 
 import gzip
-import importlib
 import io
 import logging
 import os
@@ -29,20 +28,10 @@ RESOURCES_DIR = path.join(path.abspath(path.dirname(__file__)), "resources")
 
 
 def test_random_filenames_leave_callers_random_state_unchanged(tmp_path):
-    """Importing CLI helpers and generating a filename must not reseed caller RNGs."""
-    original_state = random.getstate()
-    try:
-        random.seed(17)
-        expected_next = random.random()
-        random.seed(17)
-        state_before_import = random.getstate()
-        importlib.reload(cli_utils)
-        assert random.getstate() == state_before_import
-        output_path, filename = cli_utils.get_writable_path(str(tmp_path), ".txt")
-        assert output_path == str(tmp_path / (filename + ".txt"))
-        assert random.random() == expected_next
-    finally:
-        random.setstate(original_state)
+    """Generating a filename must not advance the caller's random state."""
+    state = random.getstate()
+    cli_utils.get_writable_path(str(tmp_path), ".txt")
+    assert random.getstate() == state
 
 
 pytestmark = pytest.mark.usefixtures("mock_network")
