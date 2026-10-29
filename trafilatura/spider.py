@@ -234,10 +234,12 @@ def process_response(
     params: CrawlParameters,
 ) -> None:
     """Convert urllib3 response object and extract links."""
-    if response is None or not response.data or response.status != 200:
+    if response is None or not response.data:
         return
     # add final document URL to known_links
     URL_STORE.add_urls([response.url], visited=True)
+    if response.status != 200:
+        return
 
     # convert urllib3 response to string and proceed to link extraction
     url = response.url if get_base_url(response.url) == params.base else params.base

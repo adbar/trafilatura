@@ -293,10 +293,12 @@ def test_error_pages():
 
     for status in (404, 500):
         spider.process_response(Response(html, status, f"{base_url}/missing"), params)
-    assert spider.URL_STORE.find_known_urls(base_url) == []
+    # the URL of the error page is recorded, its links are not queued
+    assert spider.URL_STORE.find_known_urls(base_url) == [f"{base_url}/missing"]
+    assert spider.URL_STORE.find_unvisited_urls(base_url) == []
 
     spider.process_response(Response(html, 200, f"{base_url}/found"), params)
-    assert sorted(spider.URL_STORE.find_known_urls(base_url)) == [f"{base_url}/found", f"{base_url}/from-error"]
+    assert spider.URL_STORE.find_unvisited_urls(base_url) == [f"{base_url}/from-error"]
 
     # a homepage with an error status counts as unreachable
     with patch.object(spider, "fetch_response", return_value=Response(html, 404, f"{base_url}/")):
