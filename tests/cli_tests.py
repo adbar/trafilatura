@@ -7,6 +7,7 @@ import gzip
 import io
 import logging
 import os
+import random
 import re
 import subprocess
 import sys
@@ -25,6 +26,14 @@ from trafilatura.utils import LANGID_FLAG
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 RESOURCES_DIR = path.join(path.abspath(path.dirname(__file__)), "resources")
+
+
+def test_random_filenames_leave_callers_random_state_unchanged(tmp_path):
+    """Generating a filename must not advance the caller's random state."""
+    state = random.getstate()
+    cli_utils.get_writable_path(str(tmp_path), ".txt")
+    assert random.getstate() == state
+
 
 pytestmark = pytest.mark.usefixtures("mock_network")
 
@@ -502,6 +511,16 @@ def test_cli_pipeline():
     assert result.endswith("</html>")
 
 
+def test_input_files_with_bom(tmp_path):
+    urls = tmp_path / "urls.txt"
+    urls.write_bytes(b"\xef\xbb\xbfhttps://example.org/a\nhttps://example.org/b\n")
+    args = cli.parse_args(["-i", str(urls)])
+    assert cli_utils.load_input_urls(args) == ["https://example.org/a", "https://example.org/b"]
+    blacklist = tmp_path / "blacklist.txt"
+    blacklist.write_bytes(b"\xef\xbb\xbfhttps://example.org/a\n")
+    assert cli_utils.load_blacklist(str(blacklist)) == {"example.org/a"}
+
+
 def test_file_processing_continues_after_error(tmp_path, caplog):
     source = tmp_path / "inputs"
     source.mkdir()
@@ -559,6 +578,43 @@ def test_unreadable_directory_does_not_skip_readable_files(tmp_path, caplog, mon
     results = list(output.rglob("*.txt"))
     assert len(results) == 1
     assert "blacksmith" in results[0].read_text(encoding="utf-8")
+
+
+def test_pipeline_excludes_nested_destinations(tmp_path, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+
+    for name in ("original.html", "output/old.txt", "backup/page.html", "other/page.html"):
+        target = tmp_path / name
+        target.parent.mkdir(exist_ok=True)
+        target.write_text("input")
+    monkeypatch.chdir(tmp_path)
+    args = cli.parse_args(
+        ["--input-dir", ".", "--output-dir", "output/../output", "--backup-dir", "backup", "--parallel", "1"]
+    )
+    seen = []
+    monkeypatch.setattr(cli_utils, "ProcessPoolExecutor", ThreadPoolExecutor)
+    monkeypatch.setattr(cli_utils, "_process_file", lambda filename, **kwargs: seen.append(Path(filename).as_posix()))
+    assert cli_utils.file_processing_pipeline(args) == 0
+    assert set(seen) == {"original.html", "other/page.html"}
+
+
+@pytest.mark.parametrize("alias_input", [False, True])
+def test_directory_alias_excludes_nested_destination(tmp_path, alias_input):
+    source = tmp_path / "input"
+    output = source / "output"
+    output.mkdir(parents=True)
+    original = source / "page.html"
+    original.write_text("input")
+    (output / "old.txt").write_text("output")
+    alias = tmp_path / "alias"
+    try:
+        alias.symlink_to(source if alias_input else output, target_is_directory=True)
+    except OSError as error:
+        pytest.skip(f"Cannot create symlink on this system {error}")
+    input_dir, output_dir = (alias, output) if alias_input else (source, alias)
+    assert list(cli_utils.generate_filelist(str(input_dir), exclude_dirs=(str(output_dir),))) == [
+        str(input_dir / original.name)
+    ]
 
 
 def test_file_processing(tmp_path):

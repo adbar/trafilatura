@@ -18,7 +18,7 @@ import string
 import sys
 import traceback
 from base64 import urlsafe_b64encode
-from collections.abc import Callable, Generator
+from collections.abc import Callable, Generator, Iterable
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from contextlib import AbstractContextManager, nullcontext
 from datetime import datetime
@@ -65,7 +65,7 @@ from .utils import (
 
 LOGGER = logging.getLogger(__name__)
 
-random.seed(345)  # make generated file names reproducible
+_FILENAME_RANDOM = random.Random(345)  # reproducible names without changing caller RNG state
 CHAR_CLASS = string.ascii_letters + string.digits
 
 STRIP_EXTENSION = re.compile(r"\.[a-z]{2,5}$")
@@ -89,7 +89,7 @@ def load_input_urls(args: argparse.Namespace) -> list[str]:
     if args.input_file:
         try:
             # optional: errors='strict', buffering=1
-            with Path(args.input_file).open(encoding="utf-8") as inputfile:
+            with Path(args.input_file).open(encoding="utf-8-sig") as inputfile:
                 input_urls.extend(line.strip() for line in inputfile)
         except UnicodeDecodeError:
             sys.exit("ERROR: system, file type or buffer encoding")
@@ -108,7 +108,7 @@ def load_input_urls(args: argparse.Namespace) -> list[str]:
 
 def load_blacklist(filename: str) -> set[str]:
     "Read list of unwanted URLs."
-    with Path(filename).open(encoding="utf-8") as inputfh:
+    with Path(filename).open(encoding="utf-8-sig") as inputfh:
         # if validate_url(url)[0] is True:
         return {URL_BLACKLIST_REGEX.sub("", line.strip()) for line in inputfh}
 
@@ -148,7 +148,7 @@ def determine_counter_dir(dirname: str, c: int) -> str:
 def get_writable_path(destdir: str, extension: str) -> tuple[str, str]:
     "Find a writable path and return it along with its random file name."
     while True:
-        filename = "".join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
+        filename = "".join(_FILENAME_RANDOM.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
         output_path = os.path.join(destdir, filename + extension)
         # not Path.exists: it raises on an unreadable parent, and the dir status is checked later
         if not os.path.exists(output_path):  # noqa: PTH110
@@ -228,8 +228,16 @@ def write_result(
                 outputfile.write(result)
 
 
-def generate_filelist(inputdir: str, onerror: Callable[[OSError], None] | None = None) -> Generator[str, None, None]:
+def generate_filelist(
+    inputdir: str, onerror: Callable[[OSError], None] | None = None, exclude_dirs: Iterable[str | None] = ()
+) -> Generator[str, None, None]:
     "Walk the directory tree and report errors without skipping readable paths."
+
+    def absolute_path(path: str) -> str:
+        # Compare destinations and input roots through their filesystem aliases.
+        return os.path.normcase(os.path.realpath(path))
+
+    excluded = {absolute_path(path) for path in exclude_dirs if path}
 
     def handle_error(error: OSError) -> None:
         LOGGER.error("Cannot read input directory %s", error)
@@ -237,7 +245,9 @@ def generate_filelist(inputdir: str, onerror: Callable[[OSError], None] | None =
             onerror(error)
 
     # os.walk does not follow directory symlinks, unlike rglob on Python < 3.13
-    for root, _, files in os.walk(inputdir, onerror=handle_error):
+    for root, directories, files in os.walk(inputdir, onerror=handle_error):
+        if excluded:
+            directories[:] = [name for name in directories if absolute_path(os.path.join(root, name)) not in excluded]
         for filename in files:
             yield os.path.join(root, filename)
 
@@ -496,7 +506,10 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
     # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=args.parallel) as executor, _progress_bar(args, total, "file") as progress:
         # chunk input: https://github.com/python/cpython/issues/74028
-        for filebatch in make_chunks(generate_filelist(args.input_dir, onerror=handle_walk_error), MAX_FILES_PER_DIRECTORY):
+        for filebatch in make_chunks(
+            generate_filelist(args.input_dir, onerror=handle_walk_error, exclude_dirs=(args.output_dir, args.backup_dir)),
+            MAX_FILES_PER_DIRECTORY,
+        ):
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(_process_file, args=args, counter=filecounter, options=options)
