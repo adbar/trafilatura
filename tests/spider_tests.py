@@ -310,10 +310,10 @@ def test_scheme_upgrade():
 def test_host_redirect():
     "A homepage redirecting to another host keeps the crawl on the start host, links resolved against the start URL."
     spider.URL_STORE = UrlStore()
-    html = '<html><body><a href="/p1.html">x</a><a href="https://www.host-redirect.org/p2.html">y</a></body></html>'
+    html = '<html><body><a href="/p1.html">x</a><a href="https://other-host.org/p2.html">y</a></body></html>'
 
     def fake_fetch_response(url, *, decode=False, config=None, **kw):
-        return Response(html.encode(), 200, "https://www.host-redirect.org/")
+        return Response(html.encode(), 200, "https://other-host.org/")
 
     with (
         patch.object(spider, "fetch_response", fake_fetch_response),
@@ -322,6 +322,40 @@ def test_host_redirect():
         params = spider.init_crawl("http://host-redirect.org")
     assert params.base == "http://host-redirect.org"
     assert spider.URL_STORE.find_unvisited_urls(params.base) == ["http://host-redirect.org/p1.html"]
+
+
+@pytest.mark.parametrize(
+    ("start", "final"),
+    [
+        ("https://example.org", "https://www.example.org/"),
+        ("https://www.example.org", "https://example.org/"),
+        ("http://example.org", "https://www.example.org/"),
+    ],
+)
+def test_www_redirect(start, final):
+    "A homepage redirecting to its www twin (or back) continues the crawl on the redirected host."
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    new_base = final.rstrip("/")
+    html = f'<html><body><a href="{new_base}/p1">x</a><a href="/p2">y</a></body></html>'.encode()
+    with (
+        patch.object(spider, "fetch_response", return_value=Response(html, 200, final)),
+        patch.object(spider, "get_rules", return_value=None),
+    ):
+        params = spider.init_crawl(start)
+    assert params.base == params.ref == new_base
+    assert sorted(spider.URL_STORE.find_unvisited_urls(params.base)) == [final, f"{new_base}/p1", f"{new_base}/p2"]
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+
+
+def test_same_site_redirect():
+    "Only an https upgrade and the www twin count as the same host."
+    assert spider.is_same_site_redirect("http://example.org", "https://example.org")
+    assert spider.is_same_site_redirect("https://example.org", "https://www.example.org")
+    assert spider.is_same_site_redirect("https://www.example.org", "https://example.org")
+    assert not spider.is_same_site_redirect("https://example.org", "http://example.org")
+    assert not spider.is_same_site_redirect("https://example.org", "https://blog.example.org")
+    assert not spider.is_same_site_redirect("https://example.org", "https://www.example.com")
+    assert not spider.is_same_site_redirect("https://example.org", "https://wwwexample.org")
 
 
 def test_focused_crawler():

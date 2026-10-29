@@ -6,7 +6,7 @@ Functions dedicated to website navigation and crawling/spidering.
 import logging
 from configparser import ConfigParser
 from time import sleep
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit
 from urllib.robotparser import RobotFileParser
 
 from courlan import (
@@ -88,6 +88,12 @@ class CrawlParameters:
     def is_valid_link(self, link: str) -> bool:
         "Run checks: robots.txt rules, URL type and crawl breadth."
         return (not self.rules or self.rules.can_fetch("*", link)) and self.ref in link and not is_not_crawlable(link)
+
+
+def is_same_site_redirect(base: str, new_base: str) -> bool:
+    "Check if a homepage redirect stays on the crawled host, allowing an https upgrade and the www twin."
+    old, new = urlsplit(base), urlsplit(new_base)
+    return new.scheme in (old.scheme, "https") and new.netloc.removeprefix("www.") == old.netloc.removeprefix("www.")
 
 
 def refresh_detection(htmlstring: str, homepage: str, config: ConfigParser = DEFAULT_CONFIG) -> tuple[str | None, str | None]:
@@ -288,10 +294,10 @@ def crawl_page(
         # probe and process homepage
         htmlstring, homepage, new_base_url = probe_alternative_homepage(url, params.config)
         if htmlstring and homepage and new_base_url:
-            # follow the site's http -> https upgrade (same host only)
-            if params.base.startswith("http://") and new_base_url == "https://" + params.base.removeprefix("http://"):
+            # follow the site's http -> https upgrade and www twin redirects (same host only)
+            if new_base_url != params.base and is_same_site_redirect(params.base, new_base_url):
+                params.ref = new_base_url + params.ref.removeprefix(params.base)
                 params.base = new_base_url
-                params.ref = "https://" + params.ref.removeprefix("http://")
             # register potentially new homepage
             URL_STORE.add_urls([homepage])
             # resolve links against the final URL unless the redirect left the crawled host
