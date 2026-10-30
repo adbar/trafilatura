@@ -129,7 +129,7 @@ eval = [
     "news-please == 1.6.16",
     # required by news-please on non-Latin scripts; also needs a one-time punkt
     # download (see tests/README.rst), else it attempts one per document
-    "nltk == 3.10.3",
+    "nltk == 3.10.4",
     "newspaper4k == 0.9.6",
     "readability-lxml == 0.9",
     "resiliparse == 1.0.9",
