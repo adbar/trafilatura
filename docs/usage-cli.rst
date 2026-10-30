@@ -161,7 +161,7 @@ Trafilatura will work as well provided web pages (HTML documents) are used as in
 
 -  ``--input-dir`` to select a directory to read files from
 -  ``-o`` or ``--output-dir`` to define a directory to eventually store the results
--  ``--keep-dirs`` to mirror the input directory structure in the output (requires ``-o/--output-dir``)
+-  ``--keep-dirs`` to mirror the input directory structure in the output (requires ``--input-dir`` and ``-o/--output-dir``)
 
 
 .. note::
@@ -184,7 +184,7 @@ The following command line arguments are relevant:
 
 -  ``-i`` or ``--input-file`` to select an input list to read links from.
 
-   This option allows for bulk download and processing of a list of URLs from a file listing one link per line. The input list will be read sequentially, only lines beginning with a valid URL will be read, the file can thus contain other information which will be discarded.
+   This option allows for bulk download and processing of a list of URLs from a file listing one link per line. The input list will be read sequentially, only lines beginning with a valid URL will be read. Each line is cut at the first space or tab, so the rest of the line can hold other information which will be discarded.
 
 -  ``-o`` or ``--output-dir`` to define a directory to eventually store the results.
 
@@ -244,7 +244,7 @@ Link discovery can be performed over `web feeds <https://en.wikipedia.org/wiki/W
 
 Both the homepage and a particular page can be used as input depending on the selected options (e.g. a sitemap or feed URL).
 
-The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
+Without ``--list``, the discovered links are downloaded and processed, the input URLs themselves are not. The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
 
 For more information please refer to the `tutorial on content discovery <tutorial-corpus.html#content-discovery>`_.
 
@@ -324,6 +324,15 @@ URL inspection prior to download and processing
 To filter the discovered *links* by pattern instead, pass a subpart of the site directly as the sitemap URL — for example ``--sitemap "https://www.sitemaps.org/de/"`` only lists German-language pages. ``--url-filter`` does not filter individual discovered links, only which seed URLs (from ``-i``) are processed in the first place.
 
 For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial-corpus.html#link-filtering>`_.
+
+
+Exit codes
+----------
+
+- ``0``: success, including inputs without extractable content or rejected for their size.
+- ``1``: some inputs could not be downloaded or read, ``--feed`` or ``--sitemap`` found no links for some of them, or the output directory cannot be written.
+- ``126``: more than 99% of the inputs could not be downloaded (also when ``--crawl`` or ``--probe`` cannot fetch the start pages).
+- ``2``: invalid arguments, for example a missing input file, ``--parallel 0``, or ``--feed`` without a URL.
 
 
 Deprecations

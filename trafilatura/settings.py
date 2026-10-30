@@ -40,12 +40,13 @@ def use_config(filename: str | None = None, config: ConfigParser | None = None) 
     config = ConfigParser()
     default_file = str(Path(__file__).parent / "settings.cfg")
     if filename is None:
-        config.read(default_file)
+        config.read(default_file, encoding="utf-8")
     else:
         if not Path(filename).is_file():
             raise FileNotFoundError("The given config file does not exist")
         # seed defaults first so a partial user file only overrides the keys it sets
-        config.read([default_file, filename])
+        # utf-8-sig: accept files saved with a byte order mark
+        config.read([default_file, filename], encoding="utf-8-sig")
     return config
 
 
@@ -124,7 +125,7 @@ class Extractor:
         if precision and recall:
             LOGGER.warning("'precision' and 'recall' are mutually exclusive, 'recall' takes precedence")
         if output_format not in SUPPORTED_FORMATS:
-            raise AttributeError(f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}")
+            raise ValueError(f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}")
         self.format = output_format
         source = url or source
         self.source = source and source.encode("utf-8", "replace").decode("utf-8")

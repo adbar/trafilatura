@@ -302,12 +302,11 @@ def crawl_page(
         params.update_metadata(URL_STORE)
         return params
 
-    params.i += 1
-
     if initial:
-        # probe and process homepage
+        # probe and process homepage, only count it if it could be fetched
         htmlstring, homepage, new_base_url = probe_alternative_homepage(url, params.config)
         if htmlstring and homepage and new_base_url:
+            params.i += 1
             # follow the site's http -> https upgrade and the redirects between the bare domain and www
             if is_same_site(params.base, new_base_url):
                 params.ref = params.ref.replace(params.base, new_base_url, 1)
@@ -318,6 +317,7 @@ def crawl_page(
             # resolve links against the final URL unless the redirect left the crawled host
             process_links(htmlstring, params, url=homepage if get_base_url(homepage) == params.base else url)
     else:
+        params.i += 1
         response = fetch_response(url, decode=False, config=params.config)
         process_response(response, params)
 
