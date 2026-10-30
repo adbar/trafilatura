@@ -1273,3 +1273,34 @@ def test_extract_json_processes_list_once():
     finally:
         jm.process_parent = orig
     assert len(count) == 1
+
+
+@pytest.mark.parametrize(
+    "context",
+    [
+        '"https://www.schema.org"',
+        '["https://schema.org", {"@language": "en"}]',
+        '{"@vocab": "https://schema.org/"}',
+    ],
+)
+def test_json_schema_org_context_variants(context):
+    "valid JSON-LD @context forms other than a plain schema.org string"
+    html = (
+        '<html><head><script type="application/ld+json">'
+        f'{{"@context": {context}, "@type": "NewsArticle", '
+        '"author": {"@type": "Person", "name": "Jane Doe"}}'
+        "</script></head><body><p>x</p></body></html>"
+    )
+    assert extract_metadata(html).author == "Jane Doe"
+
+
+@pytest.mark.parametrize("context", ['"https://example.org"', "[]", '{"@vocab": "https://example.org/"}', "1"])
+def test_json_non_schema_org_context(context):
+    "blocks with another vocabulary are still skipped"
+    html = (
+        '<html><head><script type="application/ld+json">'
+        f'{{"@context": {context}, "@type": "NewsArticle", '
+        '"author": {"@type": "Person", "name": "Jane Doe"}}'
+        "</script></head><body><p>x</p></body></html>"
+    )
+    assert extract_metadata(html).author is None
