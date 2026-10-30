@@ -149,6 +149,15 @@ def probe_alternative_homepage(
     return new_htmlstring, new_homepage, get_base_url(new_homepage)
 
 
+def is_same_site(base_url: str, new_base_url: str) -> bool:
+    "Check if a redirect only upgrades http to https and/or adds or drops a leading www."
+    scheme, _, host = base_url.lower().partition("://")
+    new_scheme, _, new_host = new_base_url.lower().partition("://")
+    return host.removeprefix("www.") == new_host.removeprefix("www.") and (
+        scheme == new_scheme or (scheme, new_scheme) == ("http", "https")
+    )
+
+
 def parse_robots(robots_url: str, data: str) -> RobotFileParser | None:
     "Parse a robots.txt file with the standard library urllib.robotparser."
     # https://github.com/python/cpython/blob/main/Lib/urllib/robotparser.py
@@ -290,12 +299,13 @@ def crawl_page(
         # probe and process homepage
         htmlstring, homepage, new_base_url = probe_alternative_homepage(url, params.config)
         if htmlstring and homepage and new_base_url:
-            # follow the site's http -> https upgrade (same host only)
-            if params.base.startswith("http://") and new_base_url == "https://" + params.base.removeprefix("http://"):
+            # follow the site's http -> https upgrade and the redirects between the bare domain and www
+            if is_same_site(params.base, new_base_url):
+                params.ref = params.ref.replace(params.base, new_base_url, 1)
                 params.base = new_base_url
-                params.ref = "https://" + params.ref.removeprefix("http://")
+                URL_STORE.store_rules(params.base, params.rules)
             # register potentially new homepage
-            URL_STORE.add_urls([homepage])
+            URL_STORE.add_urls([homepage], visited=get_base_url(homepage) == params.base)
             # resolve links against the final URL unless the redirect left the crawled host
             process_links(htmlstring, params, url=homepage if get_base_url(homepage) == params.base else url)
     else:
