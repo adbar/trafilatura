@@ -2,6 +2,7 @@
 Unit tests for the command-line interface.
 """
 
+import csv
 import gzip
 import io
 import logging
@@ -336,6 +337,133 @@ def test_cli_examine_error(monkeypatch, capsys):
     html = "<html><body><article><p>" + "content " * 20 + "</p></article></body></html>"
     assert cli.examine(html, args) is None
     assert "kaboom" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("output_args", [["--csv"], ["--output-format", "csv"]])
+def test_csv_stdout_has_no_blank_records(tmp_path, output_args):
+    input_dir = tmp_path / "input"
+    input_dir.mkdir()
+    for number in (1, 2):
+        (input_dir / f"{number}.html").write_text(
+            f"<html><body><article><p>Document {number} with some long enough text, here and there.</p>"
+            "</article></body></html>",
+            encoding="utf-8",
+        )
+    result = subprocess.run(
+        [sys.executable, "-m", "trafilatura.cli", *output_args, "--input-dir", str(input_dir)],
+        capture_output=True,
+        check=True,
+    )
+    rows = list(csv.reader(io.StringIO(result.stdout.decode("utf-8"), newline=""), delimiter="\t"))
+    assert [len(row) for row in rows] == [11, 11]
+    assert {row[7] for row in rows} == {
+        "Document 1 with some long enough text, here and there.",
+        "Document 2 with some long enough text, here and there.",
+    }
+    expected = io.StringIO(newline="")
+    csv.writer(expected, delimiter="\t").writerows(rows)
+    assert result.stdout == expected.getvalue().encode("utf-8")
+
+
+@pytest.mark.parametrize("newline", [None, "", "\r\n"])
+@pytest.mark.parametrize("encoding", ["utf-8", "cp1252", "utf-8-sig", "utf-16"])
+@pytest.mark.parametrize("stream_kind", ["file", "pipe"])
+@pytest.mark.parametrize("prefix", ["", "lead:"])
+def test_csv_stdout_preserves_serialized_bytes(tmp_path, newline, encoding, stream_kind, prefix):
+    args = cli.parse_args(["--csv"])
+    rows = [["first\nsecond", "valué"], ["third", 'quoted "value"']]
+
+    def capture(name, *, direct):
+        output_path = tmp_path / name
+        if stream_kind == "pipe":
+            reader, writer = os.pipe()
+            binary = os.fdopen(writer, "wb")
+        else:
+            binary = output_path.open("wb")
+        # CRLF translation reproduces Windows behavior on every platform.
+        with io.TextIOWrapper(binary, encoding=encoding, newline="" if direct else newline) as stdout:
+            if prefix:
+                stdout.write(prefix)
+            with redirect_stdout(stdout):
+                if direct:
+                    csv.writer(stdout, delimiter="\t").writerows(rows)
+                else:
+                    for row in rows:
+                        record = io.StringIO(newline="")
+                        csv.writer(record, delimiter="\t").writerow(row)
+                        cli_utils.write_result(record.getvalue(), args)
+        if stream_kind == "pipe":
+            with os.fdopen(reader, "rb") as pipe:
+                return pipe.read()
+        return output_path.read_bytes()
+
+    assert capture("actual", direct=False) == capture("expected", direct=True)
+
+
+def test_csv_stdout_text_capture(capsys):
+    args = cli.parse_args(["--csv"])
+    serialized = io.StringIO(newline="")
+    rows = [["first\nsecond", "valué"], ["third", 'quoted "value"']]
+    for row in rows:
+        record = io.StringIO(newline="")
+        csv.writer(record, delimiter="\t").writerow(row)
+        cli_utils.write_result(record.getvalue(), args)
+    csv.writer(serialized, delimiter="\t").writerows(rows)
+    assert capsys.readouterr().out == serialized.getvalue()
+    with redirect_stdout(io.StringIO(newline="")) as stdout:
+        cli_utils.write_result(serialized.getvalue(), args)
+    assert stdout.getvalue() == serialized.getvalue()
+
+
+def test_csv_stdout_configures_newlines_once():
+    args = cli.parse_args(["--csv"])
+    with io.TextIOWrapper(io.BytesIO(), encoding="utf-8", newline="\r\n") as stdout:
+        with patch.object(stdout, "reconfigure", wraps=stdout.reconfigure) as configure, redirect_stdout(stdout):
+            cli_utils.write_result("first\r\n", args)
+            cli_utils.write_result("second\r\n", args)
+        assert configure.call_count == 1
+
+
+def test_csv_stdout_preserves_encoding_errors():
+    args = cli.parse_args(["--csv"])
+    with io.TextIOWrapper(io.BytesIO(), encoding="ascii", errors="replace", newline="\r\n") as stdout:
+        with redirect_stdout(stdout):
+            cli_utils.write_result("valué\r\n", args)
+        stdout.flush()
+        assert stdout.buffer.getvalue() == b"valu?\r\n"
+
+
+@pytest.mark.parametrize("output_format", ["txt", "json", "xml"])
+def test_non_csv_stdout_keeps_record_separator(capsys, output_format):
+    args = cli.parse_args(["--output-format", output_format])
+    cli_utils.write_result("first", args)
+    cli_utils.write_result("second", args)
+    assert capsys.readouterr().out == "first\nsecond\n"
+
+
+@pytest.mark.parametrize("output_format", ["txt", "json", "xml"])
+def test_non_csv_stdout_keeps_windows_translation(output_format):
+    args = cli.parse_args(["--output-format", output_format])
+    with io.TextIOWrapper(io.BytesIO(), encoding="utf-8-sig", newline="\r\n") as stdout:
+        with patch.object(stdout, "reconfigure", wraps=stdout.reconfigure) as configure, redirect_stdout(stdout):
+            cli_utils.write_result("first\nline", args)
+            cli_utils.write_result("second", args)
+        stdout.flush()
+        assert stdout.buffer.getvalue() == "first\r\nline\r\nsecond\r\n".encode("utf-8-sig")
+        configure.assert_not_called()
+
+
+def test_csv_file_keeps_serialized_newline(tmp_path):
+    args = cli.parse_args(["--csv", "-o", str(tmp_path)])
+    serialized = io.StringIO(newline="")
+    rows = [["first\nsecond", "valué"]]
+    csv.writer(serialized, delimiter="\t").writerows(rows)
+    record = serialized.getvalue()
+    with io.TextIOWrapper(io.BytesIO(), encoding="utf-8", newline="\r\n") as stdout:
+        with patch.object(stdout, "reconfigure", wraps=stdout.reconfigure) as configure, redirect_stdout(stdout):
+            cli_utils.write_result(record, args, new_filename="record")
+        configure.assert_not_called()
+    assert (tmp_path / "record.csv").read_bytes() == record.encode("utf-8")
 
 
 def test_sysoutput():
