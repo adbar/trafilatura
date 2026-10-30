@@ -390,10 +390,15 @@ def safe_relative_url(baseurl: str, url: str) -> str:
         return ""
 
 
+# zero-width non-joiner and joiner: needed for Persian, Urdu and Indic
+# spelling and emoji sequences, although str.isprintable() rejects them
+ZERO_WIDTH_JOINERS = "\u200c\u200d"
+
+
 @lru_cache(maxsize=2**14)  # sys.maxunicode = 1114111
 def return_printables_and_spaces(char: str) -> str:
     "Return a character if it belongs to certain classes"
-    return char if char.isprintable() or char.isspace() else ""
+    return char if char.isprintable() or char.isspace() or char in ZERO_WIDTH_JOINERS else ""
 
 
 def remove_control_characters(string: str) -> str:
