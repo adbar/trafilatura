@@ -167,7 +167,11 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
         links = []
         for match in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS):
             attributes = {attr[1]: attr[3] for attr in LINK_ATTRIBUTES.finditer(match[0])}
-            if attributes.get("href") and attributes.get("rel") != "self" and "atom+xml" not in attributes.get("type", ""):
+            # only candidates for page links: e.g. rel="self" is the feed itself,
+            # rel="replies" is the comments link WordPress adds to every entry,
+            # link blogs put the external link in rel="alternate" and the post itself in rel="related"
+            rel = attributes.get("rel", "").strip().lower()
+            if attributes.get("href") and rel in ("", "alternate", "related") and "atom+xml" not in attributes.get("type", ""):
                 links.append(attributes["href"])
         return links
 
