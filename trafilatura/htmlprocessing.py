@@ -4,7 +4,9 @@ Functions to process nodes in HTML code.
 """
 
 import logging
+from collections.abc import Callable, Sequence
 from copy import deepcopy
+from typing import Any
 
 from lxml.etree import Element, SubElement, XPath, _Element, strip_elements, strip_tags, tostring
 from lxml.html import HtmlElement
@@ -144,7 +146,9 @@ def prune_html(tree: HtmlElement, focus: str = "balanced") -> HtmlElement:
     return tree
 
 
-def prune_unwanted_nodes(tree: HtmlElement, nodelist: list[XPath], with_backup: bool = False) -> HtmlElement:
+def prune_unwanted_nodes(
+    tree: HtmlElement, nodelist: Sequence[Callable[[HtmlElement], Any]], with_backup: bool = False
+) -> HtmlElement:
     "Prune the HTML tree by removing unwanted sections."
     if not with_backup:
         for expression in nodelist:

@@ -1,6 +1,13 @@
 ## History / Changelog
 
 
+## Unreleased
+
+- Better metadata: date parameters, OpenGraph, sitename, title suffixes, tags, relative images, malformed or wrapped JSON-LD, more JSON-LD article types, author names and faster author search by @adbar
+- Sitenames are only capitalized when fully lowercase: mixed-case names such as "eBay" or "the Guardian" are kept as written
+- `date_extraction_params` and the `date_config` of `extract_metadata()` are now merged over the defaults instead of replacing them: partial parameters keep `original_date=True` and `max_date` set to today
+
+
 ## 2.3.1
 
 - Fewer duplicated segments in the output and a new test series by @adbar (#955)

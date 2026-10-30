@@ -6,6 +6,7 @@ For reference, here is the list of all JSON-LD types: https://schema.org/docs/fu
 import json
 import logging
 import re
+from contextlib import suppress
 from html import unescape
 from re import Pattern
 from typing import Any
@@ -17,16 +18,24 @@ LOGGER = logging.getLogger(__name__)
 
 
 JSON_ARTICLE_SCHEMA = {
+    "advertisercontentarticle",
+    "analysisnewsarticle",
     "article",
+    "askpublicnewsarticle",
     "backgroundnewsarticle",
     "blogposting",
+    "discussionforumposting",
     "medicalscholarlyarticle",
     "newsarticle",
     "opinionnewsarticle",
+    "report",
     "reportagenewsarticle",
+    "reviewnewsarticle",
+    "satiricalarticle",
     "scholarlyarticle",
     "socialmediaposting",
     "liveblogposting",
+    "techarticle",
 }
 JSON_OGTYPE_SCHEMA = {
     "aboutpage",
@@ -73,7 +82,7 @@ JSON_PUBLISHER_SCHEMA = {
     "webpage",
     "website",
 }
-JSON_SCHEMA_TYPES = JSON_ARTICLE_SCHEMA | JSON_OGTYPE_SCHEMA | JSON_PUBLISHER_SCHEMA | {"person"}
+JSON_SCHEMA_TYPES = JSON_OGTYPE_SCHEMA | JSON_PUBLISHER_SCHEMA | {"person"}
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_REMOVE = re.compile(
@@ -119,15 +128,37 @@ def is_plausible_sitename(metadata: Document, candidate: Any, content_type: str 
     if candidate and isinstance(candidate, str):
         if not metadata.sitename or (len(metadata.sitename) < len(candidate) and content_type != "webpage"):
             return True
-        if metadata.sitename and metadata.sitename.startswith("http") and not candidate.startswith("http"):
+        if metadata.sitename.startswith("http") and not candidate.startswith("http"):
             return True
     return False
 
 
-def process_parent(parent: Any, metadata: Document) -> Document:
+def _json_author_name(author: Any) -> str | None:
+    "Return the name of a Person author item, a bare string is a name."
+    if isinstance(author, str):
+        return author
+    if not isinstance(author, dict) or (
+        "@type" in author and "person" not in {t.lower() for t in as_list(author["@type"]) if isinstance(t, str)}
+    ):
+        return None
+    name = author.get("name")
+    if isinstance(name, list):
+        name = "; ".join(n for n in name if isinstance(n, str)).strip("; ")
+    elif isinstance(name, dict):
+        name = name.get("name")
+    elif "name" not in author and "givenName" in author and "familyName" in author:
+        name = " ".join(author[x] for x in AUTHOR_ATTRS if x in author)
+    return name if isinstance(name, str) else None
+
+
+def process_parent(parent: Any, metadata: Document, backup_sitename: str | None = None) -> Document:
     "Find and extract selected metadata from JSON parts."
     content: dict[str, Any]
-    for content in filter(None, parent):
+    webpage_name = None
+    for content in parent:
+        # one malformed item must not discard the others
+        if not isinstance(content, dict):
+            continue
         # publisher may be a bare string, not a dict
         publisher = content.get("publisher")
         if isinstance(publisher, dict) and is_plausible_sitename(metadata, publisher.get("name")):
@@ -149,11 +180,14 @@ def process_parent(parent: Any, metadata: Document) -> Document:
 
         # The "pagetype" should only be returned if the page is some kind of an article, category, website...
         if content_type in JSON_OGTYPE_SCHEMA and not metadata.pagetype:
-            metadata.pagetype = normalize_json(content_type)
+            metadata.pagetype = content_type
 
         if content_type in JSON_PUBLISHER_SCHEMA:
             candidate = content.get("name") or content.get("legalName") or content.get("alternateName")
-            if is_plausible_sitename(metadata, candidate, content_type):
+            # a WebPage name is usually the page title: last resort only
+            if content_type == "webpage":
+                webpage_name = webpage_name or candidate
+            elif is_plausible_sitename(metadata, candidate, content_type):
                 metadata.sitename = candidate
 
         elif content_type == "person":
@@ -162,33 +196,14 @@ def process_parent(parent: Any, metadata: Document) -> Document:
 
         elif content_type in JSON_ARTICLE_SCHEMA:
             # author and person
-            if "author" in content:
-                list_authors = content["author"]
-                if isinstance(list_authors, str):
-                    # try to convert to json object
-                    try:
-                        list_authors = json.loads(list_authors)
-                    except json.JSONDecodeError:
-                        # it is a normal string
-                        metadata.author = normalize_authors(metadata.author, list_authors)
-
-                for author in as_list(list_authors):
-                    if isinstance(author, str):
-                        author = {"name": author}
-                    if "@type" not in author or "Person" in as_list(author["@type"]):
-                        author_name = None
-                        # error thrown: author['name'] can be a list (?)
-                        if "name" in author:
-                            author_name = author.get("name")
-                            if isinstance(author_name, list):
-                                author_name = "; ".join(author_name).strip("; ")
-                            elif isinstance(author_name, dict) and "name" in author_name:
-                                author_name = author_name["name"]
-                        elif "givenName" in author and "familyName" in author:
-                            author_name = " ".join(author[x] for x in AUTHOR_ATTRS if x in author)
-                        # additional check to prevent bugs
-                        if isinstance(author_name, str):
-                            metadata.author = normalize_authors(metadata.author, author_name)
+            authors = content.get("author")
+            if isinstance(authors, str):
+                # may hold a serialized object, else a plain name
+                with suppress(json.JSONDecodeError):
+                    authors = json.loads(authors)
+            for author in as_list(authors):
+                if (name := _json_author_name(author)) is not None:
+                    metadata.author = normalize_authors(metadata.author, name)
 
             # category
             if not metadata.categories and "articleSection" in content:
@@ -203,6 +218,8 @@ def process_parent(parent: Any, metadata: Document) -> Document:
                     metadata.title = content["name"]
                 elif "headline" in content:
                     metadata.title = content["headline"]
+    if not backup_sitename and is_plausible_sitename(metadata, webpage_name, "webpage"):
+        metadata.sitename = webpage_name
     return metadata
 
 
@@ -218,7 +235,7 @@ def is_schema_org_context(context: Any) -> bool:
     return False
 
 
-def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Document:
+def extract_json(schema: list[Any] | dict[str, str], metadata: Document, backup_sitename: str | None = None) -> Document:
     """Parse and extract metadata from JSON-LD data.
 
     Note: baseline.py's `_walk_json` also walks JSON-LD, for page content rather than
@@ -231,6 +248,8 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Docu
     # collect content from every valid block, then process once (no short-circuit on a flat object)
     parents: list[Any] = []
     for parent in schema:
+        if not isinstance(parent, dict):
+            continue
         context = parent.get("@context")
 
         if is_schema_org_context(context):
@@ -246,7 +265,7 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Docu
             else:
                 parents.append(parent)
 
-    return process_parent(parents, metadata)
+    return process_parent(parents, metadata, backup_sitename)
 
 
 def extract_json_author(elemtext: str, regular_expression: Pattern[str]) -> str | None:
@@ -324,7 +343,8 @@ def normalize_json_values(value: Any) -> Any:
     "Normalize all strings of a parsed JSON object."
     if isinstance(value, str):
         # JSON escapes are already decoded by the parser, entities and surrogates are not
-        return trim(HTML_STRIP_TAGS.sub("", unescape_json_string(value)))
+        # markup is stripped first so that escaped angle brackets stay as text
+        return trim(unescape_json_string(HTML_STRIP_TAGS.sub("", value)))
     if isinstance(value, list):
         return [normalize_json_values(item) for item in value]
     if isinstance(value, dict):
@@ -335,7 +355,7 @@ def normalize_json_values(value: Any) -> Any:
 def normalize_authors(current_authors: str | None, author_string: str) -> str | None:
     """Normalize author info to focus on author names only"""
     new_authors = []
-    if author_string.lower().startswith("http") or AUTHOR_EMAIL.match(author_string):
+    if author_string.lower().startswith("http"):
         return current_authors
     if current_authors is not None:
         new_authors = current_authors.split("; ")
@@ -348,8 +368,8 @@ def normalize_authors(current_authors: str | None, author_string: str) -> str | 
     # fix html entities
     if "&#" in author_string or "&amp;" in author_string:
         author_string = unescape(author_string)
-    # remove html tags
-    author_string = HTML_STRIP_TAGS.sub("", author_string)
+    # remove html tags and email addresses
+    author_string = AUTHOR_EMAIL.sub("", HTML_STRIP_TAGS.sub("", author_string))
     # examine names
     for author in AUTHOR_SPLIT.split(author_string):
         author = trim(author)

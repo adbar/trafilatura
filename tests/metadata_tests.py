@@ -9,9 +9,16 @@ import pytest
 from lxml import html
 from lxml.etree import XPath
 
+from trafilatura import extract
 from trafilatura.json_metadata import extract_json, extract_json_parse_error, process_parent
 from trafilatura.metadata import (
     JSON_MINIFY,
+    METANAME_AUTHOR,
+    METANAME_DESCRIPTION,
+    METANAME_IMAGE,
+    METANAME_PUBLISHER,
+    METANAME_TAG,
+    METANAME_TITLE,
     Document,
     check_authors,
     extract_meta_json,
@@ -25,6 +32,10 @@ from trafilatura.settings import Extractor, use_config
 from trafilatura.xml import build_json_output
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
+
+def head_page(head):
+    return f"<html><head>{head}</head><body/></html>"
 
 
 def test_tags_with_complete_opengraph_metadata():
@@ -41,7 +52,7 @@ def test_tags_with_complete_opengraph_metadata():
         </head><body><article>Example article content.</article></body></html>"""
 
     metadata = extract_metadata(document)
-    assert metadata.tags == ["science, research", "astronomy"]
+    assert metadata.tags == ["science", "research", "astronomy"]
     assert metadata.title == "Example article"
     assert metadata.author == "Jane Smith"
     assert metadata.image == "https://example.org/image.jpg"
@@ -179,6 +190,7 @@ def test_author_from_markup():
             None,
         ),
         (f'{begin}<span class="author">Jenny Smith and John Smith</span>{end}', "Jenny Smith; John Smith"),
+        (f'{begin}<span class="author-avatar">Photo</span><span class="author name">Jenny Smith</span>{end}', "Jenny Smith"),
         (f'{begin}<a class="author">Jenny Smith</a>{end}', "Jenny Smith"),
         (f'{begin}<a class="author">Jenny Smith <div class="title">Editor</div></a>{end}', "Jenny Smith"),
         (f'{begin}<a class="author">Jenny Smith from Trafilatura</a>{end}', "Jenny Smith"),
@@ -236,65 +248,88 @@ def test_author_from_markup():
         assert extract_metadata(doc).author == expected
 
 
-def test_url():
-    """Test URL extraction"""
-    expected = "https://example.org"
-    cases = [
-        ('<html><head><meta property="og:url" content="https://example.org"/></head><body></body></html>', None),
-        ('<html><head><link rel="canonical" href="https://example.org"/></head><body></body></html>', None),
-        ('<html><head><meta name="twitter:url" content="https://example.org"/></head><body></body></html>', None),
+@pytest.mark.parametrize(
+    ("head", "default_url"),
+    [
+        ('<meta property="og:url" content="https://example.org"/>', None),
+        ('<link rel="canonical" href="https://example.org"/>', None),
+        ('<meta name="twitter:url" content="https://example.org"/>', None),
+        ('<link rel="alternate" hreflang="x-default" href="https://example.org"/>', None),
+        ('<link rel="canonical" href="/article/medical-record"/>', "https://example.org"),
+        ('<base href="https://example.org" target="_blank"/>', None),
+        # the first og:url wins
         (
-            '<html><head><link rel="alternate" hreflang="x-default" href="https://example.org"/></head><body></body></html>',
+            (
+                '<meta property="og:url" content="https://example.org"/>'
+                '<meta property="og:url" content="https://example.org/b"/>'
+            ),
             None,
         ),
+    ],
+)
+def test_url(head, default_url):
+    """Test URL extraction"""
+    assert extract_metadata(head_page(head), default_url).url == "https://example.org"
+
+
+@pytest.mark.parametrize(
+    ("head", "expected"),
+    [
+        # relative canonical joined via a twitter:url or og:url base
         (
-            '<html><head><link rel="canonical" href="/article/medical-record"/></head><body></body></html>',
-            "https://example.org",
+            '<link rel="canonical" href="/article/medical-record"/><meta name="twitter:url" content="https://example.org"/>',
+            "https://example.org/article/medical-record",
         ),
-        ('<html><head><base href="https://example.org" target="_blank"/></head><body></body></html>', None),
-    ]
-    for doc, default_url in cases:
-        assert extract_metadata(doc, default_url).url == expected
-
-    # relative canonical joined via a twitter:url or og:url base
-    assert (
-        extract_url(
-            html.fromstring(
-                '<html><head><link rel="canonical" href="/article/medical-record"/><meta name="twitter:url" content="https://example.org"/></head><body></body></html>'
-            )
-        )
-        == "https://example.org/article/medical-record"
-    )
-    assert (
-        extract_url(
-            html.fromstring(
-                '<html><head><link rel="canonical" href="/p"/><meta property="og:url" content="https://example.org"/></head><body></body></html>'
-            )
-        )
-        == "https://example.org/p"
-    )
-    # malformed base skipped
-    assert (
-        extract_url(
-            html.fromstring(
-                '<html><head><link rel="canonical" href="/p"/><meta property="og:url" content="//[::1"/><meta name="twitter:url" content="https://example.org"/></head><body></body></html>'
-            )
-        )
-        == "https://example.org/p"
-    )
-    # protocol-relative canonical keeps its own host
-    for doc in (
-        '<html><head><link rel="canonical" href="//example.org/p"/></head><body></body></html>',
-        '<html><head><link rel="canonical" href="//example.org/p"/><meta property="og:image" content="https://cdn.example.net/i.png"/></head><body></body></html>',
-    ):
-        assert extract_url(html.fromstring(doc)) == "https://example.org/p"
+        (
+            '<link rel="canonical" href="/p"/><meta property="og:url" content="https://example.org"/>',
+            "https://example.org/p",
+        ),
+        # malformed base skipped
+        (
+            '<link rel="canonical" href="/p"/><meta property="og:url" content="//[::1"/><meta name="twitter:url" content="https://example.org"/>',
+            "https://example.org/p",
+        ),
+        # protocol-relative canonical keeps its own host
+        ('<link rel="canonical" href="//example.org/p"/>', "https://example.org/p"),
+        (
+            '<link rel="canonical" href="//example.org/p"/><meta property="og:image" content="https://cdn.example.net/i.png"/>',
+            "https://example.org/p",
+        ),
+    ],
+)
+def test_extract_url(head, expected):
+    assert extract_url(html.fromstring(head_page(head))) == expected
 
 
-def test_clean_and_trim_preserves_url_fields():
-    target = "https://example.org/?region=us&section=2&times=3&literal=&amp;copy;"
-    metadata = Document.from_dict({"url": f"  {target}\n", "image": target, "description": "  Tom &amp; Jerry\n"})
+URL = "https://example.org/?region=us&section=2&times=3&literal=&amp;copy;"
+
+
+@pytest.mark.parametrize(
+    ("fields", "expected"),
+    [
+        # URL fields keep entity-like query parameters
+        (
+            {"url": f"  {URL}\n", "image": URL, "description": "  Tom &amp; Jerry\n"},
+            {"url": URL, "image": URL, "description": "Tom & Jerry"},
+        ),
+        # lists are deduplicated
+        ({"tags": ["a", " a ", "", "b", "a"], "categories": ["x", "x\n"]}, {"tags": ["a", "b"], "categories": ["x"]}),
+        # JSON-LD lists and objects in string fields are reduced to their first string, list fields accept a string
+        (
+            {"title": [None, " ", "A", "B"], "author": {"name": "x"}, "tags": "t"},
+            {"title": "A", "author": None, "tags": ["t"]},
+        ),
+        # author lists are normalized and joined
+        (
+            {"author": ["Jane Doe", " ", "John Smith jsmith@example.org", "Jane Doe"]},
+            {"author": "Jane Doe; John Smith"},
+        ),
+    ],
+)
+def test_clean_and_trim(fields, expected):
+    metadata = Document.from_dict(fields)
     metadata.clean_and_trim()
-    assert (metadata.url, metadata.image, metadata.description) == (target, target, "Tom & Jerry")
+    assert {key: getattr(metadata, key) for key in expected} == expected
 
 
 def test_description():
@@ -337,27 +372,84 @@ def test_dates():
         assert metadata.date == expected
 
 
-def test_sitename():
-    """Test extraction of site name"""
-    tests = [
-        ('<html><head><meta name="article:publisher" content="@"/></head><body/></html>', None),
-        ('<html><head><meta name="article:publisher" content="The Newspaper"/></head><body/></html>', "The Newspaper"),
-        ('<html><head><meta property="article:publisher" content="The Newspaper"/></head><body/></html>', "The Newspaper"),
-        ("<html><head><title>sitemaps.org - Home</title></head><body/></html>", "sitemaps.org"),
+APP_NAME = '<meta name="twitter:app:name:iphone" content="App - Free Care"/>'
+
+
+@pytest.mark.parametrize(
+    ("head", "expected"),
+    [
+        ('<meta name="article:publisher" content="@"/>', None),
+        ('<meta name="article:publisher" content="The Newspaper"/>', "The Newspaper"),
+        ('<meta property="article:publisher" content="The Newspaper"/>', "The Newspaper"),
+        ("<title>sitemaps.org - Home</title>", "sitemaps.org"),
         # fallback: derive the site name from the URL host
+        ('<meta property="og:url" content="https://www.example.org/article"/>', "example.org"),
+        # backup site name from application-name
+        ('<meta name="application-name" content="MySite"/>', "MySite"),
+        # a no-dot lowercase publisher is title-cased
+        ('<meta name="article:publisher" content="newspaper"/>', "Newspaper"),
+        # Twitter and app names are backups after JSON-LD, ranked application-name > twitter:site > twitter:app:name
         (
-            '<html><head><meta property="og:url" content="https://www.example.org/article"/></head><body/></html>',
+            (
+                '<meta name="twitter:site" content="Twitter Account Name"/>'
+                '<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle",'
+                '"publisher":{"@type":"Organization","name":"Publisher"}}</script>'
+            ),
+            "Publisher",
+        ),
+        (f'<meta name="twitter:site" content="@site"/>{APP_NAME}', "Site"),
+        (
+            (f'<meta name="twitter:site" content="@site"/>{APP_NAME}<meta name="application-name" content="App Name"/>'),
+            "App Name",
+        ),
+        # a WebPage name ranks below the backups
+        (
+            (
+                '<meta name="twitter:site" content="@ExampleNews"/>'
+                '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage",'
+                '"name":"My Story about things"}</script>'
+            ),
+            "ExampleNews",
+        ),
+        # also when the WebPage comes in another script block
+        (
+            (
+                '<meta name="twitter:site" content="@ExampleNews"/>'
+                '<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle",'
+                '"headline":"My Story"}</script>'
+                '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage",'
+                '"name":"My Story about things"}</script>'
+            ),
+            "ExampleNews",
+        ),
+        # a name starting with "http" is no URL
+        ('<meta name="application-name" content="HTTP Toolkit"/>', "HTTP Toolkit"),
+        # capitalize lowercase names only, keep mixed-case brands
+        ('<meta property="og:site_name" content="nytimes"/>', "Nytimes"),
+        ('<meta property="og:site_name" content="eBay"/>', "eBay"),
+        ('<meta property="og:site_name" content="公視新聞網"/>', "公視新聞網"),
+        # a URL is no sitename: fall back to the hostname
+        (
+            (
+                '<meta property="og:url" content="https://www.example.org/a"/>'
+                '<meta property="article:publisher" content="https://www.facebook.com/example"/>'
+            ),
             "example.org",
         ),
-        # backup site name from application-name
-        ('<html><head><meta name="application-name" content="MySite"/></head><body/></html>', "MySite"),
-        # a no-dot lowercase publisher is title-cased
-        ('<html><head><meta name="article:publisher" content="newspaper"/></head><body/></html>', "Newspaper"),
-    ]
-
-    for doc, expected in tests:
-        metadata = extract_metadata(doc)
-        assert metadata.sitename == expected
+        # a URL sitename also hides the backups, the hostname is preferred to Twitter handles
+        (
+            (
+                '<meta property="og:url" content="https://www.example.org/a"/>'
+                '<meta property="article:publisher" content="https://www.facebook.com/example"/>'
+                '<meta name="twitter:site" content="@example1"/>'
+            ),
+            "example.org",
+        ),
+    ],
+)
+def test_sitename(head, expected):
+    """Test extraction of site name"""
+    assert extract_metadata(head_page(head)).sitename == expected
 
 
 def test_meta():
@@ -369,7 +461,7 @@ def test_meta():
     metadata = extract_metadata(
         '<html><head><meta property="og:title" content="Open Graph Title"/><meta property="og:author" content="Jenny Smith"/><meta property="og:description" content="This is an Open Graph description"/><meta property="og:site_name" content="My first site"/><meta property="og:url" content="https://example.org/test"/><meta property="og:type" content="Open Graph Type"/></head><body><a rel="license" href="https://creativecommons.org/">Creative Commons</a></body></html>'
     )
-    assert metadata.pagetype == "Open Graph Type"
+    assert metadata.pagetype == "open graph type"
     assert metadata.title == "Open Graph Title"
     assert metadata.author == "Jenny Smith"
     assert metadata.description == "This is an Open Graph description"
@@ -432,9 +524,9 @@ def test_catstags():
         (
             '<html><head><meta name="keywords" content="sodium, salt, paracetamol, blood, pressure, high, heart, &amp;quot, intake, warning, study, &amp;quot, medicine, dissolvable, cardiovascular" /></head></html>',
             "tags",
-            [
-                "sodium, salt, paracetamol, blood, pressure, high, heart, intake, warning, study, medicine, dissolvable, cardiovascular"
-            ],
+            "sodium, salt, paracetamol, blood, pressure, high, heart, intake, warning, study, medicine, dissolvable, cardiovascular".split(
+                ", "
+            ),
         ),
         # plural "/categories/" in the href must be recognised
         (
@@ -457,6 +549,12 @@ def test_date_config():
     doc = "<html><head><title>T</title></head><body><p>x</p></body></html>"
     assert extract_metadata(doc, date_config=cfg) is not None
     assert "url" not in cfg
+    # partial parameters keep the defaults
+    page = head_page(
+        '<meta property="article:published_time" content="2020-01-01"/><meta property="article:modified_time" content="2023-05-05"/>'
+    )
+    assert extract_metadata(page, date_config={"max_date": "2030-01-01"}).date == "2020-01-01"
+    assert Extractor(date_params={"max_date": "2030-01-01"}).date_params["original_date"] is True
 
 
 def test_extract_title_fallbacks():
@@ -508,6 +606,14 @@ def test_extract_meta_json_escaped_characters():
     assert metadata.title == "Why 3 < 5"
     # markup in the values is still stripped
     assert metadata.sitename == "Acme > News"
+    # entities are decoded after the markup is stripped
+    for headline, expected in (
+        ("Using Vec&lt;T&gt; in Rust", "Using Vec<T> in Rust"),
+        ("3 &lt; 5 and 7 &gt; 2", "3 < 5 and 7 > 2"),
+    ):
+        payload = f'{{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "{headline}"}}'
+        doc = head_page(f'<script type="application/ld+json">{payload}</script>')
+        assert extract_meta_json(html.fromstring(doc), Document()).title == expected
 
 
 def test_extract_meta_json_entities_and_surrogates():
@@ -719,3 +825,151 @@ def test_block_boundaries_not_fused():
 
     inline = extract_metadata("<html><body><h1>Hyper<span>link</span>ed</h1></body></html>")
     assert inline.title == "Hyperlinked"
+
+
+def test_tei_publisher_from_hostname():
+    "No duplicated hostname in the TEI publisher when the sitename comes from the URL."
+    page = f"<html><body><article><p>{'Some article text here. ' * 30}</p></article></body></html>"
+    result = extract(page, url="https://example.org/page", output_format="xmltei", with_metadata=True)
+    assert "<publisher>example.org</publisher>" in result
+    page = f'<html><head><meta property="og:site_name" content="Example.org"/></head>{page[6:]}'
+    result = extract(page, url="https://www.example.org/page", output_format="xmltei", with_metadata=True)
+    assert "<publisher>example.org</publisher>" in result
+
+
+@pytest.mark.parametrize(
+    ("title", "sitename", "url", "expected"),
+    [
+        ("Best Tutors | Bold.org", "Bold.org", None, "Best Tutors"),
+        ("Best Tutors | Guide", "Bold.org", None, "Best Tutors | Guide"),
+        ("Bold.org", "Bold.org", None, "Bold.org"),
+        # a last segment inside the site name needs more than 3 characters
+        ("Best Tutors | Bold", "Bold.org", None, "Best Tutors"),
+        ("Best Tutors | Bol", "Bold.org", None, "Best Tutors | Bol"),
+        # separator characters belonging to the title stay
+        ("Who is A* | Bold.org", "Bold.org", None, "Who is A*"),
+        ("Arrow -> | Bold.org", "Bold.org", None, "Arrow ->"),
+        # the host, its subdomain or its registered domain name the site
+        ("Release notes - Example", None, "https://www.example.org/a", "Release notes"),
+        ("Release notes - Example", None, "https://example.blog.org/a", "Release notes"),
+        ("Release notes - Example", None, "https://edition.example.org/a", "Release notes"),
+        # a short last segment found inside the hostname is not a site name
+        ("Fast and Furious - X", None, "https://example.com/a", "Fast and Furious - X"),
+    ],
+)
+def test_title_site_suffix(title, sitename, url, expected):
+    "A last title segment naming the site is removed, other segments stay."
+    site = f'<meta property="og:site_name" content="{sitename}"/>' if sitename else ""
+    assert (
+        extract_metadata(head_page(f'<meta property="og:title" content="{title}"/>{site}'), default_url=url).title == expected
+    )
+
+
+def test_title_adjacent_separators():
+    metadata = extract_metadata(head_page("<title>C++ - | Site.com</title>"))
+    assert (metadata.title, metadata.sitename) == ("C++", "Site.com")
+
+
+def test_meta_name_sets_disjoint():
+    "A meta name in two sets would silently change which field it fills."
+    sets = [METANAME_AUTHOR, METANAME_DESCRIPTION, METANAME_IMAGE, METANAME_PUBLISHER, METANAME_TAG, METANAME_TITLE]
+    assert sum(map(len, sets)) == len(set().union(*sets))
+
+
+@pytest.mark.parametrize(
+    ("image", "url", "expected"),
+    [
+        ("/img/share.png", None, "/img/share.png"),
+        ("/img/share.png", "https://example.org/a/b", "https://example.org/img/share.png"),
+        ("../x.png", "https://example.org/a/b", "https://example.org/x.png"),
+        ("//cdn.example.org/x.png", "https://example.org/a/b", "https://cdn.example.org/x.png"),
+        ("share", "https://example.org/a/b", "https://example.org/a/share"),
+        # host-like and bare values stay as they are
+        ("cdn.example.org/x.png", "https://example.org/a/b", "cdn.example.org/x.png"),
+        ("x.png", "https://example.org/a/b", "x.png"),
+        ("data:image/png;base64,AAAA", "https://example.org/a/b", "data:image/png;base64,AAAA"),
+    ],
+)
+def test_relative_meta_image(image, url, expected):
+    "Relative meta images are resolved against the page URL."
+    assert extract_metadata(head_page(f'<meta property="og:image" content="{image}"/>'), default_url=url).image == expected
+
+
+# author markers per selector tier, each listed with a decoy matched by the next tier only
+AUTHOR_MARKERS = {
+    '<h3 class="byline">John Doe</h3>': [
+        '<a rel="author">',
+        '<address id="author">',
+        '<div class="author">',
+        '<span itemprop="author name">',
+        '<p data-testid="AuthorCard">',
+        '<span data-testid="AuthorURL">',
+        '<strong class="the-author-name">',
+        '<span class="author name">',
+        '<strong class="xAuthorName">',
+        '<strong class="authorName">',
+        "<author>",
+    ],
+    '<i class="writer">John Doe</i>': [
+        '<h3 class="byline">',
+        '<h4 class="username">',
+        '<p class="byl">',
+        '<span class="BBL">',
+        '<div itemprop="authors">',
+        '<span id="my-author">',
+        '<span class="my-author">',
+        *(f'<span id="{x}1">' for x in ("zuozhe", "bianji", "xiaobian")),
+        *(
+            f'<a class="x-{x}">'
+            for x in ("channel-name", "zuozhe", "bianji", "xiaobian", "submitted-by", "posted-by", "journalist-name")
+        ),
+    ],
+    "": [
+        '<b data-component="ArticleByline">',
+        '<em itemprop="xauthor">',
+        '<em id="Author">',
+        *(f'<i class="{x}">' for x in ("Author", "screenname", "writer", "Byline")),
+    ],
+}
+AUTHOR_DISCARD_MARKERS = [
+    *(f'<div id="{x}">' for x in ("comments", "comment-list", "commentlist", "ProductReviews")),
+    *(
+        f'<section class="{x}">'
+        for x in (
+            "comments",
+            "Comments",
+            "x-commentlist",
+            "x-comments-list",
+            "sidebar",
+            "is-hidden",
+            "quote",
+            "embedly-instagram",
+            "article-share",
+            "article-support",
+            "print",
+            "category",
+            "meta-date",
+            "meta-reviewer",
+            "title",
+            "date",
+        )
+    ),
+    '<span data-component="MainFigure">',
+    '<a class="print">',
+]
+
+
+def wrap(marker, inner):
+    return f"<html><body>{marker}{inner}</{marker[1:-1].split()[0]}></body></html>"
+
+
+@pytest.mark.parametrize(("decoy", "marker"), [(decoy, m) for decoy, markers in AUTHOR_MARKERS.items() for m in markers])
+def test_author_markers(decoy, marker):
+    "Each author marker is found by its own selector, before a decoy of the next one."
+    assert extract_metadata(wrap(marker, "Jenny Smith").replace("<body>", f"<body>{decoy}")).author == "Jenny Smith"
+
+
+@pytest.mark.parametrize("marker", AUTHOR_DISCARD_MARKERS)
+def test_author_discard_markers(marker):
+    "Authors inside discarded sections are ignored."
+    assert extract_metadata(wrap(marker, '<span class="author">Jenny Smith</span>')).author is None

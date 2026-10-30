@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING, Any
 
 from lxml.etree import Element, XPath, _Element
 
-from .utils import line_processing
+from .utils import as_list, line_processing
 
 if TYPE_CHECKING:
     from .deduplication import LRUCache
@@ -160,9 +160,10 @@ class Extractor:
         self.with_metadata: bool = (
             with_metadata or only_with_metadata or bool(url_blacklist) or bool(author_blacklist) or output_format == "xmltei"
         )
-        self.date_params: dict[str, Any] = date_params or set_date_params(
-            self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
-        )
+        self.date_params: dict[str, Any] = {
+            **set_date_params(self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")),
+            **(date_params or {}),
+        }
 
 
 def args_to_extractor(args: argparse.Namespace, url: str | None = None) -> Extractor:
@@ -280,24 +281,43 @@ class Document:
         return doc
 
     def clean_and_trim(self) -> None:
-        "Limit text length and trim the attributes."
+        "Limit text length, trim the attributes and coerce malformed values to their slot type."
         for slot in self.__slots__:
             value = getattr(self, slot)
-            if isinstance(value, str):
-                # length
-                if len(value) > 10000:
-                    value = value[:9999] + "…"
-                # URL fields are already decoded; entity-like query parameters must stay literal.
-                if slot not in {"url", "image", "hostname"}:
-                    value = unescape(value)
-                # remove spaces and control characters
-                value = line_processing(value)
-                setattr(self, slot, value)
+            # JSON-LD may provide lists or objects where a string is expected
+            if isinstance(value, (str, list, dict)):
+                cleaned = list(dict.fromkeys(c for c in (_trim_value(slot, v) for v in as_list(value)) if c))
+                if slot in LIST_SLOTS:
+                    setattr(self, slot, cleaned)
+                elif slot == "author" and isinstance(value, list):
+                    from .json_metadata import normalize_authors  # noqa: PLC0415
+
+                    authors = None
+                    for name in cleaned:
+                        authors = normalize_authors(authors, name)
+                    setattr(self, slot, authors)
+                else:
+                    setattr(self, slot, cleaned[0] if cleaned else None)
 
     def as_dict(self) -> dict[str, Any]:
         "Convert the document to a dictionary."
         # heterogeneous value types (str, list, lxml _Element, None)
         return {attr: getattr(self, attr, None) for attr in self.__slots__}
+
+
+LIST_SLOTS = {"categories", "tags"}
+
+
+def _trim_value(slot: str, value: Any) -> str | None:
+    "Limit the length of a string value and remove spaces and control characters."
+    if not isinstance(value, str):
+        return None
+    if len(value) > 10000:
+        value = value[:9999] + "…"
+    # URL fields are already decoded; entity-like query parameters must stay literal.
+    if slot not in {"url", "image", "hostname"}:
+        value = unescape(value)
+    return line_processing(value)
 
 
 # Safety checks

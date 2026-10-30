@@ -9,6 +9,7 @@ import sys
 import pytest
 from lxml import html
 
+from trafilatura import extract
 from trafilatura.json_metadata import (
     JSON_AUTHOR_1,
     JSON_AUTHOR_2,
@@ -20,6 +21,10 @@ from trafilatura.json_metadata import (
 from trafilatura.metadata import Document, extract_meta_json, extract_metadata, normalize_authors
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
+
+def ld_page(payload):
+    return f'<html><head><script type="application/ld+json">{payload}</script></head><body/></html>'
 
 
 def test_json_extraction():
@@ -1090,6 +1095,8 @@ def test_normalize_authors():
     assert normalize_authors(None, "123") is None  # no usable name -> returns current
     assert normalize_authors("Alice; Bob", "John Doe") == "Alice; Bob; John Doe"
     assert normalize_authors("Alice; Bob", "john.doe@example.com") == "Alice; Bob"
+    assert normalize_authors(None, "Jan Hvizdak, postmaster@aqua-fish.net") == "Jan Hvizdak"
+    assert normalize_authors(None, "By Frank Ready fready@centredaily.com") == "Frank Ready"
     assert normalize_authors(None, "\\u00e9tienne") == "Étienne"
     assert normalize_authors(None, "Jane\\uZZ Doe") == "Jane\\uZZ Doe"  # invalid \u escape must not raise
     assert normalize_authors(None, "&#233;tienne") == "Étienne"
@@ -1141,6 +1148,51 @@ def test_extract_json_shapes():
     )
     # Corporation is skipped: its legalName would supersede a shorter og:site_name
     assert process_parent([{"@type": "Corporation", "name": "FinCompare GmbH"}], Document()).sitename is None
+    # a WebPage name (usually the page title) is only a last resort for the sitename
+    webpage, website = {"@type": "WebPage", "name": "My Story - Example News"}, {"@type": "WebSite", "name": "Example News"}
+    assert process_parent([webpage, website], Document()).sitename == "Example News"
+    assert process_parent([webpage], Document()).sitename == "My Story - Example News"
+    assert process_parent([webpage], Document(), "Example").sitename is None
+
+
+@pytest.mark.xfail(strict=True, reason="script blocks are processed one by one, the WebPage name wins in the first")
+def test_json_webpage_name_across_blocks():
+    "A WebSite or Organization name in a later script block should replace a WebPage name."
+    webpage = {"@context": "https://schema.org", "@type": "WebPage", "name": "My Story - Example News"}
+    organization = {"@context": "https://schema.org", "@type": "Organization", "name": "Example News"}
+    page = ld_page(json.dumps(webpage)).replace(
+        "</head>", f'<script type="application/ld+json">{json.dumps(organization)}</script></head>'
+    )
+    assert extract_metadata(page).sitename == "Example News"
+
+
+@pytest.mark.parametrize("article_type", ["TechArticle", "DiscussionForumPosting", "Report"])
+def test_json_article_subtypes(article_type):
+    "Article subtypes yield the title and author."
+    schema = {"@context": "https://schema.org", "@type": article_type, "headline": "Head Line", "author": "Jane Doe"}
+    metadata = extract_metadata(ld_page(json.dumps(schema)))
+    assert (metadata.title, metadata.author) == ("Head Line", "Jane Doe")
+
+
+@pytest.mark.parametrize(
+    ("prefix", "suffix"),
+    [
+        ("//<![CDATA[\n", "\n//]]>"),
+        ("/*<![CDATA[*/", "/*]]>*/"),
+        ("<![CDATA[", "]]>"),
+        ("<!--", "-->"),
+        (" <!-- ", " --> "),
+    ],
+)
+def test_json_wrapped(prefix, suffix):
+    "CDATA or comment wrappers around JSON-LD do not hide its content."
+    schema = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Head Line", "author": "Jane Doe"}
+    metadata = extract_metadata(ld_page(prefix + json.dumps(schema) + suffix))
+    assert (metadata.title, metadata.author) == ("Head Line", "Jane Doe")
+    # malformed JSON inside the wrapper goes through the regex fallback
+    broken = json.dumps({**schema, "author": {"@type": "Person", "name": "Jane Doe"}})[:-1] + ",}"
+    metadata = extract_metadata(ld_page(prefix + broken + suffix))
+    assert (metadata.title, metadata.author) == ("Head Line", "Jane Doe")
 
 
 def test_json_metadata_robustness():
@@ -1174,6 +1226,7 @@ def test_json_metadata_robustness():
         ({"@type": ["Person"], "name": "Jane Doe"}, "Jane Doe"),
         ({"@type": ["Thing", "Person"], "name": "Jane Doe"}, "Jane Doe"),
         ({"@type": ["Person", "Thing"], "name": "Jane Doe"}, "Jane Doe"),
+        ({"@type": "person", "name": "Jane Doe"}, "Jane Doe"),
         ({"@type": "Organization", "name": "Example News"}, None),
         ({"@type": ["Organization"], "name": "Example News"}, None),
         ({"@type": [], "name": "Jane Doe"}, None),
@@ -1187,7 +1240,7 @@ def test_json_author_type_arrays(author, expected, as_array):
         "@type": "NewsArticle",
         "author": [author] if as_array else author,
     }
-    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
+    metadata = extract_metadata(ld_page(json.dumps(schema)))
     assert metadata is not None
     assert metadata.author == expected
 
@@ -1214,7 +1267,7 @@ def test_json_article_type_arrays(article_type, pagetype, author_type):
         "headline": "Example headline",
         "articleSection": "News",
     }
-    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
+    metadata = extract_metadata(ld_page(json.dumps(schema)))
     assert metadata is not None
     assert metadata.author == "Jane Doe"
     assert metadata.pagetype == pagetype
@@ -1236,7 +1289,8 @@ def test_json_article_type_arrays(article_type, pagetype, author_type):
         (["Article", "Person"], "Nested Author", "article", None),
         (["WebPage", "NewsArticle"], None, "webpage", "Example Name"),
         (["NewsArticle", "WebPage"], "Nested Author", "newsarticle", None),
-        (["TechArticle", "Article"], None, "techarticle", None),
+        (["TechArticle", "Article"], "Nested Author", "techarticle", None),
+        ("DiscussionForumPosting", "Nested Author", "discussionforumposting", None),
         (["NewsArticle", None], "Nested Author", "newsarticle", None),
         (["Thing", "Unknown"], None, None, None),
         (["Thing", None], None, None, None),
@@ -1253,7 +1307,7 @@ def test_json_node_type_arrays(node_type, author, pagetype, sitename):
         "name": "Example Name",
         "author": {"@type": "Person", "name": "Nested Author"},
     }
-    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
+    metadata = extract_metadata(ld_page(json.dumps(schema)))
     assert metadata is not None
     assert (metadata.author, metadata.pagetype, metadata.sitename) == (author, pagetype, sitename)
 
@@ -1267,7 +1321,7 @@ def test_extract_json_processes_list_once():
         {"@context": "https://schema.org", "@type": "NewsArticle", "headline": "B"},
     ]
     orig, count = jm.process_parent, []
-    jm.process_parent = lambda p, m: count.append(1) or orig(p, m)
+    jm.process_parent = lambda *args: count.append(1) or orig(*args)
     try:
         extract_json(schema, Document())
     finally:
@@ -1304,3 +1358,45 @@ def test_json_non_schema_org_context(context):
         "</script></head><body><p>x</p></body></html>"
     )
     assert extract_metadata(html).author is None
+
+
+ARTICLE = '"@context":"https://schema.org","@type":"NewsArticle","author":{"@type":"Person","name":"Jane Doe"},"headline":"Real Headline"'
+AUTHOR = '{"@type":"Person","name":"Jane Doe"}'
+
+
+@pytest.mark.parametrize(
+    ("payload", "author"),
+    [
+        # one malformed item must not discard the others
+        ("{" + ARTICLE.replace(AUTHOR, "[null," + AUTHOR + "]") + "}", "Jane Doe"),
+        ("{" + ARTICLE.replace(AUTHOR, "[3," + AUTHOR + "]") + "}", "Jane Doe"),
+        ('[[{"@type":"Thing"}], {' + ARTICLE + "}]", "Jane Doe"),
+        ('{"@context":"https://schema.org","@graph":[1, {' + ARTICLE + "}]}", "Jane Doe"),
+        ("[null, {" + ARTICLE + "}]", "Jane Doe"),
+        ("{" + ARTICLE.replace(AUTHOR, '{"name":["Jane Doe", null]}') + "}", "Jane Doe"),
+        # an author string holding a JSON scalar is skipped, the rest of the block is kept
+        ("{" + ARTICLE.replace(AUTHOR, '"123"') + "}", None),
+        # an author string may hold a serialized object or a plain name list
+        ("{" + ARTICLE.replace(AUTHOR, '"{\\"name\\": \\"John Roe\\"}"') + "}", "John Roe"),
+        ("{" + ARTICLE.replace(AUTHOR, '"Jane Doe and John Roe"') + "}", "Jane Doe; John Roe"),
+    ],
+)
+def test_json_malformed_items(payload, author):
+    metadata = extract_metadata(ld_page(payload))
+    assert (metadata.title, metadata.author) == ("Real Headline", author)
+
+
+@pytest.mark.parametrize("output_format", ["txt", "xml", "xmltei", "html", "json"])
+def test_json_non_string_values(output_format):
+    "Lists and objects in string slots must not reach the output serializers."
+    payload = '{"@context":"https://schema.org","@type":"NewsArticle","headline":["a","b"],"articleSection":[{"x":1},"News"]}'
+    page = (
+        f'<html><head><script type="application/ld+json">{payload}</script>'
+        '<meta name="keywords" content="a&#1;,b"></head>'
+        f"<body><article><p>{'Some article text here. ' * 20}</p></article></body></html>"
+    )
+    assert extract(page, output_format=output_format, with_metadata=True)
+    metadata = extract_metadata(page)
+    assert metadata.title == "a"
+    assert metadata.categories == ["News"]
+    assert metadata.tags == ["a", "b"]

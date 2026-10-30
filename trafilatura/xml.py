@@ -920,7 +920,11 @@ def write_teitree(docmeta: Document) -> _Element:
 
 def _define_publisher_string(docmeta: Document) -> str:
     """Construct a publisher string to include in TEI header"""
-    if docmeta.hostname and docmeta.sitename:
+    if (
+        docmeta.hostname
+        and docmeta.sitename
+        and docmeta.sitename.strip().lower().removeprefix("www.") != docmeta.hostname.lower().removeprefix("www.")
+    ):
         publisher = f"{docmeta.sitename.strip()} ({docmeta.hostname})"
     else:
         publisher = docmeta.hostname or docmeta.sitename or "N/A"
