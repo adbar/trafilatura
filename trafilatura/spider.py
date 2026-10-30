@@ -228,6 +228,7 @@ def process_links(
 
     links, links_priority = [], []
     for link in candidates:
+        link = link.split("#", 1)[0]
         if not params.is_valid_link(link):
             continue
         if is_navigation_page(link):
