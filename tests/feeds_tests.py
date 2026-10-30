@@ -10,6 +10,7 @@ from unittest.mock import patch
 import pytest
 from courlan import get_hostinfo
 
+from trafilatura import cli_utils
 from trafilatura.cli import main
 from trafilatura.feeds import (
     FeedParameters,
@@ -474,8 +475,17 @@ def test_try_homepage_forwards_args():
     }
 
 
-def test_cli_behavior():
+def test_cli_behavior(capsys):
     """Test command-line interface with respect to feeds"""
-    testargs = ["", "--list", "--feed", "https://httpbun.com/xml"]
-    with patch.object(sys, "argv", testargs):
+    testargs = ["", "--list", "--feed", "https://example.org/feed.xml"]
+    with (
+        patch.object(sys, "argv", testargs),
+        patch.object(cli_utils, "find_feed_urls", return_value=["https://example.org/a"]),
+    ):
         assert main() is None
+    assert capsys.readouterr().out.split() == ["https://example.org/a"]
+    # a feed without links counts as an error
+    with patch.object(sys, "argv", testargs), patch.object(cli_utils, "find_feed_urls", return_value=[]):
+        with pytest.raises(SystemExit) as exc:
+            main()
+    assert exc.value.code == 126

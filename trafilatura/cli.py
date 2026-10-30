@@ -6,9 +6,11 @@ import argparse
 import logging
 import sys
 from importlib.metadata import version
+from pathlib import Path
 from platform import python_version
 
 from .cli_utils import (
+    check_outputdir_status,
     cli_crawler,
     cli_discovery,
     examine,
@@ -20,6 +22,9 @@ from .cli_utils import (
     write_result,
 )
 from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI
+
+# options taking a URL as optional value
+_NAVIGATION_OPTS = ("feed", "sitemap", "crawl", "explore", "probe")
 
 # options that --list neither downloads nor extracts, hence ignores
 _LIST_IGNORED_OPTS = {
@@ -174,20 +179,34 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 
 def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) -> None:
     "Catch cross-group incompatibilities that argparse cannot express."
-    if args.keep_dirs and not args.output_dir:
-        parser.error("--keep-dirs requires an output directory (-o/--output-dir)")
+    for option, filename in (
+        ("-i/--input-file", args.input_file),
+        ("-b/--blacklist", args.blacklist),
+        ("--config-file", args.config_file),
+    ):
+        if filename and (not Path(filename).exists() or Path(filename).is_dir()):
+            parser.error(f"{option}: file not found: {filename}")
+    if args.parallel < 1:
+        parser.error("--parallel must be a positive integer")
     if args.name_from_url:
         if not args.output_dir:
             parser.error("--name-from-url requires an output directory (-o/--output-dir)")
-        if (
-            args.keep_dirs
-            or args.input_dir
-            or args.crawl
-            or args.probe
-            or not any((args.URL, args.input_file, args.feed, args.sitemap, args.explore))
-        ):
+        if args.crawl or args.probe or not (args.URL or args.input_file):
             parser.error("--name-from-url requires URL extraction input and cannot be combined with --keep-dirs")
+    if args.keep_dirs and not (args.input_dir and args.output_dir):
+        parser.error("--keep-dirs requires --input-dir and -o/--output-dir, use --name-from-url to name files after URLs")
+    navigation = next((o for o in _NAVIGATION_OPTS if getattr(args, o) is not False), None)
+    if navigation:
+        if args.input_dir:
+            parser.error(f"--{navigation} cannot be combined with --input-dir")
+        # a URL left by map_args conflicts with -u/--URL or -i/--input-file
+        if isinstance(getattr(args, navigation), str):
+            parser.error(f"--{navigation}: give the URL once, as its value or with -u/--URL or -i/--input-file")
+        if not (args.URL or args.input_file):
+            parser.error(f"--{navigation} requires a URL, as its value or with -u/--URL or -i/--input-file")
     if args.list:
+        if args.input_dir:
+            print("--list has no effect on --input-dir, the files are processed", file=sys.stderr)
         ignored = sorted(o for o in _LIST_IGNORED_OPTS if getattr(args, o) != parser.get_default(o))
         if ignored:
             # emitted before logging is configured, so print directly
@@ -210,6 +229,12 @@ def map_args(args: argparse.Namespace) -> argparse.Namespace:
         if getattr(args, otype):
             args.output_format = otype
             break
+    # a URL given to a navigation option becomes the input URL
+    for opt in _NAVIGATION_OPTS:
+        value = getattr(args, opt)
+        if isinstance(value, str) and not (args.URL or args.input_file):
+            args.URL = value or None
+            setattr(args, opt, True)
     return args
 
 
@@ -229,6 +254,12 @@ def process_args(args: argparse.Namespace) -> None:
     if args.blacklist:
         args.blacklist = load_blacklist(args.blacklist)
 
+    # crawl, probe and lists of URLs print to STDOUT
+    if not (args.crawl or args.probe or (args.list and not args.input_dir)):
+        for directory in (args.output_dir, args.backup_dir):
+            if directory and not check_outputdir_status(directory):
+                sys.exit(1)
+
     # processing according to mutually exclusive options
 
     # fetch urls from a feed or a sitemap
@@ -237,11 +268,11 @@ def process_args(args: argparse.Namespace) -> None:
 
     # activate crawler/spider
     elif args.crawl:
-        cli_crawler(args)
+        exit_code = cli_crawler(args)
 
     # probe and print only
     elif args.probe:
-        probe_homepage(args)
+        exit_code = probe_homepage(args)
 
     # read files from an input directory
     elif args.input_dir:
@@ -254,11 +285,10 @@ def process_args(args: argparse.Namespace) -> None:
 
     # read input on STDIN directly
     else:
-        result = examine(sys.stdin.buffer.read(), args, url=args.URL)
-        write_result(result, args)
+        write_result(examine(sys.stdin.buffer.read(), args), args)
 
     # change exit code if there are errors
-    if exit_code != 0:
+    if exit_code:
         sys.exit(exit_code)
 
 
