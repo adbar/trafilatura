@@ -116,13 +116,10 @@ def _revise(classes: list[str]) -> None:
             # exactly one side is bad, look past it for a near-good block
             near = prev_any[i] if prev == "bad" else next_any[i]
             classes[i] = "good" if near == "neargood" else "bad"
-    # no short left, the left neighbour is already resolved
-    _, next_gb = _nearest(classes, {"neargood"})
-    prev = "bad"
+    prev_gb, next_gb = _nearest(classes, {"neargood"})
     for i, cls in enumerate(classes):
         if cls == "neargood":
-            classes[i] = "bad" if prev == "bad" and next_gb[i] == "bad" else "good"
-        prev = classes[i]
+            classes[i] = "bad" if prev_gb[i] == next_gb[i] == "bad" else "good"
 
 
 def _skip(tag: str, elem: _Element) -> bool:
@@ -154,14 +151,14 @@ def _kind(stack: list[str]) -> str:
     return "p"
 
 
-def _build(text: str, kind: str, opened: list[_Element], nodes: list[str | _Element | None]) -> HtmlElement:
+def _build(text: str, kind: str, nodes: list[str | _Element | None]) -> HtmlElement:
     "Block element holding the inline markup, elements open at the start of the block are reopened."
     block = Element("p")
     if kind == "code":
         block.text = INVALID_XML_CHARS.sub("", text)
         return block
     stack = [block]
-    for node in [*opened, *nodes]:
+    for node in nodes:
         if node is None:
             stack.pop()
         elif isinstance(node, str):
@@ -187,8 +184,6 @@ def tidy_spacing(block: _Element) -> None:
     "Collapse whitespace across the element boundaries of a block, as in its plain text."
     space, last = True, None
     for event, elem in iterwalk(block, events=("start", "end")):
-        if event == "end" and elem is block:
-            continue
         attr = "text" if event == "start" else "tail"
         value = getattr(elem, attr)
         if not value:
@@ -198,7 +193,6 @@ def tidy_spacing(block: _Element) -> None:
             if value[0] == "\n" and last and getattr(*last).endswith(" "):
                 # a line break after a space, the space goes
                 setattr(last[0], last[1], getattr(*last).rstrip(" "))
-                value = "\n" + value.lstrip()
             else:
                 value = value.lstrip()
         setattr(elem, attr, value)
@@ -211,7 +205,7 @@ def tidy_spacing(block: _Element) -> None:
 def extract_paragraphs(root: _Element) -> list[tuple[str, str, int, HtmlElement]]:
     """Split a tree into text blocks at block-level tags and return those classified as content:
     text, kind, list number and a block element holding the inline markup."""
-    blocks: list[tuple[str, str, int, list[_Element], list[str | _Element | None]]] = []
+    blocks: list[tuple[str, str, int, list[str | _Element | None]]] = []
     classes: list[str] = []
     # text, inline elements opening, None closing one
     nodes: list[str | _Element | None] = []
@@ -232,9 +226,9 @@ def extract_paragraphs(root: _Element) -> list[tuple[str, str, int, HtmlElement]
             text = "".join(node for node in nodes if isinstance(node, str))
             kind = _kind(stack)
             # code keeps its indentation
-            text = text.strip("\r\n").rstrip() if kind == "code" else _normalize(text.strip())
-            if text.strip():
-                blocks.append((text, kind, lists[0] if lists else 0, opened, nodes.copy()))
+            text = text.lstrip("\r\n").rstrip() if kind == "code" else _normalize(text.strip())
+            if text:
+                blocks.append((text, kind, lists[0] if lists else 0, [*opened, *nodes]))
                 classes.append(_classify(text, link_chars, "select" in stack))
             nodes.clear()
             link_chars = 0
@@ -243,8 +237,7 @@ def extract_paragraphs(root: _Element) -> list[tuple[str, str, int, HtmlElement]
     walker = iterwalk(root, events=("start", "end", "comment", "pi"))
     for event, elem in walker:
         if event == "start":
-            tag: str = elem.tag  # type: ignore[assignment]
-            tag = tag.rpartition("}")[2]
+            tag = str(elem.tag).rpartition("}")[2]
             if elem is not root and (elem in dropped or _skip(tag, elem)):
                 skipped = elem
                 nodes.append(" ")
@@ -267,8 +260,7 @@ def extract_paragraphs(root: _Element) -> list[tuple[str, str, int, HtmlElement]
         else:
             # a skipped element still gets its end event
             if event == "end" and elem is not skipped:
-                tag = elem.tag  # type: ignore[assignment]
-                tag = tag.rpartition("}")[2]
+                tag = str(elem.tag).rpartition("}")[2]
                 if tag in PARAGRAPH_TAGS:
                     close()
                     stack.pop()
@@ -289,7 +281,7 @@ def extract_paragraphs(root: _Element) -> list[tuple[str, str, int, HtmlElement]
     close()
     _revise(classes)
     return [
-        (text, kind, list_id, _build(text, kind, opened, block_nodes))
-        for (text, kind, list_id, opened, block_nodes), cls in zip(blocks, classes, strict=True)
+        (text, kind, list_id, _build(text, kind, block_nodes))
+        for (text, kind, list_id, block_nodes), cls in zip(blocks, classes, strict=True)
         if cls == "good"
     ]
