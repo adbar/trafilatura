@@ -98,6 +98,7 @@ def test_atom_extraction():
         ('<link href="https://example.org/updates/latest" rel="self"/>', []),
         ("<link rel='self' href='https://example.org/updates/latest'/>", []),
         ('<link href="https://example.org/updates/latest" type="application/atom+xml"/>', []),
+        ('<link rel="related" type="text/html" href="https://example.org/post"/>', ["https://example.org/post"]),
         ('<link rel="replies" type="text/html" href="https://example.org/post#comments"/>', []),
         ('<link rel="enclosure" type="audio/mpeg" href="https://example.org/episode.mp3"/>', []),
         ('<link rel="edit" href="https://example.org/edit/post"/>', []),
@@ -113,6 +114,17 @@ def test_atom_extraction():
 def test_atom_link_attributes(link, expected):
     params = FeedParameters("https://example.org", "example.org", "")
     assert extract_links(f"<feed>{link}</feed>", params) == expected
+
+
+def test_atom_related_link():
+    "Link blogs like daringfireball.net: the external link is rel=alternate, the post itself rel=related"
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = (
+        '<feed><entry><link rel="alternate" type="text/html" href="https://news.example.net/story"/>\n'
+        '<link rel="shorturl" type="text/html" href="https://example.com/s/ab1"/>\n'
+        '<link rel="related" type="text/html" href="https://example.org/linked/2026/10/29/story"/></entry></feed>'
+    )
+    assert find_links(feed, params) == ["https://news.example.net/story", "https://example.org/linked/2026/10/29/story"]
 
 
 def test_rss_extraction():
