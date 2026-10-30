@@ -329,13 +329,13 @@ def find_robots_sitemaps(baseurl: str, config: ConfigParser = DEFAULT_CONFIG) ->
     """Guess the location of the robots.txt file and try to extract
     sitemap URLs from it"""
     robotstxt = fetch_url(baseurl + "/robots.txt", config=config)
-    return extract_robots_sitemaps(robotstxt, baseurl)
+    return extract_robots_sitemaps(robotstxt, baseurl, config)
 
 
-def extract_robots_sitemaps(robotstxt: str | None, baseurl: str) -> list[str]:
+def extract_robots_sitemaps(robotstxt: str | None, baseurl: str, config: ConfigParser = DEFAULT_CONFIG) -> list[str]:
     "Read a robots.txt file and find sitemap links."
     # sanity check on length (cause: redirections)
-    if robotstxt is None or len(robotstxt) > 10000:
+    if robotstxt is None or len(robotstxt) > config.getint("DEFAULT", "MAX_FILE_SIZE"):
         return []
 
     candidates = []
