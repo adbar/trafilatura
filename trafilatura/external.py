@@ -5,29 +5,22 @@ Functions grounding on third-party software.
 
 import logging
 from copy import copy
-from functools import cache
 
 # third-party
-from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
-from justext.utils import get_stoplist as _get_stoplist
-from justext.utils import get_stoplists
 from lxml.etree import Element, SubElement, _Element, strip_tags, tostring
 from lxml.html import HtmlElement
 
 # own
-from .baseline import basic_cleaning
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
+from .justext_lite import HEADINGS, extract_paragraphs
 from .main_extractor import handle_image
 from .readability_lxml import Document as ReadabilityDocument  # fork
-from .settings import JUSTEXT_LANGUAGES, Extractor
-from .utils import fromstring_bytes, trim
+from .settings import Extractor
+from .utils import INVALID_XML_CHARS, fromstring_bytes, trim
 from .xml import TEI_VALID_TAGS, delete_element
 from .xpaths import OVERALL_DISCARD_XPATH
 
 LOGGER = logging.getLogger(__name__)
-
-# justext re-reads the stoplist file on each call
-get_stoplist = cache(_get_stoplist)
 
 SANITIZED_XPATH = ".//aside|.//audio|.//button|.//fencedframe|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time"
 
@@ -121,14 +114,12 @@ def compare_extraction(
         LOGGER.debug("unclean or short document triggering justext examination: %s", options.source)
         body2, text2 = justext_rescue(tree_cleaning(copy(tree), options), options)
         len_text2 = len(text2)
-        # unclean: allow shorter (boilerplate dropped), guard image-heavy pages;
-        # merely short: must add text, len_text2 > len_text is implied (#896)
-        if unclean:
-            accept = len_text <= JUSTEXT_OVERRIDE_RATIO * len_text2 and (
-                len_text2 > len_text or not options.images or body.find(".//graphic") is None
-            )
-        else:
-            accept = len_text < len_text2
+        # must add text (#896), or on an unclean page may be shorter (boilerplate dropped) unless image-heavy
+        accept = len_text2 > len_text or (
+            unclean
+            and len_text <= JUSTEXT_OVERRIDE_RATIO * len_text2
+            and (not options.images or body.find(".//graphic") is None)
+        )
         if text2 and accept:
             LOGGER.debug("using justext, length: %s", len_text2)
             body, text, len_text = body2, text2, len_text2
@@ -141,38 +132,34 @@ def compare_extraction(
     return body, text
 
 
-@cache
-def jt_stoplist_init() -> frozenset[str]:
-    "Retrieve and return the content of all JusText stoplists"
-    return frozenset(word for language in get_stoplists() for word in _get_stoplist(language))
-
-
-def try_justext(tree: HtmlElement, url: str | None, target_language: str | None) -> _Element:
-    """Second safety net: try with the generic algorithm justext"""
-    # init
+def try_justext(tree: HtmlElement, url: str | None) -> _Element:
+    """Second safety net: paragraph classification derived from jusText."""
     result_body = Element("body")
-    # determine language
-    if target_language in JUSTEXT_LANGUAGES:
-        justext_stoplist = get_stoplist(JUSTEXT_LANGUAGES[target_language])
-    else:
-        justext_stoplist = jt_stoplist_init()
-    # extract
     try:
-        paragraphs = ParagraphMaker.make_paragraphs(tree)
-        classify_paragraphs(paragraphs, justext_stoplist, 50, 150, 0.1, 0.2, 0.25, True)
-        revise_paragraph_classification(paragraphs, 150)
+        paragraphs = extract_paragraphs(tree)
+        current_list, current_id = None, 0
+        for text, kind, list_id in paragraphs:
+            # lxml rejects control characters in element text
+            text = INVALID_XML_CHARS.sub("", text)
+            if kind in ("ol", "ul"):
+                if current_list is None or list_id != current_id:
+                    current_list, current_id = SubElement(result_body, "list", rend=kind), list_id
+                SubElement(current_list, "item").text = text
+                continue
+            current_list = None
+            if kind in HEADINGS:
+                SubElement(result_body, "head", rend=kind).text = text
+            else:
+                SubElement(result_body, kind).text = text
     except Exception as err:
         LOGGER.error("justext %s %s", err, url)
-    else:
-        for paragraph in paragraphs:
-            if not paragraph.is_boilerplate:
-                SubElement(result_body, "p").text = paragraph.text
+        result_body = Element("body")
     return result_body
 
 
 def justext_rescue(tree: HtmlElement, options: Extractor) -> tuple[_Element, str]:
     """Try to use justext algorithm as a second fallback"""
-    temppost_algo = try_justext(basic_cleaning(tree), options.url, options.lang)
+    temppost_algo = try_justext(tree, options.url)
     return temppost_algo, trim(" ".join(temppost_algo.itertext()))
 
 

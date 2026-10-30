@@ -11,7 +11,6 @@ from dataclasses import dataclass
 from functools import cache, partial
 from importlib.metadata import PackageNotFoundError, version
 
-import justext
 import pandas as pd
 from eval_common import (
     EXTRACT_OPTS,
@@ -25,18 +24,12 @@ from eval_common import (
     validate,
 )
 
-# for run_custom
-from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
-
 from trafilatura import baseline, extract, html2txt
 from trafilatura.baseline import basic_cleaning
-from trafilatura.external import jt_stoplist_init
 from trafilatura.utils import decode_file, load_html
 
 # Competitors are imported in their runner, so a missing one only disables its own
-# algorithm (see resolve_versions). justext is a Trafilatura dependency, always there.
-
-JT_STOPLIST = jt_stoplist_init()
+# algorithm (see resolve_versions).
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 
@@ -46,6 +39,13 @@ def get_boilerpipe():
     from boilerpy3 import extractors
 
     return extractors.ArticleExtractor()  # ArticleExtractor DefaultExtractor LargestContentExtractor
+
+
+@cache
+def get_jt_stoplist():
+    from justext.utils import get_stoplist, get_stoplists
+
+    return tuple({word for language in get_stoplists() for word in get_stoplist(language)})
 
 
 @cache
@@ -63,9 +63,11 @@ def get_magic_html():
 
 
 def run_custom(htmlbinary):
+    from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
+
     tree = basic_cleaning(load_html(htmlbinary))
     paragraphs = ParagraphMaker.make_paragraphs(tree)
-    classify_paragraphs(paragraphs, JT_STOPLIST, 50, 150, 0.1, 0.2, 0.3, True)
+    classify_paragraphs(paragraphs, get_jt_stoplist(), 50, 150, 0.1, 0.2, 0.3, True)
     revise_paragraph_classification(paragraphs, 150)
     return " ".join([p.text for p in paragraphs if not p.is_boilerplate])
 
@@ -78,7 +80,9 @@ def run_baseline(htmlbinary):
 
 def run_justext(htmlbinary):
     """try with the generic algorithm justext"""
-    paragraphs = justext.justext(htmlbinary, JT_STOPLIST, 50, 200, 0.1, 0.2, 0.2, 200, True)  # stop_words
+    import justext
+
+    paragraphs = justext.justext(htmlbinary, get_jt_stoplist(), 50, 200, 0.1, 0.2, 0.2, 200, True)  # stop_words
     valid = [paragraph.text for paragraph in paragraphs if not paragraph.is_boilerplate]
 
     return " ".join(valid)

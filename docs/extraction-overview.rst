@@ -68,7 +68,7 @@ Fallback cascade
 If the main extraction produced too little text (below ``MIN_EXTRACTED_SIZE`` in ``settings.cfg``), two external algorithms are tried:
 
 - **readability** (a port of Mozilla's Readability.js) — good at identifying article bodies
-- **jusText** — good at preserving full sentences, reaches content buried in nested structures
+- **jusText** (a built-in minimal version) — classifies text blocks by length, link density and context, reaches content buried in nested structures
 
 This stage is **skipped entirely in fast mode** (``fast=True`` / ``--fast``), which is why fast mode is roughly twice as quick but may miss content on difficult pages.
 

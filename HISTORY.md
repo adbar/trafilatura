@@ -1,6 +1,12 @@
 ## History / Changelog
 
 
+## Unreleased
+
+Major changes:
+- Built-in jusText-derived fallback without stopwords, which also works for languages without a jusText stoplist. jusText is no longer a dependency. Breaking: `try_justext()` loses its `target_language` argument, and `settings.JUSTEXT_LANGUAGES`, `external.jt_stoplist_init()` and `external.get_stoplist()` are removed, by @adbar
+
+
 ## 2.3.1
 
 - Fewer duplicated segments in the output and a new test series by @adbar (#955)

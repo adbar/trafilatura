@@ -52,7 +52,8 @@ ESCALATION_PAGE_SHARE = 0.2  # ... covering less than this share of the page tex
 ESCALATION_ACCEPT_RATIO = 1.5  # accept the retry if it is this much longer
 # justext tends to over-include (whole pricing tables, unrelated sections) rather than stop at
 # page boundaries the way the rule-based retry does, so it needs a stricter bar than the
-# retry's own 1.5x: swept 1.5-10x, 2.0x is the best balance across the full suite.
+# retry's own 1.5x: swept 1.5-10x, 2.0x is the best balance across the full suite. Re-checked
+# on the built-in jusText without the retry-length gate: 1.5x fails the gate, 3.0x loses on WCXB/WMB.
 ESCALATION_JUSTEXT_RATIO = 2.0
 
 TXT_FORMATS = {"markdown", "txt"}
@@ -235,29 +236,27 @@ def trafilatura_sequence(
             if is_forum or not options.comments
             else prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_AND_LISTS_XPATH if temp_comments else REMOVE_COMMENTS_XPATH)
         )
-        r_text = ""
-        try:
-            r_body, r_text = _recall_retry(esc_tree, r_options, url)
-        except Exception as err:  # pragma: no cover
-            LOGGER.warning("recall retry failed: %s %s", err, url)
-        # justext reaches div-buried content the rule retry misses (gated: ungated regressed
-        # own-fallback). No region scoping of its own -> esc_tree is comment-pruned above
+        # justext reaches div-buried content the rule retry misses, accepted when it clearly
+        # outgrows the main text. No region scoping of its own -> esc_tree is comment-pruned above
         j_text = ""
         if not options.fast:
-            try:
-                j_body, j_text = justext_rescue(copy(esc_tree), options)
-            except Exception as err:  # pragma: no cover
-                LOGGER.warning("justext candidate failed: %s %s", err, url)
+            j_body, j_text = justext_rescue(esc_tree, options)
 
         # floor on the retry: a result below the pipeline's own minimum is noise (the retry's
         # former internal baseline used to displace such outputs). cookie/consent banners justext
-        # could pick up are pruned from its input in basic_cleaning. An accepted candidate saw the
+        # could pick up are skipped by its walker (BASIC_CLEAN_XPATH). An accepted candidate saw the
         # full page, so its exclusions are deliberate -> drop the forum-post salvage.
-        len_text, r_len, j_len = len(temp_text), len(r_text), len(j_text)
-        if j_len > r_len and j_len > ESCALATION_JUSTEXT_RATIO * len_text:
+        len_text = len(temp_text)
+        if len(j_text) > ESCALATION_JUSTEXT_RATIO * len_text:
             postbody, temp_text, forum_posts = j_body, j_text, None
-        elif r_len >= options.min_extracted_size and r_len > ESCALATION_ACCEPT_RATIO * len_text:
-            postbody, temp_text, forum_posts = r_body, r_text, None
+        else:
+            r_text = ""
+            try:
+                r_body, r_text = _recall_retry(esc_tree, r_options, url)
+            except Exception as err:  # pragma: no cover
+                LOGGER.warning("recall retry failed: %s %s", err, url)
+            if len(r_text) >= options.min_extracted_size and len(r_text) > ESCALATION_ACCEPT_RATIO * len_text:
+                postbody, temp_text, forum_posts = r_body, r_text, None
 
     # lists recovered after a colon (#431) stayed out of the lengths above, count them now
     deferred = postbody.findall(f"list[@{DEFERRED_ATTR}]")

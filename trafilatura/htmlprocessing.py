@@ -78,6 +78,11 @@ def _handle_forms(tree: HtmlElement) -> None:
             delete_element(form)
 
 
+# fallback or embedded copies: paragraphs inside them neither count as removed nor as surviving content
+ALTERNATE_CONTENT = {"noscript", "fencedframe"}
+UNDO_MAX_WORDS = 50
+
+
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
     # salvage formulas before <math> is discarded along with its subtree
@@ -118,16 +123,16 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     # strip targeted elements
     strip_tags(tree, *stripping_list)
 
-    # recall: undo the deletions if they remove every paragraph (copy only if none can survive)
+    # undo the deletions if they remove every paragraph and leave almost no text, e.g. a page swallowed
+    # by an unclosed <aside> or <button> (copy only if none can survive)
     tcopy = None
-    if (
-        options.focus == "recall"
-        and tree.find(".//p") is not None
-        and ("p" in cleaning_list or not any(next(p.iterancestors(cleaning_list), tree) is tree for p in tree.iter("p")))
+    paragraphs = [p for p in tree.iter("p") if next(p.iterancestors(ALTERNATE_CONTENT), None) is None]
+    if paragraphs and (
+        "p" in cleaning_list or all(next(p.iterancestors(cleaning_list), None) is not None for p in paragraphs)
     ):
         tcopy = deepcopy(tree)
     strip_elements(tree, *cleaning_list, with_tail=False)
-    if tcopy is not None and tree.find(".//p") is None:
+    if tcopy is not None and (options.focus == "recall" or len(" ".join(tree.itertext()).split()) < UNDO_MAX_WORDS):
         tree = tcopy
 
     if clean_forms:
