@@ -215,7 +215,7 @@ def link_density_test(element: HtmlElement, favor_precision: bool = False) -> tu
             shortelems,
             elemnum,
         )
-        return linklen > elemlen * 0.8 or (elemnum > 1 and shortelems / elemnum > 0.8), True
+        return linklen > elemlen * 0.8 or (elemnum > 1 and shortelems / elemnum > 0.8 and linklen > elemlen * 0.05), True
     # large near-total-link farms ("latest news" sidebars) at/above limitlen, which the size gate
     # above never tests (#584); small farms are already caught there at the plain 0.8 ratio.
     # >4: a farm is MANY links -- a handful of long sentence-links is editorial (knowtechie realworld test)
