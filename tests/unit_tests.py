@@ -1320,6 +1320,10 @@ def test_links():
         'Install<a class="headerlink" href="#install">¶</a>ation',
         '<a class="doc-anchor" href="#installation">§</a>Installation',
         'Install<a class="extra headerlink extra" href="#install"> ¶ </a>ation',
+        'Install<span><a class="headerlink" href="#install">¶</a></span>ation',
+        '<span><a class="doc-anchor" href="#installation">§</a>Install</span>ation',
+        'Install<em><a class="extra headerlink" href="#install"> ¶ </a></em>ation',
+        'Install<em><span><a class="headerlink" href="#install">¶</a></span></em>ation',
     ],
 )
 def test_heading_permalink_symbols(links, heading):
@@ -1348,6 +1352,10 @@ def test_heading_permalink_symbols(links, heading):
         '<h2>Read<a class="headerlink" href="#">§</a></h2>',
         "<h2>Literal ¶ and §</h2>",
         '<p>Prose<a class="headerlink" href="#section">¶</a> and §</p>',
+        '<h2>Read<span><a class="headerlink" href="#section">¶ Section</a></span></h2>',
+        '<h2>Read<span><a class="headerlink" href="https://example.org/#section">§</a></span></h2>',
+        '<h2>Read<span><a class="not-headerlink" href="#section">¶</a></span></h2>',
+        '<p>Prose<span><a class="headerlink" href="#section">¶</a></span> and §</p>',
     ],
 )
 def test_heading_permalink_symbols_preserve_content(links, content):
@@ -1356,6 +1364,18 @@ def test_heading_permalink_symbols_preserve_content(links, content):
     document = f"<html><body><article>{content}<p>{paragraph}</p></article></body></html>"
     result = extract(document, output_format="xml", include_links=links)
     assert html.fromstring(content).text_content() in "".join(etree.fromstring(result.encode()).itertext())
+
+
+@pytest.mark.parametrize("links", [False, True])
+def test_heading_permalink_symbols_preserve_wrapper_whitespace(links):
+    "Removing an empty wrapper must preserve its whitespace and following text."
+    paragraph = "Some text. " * 30
+    document = (
+        '<html><body><article><h2>Install<em> <a class="headerlink" href="#install">¶</a></em>ation</h2>'
+        f"<p>{paragraph}</p></article></body></html>"
+    )
+    result = extract(document, output_format="markdown", include_links=links)
+    assert result.startswith("## Install ation\n")
 
 
 def test_tei():
