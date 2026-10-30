@@ -38,7 +38,9 @@ WHITELISTED_PLATFORMS = re.compile(
 LEADING_SPACE = "\ufeff \t\r\n"
 SITEMAP_FORMAT = re.compile(r"^.{0,5}<\?xml|<(?:[\w.-]+:)?(?:sitemapindex|sitemap|urlset)\b")
 DETECT_SITEMAP_LINK = re.compile(r"\.xml(\..{2,4})?$|\.xml[?#]")
-DETECT_LINKS = re.compile(r'https?://[^\s<"]+')
+# links end before whitespace, "<", a double quote or a closing single quote
+DETECT_LINKS = re.compile(r'https?://[^\s<"]+(?<!\')')
+HTML_START = re.compile(r"<!doctype html|<html", re.IGNORECASE)
 SCRUB_REGEX = re.compile(r"\?.*$|#.*$")
 POTENTIAL_SITEMAP = re.compile(r"\.xml\b")  # |\bsitemap\b
 
@@ -318,7 +320,7 @@ def is_plausible_sitemap(url: str, contents: str | None) -> bool:
     # check content
     if (
         POTENTIAL_SITEMAP.search(url) and (not isinstance(contents, str) or not SITEMAP_FORMAT.match(contents))
-    ) or "<html" in contents[:150].lower():
+    ) or HTML_START.search(contents[:150]):
         LOGGER.warning("not a valid XML sitemap: %s", url)
         return False
 
