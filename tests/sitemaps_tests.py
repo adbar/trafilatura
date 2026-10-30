@@ -117,6 +117,22 @@ def test_parse_sitemap_without_fetching(monkeypatch):
     assert sitemaps.parse_sitemap("https://example.org/a", "https://example.org/sitemap.txt") == ["https://example.org/a"]
 
 
+@pytest.mark.parametrize("prefix", ["\n", "  \r\n", "\ufeff", "\ufeff\n"])
+def test_leading_whitespace_before_sitemap(monkeypatch, prefix):
+    url = "https://example.org/sitemap.xml"
+    content = (
+        prefix
+        + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://example.org/a</loc></url></urlset>'
+    )
+    assert sitemaps.is_plausible_sitemap(url, content) is True
+    assert sitemaps.is_plausible_sitemap(url, prefix + "<!DOCTYPE html><html><body/></html>") is False
+
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda u, **kwargs: content if u == url else None)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda u, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+    assert sitemaps.sitemap_search(url) == ["https://example.org/a"]
+
+
 def test_parse_sitemap_invalid_input():
     url = "https://example.org/sitemap.xml"
     with pytest.raises(TypeError, match="content must be a string"):
