@@ -193,7 +193,7 @@ NO_LIBRARY = "-"
 ALGORITHMS = {
     "everything": {"library": NO_LIBRARY, "function": decode_file},
     "nothing": {"library": NO_LIBRARY, "function": lambda htmlbinary: ""},
-    "custom": {"library": NO_LIBRARY, "function": run_custom},
+    "custom": {"library": "justext", "function": run_custom},
     "baseline": {"library": NO_LIBRARY, "function": run_baseline},
     "html2txt": {"library": NO_LIBRARY, "function": html2txt},
     "trafilatura fast": {"library": "trafilatura", "function": RUNNERS["fast"]},

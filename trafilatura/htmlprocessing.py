@@ -126,14 +126,19 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     # undo the deletions if they remove every paragraph and leave almost no text, e.g. a page swallowed
     # by an unclosed <aside> or <button> (copy only if none can survive)
     tcopy = None
-    paragraphs = [p for p in tree.iter("p") if next(p.iterancestors(ALTERNATE_CONTENT), None) is None]
-    if paragraphs and (
-        "p" in cleaning_list or all(next(p.iterancestors(cleaning_list), None) is not None for p in paragraphs)
-    ):
+    survives = (
+        "p" not in cleaning_list and next(p.iterancestors(cleaning_list), None) is None
+        for p in tree.iter("p")
+        if next(p.iterancestors(ALTERNATE_CONTENT), None) is None
+    )
+    if next(survives, True) is False and not any(survives):
         tcopy = deepcopy(tree)
     strip_elements(tree, *cleaning_list, with_tail=False)
     if tcopy is not None and (options.focus == "recall" or len(" ".join(tree.itertext()).split()) < UNDO_MAX_WORDS):
         tree = tcopy
+        # honour tables=False, recall keeps them as before
+        if not options.tables and options.focus != "recall":
+            strip_tags(tree, "table", "tr", "td", "th")
 
     if clean_forms:
         _handle_forms(tree)

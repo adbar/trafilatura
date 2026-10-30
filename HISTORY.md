@@ -4,7 +4,8 @@
 ## Unreleased
 
 Major changes:
-- Built-in jusText-derived fallback without stopwords, which also works for languages without a jusText stoplist. jusText is no longer a dependency. Breaking: `try_justext()` loses its `target_language` argument, and `settings.JUSTEXT_LANGUAGES`, `external.jt_stoplist_init()` and `external.get_stoplist()` are removed, by @adbar
+- Built-in jusText-derived fallback without stopwords, keeps links, formatting and images. Breaking: jusText dependency dropped, `try_justext()` takes `options` instead of `target_language`, `settings.JUSTEXT_LANGUAGES`, `external.jt_stoplist_init()` and `external.get_stoplist()` removed, by @adbar
+- Fallback cascade: tree cleaning undone in all modes, jusText tried before the recall retry, by @adbar
 
 
 ## 2.3.1

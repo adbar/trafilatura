@@ -28,9 +28,8 @@ from trafilatura import bare_extraction, baseline, core, external, extract, extr
 from trafilatura import main_extractor as me
 from trafilatura.baseline import html2txt
 from trafilatura.deduplication import LRU_TEST, LRUCache, _punct_tbl
-from trafilatura.external import _prefer_readability, sanitize_tree, try_justext, try_readability
+from trafilatura.external import _prefer_readability, sanitize_tree, try_readability
 from trafilatura.htmlprocessing import convert_tags, tree_cleaning
-from trafilatura.justext_lite import extract_paragraphs
 from trafilatura.main_extractor import (
     _span,
     extract_content,
@@ -1818,10 +1817,6 @@ def test_extraction_options():
     assert extract(my_html, only_with_metadata=True, output_format="xml", config=ZERO_CONFIG) is None
     assert extract(my_html, target_language="de", config=ZERO_CONFIG) is None
     assert extract(my_html, target_language="de", fast=True, config=ZERO_CONFIG) is None
-
-    # justext hardening
-    assert etree.tostring(try_justext(html.fromstring(my_html), None)) == b"<body/>"
-    assert etree.tostring(try_justext(None, None)) == b"<body/>"
     # assert extract(my_html) is None
 
     # readability
@@ -1841,121 +1836,6 @@ def test_extraction_options():
     assert bare_extraction(my_html, config=ZERO_CONFIG, with_metadata=True).date is not None
     assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=True).date is None
     assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=False).date is None
-
-
-def test_justext_lite():
-    "block segmentation, link density, copyright and select rules, context revision of short blocks, block kinds"
-
-    def texts(tree):
-        return [text for text, *_ in extract_paragraphs(tree)]
-
-    long = "This sentence is long enough to be classified as content by itself. " * 3
-    my_html = (
-        f"<html><body><div><p>{long}</p><p>Short line.</p><p>{long}<!-- note -->More.</p>"
-        '<ul><li><a href="#">Home</a></li><li><a href="#">About</a></li></ul>'
-        f"<p>© 2026 Company</p><select><option>{long}</option></select><div><br></div></div></body></html>"
-    )
-    assert texts(html.fromstring(my_html)) == [long.strip(), "Short line.", long + "More."]
-    # a short block next to boilerplate only is dropped
-    my_html = f'<html><body><p>{long}</p><div><a href="#">{long}</a></div><p>Short line.</p></body></html>'
-    assert texts(html.fromstring(my_html)) == [long.strip()]
-    # a short block after a near-good one is kept, the near-good one follows its good neighbour
-    mid = "A medium paragraph, longer than fifty characters but short."
-    my_html = f'<html><body><div><a href="#">Home</a> <a href="#">About us</a></div><p>{mid}</p><p>Short line.</p><p>{long}</p></body></html>'
-    assert texts(html.fromstring(my_html)) == [mid, "Short line.", long.strip()]
-    # same on the right side
-    my_html = f'<html><body><p>{long}</p><p>Short line.</p><p>{mid}</p><div><a href="#">Home</a> <a href="#">About us</a></div></body></html>'
-    assert texts(html.fromstring(my_html)) == [long.strip(), "Short line.", mid]
-    # whitespace between inline elements separates words
-    my_html = f"<html><body><p>{long}<b>one</b> <i>two</i></p></body></html>"
-    assert texts(html.fromstring(my_html)) == [long + "one two"]
-    # line breaks are kept, other whitespace is collapsed
-    root = etree.Element("body")
-    etree.SubElement(root, "p").text = f"{long}\r  {long}"
-    assert texts(root) == [f"{long.strip()}\n{long.strip()}"]
-    # nested link text counts towards link density
-    my_html = f'<html><body><p>{long}</p><p><a href="#">x <b>{long}</b></a> tail</p></body></html>'
-    assert texts(html.fromstring(my_html)) == [long.strip()]
-    # hidden data blobs and scrolling link farms are skipped, their tail stays
-    my_html = f"<html><body><p>{long}</p><textarea hidden>{long}</textarea>{long}<marquee>{long}</marquee></body></html>"
-    assert texts(html.fromstring(my_html)) == [long.strip(), long.strip()]
-    my_html = f"<html><body><p>{long}foo<textarea>x</textarea>bar<marquee>x</marquee>baz</p></body></html>"
-    assert texts(html.fromstring(my_html)) == [long + "foo bar baz"]
-    # markup held as text in raw-text fallbacks is skipped, a noscript with children or plain text stays
-    markup = f"&lt;div class='ad'&gt;{long}&lt;/div&gt;"
-    my_html = f"<html><body><p>{long}<iframe>{markup}</iframe>after</p><noscript>{markup}</noscript></body></html>"
-    assert texts(html.fromstring(my_html)) == [long + "after"]
-    my_html = f"<html><body><noscript><p>{long}</p></noscript><noscript>{long}</noscript></body></html>"
-    assert texts(html.fromstring(my_html)) == [long.strip(), long.strip()]
-    # hidden blocks are skipped with their tail kept, click-to-open panels stay
-    my_html = (
-        f'<html><body><div>{long}<div style="display: none">{long}</div>after</div>'
-        f'<div class="faq-answer" style="display:none">{long}</div></body></html>'
-    )
-    assert texts(html.fromstring(my_html)) == [long + "after", long.strip()]
-    # the page and the root of the walk are never skipped
-    my_html = f'<html style="display:none"><body style="display: none"><p>{long}</p></body></html>'
-    assert texts(html.fromstring(my_html)) == [long.strip()]
-    root = etree.Element("div", style="display:none")
-    etree.SubElement(root, "p").text = long
-    assert texts(root) == [long.strip()]
-    # no stopwords: scripts without a jusText stoplist are classified like the others
-    thai = "ภาษาไทยเป็นภาษาราชการของประเทศไทยและมีผู้พูดหลายสิบล้านคนทั่วประเทศ " * 3
-    amharic = "አማርኛ የኢትዮጵያ የሥራ ቋንቋ ሲሆን በብዙ ሚሊዮን ሰዎች ይነገራል። " * 4
-    my_html = f'<html><body><div><a href="#">หน้าแรก</a></div><p>{thai}</p><p>{amharic}</p></body></html>'
-    assert texts(html.fromstring(my_html)) == [thai.strip(), amharic.strip()]
-    # namespaced tags, deep trees
-    my_html = f'<html xmlns="http://www.w3.org/1999/xhtml"><body><p>{long}</p><p>{long}</p></body></html>'
-    assert len(texts(etree.fromstring(my_html))) == 2
-    root = elem = etree.Element("body")
-    for _ in range(5000):
-        elem = etree.SubElement(elem, "div")
-    etree.SubElement(elem, "p").text = long
-    assert texts(root) == [long.strip()]
-    # basic_cleaning targets are skipped with their tail kept, the input tree is left untouched
-    my_html = f'<html><body><div>{long}<aside>{long}</aside>tail</div><div id="cookie-banner"><p>{long}</p></div><p>{long}</p></body></html>'
-    tree = html.fromstring(my_html)
-    before = etree.tostring(tree)
-    assert texts(tree) == [long + "tail", long.strip()]
-    assert etree.tostring(tree) == before
-    # block kinds from the enclosing tags, lists grouped in the output
-    my_html = (
-        f"<html><body><h2><span>{long}</span></h2><ul><li>{long}</li><li><p>{long}</p></li></ul>"
-        f"<pre>{long}</pre><blockquote><p>{long}</p></blockquote><div>{long}</div></body></html>"
-    )
-    assert [kind for _, kind, _ in extract_paragraphs(html.fromstring(my_html))] == ["h2", "ul", "ul", "code", "quote", "p"]
-    result = try_justext(html.fromstring(my_html), None)
-    assert [elem.tag for elem in result.iter()] == ["body", "head", "list", "item", "item", "code", "quote", "p"]
-    assert result[0].get("rend") == "h2"
-    # list types, an ol next to a ul starts a new list
-    my_html = f"<html><body><ol><li>{long}</li><li>{long}</li></ol><ul><li>{long}</li></ul></body></html>"
-    result = try_justext(html.fromstring(my_html), None)
-    assert [(elem.get("rend"), len(elem)) for elem in result] == [("ol", 2), ("ul", 1)]
-    # adjacent lists of the same type stay apart, code in a list item stays code
-    my_html = f"<html><body><ul><li>{long}</li></ul><ul><li>{long}</li><li><pre>{long}</pre></li></ul></body></html>"
-    result = try_justext(html.fromstring(my_html), None)
-    assert [(elem.tag, len(elem)) for elem in result] == [("list", 1), ("list", 1), ("code", 0)]
-    # a nested list is flattened into its outermost list, which keeps its type
-    my_html = f"<html><body><ul><li>{long}<ol><li>{long}</li></ol></li><li>{long}</li></ul></body></html>"
-    result = try_justext(html.fromstring(my_html), None)
-    assert [(elem.get("rend"), len(elem)) for elem in result] == [("ul", 3)]
-    # adjacent definition lists stay apart
-    my_html = f"<html><body><dl><dt>{long}</dt><dd>{long}</dd></dl><dl><dt>{long}</dt></dl></body></html>"
-    result = try_justext(html.fromstring(my_html), None)
-    assert [(elem.tag, len(elem)) for elem in result] == [("list", 2), ("list", 1)]
-    # characters lxml rejects are removed from the text, the rest of the output stays
-    result = try_justext(html.fromstring(f"<html><body><p>{long}</p><p>{long}x\x01y‌z</p></body></html>"), None)
-    assert [elem.text[-4:] for elem in result] == ["elf.", "xy‌z"]
-    # only the direct parent makes a heading: an unclosed one can hold the rest of the page
-    my_html = f"<html><body><h1>{long}<div>{long}</div></h1></body></html>"
-    assert [kind for _, kind, _ in extract_paragraphs(html.fromstring(my_html))] == ["h1", "p"]
-    # code keeps its indentation and line breaks, also between inline elements
-    code = f"def f(x):\n    if x:\n        return x  # {long}"
-    my_html = f"<html><body><pre>\n{code}<br><span>a</span>\n    <span>b</span>\n</pre></body></html>"
-    assert texts(html.fromstring(my_html)) == [f"{code}\na\n    b"]
-    # hidden styles in any case and spacing
-    my_html = f'<html><body><p>{long}</p><div style="DISPLAY : NONE">{long}</div></body></html>'
-    assert texts(html.fromstring(my_html)) == [long.strip()]
 
 
 @pytest.mark.parametrize(
@@ -3553,6 +3433,16 @@ def test_compare_extraction_justext_override(monkeypatch, unclean, own_len, jt_l
     assert text == (jt_text if expect_jt else own)
 
 
+def test_compare_extraction_justext_input_cleaned(monkeypatch):
+    "Justext reads a tree_cleaning'd copy, the input tree stays untouched."
+    monkeypatch.setattr(external, "try_readability", lambda tree: etree.Element("body"))
+    long = "This sentence is long enough to be classified as content by itself. " * 3
+    tree = html.fromstring(f"<html><body><p>{long}</p><dialog><p>Dialog {long}</p></dialog></body></html>")
+    _, text = external.compare_extraction(tree, etree.Element("body"), "", core.Extractor())
+    assert text == long.strip()
+    assert tree.find(".//dialog") is not None
+
+
 def test_prefer_readability_rejects_raw_json():
     "readability output that is raw JSON must not win on length alone (GH #632)"
     body = etree.fromstring("<body><p>own text</p></body>")
@@ -4864,10 +4754,23 @@ def test_tree_cleaning_recall_keeps_paragraphs(options, monkeypatch):
             options.focus = focus
             assert (tree_cleaning(html.fromstring(doc), options).find(".//p") is not None) is restored, (doc, focus)
     options.focus = "recall"
+    # a later paragraph survives: nothing to undo
+    doc = "<html><body><aside><p>only text</p></aside><p>kept</p></body></html>"
+    assert tree_cleaning(html.fromstring(doc), options).find(".//aside") is None
     # a user-added "p" deletes the paragraphs themselves
     monkeypatch.setattr(trafilatura.htmlprocessing, "MANUALLY_CLEANED", ["p"])
     doc = "<html><body><div><p>only text</p></div></body></html>"
     assert tree_cleaning(html.fromstring(doc), options).find(".//p") is not None
+
+
+def test_tree_cleaning_undo_without_tables():
+    "Outside recall, the restored copy keeps the cell paragraphs but not the table markup."
+    doc = "<html><body><table><tr><td><p>cell one</p></td><td><p>cell two</p></td></tr></table></body></html>"
+    for focus, kept in (("balanced", 0), ("precision", 0), ("recall", 1)):
+        options = core.Extractor(tables=False, precision=focus == "precision", recall=focus == "recall")
+        cleaned = tree_cleaning(html.fromstring(doc), options)
+        assert len(cleaned.findall(".//p")) == 2, focus
+        assert len(cleaned.findall(".//table")) == kept, focus
 
 
 def test_tree_cleaning_same_tag_after_nested(options):

@@ -4,19 +4,21 @@ Functions grounding on third-party software.
 """
 
 import logging
+from collections.abc import Iterator
 from copy import copy
 
 # third-party
-from lxml.etree import Element, SubElement, _Element, strip_tags, tostring
+from lxml import html
+from lxml.etree import SubElement, _Element, strip_tags, tostring
 from lxml.html import HtmlElement
 
 # own
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
-from .justext_lite import HEADINGS, extract_paragraphs
+from .justext_lite import HEADINGS, extract_paragraphs, tidy_spacing
 from .main_extractor import handle_image
 from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import Extractor
-from .utils import INVALID_XML_CHARS, fromstring_bytes, trim
+from .utils import fromstring_bytes, trim
 from .xml import TEI_VALID_TAGS, delete_element
 from .xpaths import OVERALL_DISCARD_XPATH
 
@@ -132,45 +134,63 @@ def compare_extraction(
     return body, text
 
 
-def try_justext(tree: HtmlElement, url: str | None) -> _Element:
-    """Second safety net: paragraph classification derived from jusText."""
-    result_body = Element("body")
+def _blocks(body: _Element) -> Iterator[_Element]:
+    "Output blocks of try_justext: paragraphs, headings, quotes, code and list items."
+    for elem in body:
+        yield from elem if elem.tag == "list" else (elem,)
+
+
+def try_justext(tree: HtmlElement, url: str | None, options: Extractor | None = None) -> _Element:
+    """Second safety net: paragraph classification derived from jusText.
+    Links, formatting and images are kept according to the options."""
+    if options is None:
+        options = Extractor()
+        options.url = url
+    result_body = html.Element("body")
     try:
-        paragraphs = extract_paragraphs(tree)
         current_list, current_id = None, 0
-        for text, kind, list_id in paragraphs:
-            # lxml rejects control characters in element text
-            text = INVALID_XML_CHARS.sub("", text)
+        for _, kind, list_id, block in extract_paragraphs(tree):
             if kind in ("ol", "ul"):
                 if current_list is None or list_id != current_id:
                     current_list, current_id = SubElement(result_body, "list", rend=kind), list_id
-                SubElement(current_list, "item").text = text
+                block.tag = "item"
+                current_list.append(block)
                 continue
             current_list = None
             if kind in HEADINGS:
-                SubElement(result_body, "head", rend=kind).text = text
+                block.tag = "head"
+                block.set("rend", kind)
             else:
-                SubElement(result_body, kind).text = text
+                block.tag = kind
+            result_body.append(block)
+        convert_markup(result_body, options)
+        for elem in _blocks(result_body):
+            if elem.tag != "code":
+                tidy_spacing(elem)
     except Exception as err:
         LOGGER.error("justext %s %s", err, url)
-        result_body = Element("body")
+        result_body = html.Element("body")
     return result_body
 
 
 def justext_rescue(tree: HtmlElement, options: Extractor) -> tuple[_Element, str]:
     """Try to use justext algorithm as a second fallback"""
-    temppost_algo = try_justext(tree, options.url)
-    return temppost_algo, trim(" ".join(temppost_algo.itertext()))
+    temppost_algo = try_justext(tree, options.url, options)
+    # blocks joined by a space, inline markup without: the length of the plain text
+    return temppost_algo, trim(" ".join("".join(block.itertext()) for block in _blocks(temppost_algo)))
 
 
 def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, str]:
     """Convert and sanitize the output from the generic algorithm (post-processing)"""
-    # 1. clean
-    cleaned_tree = tree_cleaning(tree, options)
-    strip_tags(cleaned_tree, "span", *(() if options.links else ("a",)))
-    # 2. convert (pass url so relative links are absolutized on the fallback path)
-    cleaned_tree = convert_tags(cleaned_tree, options, options.url)
-    for elem in list(cleaned_tree.iter("graphic")):
+    return convert_markup(tree_cleaning(tree, options), options)
+
+
+def convert_markup(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, str]:
+    "Convert HTML markup to the output format according to the options, other tags stripped."
+    strip_tags(tree, "span", *(() if options.links else ("a",)))
+    # pass url so relative links are absolutized on the fallback path
+    tree = convert_tags(tree, options, options.url)
+    for elem in list(tree.iter("graphic")):
         image = handle_image(elem, options)
         if image is None:
             delete_element(elem)
@@ -181,15 +201,13 @@ def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, s
     # Groups by direct parent (the enclosing table once tbody/thead/tfoot are stripped upstream);
     # nested tables form their own group.
     seen_group_elems: set[_Element | None] = set()
-    for tr in cleaned_tree.iter("tr"):
+    for tr in tree.iter("tr"):
         parent = tr.getparent()
         if parent not in seen_group_elems and tr.find("th") is not None:
             seen_group_elems.add(parent)
             for c in tr.iterchildren("th"):
                 c.set("role", "head")
-    for elem in cleaned_tree.iter("td", "th", "tr"):
+    for elem in tree.iter("td", "th", "tr"):
         elem.tag = "row" if elem.tag == "tr" else "cell"
-    # 3. sanitize
-    strip_tags(cleaned_tree, *({str(elem.tag) for elem in cleaned_tree.iter("*")} - TEI_VALID_TAGS))
-    # 4. return
-    return cleaned_tree, trim(" ".join(cleaned_tree.itertext()))
+    strip_tags(tree, *({str(elem.tag) for elem in tree.iter("*")} - TEI_VALID_TAGS))
+    return tree, trim(" ".join(tree.itertext()))
