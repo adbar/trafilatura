@@ -2081,6 +2081,77 @@ def test_delete_by_link_density_backtracking():
     assert delete(html.fromstring(htmlstring), "div", backtracking=True).find(".//div") is None
 
 
+# Converted-tree shape of a pandoc footnotes section: a <list> of
+# sentence-length items, each ending in a short <ref> backlink.
+_FOOTNOTE_LIST = (
+    "<list>"
+    "<item><p>The corpus used here excludes paywalled pages, so the results "
+    'say nothing about extraction behind login walls.<ref target="#fnref1">↩</ref></p></item>'
+    "<item><p>In one case the footnote contained the only statement of the "
+    'sample size, which the headline result depended on.<ref target="#fnref2">↩</ref></p></item>'
+    "</list>"
+)
+
+# Same shape, but the items are nothing but short links: a navigation menu.
+_MENU_LIST = (
+    "<list>"
+    '<item><ref target="/">Home</ref></item>'
+    '<item><ref target="/archive">Archive</ref></item>'
+    '<item><ref target="/about">About</ref></item>'
+    '<item><ref target="/rss">RSS feed</ref></item>'
+    "</list>"
+)
+
+
+def test_link_density_footnote_list_kept():
+    "a footnotes list (short backlinks, ~2% link text) is not a link farm"
+    element = html.fromstring(_FOOTNOTE_LIST)
+    assert element.tag == "list"
+    assert trafilatura.htmlprocessing.link_density_test(element)[0] is False
+
+
+def test_link_density_menu_list_pruned():
+    "a list whose items are only short links is still pruned"
+    element = html.fromstring(_MENU_LIST)
+    assert element.tag == "list"
+    assert trafilatura.htmlprocessing.link_density_test(element)[0] is True
+
+
+_FOOTNOTE_DOC = """<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>On Measuring Extraction Quality</title></head>
+<body><main><article>
+<h1>On Measuring Extraction Quality</h1>
+<p>Benchmarks of web-text extraction usually report precision and recall against
+hand-labelled corpora, and the headline numbers look reassuring. The catch is that
+the errors are not distributed evenly across the page: boilerplate is easy to spot,
+while short, dense passages at the end of an article are easy to lose.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>A second effect is less often discussed. When an author qualifies a claim, the
+qualification frequently lives in a footnote rather than in the main text, because
+the main text has to stay readable. Losing the footnote therefore does not merely
+lose information; it changes what the article asserts.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>We measured the effect on a small corpus of essays and documentation pages.
+The full method is described in the appendix, but the summary is simple: check
+the end of the document, not just the beginning, before trusting an extraction.</p>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>The corpus used here excludes paywalled pages, so the results say
+nothing about extraction behind login walls.<a href="#fnref1" class="footnote-backref" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In one case the footnote contained the only statement of the
+sample size, which the headline result depended on.<a href="#fnref2" class="footnote-backref" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</article></main></body></html>"""
+
+
+def test_extract_keeps_pandoc_footnotes():
+    "end-to-end: both endnote texts appear in the extracted output"
+    out = extract(_FOOTNOTE_DOC, url="https://example.org/essay") or ""
+    assert "Benchmarks of web-text extraction" in out
+    assert "excludes paywalled pages" in out
+    assert "only statement of the sample size" in out
+
+
 def test_overall_discard_legacy_tokens():
     "regression on the legacy single-PR discard tokens, each decided by a full-WMB single-token A/B \
     (see xpaths.py audit note): 'yin' STAYS (net-positive despite English '-ying'/'y+Info' \
