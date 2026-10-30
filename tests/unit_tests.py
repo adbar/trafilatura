@@ -949,6 +949,32 @@ def test_inline_quotation_stays_in_its_paragraph(body, expected):
     assert expected.replace("**", "") in _extract_doc(body, output_format="txt").splitlines()
 
 
+@pytest.mark.parametrize(
+    "body,unwrapped",
+    [
+        ("<ul><li>x <o:p>y</o:p> z</li></ul>", "<ul><li>x y z</li></ul>"),
+        ("<blockquote>x <o:p>y</o:p> z</blockquote>", "<blockquote>x y z</blockquote>"),
+        ("<pre>x <fb:like>y</fb:like> z</pre>", "<pre>x y z</pre>"),
+    ],
+    ids=["item", "quote", "code"],
+)
+@pytest.mark.parametrize("fmt", ["txt", "xml", "markdown"])
+def test_prefixed_tag_unwrapped(body, unwrapped, fmt):
+    "A prefixed tag such as Word's <o:p> is unwrapped and its text kept instead of losing the document (#1010)."
+    result = _extract_doc(body, output_format=fmt)
+    assert result is not None
+    assert result == _extract_doc(unwrapped, output_format=fmt)
+
+
+def test_prefixed_tag_in_paragraph_xml_output():
+    "A prefixed tag kept in a paragraph made the XML output check fail on its undeclared namespace."
+    text = "Some article text. " * 30
+    result = extract(
+        f"<html><body><article><p>{text}</p><div>x <o:p>y</o:p> z</div></article></body></html>", output_format="xml"
+    )
+    assert "<p>x y z</p>" in result
+
+
 def test_srcless_graphic_dropped_text_kept():
     "A src-less image is dropped from a quote, the text around it in a paragraph is kept."
     quote = handle_quotes(etree.fromstring("<quote>a<graphic/></quote>"), core.Extractor())
