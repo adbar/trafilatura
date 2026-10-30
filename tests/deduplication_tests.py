@@ -237,6 +237,24 @@ def test_sample_tokens():
     assert sample_tokens("。、！") == []
     # many short tokens force the length threshold down
     assert sample_tokens("ab " * 40) == ["ab"] * 40
+
+    # words with combining marks, see issue #1055
+    assert sample_tokens("ประเทศไทย สวยงาม") == ["ประเทศไทย", "สวยงาม"]
+    assert sample_tokens("தமிழ் மொழி") == ["தமிழ்", "மொழி"]
+    assert sample_tokens("cafe\u0301 nai\u0308ve") == ["cafe\u0301", "nai\u0308ve"]
+    assert sample_tokens("\u0301\u0308 ab") == ["ab"]
+
+
+def test_fingerprint_combining_marks():
+    "Different texts with combining marks get different hashes, see issue #1055."
+    thai = content_fingerprint("ประเทศไทยเป็นประเทศที่สวยงาม มีวัดและชายหาดมากมาย")
+    other = content_fingerprint("วันนี้อากาศดีมาก เราจะไปเดินเล่นที่สวนสาธารณะ")
+    assert thai != other
+    assert "ffffffffffffffff" not in (thai, other)
+    tamil = content_fingerprint("தமிழ் ஒரு பழமையான மொழி")
+    assert tamil != content_fingerprint("இன்று வானிலை நன்றாக உள்ளது")
+    decomposed = "cafe\u0301 re\u0301sume\u0301 nai\u0308ve"
+    assert content_fingerprint(decomposed) != content_fingerprint("cafe\u0301 sold out")
     # enough long tokens keep the strict threshold: short ones are dropped
     tokens = sample_tokens(" ".join(f"token{i}" for i in range(40)) + " ab cd")
     assert "ab" not in tokens
