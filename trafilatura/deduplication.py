@@ -33,13 +33,19 @@ def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -
     return SequenceMatcher(None, reference, new_string).ratio() >= threshold
 
 
+def _is_word_with_marks(token: str) -> bool:
+    """Letters and digits with combining marks (category M), which
+    str.isalnum() rejects: Thai or Tamil vowel signs, decomposed accents."""
+    return any(c.isalnum() for c in token) and all(c.isalnum() or unicodedata.category(c)[0] == "M" for c in token)
+
+
 def sample_tokens(inputstring: str, length: int = 64) -> list[str]:
     """Split input into list of tokens and adjust length threshold to make sure
     there is enough data."""
-    tokens = [t for token in inputstring.split() if (t := token.strip(string.punctuation)).isalnum()]
+    tokens = [t for token in inputstring.split() if (t := token.strip(string.punctuation)).isalnum() or _is_word_with_marks(t)]
     if not tokens:
         # non-latin punctuation, e.g. mandarin 。
-        tokens = [t for t in inputstring.translate(_punct_tbl()).split() if t.isalnum()]
+        tokens = [t for t in inputstring.translate(_punct_tbl()).split() if t.isalnum() or _is_word_with_marks(t)]
 
     # tokens are non-empty, so a threshold of 0 would keep them all
     for i in range(4, 0, -1):
