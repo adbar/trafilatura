@@ -6,6 +6,7 @@ import gzip
 import io
 import logging
 import os
+import random
 import re
 import subprocess
 import sys
@@ -24,6 +25,14 @@ from trafilatura.utils import LANGID_FLAG
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 RESOURCES_DIR = path.join(path.abspath(path.dirname(__file__)), "resources")
+
+
+def test_random_filenames_leave_callers_random_state_unchanged(tmp_path):
+    """Generating a filename must not advance the caller's random state."""
+    state = random.getstate()
+    cli_utils.get_writable_path(str(tmp_path), ".txt")
+    assert random.getstate() == state
+
 
 pytestmark = pytest.mark.usefixtures("mock_network")
 
@@ -499,6 +508,16 @@ def test_cli_pipeline():
     result = cli.examine(teststring, args)
     assert result.startswith("<html")
     assert result.endswith("</html>")
+
+
+def test_input_files_with_bom(tmp_path):
+    urls = tmp_path / "urls.txt"
+    urls.write_bytes(b"\xef\xbb\xbfhttps://example.org/a\nhttps://example.org/b\n")
+    args = cli.parse_args(["-i", str(urls)])
+    assert cli_utils.load_input_urls(args) == ["https://example.org/a", "https://example.org/b"]
+    blacklist = tmp_path / "blacklist.txt"
+    blacklist.write_bytes(b"\xef\xbb\xbfhttps://example.org/a\n")
+    assert cli_utils.load_blacklist(str(blacklist)) == {"example.org/a"}
 
 
 def test_file_processing_continues_after_error(tmp_path, caplog):

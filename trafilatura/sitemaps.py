@@ -28,11 +28,14 @@ LOGGER = logging.getLogger(__name__)
 
 SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
 XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
+SCHEME_AND_WWW = re.compile(r"^https?://(?:www\.)?", re.IGNORECASE)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(
     r"(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\."
 )
 
+# byte order mark and whitespace tolerated before the XML declaration or root element
+LEADING_SPACE = "\ufeff \t\r\n"
 SITEMAP_FORMAT = re.compile(r"^.{0,5}<\?xml|<(?:[\w.-]+:)?(?:sitemapindex|sitemap|urlset)\b")
 DETECT_SITEMAP_LINK = re.compile(r"\.xml(\..{2,4})?$|\.xml[?#]")
 DETECT_LINKS = re.compile(r'https?://[^\s<"]+')
@@ -87,7 +90,7 @@ class SitemapObject:
     def fetch(self) -> None:
         "Fetch a sitemap over the network."
         LOGGER.debug("fetching sitemap: %s", self.current_url)
-        self.content = fetch_url(self.current_url, config=self.config) or ""
+        self.content = (fetch_url(self.current_url, config=self.config) or "").lstrip(LEADING_SPACE)
         self.seen.add(self.current_url)
 
     def handle_link(self, link: str, *, is_sitemap: bool | None = None) -> None:
@@ -220,7 +223,7 @@ def parse_sitemap(
         return []
     sitemap = SitemapObject(baseurl, domainname, [], target_lang, external)
     sitemap.current_url = url
-    sitemap.content = content.lstrip("\ufeff \t\r\n")
+    sitemap.content = content.lstrip(LEADING_SPACE)
     try:
         sitemap.process()
     except UnicodeEncodeError:
@@ -291,7 +294,11 @@ def sitemap_search(
         if sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
             sleep(sleep_time)
 
-    sitemap.urls = filter_urls(sitemap.urls, urlfilter)
+    if urlfilter is not None:
+        # subpage filter: the sitemap may use another scheme or host form (www.) than the input URL
+        prefix = SCHEME_AND_WWW.sub("", urlfilter)
+        sitemap.urls = [u for u in sitemap.urls if SCHEME_AND_WWW.sub("", u).startswith(prefix)]
+    sitemap.urls = filter_urls(sitemap.urls, None)
 
     LOGGER.debug("%s sitemap links found for %s", len(sitemap.urls), domainname)
     return sitemap.urls
@@ -305,6 +312,8 @@ def is_plausible_sitemap(url: str, contents: str | None) -> bool:
 
     # strip query and fragments
     url = SCRUB_REGEX.sub("", url)
+    if isinstance(contents, str):
+        contents = contents.lstrip(LEADING_SPACE)
 
     # check content
     if (
@@ -320,13 +329,13 @@ def find_robots_sitemaps(baseurl: str, config: ConfigParser = DEFAULT_CONFIG) ->
     """Guess the location of the robots.txt file and try to extract
     sitemap URLs from it"""
     robotstxt = fetch_url(baseurl + "/robots.txt", config=config)
-    return extract_robots_sitemaps(robotstxt, baseurl)
+    return extract_robots_sitemaps(robotstxt, baseurl, config)
 
 
-def extract_robots_sitemaps(robotstxt: str | None, baseurl: str) -> list[str]:
+def extract_robots_sitemaps(robotstxt: str | None, baseurl: str, config: ConfigParser = DEFAULT_CONFIG) -> list[str]:
     "Read a robots.txt file and find sitemap links."
     # sanity check on length (cause: redirections)
-    if robotstxt is None or len(robotstxt) > 10000:
+    if robotstxt is None or len(robotstxt) > config.getint("DEFAULT", "MAX_FILE_SIZE"):
         return []
 
     candidates = []
