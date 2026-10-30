@@ -114,6 +114,21 @@ def test_publisher_added_before_availability_in_publicationStmt():  # noqa: N802
     assert [child.tag for child in publicationstmt.getchildren()] == ["p"]
 
 
+def test_one_term_per_category_and_tag():
+    teidoc = Element("TEI", xmlns="http://www.tei-c.org/ns/1.0")
+    metadata = Document()
+    metadata.categories = ["Politics", "World"]
+    metadata.tags = ["Smith, John", "Doe, Jane"]
+    header = write_fullheader(teidoc, metadata)
+    terms = header.findall(".//{*}textClass/{*}keywords/{*}term")
+    assert [(term.get("type"), term.text) for term in terms] == [
+        ("categories", "Politics"),
+        ("categories", "World"),
+        ("tags", "Smith, John"),
+        ("tags", "Doe, Jane"),
+    ]
+
+
 def test_unwanted_siblings_of_div_removed():
     xml_doc = fromstring("<TEI><text><body><div><div><p>text1</p></div><p>text2</p></div></body></text></TEI>")
     cleaned = check_tei(xml_doc, "fake_url")

@@ -983,10 +983,10 @@ def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     if docmeta.categories or docmeta.tags:
         textclass = SubElement(profiledesc, "textClass")
         keywords = SubElement(textclass, "keywords")
-        if docmeta.categories:
-            SubElement(keywords, "term", type="categories").text = ",".join(docmeta.categories)
-        if docmeta.tags:
-            SubElement(keywords, "term", type="tags").text = ",".join(docmeta.tags)
+        for category in docmeta.categories or []:
+            SubElement(keywords, "term", type="categories").text = category
+        for tag in docmeta.tags or []:
+            SubElement(keywords, "term", type="tags").text = tag
 
     creation = SubElement(profiledesc, "creation")
     SubElement(creation, "date", type="download").text = docmeta.filedate
