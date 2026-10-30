@@ -473,6 +473,12 @@ def _process_file(filename: str, args: argparse.Namespace, counter: int, options
     return None
 
 
+def _init_worker_logging(level: int | None) -> None:
+    "Configure fresh worker logging when the parent has configured it."
+    if level is not None:
+        logging.basicConfig(stream=sys.stderr, level=level)
+
+
 def file_processing_pipeline(args: argparse.Namespace) -> int:
     "Define batches for parallel file processing and perform the extraction."
     filecounter = -1
@@ -483,8 +489,10 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
         nonlocal exit_code
         exit_code = 1
 
+    root_logger = logging.getLogger()
+    log_level = root_logger.level if root_logger.handlers else None
     # max_tasks_per_child available in Python >= 3.11
-    with ProcessPoolExecutor(max_workers=args.parallel) as executor:
+    with ProcessPoolExecutor(max_workers=args.parallel, initializer=_init_worker_logging, initargs=(log_level,)) as executor:
         # chunk input: https://github.com/python/cpython/issues/74028
         for filebatch in make_chunks(
             generate_filelist(args.input_dir, onerror=handle_walk_error, exclude_dirs=(args.output_dir, args.backup_dir)),

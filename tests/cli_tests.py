@@ -11,6 +11,7 @@ import re
 import subprocess
 import sys
 from contextlib import redirect_stdout
+from multiprocessing import get_all_start_methods
 from os import path
 from pathlib import Path
 from tempfile import gettempdir
@@ -642,6 +643,75 @@ def test_file_processing(tmp_path):
         cli_utils.file_processing(f, args, options=options)
 
     settings.MAX_FILES_PER_DIRECTORY = backup
+
+
+@pytest.mark.parametrize("start_method", ["spawn", "forkserver"])
+@pytest.mark.parametrize(
+    "mode, verbosity, debug_expected",
+    [
+        ("cli", [], False),
+        ("cli", ["-v"], False),
+        ("cli", ["-vv"], True),
+        ("debug", [], True),
+        ("error", ["-vv"], False),
+        ("unconfigured", [], False),
+    ],
+)
+def test_file_worker_logging(tmp_path, start_method, mode, verbosity, debug_expected):
+    "Fresh workers follow configured logging without changing the parent's handlers."
+    if start_method not in get_all_start_methods():
+        pytest.skip(f"{start_method} is not available on this platform")
+    source = tmp_path / "input"
+    source.mkdir()
+    (source / "page.html").write_text("<html><body><p>" + "Some text here. " * 50 + "</p></body></html>", encoding="utf-8")
+    output = tmp_path / "output"
+    script = """import logging
+import multiprocessing
+import sys
+from trafilatura import cli, cli_utils
+
+if __name__ == "__main__":
+    multiprocessing.set_start_method(sys.argv[1])
+    mode = sys.argv[2]
+    root = logging.getLogger()
+    if mode in ("debug", "error"):
+        level = logging.DEBUG if mode == "debug" else logging.ERROR
+        logging.basicConfig(stream=sys.stderr, level=level, format="parent:%(levelname)s:%(message)s")
+    handlers = list(root.handlers)
+    level = root.level
+    args = cli.parse_args(sys.argv[3:])
+    if mode == "unconfigured":
+        assert cli_utils.file_processing_pipeline(args) == 0
+    else:
+        cli.process_args(args)
+    if mode != "cli":
+        assert root.handlers == handlers and root.level == level
+"""
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            script,
+            start_method,
+            mode,
+            "--input-dir",
+            str(source),
+            "--output-dir",
+            str(output),
+            "--parallel",
+            "1",
+            *verbosity,
+        ],
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=True,
+    )
+    assert ("DEBUG:trafilatura.main_extractor:Recovering wild text elements" in result.stderr) is debug_expected
+    assert result.stdout == ""
+    files = list(output.glob("*.txt"))
+    assert len(files) == 1
+    assert "Some text here." in files[0].read_text(encoding="utf-8")
 
 
 def test_cli_config_file():
