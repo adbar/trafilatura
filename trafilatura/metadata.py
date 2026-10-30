@@ -48,8 +48,8 @@ META_URL = re.compile(r"https?://(?:www\.|w[0-9]+\.)?([^/]+)")
 JSON_MINIFY = re.compile(r'("(?:\\.|[^"\\])*")|\s')
 
 HTMLTITLE_REGEX = re.compile(r"^(.+)?\s+[–•·—|⁄*⋆~‹«<›»>:-]\s+(.+)$")  # part without dots?
-# dot-separated words without whitespace, the last one is not a number (version)
-HOSTNAME_REGEX = re.compile(r"(?:[^\s.]+\.)+(?!\d+$)[^\s.]+")
+# host name: dot-separated labels ending in a top-level domain of letters (or a punycode one)
+HOSTNAME_REGEX = re.compile(r"(?:[\w-]+\.)+(?:[^\W\d_]{2,}|xn--[a-z\d-]+)")
 
 CLEAN_META_TAGS = re.compile(r'["\']')
 

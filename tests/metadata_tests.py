@@ -349,6 +349,8 @@ def test_sitename():
         ("<html><head><title>Mr. Smith goes to Washington | Example News</title></head><body/></html>", None),
         ("<html><head><title>Version 2.0 released - Foo Project</title></head><body/></html>", None),
         ("<html><head><title>Foo Project - v2.0</title></head><body/></html>", None),
+        ("<html><head><title>Made in the U.S.A | Foo Project</title></head><body/></html>", None),
+        ("<html><head><title>Hello World | example.xn--p1ai</title></head><body/></html>", "example.xn--p1ai"),
         # fallback: derive the site name from the URL host
         (
             '<html><head><meta property="og:url" content="https://www.example.org/article"/></head><body/></html>',
