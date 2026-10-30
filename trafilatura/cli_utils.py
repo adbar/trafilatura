@@ -18,14 +18,25 @@ import string
 import sys
 import traceback
 from base64 import urlsafe_b64encode
-from collections.abc import Callable, Generator, Iterable
+from collections.abc import Callable, Generator, Iterable, Iterator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from contextlib import contextmanager
 from datetime import datetime
 from functools import partial
 from hashlib import blake2b
 from pathlib import Path
 from threading import RLock
+from typing import Any
 from urllib.parse import unquote, urlsplit
+
+# optional progress bar for batch processing
+try:
+    from tqdm import tqdm
+    from tqdm.contrib.logging import logging_redirect_tqdm
+
+    HAS_TQDM = True  # pragma: no cover
+except ImportError:
+    HAS_TQDM = False
 
 from courlan import UrlStore, extract_domain, get_base_url  # validate_url
 
@@ -274,11 +285,25 @@ def process_result(htmlstring: str, args: argparse.Namespace, counter: int, opti
     return counter
 
 
+@contextmanager
+def _progress_bar(args: argparse.Namespace, total: int | None, unit: str) -> Iterator[Any]:
+    "Yield a tqdm progress bar if one was requested, else None."
+    if not getattr(args, "progress", False):
+        yield None
+        return
+    if not HAS_TQDM:
+        raise ImportError("the progress bar requires the tqdm package: pip install tqdm")
+    # print log messages above the bar instead of through it
+    with logging_redirect_tqdm(), tqdm(total=total, unit=unit) as bar:
+        yield bar
+
+
 def download_queue_processing(
     url_store: UrlStore,
     args: argparse.Namespace,
     counter: int,
     options: Extractor,
+    progress: Any = None,
 ) -> tuple[list[str], int]:
     "Implement a download queue consumer, single- or multi-threaded."
     errors = []
@@ -295,6 +320,8 @@ def download_queue_processing(
             else:
                 LOGGER.warning("No result for URL: %s", url)
                 errors.append(url)
+            if progress is not None:
+                progress.update(1)
     return errors, counter
 
 
@@ -438,14 +465,16 @@ def url_processing_pipeline(args: argparse.Namespace, url_store: UrlStore) -> in
     counter = 0 if url_count > MAX_FILES_PER_DIRECTORY else -1
 
     # download strategy
-    errors, counter = download_queue_processing(url_store, args, counter, options)
+    with _progress_bar(args, url_count, "URL") as progress:
+        errors, counter = download_queue_processing(url_store, args, counter, options, progress)
     LOGGER.debug("%s / %s URLs could not be found", len(errors), url_count)
 
     if args.archived is True:
         url_store = UrlStore()
         url_store.add_urls(["https://web.archive.org/web/20/" + e for e in errors])
         if len(url_store.find_known_urls("https://web.archive.org")) > 0:
-            archived_errors, _ = download_queue_processing(url_store, args, counter, options)
+            with _progress_bar(args, url_store.total_url_number(), "URL") as progress:
+                archived_errors, _ = download_queue_processing(url_store, args, counter, options, progress)
             LOGGER.debug(
                 "%s archived URLs out of %s could not be found",
                 len(archived_errors),
@@ -476,13 +505,19 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
         nonlocal exit_code
         exit_code = 1
 
+    filelist: Iterable[str] = generate_filelist(
+        args.input_dir, onerror=handle_walk_error, exclude_dirs=(args.output_dir, args.backup_dir)
+    )
+    total = None
+    if getattr(args, "progress", False):
+        # walk once and keep the paths, so the bar total matches the files processed
+        files = list(filelist)
+        total, filelist = len(files), files
+
     # max_tasks_per_child available in Python >= 3.11
-    with ProcessPoolExecutor(max_workers=args.parallel) as executor:
+    with ProcessPoolExecutor(max_workers=args.parallel) as executor, _progress_bar(args, total, "file") as progress:
         # chunk input: https://github.com/python/cpython/issues/74028
-        for filebatch in make_chunks(
-            generate_filelist(args.input_dir, onerror=handle_walk_error, exclude_dirs=(args.output_dir, args.backup_dir)),
-            MAX_FILES_PER_DIRECTORY,
-        ):
+        for filebatch in make_chunks(filelist, MAX_FILES_PER_DIRECTORY):
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(_process_file, args=args, counter=filecounter, options=options)
@@ -490,6 +525,8 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
                 if error is not None:
                     LOGGER.error("Cannot process file %s", error)
                     exit_code = 1
+                if progress is not None:
+                    progress.update(1)
             # update counter
             if filecounter >= 0:
                 filecounter += len(filebatch)

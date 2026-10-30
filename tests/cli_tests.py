@@ -2,6 +2,7 @@
 Unit tests for the command-line interface.
 """
 
+import argparse
 import gzip
 import io
 import logging
@@ -10,11 +11,11 @@ import random
 import re
 import subprocess
 import sys
-from contextlib import redirect_stdout
+from contextlib import nullcontext, redirect_stdout
 from os import path
 from pathlib import Path
 from tempfile import gettempdir
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from courlan import UrlStore
@@ -637,6 +638,73 @@ def test_file_processing(tmp_path):
         cli_utils.file_processing(f, args, options=options)
 
     settings.MAX_FILES_PER_DIRECTORY = backup
+
+
+@pytest.fixture
+def fake_progress(monkeypatch):
+    "Replace tqdm so the tests do not depend on it being installed."
+    bar = MagicMock()
+    bar.return_value.__exit__.return_value = False  # do not swallow exceptions
+    monkeypatch.setattr(cli_utils, "tqdm", bar, raising=False)
+    monkeypatch.setattr(cli_utils, "logging_redirect_tqdm", nullcontext, raising=False)
+    monkeypatch.setattr(cli_utils, "HAS_TQDM", True)
+    monkeypatch.setattr(cli, "HAS_TQDM", True)
+    return bar
+
+
+def test_progress_requires_tqdm(monkeypatch, capsys):
+    "Without tqdm, --progress fails early, in the CLI and outside it."
+    monkeypatch.setattr(cli, "HAS_TQDM", False)
+    monkeypatch.setattr(cli_utils, "HAS_TQDM", False)
+    with pytest.raises(SystemExit):
+        cli.parse_args(["--progress", "-i", "urls.txt"])
+    assert "tqdm" in capsys.readouterr().err
+    with pytest.raises(ImportError, match="tqdm"), cli_utils._progress_bar(argparse.Namespace(progress=True), 1, "URL"):
+        pass
+
+
+def test_url_processing_progress(monkeypatch, tmp_path, fake_progress):
+    "The bar counts every URL, whether its download succeeded or not."
+    page = Path(RESOURCES_DIR, "httpbin_sample.html").read_text(encoding="utf-8")
+    urls = ["https://a.example.org/ok", "https://b.example.org/missing", "https://c.example.org/ok"]
+
+    def fake_downloads(bufferlist, download_threads, options):
+        for url in bufferlist:
+            yield url, page if url.endswith("ok") else None
+
+    monkeypatch.setattr(cli_utils, "buffered_downloads", fake_downloads)
+    args = cli.parse_args(["--output-dir", str(tmp_path), "--fast", "--progress"])
+
+    assert cli_utils.url_processing_pipeline(args, add_to_compressed_dict(urls)) == 1
+    fake_progress.assert_called_once_with(total=3, unit="URL")
+    assert fake_progress.return_value.__enter__.return_value.update.call_count == 3
+
+
+def test_file_processing_progress(tmp_path, caplog, monkeypatch, fake_progress):
+    "The bar total comes from the processing walk: nested outputs skipped, walk errors logged once."
+    source = tmp_path / "inputs"
+    blocked = source / "blocked"
+    blocked.mkdir(parents=True)
+    page = Path(RESOURCES_DIR, "httpbin_sample.html").read_bytes()
+    for name in ("one.html", "two.html", "output/old.html"):
+        (source / name).parent.mkdir(exist_ok=True)
+        (source / name).write_bytes(page)
+    scandir = os.scandir
+
+    def deny_blocked(directory):
+        if directory == str(blocked):
+            raise PermissionError(13, "Permission denied", directory)
+        return scandir(directory)
+
+    monkeypatch.setattr(os, "scandir", deny_blocked)
+    args = cli.parse_args(
+        ["--input-dir", str(source), "--output-dir", str(source / "output"), "--parallel", "1", "--progress"]
+    )
+
+    assert cli_utils.file_processing_pipeline(args) == 1
+    fake_progress.assert_called_once_with(total=2, unit="file")
+    assert fake_progress.return_value.__enter__.return_value.update.call_count == 2
+    assert caplog.text.count("Cannot read input directory") == 1
 
 
 def test_cli_config_file():

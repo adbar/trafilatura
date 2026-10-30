@@ -204,6 +204,12 @@ The following command line arguments are relevant:
     ``$ trafilatura --input-file links.txt --output-dir converted/ --backup-dir html-sources/ --xml``
 
 
+.. hint::
+    Long batch runs on URL lists or input directories can display a progress bar with ``--progress``. This option requires the optional ``tqdm`` package (``pip install tqdm``):
+
+    ``$ trafilatura --input-file links.txt --output-dir converted/ --progress``
+
+
 Source-based file names
 ~~~~~~~~~~~~~~~~~~~~~~~
 
