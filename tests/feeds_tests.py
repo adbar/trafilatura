@@ -5,6 +5,7 @@ Unit tests for feeds reading and parsing.
 import logging
 import os
 import sys
+from configparser import ConfigParser
 from unittest.mock import patch
 
 import pytest
@@ -433,6 +434,20 @@ def test_try_homepage_forwards_args():
         "sleep_time": 9.0,
         "config": DEFAULT_CONFIG,
     }
+
+
+def test_sleep_time_defaults_to_config():
+    "Without an explicit sleep_time, the wait comes from SLEEP_TIME in the config."
+    config = ConfigParser()
+    config.read_dict(DEFAULT_CONFIG)
+    config.set("DEFAULT", "SLEEP_TIME", "10")
+    with patch("trafilatura.feeds.fetch_url", return_value=None), patch("trafilatura.feeds.sleep") as mock_sleep:
+        find_feed_urls("https://example.org/sub/page", config=config)
+    mock_sleep.assert_called_once_with(10.0)
+
+    with patch("trafilatura.feeds.fetch_url", return_value=None), patch("trafilatura.feeds.sleep") as mock_sleep:
+        find_feed_urls("https://example.org/sub/page", sleep_time=0.5, config=config)
+    mock_sleep.assert_called_once_with(0.5)
 
 
 def test_cli_behavior():

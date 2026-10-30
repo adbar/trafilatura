@@ -233,7 +233,7 @@ def sitemap_search(
     url: str,
     target_lang: str | None = None,
     external: bool = False,
-    sleep_time: float = 2.0,
+    sleep_time: float | None = None,
     max_sitemaps: int = MAX_SITEMAPS_SEEN,
     config: ConfigParser = DEFAULT_CONFIG,
 ) -> list[str]:
@@ -246,7 +246,8 @@ def sitemap_search(
                      (two-letter string, ISO 639-1 format).
         external: Similar hosts only or external URLs
                   (boolean, defaults to False).
-        sleep_time: Wait between requests on the same website.
+        sleep_time: Wait between requests on the same website
+                    (defaults to SLEEP_TIME in the config).
         max_sitemaps: Maximum number of sitemaps to process.
         config: Pass configuration values for download control.
 
@@ -258,6 +259,9 @@ def sitemap_search(
     if domainname is None:
         LOGGER.warning("invalid URL: %s", url)
         return []
+
+    if sleep_time is None:
+        sleep_time = config.getfloat("DEFAULT", "SLEEP_TIME")
 
     if not is_live_page(baseurl, config):
         LOGGER.warning("base URL unreachable, dropping sitemap: %s", url)
