@@ -644,6 +644,32 @@ def test_file_processing(tmp_path):
     settings.MAX_FILES_PER_DIRECTORY = backup
 
 
+def test_worker_logging_reaches_stderr(tmp_path):
+    "Verbose logging must reach stderr from ProcessPoolExecutor workers (#1078)."
+    (tmp_path / "sample.html").write_text("<html><body><p>" + "Some text here. " * 50 + "</p></body></html>")
+    env = os.environ.copy()
+    if os.name == "nt":
+        env["PYTHONIOENCODING"] = "utf-8"
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "from trafilatura.cli import main; main()",
+            "--input-dir",
+            str(tmp_path),
+            "-o",
+            str(tmp_path / "out"),
+            "-vv",
+        ],
+        capture_output=True,
+        text=True,
+        env=env,
+        timeout=120,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "DEBUG:trafilatura.main_extractor" in result.stderr
+
+
 def test_cli_config_file():
     "Test if the configuration file is loaded correctly from the CLI."
     testargs = ["", "--input-dir", "/dev/null", "--config-file", "newsettings.cfg"]
