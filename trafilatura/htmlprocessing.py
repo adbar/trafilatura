@@ -111,9 +111,6 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     for template in [t for t in tree.iter("template") if t.get("shadowrootmode", t.get("shadowroot")) is None]:
         delete_element(template)
 
-    # prefixed tags like Word's <o:p> or <fb:like> are not valid element names in the output, keep their text
-    stripping_list.update(elem.tag for elem in tree.iter("*") if isinstance(elem.tag, str) and ":" in elem.tag)
-
     # strip targeted elements
     strip_tags(tree, *stripping_list)
 
@@ -128,6 +125,10 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     strip_elements(tree, *cleaning_list, with_tail=False)
     if tcopy is not None and tree.find(".//p") is None:
         tree = tcopy
+
+    # prefixed tags like Word's <o:p> or <fb:like> are not valid element names in the output, keep their text
+    if prefixed := {tag for tag in {elem.tag for elem in tree.iter("*")} if isinstance(tag, str) and ":" in tag}:
+        strip_tags(tree, *prefixed)
 
     if clean_forms:
         _handle_forms(tree)
