@@ -214,6 +214,19 @@ def _initiate_pool(config: ConfigParser, no_ssl: bool = False) -> urllib3.PoolMa
     return pool
 
 
+def _final_url(response: urllib3.BaseHTTPResponse, url: str) -> str:
+    "Return the absolute URL of the page a urllib3 response comes from."
+    # a Location header can be relative to the hop that sent it, which is not
+    # the original URL after a cross-host redirect, and geturl() is empty when
+    # the last hop was retried, so resolve the last redirect from the history
+    history = response.retries.history if response.retries else ()
+    for hop in reversed(history):
+        if hop.redirect_location:
+            return urljoin(hop.url or url, hop.redirect_location)
+    # without a redirect, geturl() returns the request URI, which can be relative
+    return urljoin(url, response.geturl() or url)
+
+
 def _send_urllib_request(url: str, no_ssl: bool, config: ConfigParser) -> Response | None:
     "Internal function to robustly send a request (SSL or not) and return its result."
     try:
@@ -235,9 +248,7 @@ def _send_urllib_request(url: str, no_ssl: bool, config: ConfigParser) -> Respon
             response.release_conn()
 
         # necessary for standardization
-        # geturl() returns the raw Location header after a redirect and the request
-        # URI otherwise, both of which can be relative
-        resp = Response(data, response.status, urljoin(url, response.geturl() or url))
+        resp = Response(data, response.status, _final_url(response, url))
         resp.store_headers(response.headers)
         return resp
 
