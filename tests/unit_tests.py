@@ -1313,6 +1313,25 @@ def test_links():
     assert extract(mydoc, fast=True, config=ZERO_CONFIG, favor_precision=True) == ""
 
 
+def test_empty_anchor_keeps_heading_text():
+    """An empty permalink anchor must not drop the heading text after it (#1024)."""
+    paragraph = "Lorem ipsum dolor sit amet consectetur adipiscing elit. " * 5
+    htmlstring = f'<html><body><article><h2><a href="#install"></a>Installation</h2><p>{paragraph}</p></article></body></html>'
+    assert extract(htmlstring, output_format="markdown", include_links=True).startswith("## Installation")
+    assert extract(htmlstring, output_format="txt", include_links=True).startswith("Installation")
+    assert '"text": "Installation' in extract(htmlstring, output_format="json", include_links=True)
+
+
+def test_empty_element_whitespace_tail():
+    """A whitespace-only tail outside a cell must not leak into the next block (#1024)."""
+    body = "<doc><p>alpha beta gamma delta</p><span></span>\n   <p>epsilon zeta eta theta</p></doc>"
+    assert _md(body, include_formatting=False) == "alpha beta gamma delta\nepsilon zeta eta theta"
+    assert "\n   " not in _md(body)
+    # inside a cell the same whitespace still separates the cell content
+    cell = "<doc><table><row><cell>alpha<span></span> <b>beta</b></cell><cell>gamma</cell></row></table></doc>"
+    assert "| alpha beta | gamma |" in _md(cell)
+
+
 def test_tei():
     """test TEI-related functions"""
     # open local resources to avoid redownloading at each run
