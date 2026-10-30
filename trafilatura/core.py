@@ -380,6 +380,12 @@ def bare_extraction(
             date_params=date_extraction_params,
         )
 
+    # the url argument also applies when options are given, without changing them
+    if url and url != options.url:
+        options = copy(options)
+        options.url = url
+    url = options.url
+
     try:
         # load the HTML tree
         tree = load_html(filecontent, options.max_file_size)
@@ -399,15 +405,15 @@ def bare_extraction(
         if options.with_metadata:
             document = extract_metadata(
                 tree,
-                options.url,
+                url,
                 options.date_params,
                 options.fast,
                 options.author_blacklist,
             )
 
-            # cut short if extracted URL in blacklist
-            if document.url in options.url_blacklist:
-                LOGGER.warning("blacklisted URL: %s", document.url)
+            # cut short if the given or extracted URL is in the blacklist
+            if blacklisted := {url, document.url} & options.url_blacklist:
+                LOGGER.warning("blacklisted URL: %s", blacklisted.pop())
                 raise ValueError
 
             # cut short if core elements are missing
@@ -425,7 +431,7 @@ def bare_extraction(
                 prune_xpath = [prune_xpath]
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
-        postbody, temp_text, commentsbody, temp_comments = trafilatura_sequence(tree, options, options.url or document.url)
+        postbody, temp_text, commentsbody, temp_comments = trafilatura_sequence(tree, options, url or document.url)
         len_text, len_comments = len(temp_text), len(temp_comments)
 
         # tree size sanity check
@@ -707,6 +713,7 @@ def _internal_extraction(
     # extraction
     document = bare_extraction(
         filecontent,
+        url=url,
         options=options,
         as_dict=False,
         prune_xpath=prune_xpath,

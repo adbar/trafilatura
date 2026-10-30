@@ -7,6 +7,9 @@ Major changes:
 - Built-in jusText-derived fallback without stopwords, keeps links, formatting and images. Breaking: jusText dependency dropped, `try_justext()` takes `options` instead of `target_language`, `settings.JUSTEXT_LANGUAGES`, `external.jt_stoplist_init()` and `external.get_stoplist()` removed, by @adbar
 - Fallback cascade: tree cleaning undone in all modes, jusText tried before the recall retry, by @adbar
 
+- CLI fixes: exit codes, argument checks, input lists and link discovery by @adbar
+- Python API: `ValueError` for unknown output formats, `url` argument applies with `options` by @adbar
+
 
 ## 2.3.1
 
