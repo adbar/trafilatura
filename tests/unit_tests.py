@@ -1313,6 +1313,25 @@ def test_links():
     assert extract(mydoc, fast=True, config=ZERO_CONFIG, favor_precision=True) == ""
 
 
+def test_empty_anchor_keeps_heading_text():
+    """An empty permalink anchor must not drop the heading text after it (#1024)."""
+    paragraph = "Lorem ipsum dolor sit amet consectetur adipiscing elit. " * 5
+    htmlstring = f'<html><body><article><h2><a href="#install"></a>Installation</h2><p>{paragraph}</p></article></body></html>'
+    assert extract(htmlstring, output_format="markdown", include_links=True).startswith("## Installation")
+    assert extract(htmlstring, output_format="txt", include_links=True).startswith("Installation")
+    assert '"text": "Installation' in extract(htmlstring, output_format="json", include_links=True)
+
+
+def test_empty_element_whitespace_tail():
+    """A whitespace-only tail outside a cell must not leak into the next block (#1024)."""
+    body = "<doc><p>alpha beta gamma delta</p><span></span>\n   <p>epsilon zeta eta theta</p></doc>"
+    assert _md(body, include_formatting=False) == "alpha beta gamma delta\nepsilon zeta eta theta"
+    assert "\n   " not in _md(body)
+    # inside a cell the same whitespace still separates the cell content
+    cell = "<doc><table><row><cell>alpha<span></span> <b>beta</b></cell><cell>gamma</cell></row></table></doc>"
+    assert "| alpha beta | gamma |" in _md(cell)
+
+
 def test_tei():
     """test TEI-related functions"""
     # open local resources to avoid redownloading at each run
@@ -2653,6 +2672,14 @@ def test_table_footer_after_body():
     )
 
 
+def test_table_head_td_cells():
+    "Cells of a <thead> row are header cells even when written as <td>."
+    table = "<table><thead><tr>{0}Item{1}{0}Qty{1}</tr></thead><tbody><tr><td>Cable</td><td>12</td></tr></tbody></table>"
+    result = _table_txt(table.format("<td>", "</td>"))
+    assert "| Item | Qty | \n|---|---|\n| Cable | 12 |" in result
+    assert result == _table_txt(table.format("<th>", "</th>"))
+
+
 @pytest.mark.parametrize("bad_span", ['span="2"', 'span="2.1"', 'span="-1"', 'span="abc"'])
 def test_table_bad_span_attr_treated_as_colspan1(bad_span):
     "Non-colspan span attributes are ignored (colspan=1); trailing pad fills to max_cols."
@@ -3822,6 +3849,16 @@ from openai_function_call import openai_function</code>"""
     testresult = extract(medium_ssr, config=ZERO_CONFIG, output_format="xml")
     assert expected in testresult
     assert "quote" not in testresult
+    # Python-Markdown's codehilite extension wraps Pygments output in div.codehilite
+    codehilite = """<div><p>Code:</p>
+<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span></pre></div></div>"""
+    expected = """<code>import os
+base_dir = os.getcwd()</code>"""
+    testresult = extract(codehilite, config=ZERO_CONFIG, output_format="xml")
+    assert expected in testresult
+    assert "quote" not in testresult
+    assert "base_dir = os.getcwd()" in extract(codehilite, config=ZERO_CONFIG, output_format="markdown")
     code_el = """<div><p>Code:</p>
     <pre><code><span>my code</span></code></pre>"""
     expected = """<code>my code</code>"""
