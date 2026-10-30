@@ -68,7 +68,7 @@ Fallback cascade
 If the main extraction produced too little text (below ``MIN_EXTRACTED_SIZE`` in ``settings.cfg``), two external algorithms are tried:
 
 - **readability** (a port of Mozilla's Readability.js) — good at identifying article bodies
-- **jusText** — good at preserving full sentences, reaches content buried in nested structures
+- **jusText** (a built-in minimal version) — classifies text blocks by length, link density and context, reaches content buried in nested structures
 
 This stage is **skipped entirely in fast mode** (``fast=True`` / ``--fast``), which is why fast mode is roughly twice as quick but may miss content on difficult pages.
 
@@ -82,7 +82,7 @@ If the fallbacks still didn't produce enough text, a broad extraction runs on th
 Recall escalation
 ^^^^^^^^^^^^^^^^^
 
-If the result is still short relative to the page size, the entire cascade (stages 1–3) is re-run with relaxed thresholds. A separate jusText candidate is also tried, since its algorithm can reach content that rule-based approaches cannot.
+If the result is still short relative to the page size, a jusText candidate is tried first, since its algorithm can reach content that rule-based approaches cannot. If it does not clearly outgrow the result, the entire cascade (stages 1–3) is re-run with relaxed thresholds.
 
 This stage only activates in **standard mode** — not in precision or recall mode.
 

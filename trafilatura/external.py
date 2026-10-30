@@ -4,30 +4,25 @@ Functions grounding on third-party software.
 """
 
 import logging
+from collections.abc import Iterator
 from copy import copy
-from functools import cache
 
 # third-party
-from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
-from justext.utils import get_stoplist as _get_stoplist
-from justext.utils import get_stoplists
-from lxml.etree import Element, SubElement, _Element, strip_tags, tostring
+from lxml import html
+from lxml.etree import SubElement, _Element, strip_tags, tostring
 from lxml.html import HtmlElement
 
 # own
-from .baseline import basic_cleaning
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
+from .justext_lite import HEADINGS, extract_paragraphs, tidy_spacing
 from .main_extractor import handle_image
 from .readability_lxml import Document as ReadabilityDocument  # fork
-from .settings import JUSTEXT_LANGUAGES, Extractor
+from .settings import Extractor
 from .utils import fromstring_bytes, trim
 from .xml import TEI_VALID_TAGS, delete_element
 from .xpaths import OVERALL_DISCARD_XPATH
 
 LOGGER = logging.getLogger(__name__)
-
-# justext re-reads the stoplist file on each call
-get_stoplist = cache(_get_stoplist)
 
 SANITIZED_XPATH = ".//aside|.//audio|.//button|.//fencedframe|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time"
 
@@ -121,14 +116,12 @@ def compare_extraction(
         LOGGER.debug("unclean or short document triggering justext examination: %s", options.source)
         body2, text2 = justext_rescue(tree_cleaning(copy(tree), options), options)
         len_text2 = len(text2)
-        # unclean: allow shorter (boilerplate dropped), guard image-heavy pages;
-        # merely short: must add text, len_text2 > len_text is implied (#896)
-        if unclean:
-            accept = len_text <= JUSTEXT_OVERRIDE_RATIO * len_text2 and (
-                len_text2 > len_text or not options.images or body.find(".//graphic") is None
-            )
-        else:
-            accept = len_text < len_text2
+        # must add text (#896), or on an unclean page may be shorter (boilerplate dropped) unless image-heavy
+        accept = len_text2 > len_text or (
+            unclean
+            and len_text <= JUSTEXT_OVERRIDE_RATIO * len_text2
+            and (not options.images or body.find(".//graphic") is None)
+        )
         if text2 and accept:
             LOGGER.debug("using justext, length: %s", len_text2)
             body, text, len_text = body2, text2, len_text2
@@ -141,49 +134,64 @@ def compare_extraction(
     return body, text
 
 
-@cache
-def jt_stoplist_init() -> frozenset[str]:
-    "Retrieve and return the content of all JusText stoplists"
-    return frozenset(word for language in get_stoplists() for word in _get_stoplist(language))
+def _blocks(body: _Element) -> Iterator[_Element]:
+    "Output blocks of try_justext: paragraphs, headings, quotes, code and list items."
+    for elem in body:
+        yield from elem if elem.tag == "list" else (elem,)
 
 
-def try_justext(tree: HtmlElement, url: str | None, target_language: str | None) -> _Element:
-    """Second safety net: try with the generic algorithm justext"""
-    # init
-    result_body = Element("body")
-    # determine language
-    if target_language in JUSTEXT_LANGUAGES:
-        justext_stoplist = get_stoplist(JUSTEXT_LANGUAGES[target_language])
-    else:
-        justext_stoplist = jt_stoplist_init()
-    # extract
+def try_justext(tree: HtmlElement, url: str | None, *, options: Extractor | None = None) -> _Element:
+    """Second safety net: paragraph classification derived from jusText.
+    Links, formatting and images are kept according to the options."""
+    if options is None:
+        options = Extractor()
+        options.url = url
+    result_body = html.Element("body")
     try:
-        paragraphs = ParagraphMaker.make_paragraphs(tree)
-        classify_paragraphs(paragraphs, justext_stoplist, 50, 150, 0.1, 0.2, 0.25, True)
-        revise_paragraph_classification(paragraphs, 150)
+        current_list, current_id = None, 0
+        for _, kind, list_id, block in extract_paragraphs(tree):
+            if kind in ("ol", "ul"):
+                if current_list is None or list_id != current_id:
+                    current_list, current_id = SubElement(result_body, "list", rend=kind), list_id
+                block.tag = "item"
+                current_list.append(block)
+                continue
+            current_list = None
+            if kind in HEADINGS:
+                block.tag = "head"
+                block.set("rend", kind)
+            else:
+                block.tag = kind
+            result_body.append(block)
+        convert_markup(result_body, options)
+        for elem in _blocks(result_body):
+            if elem.tag != "code":
+                tidy_spacing(elem)
     except Exception as err:
         LOGGER.error("justext %s %s", err, url)
-    else:
-        for paragraph in paragraphs:
-            if not paragraph.is_boilerplate:
-                SubElement(result_body, "p").text = paragraph.text
+        result_body = html.Element("body")
     return result_body
 
 
 def justext_rescue(tree: HtmlElement, options: Extractor) -> tuple[_Element, str]:
     """Try to use justext algorithm as a second fallback"""
-    temppost_algo = try_justext(basic_cleaning(tree), options.url, options.lang)
-    return temppost_algo, trim(" ".join(temppost_algo.itertext()))
+    temppost_algo = try_justext(tree, options.url, options=options)
+    # blocks joined by a space, inline markup without: the length of the plain text
+    return temppost_algo, trim(" ".join("".join(block.itertext()) for block in _blocks(temppost_algo)))
 
 
 def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, str]:
     """Convert and sanitize the output from the generic algorithm (post-processing)"""
-    # 1. clean
-    cleaned_tree = tree_cleaning(tree, options)
-    strip_tags(cleaned_tree, "span", *(() if options.links else ("a",)))
-    # 2. convert (pass url so relative links are absolutized on the fallback path)
-    cleaned_tree = convert_tags(cleaned_tree, options, options.url)
-    for elem in list(cleaned_tree.iter("graphic")):
+    cleaned_tree = convert_markup(tree_cleaning(tree, options), options)
+    return cleaned_tree, trim(" ".join(cleaned_tree.itertext()))
+
+
+def convert_markup(tree: HtmlElement, options: Extractor) -> HtmlElement:
+    "Convert HTML markup to the output format according to the options, other tags stripped."
+    strip_tags(tree, "span", *(() if options.links else ("a",)))
+    # pass url so relative links are absolutized on the fallback path
+    tree = convert_tags(tree, options, options.url)
+    for elem in list(tree.iter("graphic")):
         image = handle_image(elem, options)
         if image is None:
             delete_element(elem)
@@ -194,15 +202,13 @@ def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, s
     # Groups by direct parent (the enclosing table once tbody/thead/tfoot are stripped upstream);
     # nested tables form their own group.
     seen_group_elems: set[_Element | None] = set()
-    for tr in cleaned_tree.iter("tr"):
+    for tr in tree.iter("tr"):
         parent = tr.getparent()
         if parent not in seen_group_elems and tr.find("th") is not None:
             seen_group_elems.add(parent)
             for c in tr.iterchildren("th"):
                 c.set("role", "head")
-    for elem in cleaned_tree.iter("td", "th", "tr"):
+    for elem in tree.iter("td", "th", "tr"):
         elem.tag = "row" if elem.tag == "tr" else "cell"
-    # 3. sanitize
-    strip_tags(cleaned_tree, *({str(elem.tag) for elem in cleaned_tree.iter("*")} - TEI_VALID_TAGS))
-    # 4. return
-    return cleaned_tree, trim(" ".join(cleaned_tree.itertext()))
+    strip_tags(tree, *({str(elem.tag) for elem in tree.iter("*")} - TEI_VALID_TAGS))
+    return tree
