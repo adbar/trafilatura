@@ -133,6 +133,18 @@ def test_leading_whitespace_before_sitemap(monkeypatch, prefix):
     assert sitemaps.sitemap_search(url) == ["https://example.org/a"]
 
 
+def test_plain_text_sitemap_html_and_quotes():
+    # an HTML page whose <html> tag comes after a long comment is not a TXT sitemap
+    html = "<!DOCTYPE html>\n<!-- " + "x" * 150 + " -->\n<html><body><a href='https://example.org/page'>Page</a></body></html>"
+    assert sitemaps.is_plausible_sitemap("https://example.org/sitemap", html) is False
+    assert sitemaps.is_plausible_sitemap("https://example.org/sitemap", html.lower()) is False
+    assert sitemaps.parse_sitemap(html, "https://example.org/sitemap") == []
+    # closing single quotes are not part of the link, inner apostrophes are kept
+    url = "https://example.org/sitemap.txt"
+    assert sitemaps.parse_sitemap("'https://example.org/page'", url) == ["https://example.org/page"]
+    assert sitemaps.parse_sitemap("https://example.org/it's-here\n", url) == ["https://example.org/it%27s-here"]
+
+
 def test_parse_sitemap_invalid_input():
     url = "https://example.org/sitemap.xml"
     with pytest.raises(TypeError, match="content must be a string"):
