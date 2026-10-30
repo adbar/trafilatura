@@ -5,7 +5,8 @@ Unit tests for sitemaps parsing.
 import logging
 import os
 import sys
-from unittest.mock import patch
+from configparser import ConfigParser
+from unittest.mock import call, patch
 
 import pytest
 from courlan import get_hostinfo
@@ -13,6 +14,7 @@ from courlan import get_hostinfo
 import trafilatura
 from trafilatura import sitemaps
 from trafilatura.deduplication import is_similar_domain
+from trafilatura.settings import DEFAULT_CONFIG
 from trafilatura.utils import decode_file
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -530,3 +532,22 @@ def test_sitemap_xml_without_a_root_is_ignored(content):
     sitemap.extract_sitemap_links()
     assert sitemap.urls == []
     assert sitemap.sitemap_urls == []
+
+
+def test_sleep_time_defaults_to_config(monkeypatch):
+    """Without an explicit sleep_time, the wait comes from SLEEP_TIME in the config."""
+    config = ConfigParser()
+    config.read_dict(DEFAULT_CONFIG)
+    config.set("DEFAULT", "SLEEP_TIME", "10")
+    robots = ["https://example.org/a.xml", "https://example.org/b.xml"]
+    monkeypatch.setattr(sitemaps, "find_robots_sitemaps", lambda url, config: list(robots))
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: None)
+
+    with patch.object(sitemaps, "sleep") as mock_sleep:
+        sitemaps.sitemap_search("https://example.org", config=config)
+    assert mock_sleep.call_args_list == [call(10.0)]
+
+    with patch.object(sitemaps, "sleep") as mock_sleep:
+        sitemaps.sitemap_search("https://example.org", sleep_time=0.5, config=config)
+    assert mock_sleep.call_args_list == [call(0.5)]

@@ -258,7 +258,7 @@ def find_feed_urls(
     url: str,
     target_lang: str | None = None,
     external: bool = False,
-    sleep_time: float = 2.0,
+    sleep_time: float | None = None,
     config: ConfigParser = DEFAULT_CONFIG,
 ) -> list[str]:
     """Try to find feed URLs.
@@ -270,7 +270,8 @@ def find_feed_urls(
                      (two-letter string, ISO 639-1 format).
         external: Similar hosts only or external URLs
                   (boolean, defaults to False).
-        sleep_time: Wait between requests on the same website.
+        sleep_time: Wait between requests on the same website
+                    (defaults to SLEEP_TIME in the config).
         config: Pass configuration values for download control.
 
     Returns:
@@ -281,6 +282,9 @@ def find_feed_urls(
     if domain is None:
         LOGGER.warning("Invalid URL: %s", url)
         return []
+
+    if sleep_time is None:
+        sleep_time = config.getfloat("DEFAULT", "SLEEP_TIME")
 
     params = FeedParameters(baseurl, domain, url, external, target_lang)
     urlfilter = None
