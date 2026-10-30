@@ -806,6 +806,40 @@ def test_crawling():
     assert f.getvalue().strip() == "https://httpbun.com/html"
 
 
+def test_blacklist_discovered_urls(tmp_path):
+    "The blacklist also applies to the URLs found by feeds, sitemaps and the crawler."
+    blacklist = tmp_path / "blacklist.txt"
+    blacklist.write_text(
+        "https://example.org/drop\nhttps://httpbun.com/links/2/0/\nhttps://httpbun.com/html\n", encoding="utf-8"
+    )
+
+    for option, function in (("--feed", "find_feed_urls"), ("--sitemap", "sitemap_search")):
+        args = cli.parse_args([option, "https://example.org/", "--list", "-b", str(blacklist)])
+        f = io.StringIO()
+        found = ["https://example.org/drop", "https://example.org/keep"]
+        with patch.object(cli_utils, function, return_value=found), redirect_stdout(f):
+            cli.process_args(args)
+        assert f.getvalue() == "https://example.org/keep\n"
+
+    # links followed by the crawler
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    args = cli.parse_args(["--explore", "https://httpbun.com/links/2/2", "--list", "-b", str(blacklist)])
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.process_args(args)
+    assert "https://httpbun.com/links/2/1" in f.getvalue()
+    assert "https://httpbun.com/links/2/0" not in f.getvalue()
+
+    # start URL of a crawl
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    args = cli.parse_args(["--crawl", "https://httpbun.com/html", "--list", "-b", str(blacklist)])
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.process_args(args)
+    assert f.getvalue().strip() == ""
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+
+
 def test_probing():
     "Test webpage probing functions."
     url = "https://example.org/"

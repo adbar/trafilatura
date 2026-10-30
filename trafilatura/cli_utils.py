@@ -327,7 +327,7 @@ def cli_discovery(args: argparse.Namespace) -> int:
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
             if future.result() is not None:
-                url_store.add_urls(future.result())
+                add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_store=url_store)
                 # empty buffer in order to spare memory
                 if args.list and len(url_store.get_known_domains()) >= args.parallel:
                     with lock:
@@ -374,7 +374,7 @@ def cli_crawler(
 
     # load input URLs
     if url_store is None:
-        spider.URL_STORE.add_urls(load_input_urls(args))
+        add_to_compressed_dict(load_input_urls(args), blacklist=args.blacklist, url_store=spider.URL_STORE)
     else:
         spider.URL_STORE = url_store
 
@@ -383,7 +383,9 @@ def cli_crawler(
         if spider.URL_STORE.urldict[hostname].tuples:
             startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
             if startpage:
-                params = spider.init_crawl(startpage, lang=args.target_language, config=options.config)
+                params = spider.init_crawl(
+                    startpage, lang=args.target_language, config=options.config, blacklist=args.blacklist
+                )
                 # key by the crawl base: it may differ from hostname after a https upgrade,
                 # but the store may still hold URLs under the original base
                 param_dict[params.base] = params
