@@ -426,10 +426,10 @@ MANUALLY_STRIPPED = [
     "wbr",
 ]
 
-# baseline()/html2txt() only (not the main pipeline). NOTE: html2txt() also measures page length
+# baseline()/html2txt() and the justext walker (not the main pipeline). NOTE: html2txt() also measures page length
 # for the recall-escalation gate (core.py) -- shrinking this set fires escalation less often, so
 # re-run the full benchmark suite before changing it.
-# prune cookie/consent banners: fluent prose justext's density metric can't classify; class/id is
+# prune cookie/consent banners: fluent prose justext's link density can't classify; class/id is
 # English even on localized templates. (role/aria-hidden/display:none tried too -- overfit WCXB dev.)
 # Anchored banner/CMP compounds, NOT bare 'cookie'/'consent' substrings: those matched WP Cookie
 # Notice BODY classes (cookies-not-set) and topical content classes, deleting up to 97% of a page's
@@ -459,85 +459,3 @@ DEDUPE_SCAN_CAP = 200_000
 INLINE_CONSUMING = {"hi", "ref", "del"}  # element folds its children into its own text
 INLINE_FORMATTABLE = INLINE_CONSUMING | {"code"}  # + code: has text, rendered verbatim
 INLINE_CARRIED = INLINE_FORMATTABLE | {"graphic"}  # + graphic: no text, rendered as image markup
-
-# mapping for languages known to py3langid
-JUSTEXT_LANGUAGES = {
-    "af": "Afrikaans",
-    "an": "Aragonese",
-    "ar": "Arabic",
-    "az": "Azerbaijani",
-    "be": "Belarusian",
-    "bg": "Bulgarian",
-    "bn": "Bengali",
-    "br": "Breton",
-    "bs": "Bosnian",
-    "ca": "Catalan",
-    "cs": "Czech",
-    "cy": "Welsh",
-    "da": "Danish",
-    "de": "German",
-    "el": "Greek",
-    "en": "English",
-    "eo": "Esperanto",
-    "es": "Spanish",
-    "et": "Estonian",
-    "eu": "Basque",
-    "fa": "Persian",
-    "fi": "Finnish",
-    "fr": "French",
-    "ga": "Irish",
-    "gl": "Galician",
-    "gu": "Gujarati",
-    "he": "Hebrew",
-    "hi": "Hindi",
-    "hr": "Croatian",
-    "ht": "Haitian",
-    "hu": "Hungarian",
-    "hy": "Armenian",
-    "id": "Indonesian",
-    "is": "Icelandic",
-    "it": "Italian",
-    "jv": "Javanese",
-    "ka": "Georgian",
-    "kk": "Kazakh",
-    "kn": "Kannada",
-    "ko": "Korean",
-    "ku": "Kurdish",
-    "ky": "Kyrgyz",
-    "la": "Latin",
-    "lb": "Luxembourgish",
-    "lt": "Lithuanian",
-    "lv": "Latvian",
-    "mk": "Macedonian",
-    "ml": "Malayalam",
-    "mr": "Marathi",
-    "ms": "Malay",
-    "mt": "Maltese",
-    "nb": "Norwegian_Bokmal",
-    "ne": "Nepali",
-    "nl": "Dutch",
-    "nn": "Norwegian_Nynorsk",
-    "no": "Norwegian_Bokmal",
-    "oc": "Occitan",
-    "pl": "Polish",
-    "pt": "Portuguese",
-    "qu": "Quechua",
-    "ro": "Romanian",
-    "ru": "Russian",
-    "sk": "Slovak",
-    "sl": "Slovenian",
-    "sq": "Albanian",
-    "sr": "Serbian",
-    "sv": "Swedish",
-    "sw": "Swahili",
-    "ta": "Tamil",
-    "te": "Telugu",
-    "tl": "Tagalog",
-    "tr": "Turkish",
-    "uk": "Ukrainian",
-    "ur": "Urdu",
-    "vi": "Vietnamese",
-    "vo": "Volapuk",
-    "wa": "Walloon",
-    # no justext stoplist available: 'ja' (Japanese), 'zh' (Chinese)
-}

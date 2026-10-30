@@ -78,6 +78,11 @@ def _handle_forms(tree: HtmlElement) -> None:
             delete_element(form)
 
 
+# fallback or embedded copies: paragraphs inside them neither count as removed nor as surviving content
+ALTERNATE_CONTENT = {"noscript", "fencedframe"}
+UNDO_MAX_WORDS = 50
+
+
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
     # salvage formulas before <math> is discarded along with its subtree
@@ -118,17 +123,26 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     # strip targeted elements
     strip_tags(tree, *stripping_list)
 
-    # recall: undo the deletions if they remove every paragraph (copy only if none can survive)
+    # undo the deletions if they remove every paragraph and leave almost no text, e.g. a page swallowed
+    # by an unclosed <aside> or <button> (copy only if none can survive)
     tcopy = None
-    if (
-        options.focus == "recall"
-        and tree.find(".//p") is not None
-        and ("p" in cleaning_list or not any(next(p.iterancestors(cleaning_list), tree) is tree for p in tree.iter("p")))
-    ):
+    survives = (
+        "p" not in cleaning_list and next(p.iterancestors(cleaning_list), None) is None
+        for p in tree.iter("p")
+        if next(p.iterancestors(ALTERNATE_CONTENT), None) is None
+    )
+    if next(survives, True) is False and not any(survives):
         tcopy = deepcopy(tree)
     strip_elements(tree, *cleaning_list, with_tail=False)
-    if tcopy is not None and tree.find(".//p") is None:
+    if tcopy is not None and (options.focus == "recall" or len(" ".join(tree.itertext()).split()) < UNDO_MAX_WORDS):
         tree = tcopy
+        # honour tables=False, recall keeps them as before
+        if not options.tables and options.focus != "recall":
+            strip_tags(tree, "table", "tr", "td", "th")
+
+    # prefixed tags like Word's <o:p> or <fb:like> are not valid element names in the output, keep their text
+    if prefixed := {tag for tag in {elem.tag for elem in tree.iter("*")} if isinstance(tag, str) and ":" in tag}:
+        strip_tags(tree, *prefixed)
 
     if clean_forms:
         _handle_forms(tree)

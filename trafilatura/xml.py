@@ -808,9 +808,11 @@ def process_element(
             elif not in_cell and not (tag == "lb" and in_item and _opens_item(element)):
                 returnlist.append("\n")
         elif tag not in ("cell", "item"):
-            # cells still need to append vertical bars
-            if in_cell:
-                _append_tail(element, returnlist, in_cell, in_item)
+            # a textless inline element still carries its tail: an empty permalink
+            # anchor must not swallow the heading text that follows it (#1024);
+            # whitespace-only tails only matter inside cells
+            if in_cell or text_chars_test(element.tail):
+                _append_tail(element, returnlist, in_cell, in_item, include_formatting, list_positions)
             return
 
     last_in_item = in_item and _closes_container(element, "item")
@@ -981,10 +983,10 @@ def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     if docmeta.categories or docmeta.tags:
         textclass = SubElement(profiledesc, "textClass")
         keywords = SubElement(textclass, "keywords")
-        if docmeta.categories:
-            SubElement(keywords, "term", type="categories").text = ",".join(docmeta.categories)
-        if docmeta.tags:
-            SubElement(keywords, "term", type="tags").text = ",".join(docmeta.tags)
+        for category in docmeta.categories or []:
+            SubElement(keywords, "term", type="categories").text = category
+        for tag in docmeta.tags or []:
+            SubElement(keywords, "term", type="tags").text = tag
 
     creation = SubElement(profiledesc, "creation")
     SubElement(creation, "date", type="download").text = docmeta.filedate

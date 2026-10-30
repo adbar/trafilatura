@@ -5,7 +5,8 @@ Unit tests for sitemaps parsing.
 import logging
 import os
 import sys
-from unittest.mock import patch
+from configparser import ConfigParser
+from unittest.mock import call, patch
 
 import pytest
 from courlan import get_hostinfo
@@ -13,6 +14,7 @@ from courlan import get_hostinfo
 import trafilatura
 from trafilatura import sitemaps
 from trafilatura.deduplication import is_similar_domain
+from trafilatura.settings import DEFAULT_CONFIG
 from trafilatura.utils import decode_file
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -115,6 +117,22 @@ def test_parse_sitemap_without_fetching(monkeypatch):
     index = "<sitemapindex><sitemap><loc>https://example.org/part.xml</loc></sitemap></sitemapindex>"
     assert sitemaps.parse_sitemap(index, url) == ["https://example.org/part.xml"]
     assert sitemaps.parse_sitemap("https://example.org/a", "https://example.org/sitemap.txt") == ["https://example.org/a"]
+
+
+@pytest.mark.parametrize("prefix", ["\n", "  \r\n", "\ufeff", "\ufeff\n"])
+def test_leading_whitespace_before_sitemap(monkeypatch, prefix):
+    url = "https://example.org/sitemap.xml"
+    content = (
+        prefix
+        + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://example.org/a</loc></url></urlset>'
+    )
+    assert sitemaps.is_plausible_sitemap(url, content) is True
+    assert sitemaps.is_plausible_sitemap(url, prefix + "<!DOCTYPE html><html><body/></html>") is False
+
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda u, **kwargs: content if u == url else None)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda u, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+    assert sitemaps.sitemap_search(url) == ["https://example.org/a"]
 
 
 def test_parse_sitemap_invalid_input():
@@ -321,6 +339,10 @@ def test_robotstxt():
     assert sitemaps.extract_robots_sitemaps("sitemap: http://[::1\nsitemap: /sitemap.xml", baseurl) == [
         "https://httpbun.com/sitemap.xml"
     ]
+    # robots.txt files above 10000 characters are still read
+    long_robots = "User-agent: *\n" + "Disallow: /private/\n" * 600 + "Sitemap: https://example.org/sitemap.xml\n"
+    assert len(long_robots) > 10000
+    assert sitemaps.extract_robots_sitemaps(long_robots, baseurl) == ["https://example.org/sitemap.xml"]
 
 
 def test_sitemap_index_with_target_lang():
@@ -357,6 +379,34 @@ def test_sitemap_index_with_target_lang():
     ):
         assert sorted(sitemaps.sitemap_search("https://example.org")) == expected
         assert sorted(sitemaps.sitemap_search("https://example.org", target_lang="de")) == expected
+
+
+@pytest.mark.parametrize("search_url", ["https://example.org/blog", "http://example.org/blog", "https://www.example.org/blog"])
+@pytest.mark.parametrize("sitemap_host", ["https://example.org", "https://www.example.org", "http://www.example.org"])
+def test_subpage_filter_ignores_scheme_and_www(monkeypatch, search_url, sitemap_host):
+    "regression #1011: the subpage filter must not depend on how the sitemap spells scheme and host"
+    wanted = [f"{sitemap_host}/blog/a", f"{sitemap_host}/blog/sub/b"]
+    body = "<urlset>" + "".join(f"<url><loc>{u}</loc></url>" for u in [*wanted, f"{sitemap_host}/news/c"]) + "</urlset>"
+    # no robots.txt, the standard sitemap location is tried
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: body if url.endswith("/sitemap.xml") else None)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+    assert sitemaps.sitemap_search(search_url) == wanted
+
+
+def test_subpage_filter_keeps_other_hosts_out(monkeypatch):
+    "With external links allowed, only the requested host and path are kept."
+    urls = [
+        "https://www.example.org/blog/a",
+        "https://other.org/blog/b",
+        "https://notexample.org/blog/c",
+        "https://blog.example.org/blog/d",
+    ]
+    body = "<urlset>" + "".join(f"<url><loc>{u}</loc></url>" for u in urls) + "</urlset>"
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: body if url.endswith("/sitemap.xml") else None)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+    assert sitemaps.sitemap_search("https://example.org/blog", external=True) == ["https://www.example.org/blog/a"]
 
 
 def test_lang_filter_before_cleaning():
@@ -482,3 +532,22 @@ def test_sitemap_xml_without_a_root_is_ignored(content):
     sitemap.extract_sitemap_links()
     assert sitemap.urls == []
     assert sitemap.sitemap_urls == []
+
+
+def test_sleep_time_defaults_to_config(monkeypatch):
+    """Without an explicit sleep_time, the wait comes from SLEEP_TIME in the config."""
+    config = ConfigParser()
+    config.read_dict(DEFAULT_CONFIG)
+    config.set("DEFAULT", "SLEEP_TIME", "10")
+    robots = ["https://example.org/a.xml", "https://example.org/b.xml"]
+    monkeypatch.setattr(sitemaps, "find_robots_sitemaps", lambda url, config: list(robots))
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: None)
+
+    with patch.object(sitemaps, "sleep") as mock_sleep:
+        sitemaps.sitemap_search("https://example.org", config=config)
+    assert mock_sleep.call_args_list == [call(10.0)]
+
+    with patch.object(sitemaps, "sleep") as mock_sleep:
+        sitemaps.sitemap_search("https://example.org", sleep_time=0.5, config=config)
+    assert mock_sleep.call_args_list == [call(0.5)]

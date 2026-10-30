@@ -28,7 +28,7 @@ from .baseline import baseline
 from .downloads import fetch_response, fetch_url
 from .htmlprocessing import prune_unwanted_nodes
 from .settings import DEFAULT_CONFIG
-from .utils import LANGID_FLAG, Response, decode_file, load_html
+from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, Response, decode_file, load_html
 
 LOGGER = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ MAX_KNOWN_URLS = 100000
 class CrawlParameters:
     "Store necessary information to manage a focused crawl."
 
-    __slots__ = ["base", "config", "i", "is_on", "known_num", "lang", "prune_xpath", "ref", "rules", "start"]
+    __slots__ = ["base", "blacklist", "config", "i", "is_on", "known_num", "lang", "prune_xpath", "ref", "rules", "start"]
 
     def __init__(
         self,
@@ -51,6 +51,7 @@ class CrawlParameters:
         rules: RobotFileParser | None = None,
         prune_xpath: str | list[str] | None = None,
         config: ConfigParser = DEFAULT_CONFIG,
+        blacklist: set[str] | None = None,
     ) -> None:
         self.start: str = start
         self.base: str = self._get_base_url(start)
@@ -62,6 +63,7 @@ class CrawlParameters:
         self.known_num: int = 0
         self.is_on: bool = True
         self.prune_xpath: str | list[str] | None = prune_xpath
+        self.blacklist: set[str] = blacklist or set()
 
     def _get_base_url(self, start: str) -> str:
         "Set reference domain for the crawl."
@@ -86,8 +88,13 @@ class CrawlParameters:
         return [u for u in todo if u != self.start and self.ref in u]
 
     def is_valid_link(self, link: str) -> bool:
-        "Run checks: robots.txt rules, URL type and crawl breadth."
-        return (not self.rules or self.rules.can_fetch("*", link)) and self.ref in link and not is_not_crawlable(link)
+        "Run checks: robots.txt rules, URL type, crawl breadth and blacklist."
+        return (
+            (not self.rules or self.rules.can_fetch("*", link))
+            and self.ref in link
+            and not is_not_crawlable(link)
+            and URL_BLACKLIST_REGEX.sub("", link) not in self.blacklist
+        )
 
 
 def refresh_detection(htmlstring: str, homepage: str, config: ConfigParser = DEFAULT_CONFIG) -> tuple[str | None, str | None]:
@@ -130,7 +137,7 @@ def probe_alternative_homepage(
 ) -> tuple[str | None, str | None, str | None]:
     "Check if the homepage is redirected and return appropriate values."
     response = fetch_response(homepage, decode=False, config=config)
-    if not response or not response.data:
+    if not response or not response.data or response.status != 200:
         return None, None, None
 
     if response.url != homepage:
@@ -147,6 +154,15 @@ def probe_alternative_homepage(
 
     LOGGER.debug("fetching homepage OK: %s", new_homepage)
     return new_htmlstring, new_homepage, get_base_url(new_homepage)
+
+
+def is_same_site(base_url: str, new_base_url: str) -> bool:
+    "Check if a redirect only upgrades http to https and/or adds or drops a leading www."
+    scheme, _, host = base_url.lower().partition("://")
+    new_scheme, _, new_host = new_base_url.lower().partition("://")
+    return host.removeprefix("www.") == new_host.removeprefix("www.") and (
+        scheme == new_scheme or (scheme, new_scheme) == ("http", "https")
+    )
 
 
 def parse_robots(robots_url: str, data: str) -> RobotFileParser | None:
@@ -219,6 +235,7 @@ def process_links(
 
     links, links_priority = [], []
     for link in candidates:
+        link = link.split("#", 1)[0]
         if not params.is_valid_link(link):
             continue
         if is_navigation_page(link):
@@ -238,6 +255,8 @@ def process_response(
         return
     # add final document URL to known_links
     URL_STORE.add_urls([response.url], visited=True)
+    if response.status != 200:
+        return
 
     # convert urllib3 response to string and proceed to link extraction
     url = response.url if get_base_url(response.url) == params.base else params.base
@@ -252,10 +271,11 @@ def init_crawl(
     known: list[str] | None = None,
     prune_xpath: str | list[str] | None = None,
     config: ConfigParser = DEFAULT_CONFIG,
+    blacklist: set[str] | None = None,
 ) -> CrawlParameters:
     """Initialize crawl by setting variables, copying values to the
     URL store and retrieving the initial page if the crawl starts."""
-    params = CrawlParameters(start, lang, rules, prune_xpath, config)
+    params = CrawlParameters(start, lang, rules, prune_xpath, config, blacklist)
 
     # todo: just known or also visited?
     URL_STORE.add_urls(urls=known or [], visited=True)
@@ -288,12 +308,13 @@ def crawl_page(
         # probe and process homepage
         htmlstring, homepage, new_base_url = probe_alternative_homepage(url, params.config)
         if htmlstring and homepage and new_base_url:
-            # follow the site's http -> https upgrade (same host only)
-            if params.base.startswith("http://") and new_base_url == "https://" + params.base.removeprefix("http://"):
+            # follow the site's http -> https upgrade and the redirects between the bare domain and www
+            if is_same_site(params.base, new_base_url):
+                params.ref = params.ref.replace(params.base, new_base_url, 1)
                 params.base = new_base_url
-                params.ref = "https://" + params.ref.removeprefix("http://")
+                URL_STORE.store_rules(params.base, params.rules)
             # register potentially new homepage
-            URL_STORE.add_urls([homepage])
+            URL_STORE.add_urls([homepage], visited=get_base_url(homepage) == params.base)
             # resolve links against the final URL unless the redirect left the crawled host
             process_links(htmlstring, params, url=homepage if get_base_url(homepage) == params.base else url)
     else:

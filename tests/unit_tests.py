@@ -28,7 +28,7 @@ from trafilatura import bare_extraction, baseline, core, external, extract, extr
 from trafilatura import main_extractor as me
 from trafilatura.baseline import html2txt
 from trafilatura.deduplication import LRU_TEST, LRUCache, _punct_tbl
-from trafilatura.external import _prefer_readability, sanitize_tree, try_justext, try_readability
+from trafilatura.external import _prefer_readability, sanitize_tree, try_readability
 from trafilatura.htmlprocessing import convert_tags, tree_cleaning
 from trafilatura.main_extractor import (
     _span,
@@ -949,6 +949,32 @@ def test_inline_quotation_stays_in_its_paragraph(body, expected):
     assert expected.replace("**", "") in _extract_doc(body, output_format="txt").splitlines()
 
 
+@pytest.mark.parametrize(
+    "body,unwrapped",
+    [
+        ("<ul><li>x <o:p>y</o:p> z</li></ul>", "<ul><li>x y z</li></ul>"),
+        ("<blockquote>x <o:p>y</o:p> z</blockquote>", "<blockquote>x y z</blockquote>"),
+        ("<pre>x <fb:like>y</fb:like> z</pre>", "<pre>x y z</pre>"),
+    ],
+    ids=["item", "quote", "code"],
+)
+@pytest.mark.parametrize("fmt", ["txt", "xml", "markdown"])
+def test_prefixed_tag_unwrapped(body, unwrapped, fmt):
+    "A prefixed tag such as Word's <o:p> is unwrapped and its text kept instead of losing the document (#1010)."
+    result = _extract_doc(body, output_format=fmt)
+    assert result is not None
+    assert result == _extract_doc(unwrapped, output_format=fmt)
+
+
+def test_prefixed_tag_in_paragraph_xml_output():
+    "A prefixed tag kept in a paragraph made the XML output check fail on its undeclared namespace."
+    text = "Some article text. " * 30
+    result = extract(
+        f"<html><body><article><p>{text}</p><div>x <o:p>y</o:p> z</div></article></body></html>", output_format="xml"
+    )
+    assert "<p>x y z</p>" in result
+
+
 def test_srcless_graphic_dropped_text_kept():
     "A src-less image is dropped from a quote, the text around it in a paragraph is kept."
     quote = handle_quotes(etree.fromstring("<quote>a<graphic/></quote>"), core.Extractor())
@@ -1376,6 +1402,25 @@ def test_heading_permalink_symbols_preserve_wrapper_whitespace(links):
     )
     result = extract(document, output_format="markdown", include_links=links)
     assert result.startswith("## Install ation\n")
+
+
+def test_empty_anchor_keeps_heading_text():
+    """An empty permalink anchor must not drop the heading text after it (#1024)."""
+    paragraph = "Lorem ipsum dolor sit amet consectetur adipiscing elit. " * 5
+    htmlstring = f'<html><body><article><h2><a href="#install"></a>Installation</h2><p>{paragraph}</p></article></body></html>'
+    assert extract(htmlstring, output_format="markdown", include_links=True).startswith("## Installation")
+    assert extract(htmlstring, output_format="txt", include_links=True).startswith("Installation")
+    assert '"text": "Installation' in extract(htmlstring, output_format="json", include_links=True)
+
+
+def test_empty_element_whitespace_tail():
+    """A whitespace-only tail outside a cell must not leak into the next block (#1024)."""
+    body = "<doc><p>alpha beta gamma delta</p><span></span>\n   <p>epsilon zeta eta theta</p></doc>"
+    assert _md(body, include_formatting=False) == "alpha beta gamma delta\nepsilon zeta eta theta"
+    assert "\n   " not in _md(body)
+    # inside a cell the same whitespace still separates the cell content
+    cell = "<doc><table><row><cell>alpha<span></span> <b>beta</b></cell><cell>gamma</cell></row></table></doc>"
+    assert "| alpha beta | gamma |" in _md(cell)
 
 
 def test_tei():
@@ -1863,10 +1908,6 @@ def test_extraction_options():
     assert extract(my_html, only_with_metadata=True, output_format="xml", config=ZERO_CONFIG) is None
     assert extract(my_html, target_language="de", config=ZERO_CONFIG) is None
     assert extract(my_html, target_language="de", fast=True, config=ZERO_CONFIG) is None
-
-    # justext hardening
-    assert etree.tostring(try_justext(html.fromstring(my_html), None, "de")) == b"<body/>"
-    assert etree.tostring(try_justext(None, None, "de")) == b"<body/>"
     # assert extract(my_html) is None
 
     # readability
@@ -1977,8 +2018,9 @@ def test_precision_recall():
     assert "Test" not in result
 
     my_document = html.fromstring("<html><body><article><aside><p>Here is the text.</p></aside></article></body></html>")
+    # the cleaning would remove every paragraph and leave no text: undone in every mode
     result = extract(copy(my_document), favor_recall=False, config=ZERO_CONFIG, fast=True)
-    assert result != "Here is the text."
+    assert result == "Here is the text."
     result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True)
     assert result == "Here is the text."
 
@@ -3158,6 +3200,22 @@ def test_recall_escalation_justext():
     assert result.count("Message number") == 8
 
 
+@pytest.mark.parametrize(("jt_words", "winner"), [(1000, "justext"), (40, "retry")])
+def test_recall_escalation_justext_over_longer_retry(monkeypatch, jt_words, winner):
+    "Above the justext ratio, the justext candidate wins even when the recall retry is longer."
+
+    def candidate(label, words):
+        body = etree.Element("body")
+        etree.SubElement(body, "p").text = f"{label} " * words
+        return body, f"{label} " * words
+
+    monkeypatch.setattr(core, "_recall_retry", lambda *args: candidate("retry", 2000))
+    monkeypatch.setattr(core, "justext_rescue", lambda *args: candidate("justext", jt_words))
+    messages = "".join(f"<div class='sidebar'>Menu entry number {i} of the page.</div>" for i in range(200))
+    result = extract(f"<html><body>{_ESCALATION_INTRO}{messages}</body></html>", output_format="txt") or ""
+    assert result.startswith(winner)
+
+
 def _formatted_comment_doc(comment):
     article = "".join(
         f"<p>Article paragraph number {i} with plenty of text to be extracted properly by the main extractor here.</p>"
@@ -3464,6 +3522,16 @@ def test_compare_extraction_justext_override(monkeypatch, unclean, own_len, jt_l
     own = "a" * own_len
     _, text = external.compare_extraction(empty_tree, body, own, core.Extractor())
     assert text == (jt_text if expect_jt else own)
+
+
+def test_compare_extraction_justext_input_cleaned(monkeypatch):
+    "Justext reads a tree_cleaning'd copy, the input tree stays untouched."
+    monkeypatch.setattr(external, "try_readability", lambda tree: etree.Element("body"))
+    long = "This sentence is long enough to be classified as content by itself. " * 3
+    tree = html.fromstring(f"<html><body><p>{long}</p><dialog><p>Dialog {long}</p></dialog></body></html>")
+    _, text = external.compare_extraction(tree, etree.Element("body"), "", core.Extractor())
+    assert text == long.strip()
+    assert tree.find(".//dialog") is not None
 
 
 def test_prefer_readability_rejects_raw_json():
@@ -4760,15 +4828,40 @@ def test_incompatible_options(caplog):
 
 
 def test_tree_cleaning_recall_keeps_paragraphs(options, monkeypatch):
-    "Recall undoes the deletions when they would remove every paragraph."
-    doc = "<html><body><aside><p>only text</p></aside></body></html>"
-    assert tree_cleaning(html.fromstring(doc), options).find(".//p") is None
+    "The deletions are undone when they would remove every paragraph, outside recall only if almost no text is left."
+    words = "word " * 60
+    page_shapes = {
+        # a page swallowed by an unclosed aside or button
+        "<html><body><aside><p>only text</p></aside></body></html>": (True, True),
+        "<html><body><button>Menu<div><p>only text</p><p>more text</p></div></button></body></html>": (True, True),
+        # fallback copy: its paragraphs do not count as removed content
+        "<html><body><noscript><p>only text</p></noscript></body></html>": (False, False),
+        "<html><body><noscript><p>Enable JS</p></noscript><aside><p>only text</p></aside></body></html>": (True, True),
+        # enough text survives outside the paragraphs
+        f"<html><body><div>{words}</div><aside><p>only text</p></aside></body></html>": (False, True),
+    }
+    for doc, expected in page_shapes.items():
+        for focus, restored in zip(("balanced", "recall"), expected, strict=True):
+            options.focus = focus
+            assert (tree_cleaning(html.fromstring(doc), options).find(".//p") is not None) is restored, (doc, focus)
     options.focus = "recall"
-    assert tree_cleaning(html.fromstring(doc), options).find(".//p") is not None
+    # a later paragraph survives: nothing to undo
+    doc = "<html><body><aside><p>only text</p></aside><p>kept</p></body></html>"
+    assert tree_cleaning(html.fromstring(doc), options).find(".//aside") is None
     # a user-added "p" deletes the paragraphs themselves
     monkeypatch.setattr(trafilatura.htmlprocessing, "MANUALLY_CLEANED", ["p"])
     doc = "<html><body><div><p>only text</p></div></body></html>"
     assert tree_cleaning(html.fromstring(doc), options).find(".//p") is not None
+
+
+def test_tree_cleaning_undo_without_tables():
+    "Outside recall, the restored copy keeps the cell paragraphs but not the table markup."
+    doc = "<html><body><table><tr><td><p>cell one</p></td><td><p>cell two</p></td></tr></table></body></html>"
+    for focus, kept in (("balanced", 0), ("precision", 0), ("recall", 1)):
+        options = core.Extractor(tables=False, precision=focus == "precision", recall=focus == "recall")
+        cleaned = tree_cleaning(html.fromstring(doc), options)
+        assert len(cleaned.findall(".//p")) == 2, focus
+        assert len(cleaned.findall(".//table")) == kept, focus
 
 
 def test_tree_cleaning_same_tag_after_nested(options):

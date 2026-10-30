@@ -7,6 +7,7 @@ import logging
 import sys
 from collections import deque
 from unittest.mock import patch
+from urllib.robotparser import RobotFileParser
 
 import pytest
 from courlan import UrlStore
@@ -173,6 +174,43 @@ def test_process_links():
     assert spider.is_still_navigation(todo) is True
 
 
+def test_process_links_fragments():
+    "Fragment variants identify the same resource without changing query strings."
+    base = "https://example.org"
+    paths = ["/page", "/page#comments", "/page#top", "/page?item=1#top", "/page?item=2#top", "/page?item=%23top"]
+    html = "".join(f'<a href="{path}">link</a>' for path in paths)
+    store = UrlStore(compressed=False, strict=False)
+    with patch.object(spider, "URL_STORE", store), patch.object(spider, "get_rules", return_value=None):
+        params = spider.CrawlParameters(base)
+        expected = {base + path for path in ("/page", "/page?item=1", "/page?item=2", "/page?item=%23top")}
+        spider.process_links(html, params, base)
+        assert set(store.find_unvisited_urls(base)) == expected
+        spider.process_links(html, params, base)
+        assert set(store.find_unvisited_urls(base)) == expected
+        assert len(store.find_unvisited_urls(base)) == len(expected)
+        store = UrlStore(compressed=False, strict=False)
+        store.add_urls([base + "/page"], visited=True)
+        spider.URL_STORE = store
+        spider.process_links(html, params, base)
+        assert set(store.find_unvisited_urls(base)) == expected - {base + "/page"}
+
+
+def test_process_links_fragment_navigation():
+    "Normalize before validation and navigation prioritization."
+    base = "https://example.org"
+    html = '<a href="/page">page</a><a href="/tag/topic#top">nav</a><a href="#local">local</a>'
+    store = UrlStore(compressed=False, strict=False)
+    store.add_urls([base + "/"], visited=True)
+    with patch.object(spider, "URL_STORE", store), patch.object(spider, "get_rules", return_value=None):
+        params = spider.CrawlParameters(base)
+        with patch.object(
+            spider.CrawlParameters, "is_valid_link", autospec=True, side_effect=spider.CrawlParameters.is_valid_link
+        ) as validate:
+            spider.process_links(html, params, base)
+        assert all("#" not in call.args[1] for call in validate.call_args_list)
+        assert store.find_unvisited_urls(base) == [base + "/tag/topic", base + "/page"]
+
+
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
     url = "https://httpbun.com/html"
@@ -284,6 +322,29 @@ def test_crawl_page():
     ## TODO: find a better page for language tests
 
 
+def test_error_pages():
+    "Links found on responses other than 200 must not reach the crawl frontier."
+    spider.URL_STORE = UrlStore()
+    base_url = "https://error-pages.org"
+    html = b'<html><body><a href="/from-error">x</a></body></html>'
+    params = spider.CrawlParameters(base_url)
+
+    for status in (404, 500):
+        spider.process_response(Response(html, status, f"{base_url}/missing"), params)
+    # the URL of the error page is recorded, its links are not queued
+    assert spider.URL_STORE.find_known_urls(base_url) == [f"{base_url}/missing"]
+    assert spider.URL_STORE.find_unvisited_urls(base_url) == []
+
+    spider.process_response(Response(html, 200, f"{base_url}/found"), params)
+    assert spider.URL_STORE.find_unvisited_urls(base_url) == [f"{base_url}/from-error"]
+
+    # a homepage with an error status counts as unreachable
+    with patch.object(spider, "fetch_response", return_value=Response(html, 404, f"{base_url}/")):
+        assert spider.probe_alternative_homepage(f"{base_url}/") == (None, None, None)
+    with patch.object(spider, "fetch_response", return_value=Response(html, 200, f"{base_url}/")):
+        assert spider.probe_alternative_homepage(f"{base_url}/")[2] == base_url
+
+
 def test_scheme_upgrade():
     "An http crawl of a site redirecting to https must follow the upgrade and keep its links."
     spider.URL_STORE = UrlStore()
@@ -310,10 +371,10 @@ def test_scheme_upgrade():
 def test_host_redirect():
     "A homepage redirecting to another host keeps the crawl on the start host, links resolved against the start URL."
     spider.URL_STORE = UrlStore()
-    html = '<html><body><a href="/p1.html">x</a><a href="https://www.host-redirect.org/p2.html">y</a></body></html>'
+    html = '<html><body><a href="/p1.html">x</a><a href="https://other-host.org/p2.html">y</a></body></html>'
 
     def fake_fetch_response(url, *, decode=False, config=None, **kw):
-        return Response(html.encode(), 200, "https://www.host-redirect.org/")
+        return Response(html.encode(), 200, "https://other-host.org/")
 
     with (
         patch.object(spider, "fetch_response", fake_fetch_response),
@@ -322,6 +383,69 @@ def test_host_redirect():
         params = spider.init_crawl("http://host-redirect.org")
     assert params.base == "http://host-redirect.org"
     assert spider.URL_STORE.find_unvisited_urls(params.base) == ["http://host-redirect.org/p1.html"]
+
+
+def test_is_same_site():
+    "Besides a scheme upgrade, only a leading www may differ after a redirect."
+    assert spider.is_same_site("http://Example.org:8080", "https://www.example.org:8080")
+    assert not spider.is_same_site("https://example.org", "https://www2.example.org")
+    assert not spider.is_same_site("https://example.org", "https://www.example.org:8443")
+    assert not spider.is_same_site("https://example.org", "http://example.org")
+
+
+def test_www_redirect():
+    "A homepage redirect between the bare domain and its www twin moves the crawl to the redirected host."
+    for start, homepage in [
+        ("https://twin-redirect.org", "https://www.twin-redirect.org/"),
+        ("https://www.twin-redirect.org", "https://twin-redirect.org/"),
+        ("http://twin-redirect.org", "https://www.twin-redirect.org/"),
+        ("http://www.twin-redirect.org", "https://twin-redirect.org/"),
+    ]:
+        spider.URL_STORE = UrlStore()
+        base = homepage.rstrip("/")
+        html = f'<html><body><a href="{base}/p1.html">x</a><a href="/p2.html">y</a></body></html>'
+        with (
+            patch.object(spider, "fetch_response", return_value=Response(html.encode(), 200, homepage)),
+            patch.object(spider, "get_rules", return_value=None),
+        ):
+            params = spider.init_crawl(start)
+        assert params.base == params.ref == base
+        todo = spider.URL_STORE.find_unvisited_urls(params.base)
+        assert f"{base}/p1.html" in todo
+        assert f"{base}/p2.html" in todo
+
+    # the crawl stays within the directory of the start URL
+    spider.URL_STORE = UrlStore()
+    html = '<html><body><a href="https://www.twin-redirect.org/blog/p1.html">x</a><a href="https://www.twin-redirect.org/about">y</a></body></html>'
+    with (
+        patch.object(
+            spider, "fetch_response", return_value=Response(html.encode(), 200, "https://www.twin-redirect.org/blog/")
+        ),
+        patch.object(spider, "get_rules", return_value=None),
+    ):
+        params = spider.init_crawl("https://twin-redirect.org/blog/")
+    assert params.base == "https://www.twin-redirect.org"
+    assert params.ref == "https://www.twin-redirect.org/blog"
+    todo = spider.URL_STORE.find_unvisited_urls(params.base)
+    assert "https://www.twin-redirect.org/blog/p1.html" in todo
+    assert "https://www.twin-redirect.org/about" not in todo
+
+
+def test_www_redirect_keeps_rules_and_homepage():
+    "After a redirect to the www twin, robots.txt rules follow the new base and the homepage is not queued again."
+    spider.URL_STORE = UrlStore()
+    rules = RobotFileParser()
+    rules.parse(["User-agent: *", "Crawl-delay: 7"])
+    homepage = "https://www.twin-rules.org/"
+    html = f'<html><body><a href="{homepage}p1.html">x</a></body></html>'
+    with (
+        patch.object(spider, "fetch_response", return_value=Response(html.encode(), 200, homepage)),
+        patch.object(spider, "get_rules", return_value=rules),
+    ):
+        params = spider.init_crawl("https://twin-rules.org")
+    assert params.base == "https://www.twin-rules.org"
+    assert spider.URL_STORE.get_crawl_delay(params.base) == 7
+    assert homepage not in spider.URL_STORE.find_unvisited_urls(params.base)
 
 
 def test_focused_crawler():

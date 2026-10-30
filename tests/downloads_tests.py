@@ -121,6 +121,67 @@ def test_urllib_request_resolves_relative_url(geturl_result, expected):
     assert result.url == expected
 
 
+@pytest.mark.parametrize(
+    "path, expected_path",
+    [
+        # issue #1068: a relative Location after a cross-host hop
+        ("/cross", "/final"),
+        ("/cross-relative", "/sub/final"),
+        # the redirect target was retried, geturl() is then empty
+        ("/retried", "/flaky"),
+    ],
+)
+def test_urllib_request_resolves_redirect_against_last_hop(path, expected_path, monkeypatch):
+    "regression: Response.url is the last redirect target resolved against the hop that sent it."
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    hits = []
+
+    class _Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            hits.append(self.path)
+            redirects = {
+                # the original request goes to the first server, the next hop to the other one
+                "/cross": f"{other}/hop",
+                "/hop": "/final",
+                "/cross-relative": f"{other}/sub/hop",
+                "/sub/hop": "final",
+                "/retried": f"{other}/flaky",
+            }
+            if self.path in redirects:
+                self.send_response(302)
+                self.send_header("Location", redirects[self.path])
+            elif self.path == "/flaky" and hits.count("/flaky") == 1:
+                self.send_response(503)
+                self.send_header("Retry-After", "0")
+            else:
+                self.send_response(200)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+
+        def log_message(self, *_args):
+            pass
+
+    servers = [ThreadingHTTPServer(("127.0.0.1", 0), _Handler) for _ in range(2)]
+    for server in servers:
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+    first, other = (f"http://127.0.0.1:{server.server_port}" for server in servers)
+    config = use_config()
+    config.set("DEFAULT", "SSRF_PROTECTION", "off")
+    monkeypatch.setattr(dl.urllib3.util.retry.time, "sleep", lambda _: None)
+
+    try:
+        response = _send_urllib_request(f"{first}{path}", False, config)
+    finally:
+        for server in servers:
+            server.shutdown()
+            server.server_close()
+    assert response is not None
+    assert response.status == 200
+    assert response.url == f"{other}{expected_path}"
+
+
 def test_response_object():
     "Test if the Response class is functioning as expected."
     my_html = b"<html><body><p>ABC</p></body></html>"
@@ -143,8 +204,8 @@ def test_response_object():
         response.data = filehandle.read()
     assert _is_suitable_response(response.url, response, DEFAULT_OPTS) is True
     assert load_html(response) is not None
-    # nothing to see here
-    assert extract(response, url=response.url, config=ZERO_CONFIG) is None
+    # the stray <http:> tag in the file used to discard the whole document
+    assert "UTF-8 encoded sample plain-text file" in extract(response, url=response.url, config=ZERO_CONFIG)
 
 
 @pytest.mark.filterwarnings("ignore::urllib3.exceptions.InsecureRequestWarning")

@@ -55,7 +55,7 @@ LINK_ATTRS = re.compile(r"""<link\s+(?:[^>"']|"[^"]*"|'[^']*')*["']?/?>""")
 LINK_ATTRIBUTES = re.compile(r"""\s([\w:-]+)\s*=\s*(["'])(.*?)\2""", re.DOTALL)
 LINK_ELEMENTS = re.compile(r"<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>", re.DOTALL)
 
-BLACKLIST = re.compile(r"\bcomments\b")  # no comment feed
+BLACKLIST = re.compile(r"\bcomments\b|/wp-json/|[?&]rest_route=")  # no comment feed, no WordPress REST API
 
 LINK_VALIDATION_RE = re.compile(
     r"\.(?:atom|rdf|rss|xml)$|"
@@ -167,7 +167,11 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
         links = []
         for match in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS):
             attributes = {attr[1]: attr[3] for attr in LINK_ATTRIBUTES.finditer(match[0])}
-            if attributes.get("href") and attributes.get("rel") != "self" and "atom+xml" not in attributes.get("type", ""):
+            # only candidates for page links: e.g. rel="self" is the feed itself,
+            # rel="replies" is the comments link WordPress adds to every entry,
+            # link blogs put the external link in rel="alternate" and the post itself in rel="related"
+            rel = attributes.get("rel", "").strip().lower()
+            if attributes.get("href") and rel in ("", "alternate", "related") and "atom+xml" not in attributes.get("type", ""):
                 links.append(attributes["href"])
         return links
 
@@ -254,7 +258,7 @@ def find_feed_urls(
     url: str,
     target_lang: str | None = None,
     external: bool = False,
-    sleep_time: float = 2.0,
+    sleep_time: float | None = None,
     config: ConfigParser = DEFAULT_CONFIG,
 ) -> list[str]:
     """Try to find feed URLs.
@@ -266,7 +270,8 @@ def find_feed_urls(
                      (two-letter string, ISO 639-1 format).
         external: Similar hosts only or external URLs
                   (boolean, defaults to False).
-        sleep_time: Wait between requests on the same website.
+        sleep_time: Wait between requests on the same website
+                    (defaults to SLEEP_TIME in the config).
         config: Pass configuration values for download control.
 
     Returns:
@@ -277,6 +282,9 @@ def find_feed_urls(
     if domain is None:
         LOGGER.warning("Invalid URL: %s", url)
         return []
+
+    if sleep_time is None:
+        sleep_time = config.getfloat("DEFAULT", "SLEEP_TIME")
 
     params = FeedParameters(baseurl, domain, url, external, target_lang)
     urlfilter = None

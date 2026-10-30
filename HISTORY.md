@@ -1,6 +1,13 @@
 ## History / Changelog
 
 
+## Unreleased
+
+Major changes:
+- Built-in jusText-derived fallback without stopwords, keeps links, formatting and images. Breaking: jusText dependency dropped, `try_justext()` takes `options` instead of `target_language`, `settings.JUSTEXT_LANGUAGES`, `external.jt_stoplist_init()` and `external.get_stoplist()` removed, by @adbar
+- Fallback cascade: tree cleaning undone in all modes, jusText tried before the recall retry, by @adbar
+
+
 ## 2.3.1
 
 - Fewer duplicated segments in the output and a new test series by @adbar (#955)

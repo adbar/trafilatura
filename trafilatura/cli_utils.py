@@ -55,7 +55,7 @@ from .utils import (
 
 LOGGER = logging.getLogger(__name__)
 
-random.seed(345)  # make generated file names reproducible
+_FILENAME_RANDOM = random.Random(345)  # reproducible names without changing caller RNG state
 CHAR_CLASS = string.ascii_letters + string.digits
 
 STRIP_EXTENSION = re.compile(r"\.[a-z]{2,5}$")
@@ -66,6 +66,7 @@ INPUT_URLS_ARGS = ["URL", "crawl", "explore", "probe", "feed", "sitemap"]
 
 EXTENSION_MAPPING = {
     "csv": ".csv",
+    "html": ".html",
     "json": ".json",
     "xml": ".xml",
     "xmltei": ".xml",
@@ -79,7 +80,7 @@ def load_input_urls(args: argparse.Namespace) -> list[str]:
     if args.input_file:
         try:
             # optional: errors='strict', buffering=1
-            with Path(args.input_file).open(encoding="utf-8") as inputfile:
+            with Path(args.input_file).open(encoding="utf-8-sig") as inputfile:
                 input_urls.extend(line.strip() for line in inputfile)
         except UnicodeDecodeError:
             sys.exit("ERROR: system, file type or buffer encoding")
@@ -98,7 +99,7 @@ def load_input_urls(args: argparse.Namespace) -> list[str]:
 
 def load_blacklist(filename: str) -> set[str]:
     "Read list of unwanted URLs."
-    with Path(filename).open(encoding="utf-8") as inputfh:
+    with Path(filename).open(encoding="utf-8-sig") as inputfh:
         # if validate_url(url)[0] is True:
         return {URL_BLACKLIST_REGEX.sub("", line.strip()) for line in inputfh}
 
@@ -138,7 +139,7 @@ def determine_counter_dir(dirname: str, c: int) -> str:
 def get_writable_path(destdir: str, extension: str) -> tuple[str, str]:
     "Find a writable path and return it along with its random file name."
     while True:
-        filename = "".join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
+        filename = "".join(_FILENAME_RANDOM.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
         output_path = os.path.join(destdir, filename + extension)
         # not Path.exists: it raises on an unreadable parent, and the dir status is checked later
         if not os.path.exists(output_path):  # noqa: PTH110
@@ -198,6 +199,11 @@ def archive_html(htmlstring: str, args: argparse.Namespace, counter: int = -1, n
     return filename
 
 
+def absolute_path(path: str) -> str:
+    "Resolve a path through its filesystem aliases to compare destinations with inputs."
+    return os.path.normcase(os.path.realpath(path))
+
+
 def write_result(
     result: str | None,
     args: argparse.Namespace,
@@ -212,6 +218,10 @@ def write_result(
         sys.stdout.write(result + "\n")
     else:
         destination_path, destination_dir = determine_output_path(args, orig_filename, result, counter, new_filename)
+        # a kept input file maps onto itself when the output format matches its extension (#1038)
+        if orig_filename and absolute_path(destination_path) == absolute_path(orig_filename):
+            LOGGER.error("Skipping %s: the output path would overwrite the input file", orig_filename)
+            return
         # check the directory status
         if check_outputdir_status(destination_dir) is True:
             with Path(destination_path).open(mode="w", encoding="utf-8") as outputfile:
@@ -222,11 +232,6 @@ def generate_filelist(
     inputdir: str, onerror: Callable[[OSError], None] | None = None, exclude_dirs: Iterable[str | None] = ()
 ) -> Generator[str, None, None]:
     "Walk the directory tree and report errors without skipping readable paths."
-
-    def absolute_path(path: str) -> str:
-        # Compare destinations and input roots through their filesystem aliases.
-        return os.path.normcase(os.path.realpath(path))
-
     excluded = {absolute_path(path) for path in exclude_dirs if path}
 
     def handle_error(error: OSError) -> None:
@@ -322,7 +327,7 @@ def cli_discovery(args: argparse.Namespace) -> int:
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
             if future.result() is not None:
-                url_store.add_urls(future.result())
+                add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_store=url_store)
                 # empty buffer in order to spare memory
                 if args.list and len(url_store.get_known_domains()) >= args.parallel:
                     with lock:
@@ -369,7 +374,7 @@ def cli_crawler(
 
     # load input URLs
     if url_store is None:
-        spider.URL_STORE.add_urls(load_input_urls(args))
+        add_to_compressed_dict(load_input_urls(args), blacklist=args.blacklist, url_store=spider.URL_STORE)
     else:
         spider.URL_STORE = url_store
 
@@ -378,7 +383,9 @@ def cli_crawler(
         if spider.URL_STORE.urldict[hostname].tuples:
             startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
             if startpage:
-                params = spider.init_crawl(startpage, lang=args.target_language, config=options.config)
+                params = spider.init_crawl(
+                    startpage, lang=args.target_language, config=options.config, blacklist=args.blacklist
+                )
                 # key by the crawl base: it may differ from hostname after a https upgrade,
                 # but the store may still hold URLs under the original base
                 param_dict[params.base] = params

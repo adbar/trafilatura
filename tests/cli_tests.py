@@ -6,6 +6,7 @@ import gzip
 import io
 import logging
 import os
+import random
 import re
 import subprocess
 import sys
@@ -24,6 +25,14 @@ from trafilatura.utils import LANGID_FLAG
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 RESOURCES_DIR = path.join(path.abspath(path.dirname(__file__)), "resources")
+
+
+def test_random_filenames_leave_callers_random_state_unchanged(tmp_path):
+    """Generating a filename must not advance the caller's random state."""
+    state = random.getstate()
+    cli_utils.get_writable_path(str(tmp_path), ".txt")
+    assert random.getstate() == state
+
 
 pytestmark = pytest.mark.usefixtures("mock_network")
 
@@ -355,6 +364,11 @@ def test_sysoutput():
     filepath2, destdir2 = cli_utils.determine_output_path(args, args.output_dir, "", new_filename="AAZZ")
     assert filepath2.endswith("AAZZ.json")
     assert "you-touch-my-tralala" in destdir2
+    # test html output
+    args2.json, args2.html = False, True
+    args2 = cli.map_args(args2)
+    filepath2, _ = cli_utils.determine_output_path(args, args.output_dir, "", new_filename="AAZZ")
+    assert filepath2.endswith("AAZZ.html")
     # test directory counter
     # doesn't work the same on Windows
     if os.name != "nt":
@@ -499,6 +513,16 @@ def test_cli_pipeline():
     result = cli.examine(teststring, args)
     assert result.startswith("<html")
     assert result.endswith("</html>")
+
+
+def test_input_files_with_bom(tmp_path):
+    urls = tmp_path / "urls.txt"
+    urls.write_bytes(b"\xef\xbb\xbfhttps://example.org/a\nhttps://example.org/b\n")
+    args = cli.parse_args(["-i", str(urls)])
+    assert cli_utils.load_input_urls(args) == ["https://example.org/a", "https://example.org/b"]
+    blacklist = tmp_path / "blacklist.txt"
+    blacklist.write_bytes(b"\xef\xbb\xbfhttps://example.org/a\n")
+    assert cli_utils.load_blacklist(str(blacklist)) == {"example.org/a"}
 
 
 def test_file_processing_continues_after_error(tmp_path, caplog):
@@ -782,6 +806,40 @@ def test_crawling():
     assert f.getvalue().strip() == "https://httpbun.com/html"
 
 
+def test_blacklist_discovered_urls(tmp_path):
+    "The blacklist also applies to the URLs found by feeds, sitemaps and the crawler."
+    blacklist = tmp_path / "blacklist.txt"
+    blacklist.write_text(
+        "https://example.org/drop\nhttps://httpbun.com/links/2/0/\nhttps://httpbun.com/html\n", encoding="utf-8"
+    )
+
+    for option, function in (("--feed", "find_feed_urls"), ("--sitemap", "sitemap_search")):
+        args = cli.parse_args([option, "https://example.org/", "--list", "-b", str(blacklist)])
+        f = io.StringIO()
+        found = ["https://example.org/drop", "https://example.org/keep"]
+        with patch.object(cli_utils, function, return_value=found), redirect_stdout(f):
+            cli.process_args(args)
+        assert f.getvalue() == "https://example.org/keep\n"
+
+    # links followed by the crawler
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    args = cli.parse_args(["--explore", "https://httpbun.com/links/2/2", "--list", "-b", str(blacklist)])
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.process_args(args)
+    assert "https://httpbun.com/links/2/1" in f.getvalue()
+    assert "https://httpbun.com/links/2/0" not in f.getvalue()
+
+    # start URL of a crawl
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    args = cli.parse_args(["--crawl", "https://httpbun.com/html", "--list", "-b", str(blacklist)])
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.process_args(args)
+    assert f.getvalue().strip() == ""
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+
+
 def test_probing():
     "Test webpage probing functions."
     url = "https://example.org/"
@@ -816,3 +874,26 @@ def test_keep_dirs_local_batch(tmp_path, monkeypatch, relative_input):
         expected = output_dir / relative_path.with_suffix(".txt")
         assert output_path == str(expected)
         assert destination_dir == str(expected.parent)
+
+
+@pytest.mark.parametrize("output_format", ["html", "xml"])
+def test_keep_dirs_never_overwrites_input_file(tmp_path, caplog, monkeypatch, output_format):
+    """An input file whose output path is the file itself is skipped with an error, the rest is written."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    source = tmp_path / "in"
+    (source / "nested").mkdir(parents=True)
+    html = Path(RESOURCES_DIR, "httpbin_sample.html").read_bytes()
+    clashing = source / f"a.{output_format}"
+    clashing.write_bytes(html)
+    (source / "nested" / "b.htm").write_bytes(html)
+    args = cli.parse_args(
+        ["--input-dir", str(source), "-o", str(source), "--keep-dirs", f"--{output_format}", "--parallel", "1", "--fast"]
+    )
+    # run the workers in-process so that their log records reach caplog
+    monkeypatch.setattr(cli_utils, "ProcessPoolExecutor", ThreadPoolExecutor)
+    assert cli_utils.file_processing_pipeline(args) == 0
+    assert clashing.read_bytes() == html
+    assert f"Skipping {clashing}: the output path would overwrite the input file" in caplog.text
+    written = source / "nested" / f"b.{output_format}"
+    assert "blacksmith" in written.read_text(encoding="utf-8")

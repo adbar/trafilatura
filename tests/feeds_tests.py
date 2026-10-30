@@ -5,6 +5,7 @@ Unit tests for feeds reading and parsing.
 import logging
 import os
 import sys
+from configparser import ConfigParser
 from unittest.mock import patch
 
 import pytest
@@ -98,11 +99,33 @@ def test_atom_extraction():
         ('<link href="https://example.org/updates/latest" rel="self"/>', []),
         ("<link rel='self' href='https://example.org/updates/latest'/>", []),
         ('<link href="https://example.org/updates/latest" type="application/atom+xml"/>', []),
+        ('<link rel="related" type="text/html" href="https://example.org/post"/>', ["https://example.org/post"]),
+        ('<link rel="replies" type="text/html" href="https://example.org/post#comments"/>', []),
+        ('<link rel="enclosure" type="audio/mpeg" href="https://example.org/episode.mp3"/>', []),
+        ('<link rel="edit" href="https://example.org/edit/post"/>', []),
+        (
+            (
+                '<entry><link rel="alternate" type="text/html" href="https://example.org/post-1"/>\n'
+                '<link rel="replies" type="text/html" href="https://example.org/post-1#comments"/></entry>'
+            ),
+            ["https://example.org/post-1"],
+        ),
     ],
 )
 def test_atom_link_attributes(link, expected):
     params = FeedParameters("https://example.org", "example.org", "")
     assert extract_links(f"<feed>{link}</feed>", params) == expected
+
+
+def test_atom_related_link():
+    "Link blogs like daringfireball.net: the external link is rel=alternate, the post itself rel=related"
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = (
+        '<feed><entry><link rel="alternate" type="text/html" href="https://news.example.net/story"/>\n'
+        '<link rel="shorturl" type="text/html" href="https://example.com/s/ab1"/>\n'
+        '<link rel="related" type="text/html" href="https://example.org/linked/2026/10/29/story"/></entry></feed>'
+    )
+    assert find_links(feed, params) == ["https://news.example.net/story", "https://example.org/linked/2026/10/29/story"]
 
 
 def test_rss_extraction():
@@ -416,6 +439,23 @@ def test_determine_feed_rel_keywords():
     ]
 
 
+def test_determine_feed_wp_json():
+    "WordPress REST API links (pretty or plain permalinks) share the JSON Feed type but are not feeds."
+    params = FeedParameters("https://example.org", "example.org", "")
+    htmlstring = (
+        "<html><head>"
+        '<link rel="alternate" type="application/json" href="https://example.org/wp-json/wp/v2/posts/42"/>'
+        '<link rel="alternate" type="application/json" href="https://example.org/?rest_route=/wp/v2/posts/42"/>'
+        '<link rel="alternate" type="application/rss+xml" href="https://example.org/feed/"/>'
+        '<link rel="alternate" type="application/feed+json" href="https://example.org/feed.json"/>'
+        "</head><body/></html>"
+    )
+    assert determine_feed(htmlstring, params) == [
+        "https://example.org/feed/",
+        "https://example.org/feed.json",
+    ]
+
+
 def test_try_homepage_forwards_args():
     "Regression: try_homepage must forward external and sleep_time, not reset them."
     captured = {}
@@ -433,6 +473,20 @@ def test_try_homepage_forwards_args():
         "sleep_time": 9.0,
         "config": DEFAULT_CONFIG,
     }
+
+
+def test_sleep_time_defaults_to_config():
+    "Without an explicit sleep_time, the wait comes from SLEEP_TIME in the config."
+    config = ConfigParser()
+    config.read_dict(DEFAULT_CONFIG)
+    config.set("DEFAULT", "SLEEP_TIME", "10")
+    with patch("trafilatura.feeds.fetch_url", return_value=None), patch("trafilatura.feeds.sleep") as mock_sleep:
+        find_feed_urls("https://example.org/sub/page", config=config)
+    mock_sleep.assert_called_once_with(10.0)
+
+    with patch("trafilatura.feeds.fetch_url", return_value=None), patch("trafilatura.feeds.sleep") as mock_sleep:
+        find_feed_urls("https://example.org/sub/page", sleep_time=0.5, config=config)
+    mock_sleep.assert_called_once_with(0.5)
 
 
 def test_cli_behavior():
