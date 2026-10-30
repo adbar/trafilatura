@@ -173,9 +173,9 @@ def trafilatura_sequence(
     1. main extractor (includes wild-text recovery for short documents)
     2. comparison with external extractors (readability/justext), skipped in fast mode
     3. baseline rescue on the original, uncleaned tree
-    4. recall escalation, if the result still covers little of the page: stages 1-2 re-run
-       in recall mode (_recall_retry), plus a justext candidate tried alongside (a different
-       algorithm, not just stricter rules, so it reaches content the rule-based retry cannot)
+    4. recall escalation, if the result still covers little of the page: a justext candidate
+       first (a different algorithm, not just stricter rules, so it reaches content the rule-based
+       retry cannot), if rejected stages 1-2 re-run in recall mode (_recall_retry)
     Returns the body and comments elements with their text.
 
     Internal helper: its signature and 4-tuple return are not a stable API — call

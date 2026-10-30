@@ -140,7 +140,7 @@ def _blocks(body: _Element) -> Iterator[_Element]:
         yield from elem if elem.tag == "list" else (elem,)
 
 
-def try_justext(tree: HtmlElement, url: str | None, options: Extractor | None = None) -> _Element:
+def try_justext(tree: HtmlElement, url: str | None, *, options: Extractor | None = None) -> _Element:
     """Second safety net: paragraph classification derived from jusText.
     Links, formatting and images are kept according to the options."""
     if options is None:
@@ -175,17 +175,18 @@ def try_justext(tree: HtmlElement, url: str | None, options: Extractor | None = 
 
 def justext_rescue(tree: HtmlElement, options: Extractor) -> tuple[_Element, str]:
     """Try to use justext algorithm as a second fallback"""
-    temppost_algo = try_justext(tree, options.url, options)
+    temppost_algo = try_justext(tree, options.url, options=options)
     # blocks joined by a space, inline markup without: the length of the plain text
     return temppost_algo, trim(" ".join("".join(block.itertext()) for block in _blocks(temppost_algo)))
 
 
 def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, str]:
     """Convert and sanitize the output from the generic algorithm (post-processing)"""
-    return convert_markup(tree_cleaning(tree, options), options)
+    cleaned_tree = convert_markup(tree_cleaning(tree, options), options)
+    return cleaned_tree, trim(" ".join(cleaned_tree.itertext()))
 
 
-def convert_markup(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, str]:
+def convert_markup(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Convert HTML markup to the output format according to the options, other tags stripped."
     strip_tags(tree, "span", *(() if options.links else ("a",)))
     # pass url so relative links are absolutized on the fallback path
@@ -210,4 +211,4 @@ def convert_markup(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, 
     for elem in tree.iter("td", "th", "tr"):
         elem.tag = "row" if elem.tag == "tr" else "cell"
     strip_tags(tree, *({str(elem.tag) for elem in tree.iter("*")} - TEI_VALID_TAGS))
-    return tree, trim(" ".join(tree.itertext()))
+    return tree

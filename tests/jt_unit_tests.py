@@ -2,6 +2,7 @@
 Unit tests for the jusText-derived fallback (trafilatura/justext_lite.py, try_justext, justext_rescue).
 """
 
+import pytest
 from lxml import etree, html
 
 from trafilatura import core
@@ -15,6 +16,9 @@ def test_justext_hardening():
     my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.<!-- comment --><?php echo "This is a PHP processing instruction"; ?></p></div></body></html>'
     assert etree.tostring(try_justext(html.fromstring(my_html), None)) == b"<body/>"
     assert etree.tostring(try_justext(None, None)) == b"<body/>"
+    # the former target_language argument fails loudly
+    with pytest.raises(TypeError):
+        try_justext(html.fromstring(my_html), None, "de")  # type: ignore[misc]
 
 
 def test_justext_lite():
