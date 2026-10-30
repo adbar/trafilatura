@@ -66,6 +66,7 @@ INPUT_URLS_ARGS = ["URL", "crawl", "explore", "probe", "feed", "sitemap"]
 
 EXTENSION_MAPPING = {
     "csv": ".csv",
+    "html": ".html",
     "json": ".json",
     "xml": ".xml",
     "xmltei": ".xml",
@@ -198,6 +199,11 @@ def archive_html(htmlstring: str, args: argparse.Namespace, counter: int = -1, n
     return filename
 
 
+def absolute_path(path: str) -> str:
+    "Resolve a path through its filesystem aliases to compare destinations with inputs."
+    return os.path.normcase(os.path.realpath(path))
+
+
 def write_result(
     result: str | None,
     args: argparse.Namespace,
@@ -212,6 +218,10 @@ def write_result(
         sys.stdout.write(result + "\n")
     else:
         destination_path, destination_dir = determine_output_path(args, orig_filename, result, counter, new_filename)
+        # a kept input file maps onto itself when the output format matches its extension (#1038)
+        if orig_filename and absolute_path(destination_path) == absolute_path(orig_filename):
+            LOGGER.error("Skipping %s: the output path would overwrite the input file", orig_filename)
+            return
         # check the directory status
         if check_outputdir_status(destination_dir) is True:
             with Path(destination_path).open(mode="w", encoding="utf-8") as outputfile:
@@ -222,11 +232,6 @@ def generate_filelist(
     inputdir: str, onerror: Callable[[OSError], None] | None = None, exclude_dirs: Iterable[str | None] = ()
 ) -> Generator[str, None, None]:
     "Walk the directory tree and report errors without skipping readable paths."
-
-    def absolute_path(path: str) -> str:
-        # Compare destinations and input roots through their filesystem aliases.
-        return os.path.normcase(os.path.realpath(path))
-
     excluded = {absolute_path(path) for path in exclude_dirs if path}
 
     def handle_error(error: OSError) -> None:

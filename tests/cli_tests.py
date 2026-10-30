@@ -364,6 +364,11 @@ def test_sysoutput():
     filepath2, destdir2 = cli_utils.determine_output_path(args, args.output_dir, "", new_filename="AAZZ")
     assert filepath2.endswith("AAZZ.json")
     assert "you-touch-my-tralala" in destdir2
+    # test html output
+    args2.json, args2.html = False, True
+    args2 = cli.map_args(args2)
+    filepath2, _ = cli_utils.determine_output_path(args, args.output_dir, "", new_filename="AAZZ")
+    assert filepath2.endswith("AAZZ.html")
     # test directory counter
     # doesn't work the same on Windows
     if os.name != "nt":
@@ -835,3 +840,26 @@ def test_keep_dirs_local_batch(tmp_path, monkeypatch, relative_input):
         expected = output_dir / relative_path.with_suffix(".txt")
         assert output_path == str(expected)
         assert destination_dir == str(expected.parent)
+
+
+@pytest.mark.parametrize("output_format", ["html", "xml"])
+def test_keep_dirs_never_overwrites_input_file(tmp_path, caplog, monkeypatch, output_format):
+    """An input file whose output path is the file itself is skipped with an error, the rest is written."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    source = tmp_path / "in"
+    (source / "nested").mkdir(parents=True)
+    html = Path(RESOURCES_DIR, "httpbin_sample.html").read_bytes()
+    clashing = source / f"a.{output_format}"
+    clashing.write_bytes(html)
+    (source / "nested" / "b.htm").write_bytes(html)
+    args = cli.parse_args(
+        ["--input-dir", str(source), "-o", str(source), "--keep-dirs", f"--{output_format}", "--parallel", "1", "--fast"]
+    )
+    # run the workers in-process so that their log records reach caplog
+    monkeypatch.setattr(cli_utils, "ProcessPoolExecutor", ThreadPoolExecutor)
+    assert cli_utils.file_processing_pipeline(args) == 0
+    assert clashing.read_bytes() == html
+    assert f"Skipping {clashing}: the output path would overwrite the input file" in caplog.text
+    written = source / "nested" / f"b.{output_format}"
+    assert "blacksmith" in written.read_text(encoding="utf-8")
