@@ -224,12 +224,35 @@ def is_code_block_element(element: _Element) -> bool:
     return code is not None and len(element) == 1 and not (element.text or "").strip() and not (code.tail or "").strip()
 
 
+def code_block_language(element: _Element) -> str | None:
+    "Find an explicit language hint: a lang attribute or a language-* class."
+    nested = element.find(".//code")
+    for candidate in (element, nested):
+        if candidate is None:
+            continue
+        if language := candidate.get("lang"):
+            return language
+        for token in (candidate.get("class") or "").split():
+            if token.startswith("language-"):
+                language = token[len("language-") :]
+                if language and "`" not in language:
+                    return language
+    return None
+
+
 def handle_code_blocks(element: _Element) -> _Element:
     "Turn element into a properly tagged code block."
+    language = code_block_language(element)
     processed_element = deepcopy(element)
     for child in element.iter("*"):
         child.tag = "done"
     processed_element.tag = "code"
+    if language:
+        processed_element.set("rend", language)
+        # a nested code element is the one rendered by the serializer
+        nested = processed_element.find(".//code")
+        if nested is not None:
+            nested.set("rend", language)
     return processed_element
 
 
