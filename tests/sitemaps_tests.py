@@ -24,6 +24,8 @@ pytestmark = pytest.mark.usefixtures("mock_network")
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(TEST_DIR, "resources")
 
+URLSET_A = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://example.org/a</loc></url></urlset>'
+
 
 def test_search():
     """Test search for sitemaps"""
@@ -65,6 +67,59 @@ def test_search_returns_sorted_unique_urls(monkeypatch, nested, plain_text):
     monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
 
     assert sitemaps.sitemap_search(root) == expected
+
+
+@pytest.mark.parametrize(
+    ("url", "body"),
+    [
+        ("https://example.org/sitemap.xml", URLSET_A),
+        ("https://example.org/sitemap.xml?page=1", URLSET_A),
+        ("https://example.org/sitemap.txt", "https://example.org/a\n"),
+        ("https://example.org/sitemap.xml/", URLSET_A),
+        ("https://example.org/sitemap/index", URLSET_A),
+    ],
+)
+def test_search_explicit_sitemap_url_shapes(monkeypatch, url, body):
+    "regression #1067: explicit sitemap URLs are classified by path and fetched as-is, query included"
+    fetched = []
+
+    def fetch(fetch_url, **kwargs):
+        fetched.append(fetch_url)
+        return body if fetch_url == url else None
+
+    monkeypatch.setattr(sitemaps, "fetch_url", fetch)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+
+    assert sitemaps.sitemap_search(url) == ["https://example.org/a"]
+    assert fetched == [url]
+
+
+def test_search_webpage_url_still_filters_subpages(monkeypatch):
+    "companion to #1067: an ordinary webpage URL is not fetched as a sitemap, it keeps acting as a subpage filter"
+    body = (
+        "<urlset>"
+        "<url><loc>https://example.org/blog/post-1</loc></url>"
+        "<url><loc>https://example.org/blog/post-2</loc></url>"
+        "<url><loc>https://example.org/a</loc></url>"
+        "<url><loc>https://other.example.net/blog/post-3</loc></url>"
+        "</urlset>"
+    )
+    fetched = []
+
+    def fetch(fetch_url, **kwargs):
+        fetched.append(fetch_url)
+        return body if fetch_url == "https://example.org/sitemap.xml" else None
+
+    monkeypatch.setattr(sitemaps, "fetch_url", fetch)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+
+    assert sitemaps.sitemap_search("https://example.org/blog/") == [
+        "https://example.org/blog/post-1",
+        "https://example.org/blog/post-2",
+    ]
+    assert "https://example.org/blog/" not in fetched
 
 
 @pytest.mark.parametrize("namespace", ["", ' xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'])
