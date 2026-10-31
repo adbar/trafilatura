@@ -327,21 +327,29 @@ def test_urllib3_live_page_retries(monkeypatch):
         server.server_close()
 
 
-def test_urllib3_read_timeout_not_retried(monkeypatch):
-    "A read timeout ends the request at once, as with pycurl, instead of being retried with backoff."
+def test_urllib3_read_errors_retried_once(monkeypatch):
+    "A read error is retried once without backoff: a dropped connection recovers, a read timeout gives up quickly."
     import threading
     from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
     hits = []
+    body = b"<html><body>" + b"x" * 100 + b"</body></html>"
 
     class _Handler(BaseHTTPRequestHandler):
         def do_GET(self):
-            hits.append(self.command)
-            sleep(2)  # longer than DOWNLOAD_TIMEOUT
+            hits.append((self.command, self.path))
+            if self.path == "/drop" and hits.count((self.command, self.path)) == 1:
+                # close without a response, as a server does with a stale keep-alive connection
+                self.close_connection = True
+                return
+            if self.path == "/slow":
+                sleep(2)  # longer than DOWNLOAD_TIMEOUT
             try:
                 self.send_response(200)
-                self.send_header("Content-Length", "0")
+                self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
+                if self.command == "GET":
+                    self.wfile.write(body)
             except OSError:
                 pass  # the client has given up
 
@@ -353,7 +361,7 @@ def test_urllib3_read_timeout_not_retried(monkeypatch):
 
     server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
-    url = f"http://127.0.0.1:{server.server_port}/"
+    base = f"http://127.0.0.1:{server.server_port}"
     config = use_config()
     config.set("DEFAULT", "SSRF_PROTECTION", "off")
     config.set("DEFAULT", "DOWNLOAD_TIMEOUT", "1")
@@ -362,10 +370,14 @@ def test_urllib3_read_timeout_not_retried(monkeypatch):
 
     try:
         with patch.object(dl, "HAS_PYCURL", False):
-            assert fetch_url(url, config=config) is None
-        assert hits == ["GET"]
-        assert _urllib3_is_live_page(url, config) is False
-        assert hits == ["GET", "HEAD"]
+            assert fetch_url(f"{base}/drop", config=config) == body.decode()
+            assert fetch_url(f"{base}/slow", config=config) is None
+        assert hits.count(("GET", "/drop")) == 2
+        assert hits.count(("GET", "/slow")) == 2
+        assert _urllib3_is_live_page(f"{base}/drop", config) is True
+        assert _urllib3_is_live_page(f"{base}/slow", config) is False
+        assert hits.count(("HEAD", "/drop")) == 2
+        assert hits.count(("HEAD", "/slow")) == 2
         assert naps == []
     finally:
         server.shutdown()
