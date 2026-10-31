@@ -522,8 +522,11 @@ def convert_to_html(tree: _Element) -> _Element:
         # handle attributes
         if elem.tag == "a":
             elem.set("href", elem.attrib.pop("target", ""))
-        elif elem.tag != "img":  # keep <img> src/alt/title; drop everything else
+        elif elem.tag != "img":  # keep <img> src/alt/title and <ol> start; drop everything else
+            start = elem.get("start") if elem.tag == "ol" else None
             elem.attrib.clear()
+            if start:
+                elem.set("start", start)
     tree.tag = "body"
     root = Element("html")
     root.append(tree)
