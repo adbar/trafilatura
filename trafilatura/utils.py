@@ -324,6 +324,64 @@ def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
     return None
 
 
+# elements that legitimately live in <head>: HTML metadata content and the
+# containers a parser may leave there; any other element child of <head> is
+# flow content that belongs in <body>
+HEAD_CONTENT_TAGS = {"base", "link", "meta", "noscript", "script", "style", "template", "title"}
+
+
+def _relocate_head_content(tree: HtmlElement) -> None:
+    """Move flow content mis-nested in <head> to the front of <body>.
+
+    libxml2 keeps the implied head open across HTML5 semantic sectioning
+    elements (main, header, article, ...), so a document omitting the
+    explicit <head> tag can parse with its article inside <head> -- which
+    tree_cleaning then deletes wholesale. Repair the tree the way a
+    spec-conformant parser builds it: element children of <head> that are
+    not head content move, in document order, subtrees and tails intact,
+    to the front of <body> (created if absent). Non-whitespace text
+    stranded in <head> ahead of a moved element (the head's own text, the
+    tails of elements staying in <head>) moves along, in front of the
+    element it preceded; the body's own leading text followed the moved
+    elements in document order and becomes the last one's tail.
+    Documents whose head holds only head content are left untouched.
+    """
+    head = tree.find("head")
+    if head is None:
+        return
+    children = list(head)
+    if not any(isinstance(child.tag, str) and child.tag not in HEAD_CONTENT_TAGS for child in children):
+        return
+    body = tree.find("body")
+    if body is None:
+        body = tree.makeelement("body")
+        tree.append(body)
+    body_text = body.text
+    body.text = None
+    # text stranded ahead of the first moved element becomes the body's
+    # leading text; text stranded between two moved elements is appended
+    # to the tail of the one it followed
+    leading = head.text or ""
+    head.text = None
+    index, last_moved = 0, None
+    for child in children:
+        if isinstance(child.tag, str) and child.tag not in HEAD_CONTENT_TAGS:
+            if leading.strip():
+                if last_moved is None:
+                    body.text = leading
+                else:
+                    last_moved.tail = (last_moved.tail or "") + leading
+            leading = ""
+            body.insert(index, child)
+            index += 1
+            last_moved = child
+        elif child.tail and child.tail.strip():
+            leading += child.tail
+            child.tail = None
+    if last_moved is not None:
+        last_moved.tail = (last_moved.tail or "") + leading + (body_text or "")
+
+
 def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string).
@@ -371,6 +429,9 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
     if tree is not None and check_flag is True and len(tree) < 2:
         LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
         tree = None
+    # repair a mis-nested implied head (flow content parsed into <head>)
+    if tree is not None:
+        _relocate_head_content(tree)
     return tree
 
 
