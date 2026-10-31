@@ -27,6 +27,8 @@ from .utils import safe_relative_url
 LOGGER = logging.getLogger(__name__)
 
 SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
+# sitemaps.org (http or https, with or without a trailing slash) and the legacy Google namespaces
+SITEMAP_NAMESPACE_REGEX = re.compile(r"https?://(?:www\.)?(?:sitemaps\.org|google\.com)/schemas/sitemap/[\d.]+/?$")
 XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
 SCHEME_AND_WWW = re.compile(r"^https?://(?:www\.)?", re.IGNORECASE)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
@@ -161,16 +163,26 @@ class SitemapObject:
             return
         if tree is None:
             return
-        for element in islice(tree.iter("loc", f"{{{SITEMAP_NAMESPACE}}}loc"), MAX_LINKS):
+        # no namespace, the standard sitemap namespace anywhere, other sitemap namespaces declared on the root element
+        prefixes = dict.fromkeys(
+            [
+                "",
+                f"{{{SITEMAP_NAMESPACE}}}",
+                *(f"{{{ns}}}" for ns in tree.nsmap.values() if ns and SITEMAP_NAMESPACE_REGEX.match(ns)),
+            ]
+        )
+        sitemap_tags = {f"{prefix}sitemap" for prefix in prefixes}
+        url_tags = {f"{prefix}url" for prefix in prefixes}
+        for element in islice(tree.iter(*(f"{prefix}loc" for prefix in prefixes)), MAX_LINKS):
             # Entity references and nested markup are not part of a location URL.
             location = (element.text or "").strip()
             if len(element) == 0 and location.startswith("http"):
                 parent = element.getparent()
                 parent_tag = parent.tag if parent is not None else None
                 is_sitemap = None
-                if parent_tag in ("sitemap", f"{{{SITEMAP_NAMESPACE}}}sitemap"):
+                if parent_tag in sitemap_tags:
                     is_sitemap = True
-                elif parent_tag in ("url", f"{{{SITEMAP_NAMESPACE}}}url"):
+                elif parent_tag in url_tags:
                     is_sitemap = False
                 self.handle_link(location, is_sitemap=is_sitemap)
 
