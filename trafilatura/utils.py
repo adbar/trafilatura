@@ -112,6 +112,13 @@ HTML_STRIP_TAGS = re.compile(r"(<!--.*?-->|<[^>]*>)")
 _INVALID_XML_BYTES = bytes(range(9)) + b"\x0b\x0c" + bytes(range(14, 32))
 _INVALID_XML_NONASCII = "\ufffe\uffff"
 INVALID_XML_CHARS = re.compile(f"[{re.escape(_INVALID_XML_BYTES.decode() + _INVALID_XML_NONASCII)}]")
+# numeric character references to the same characters (&#1;, &#x1F;, &#65535;...), which libxml2
+# decodes and lxml then refuses to store; the closing semicolon is optional for libxml2
+INVALID_XML_CHARREFS = re.compile(
+    r"&#(?:0*(?:[0-8]|1[124-9]|2[0-9]|3[01]|6553[45])(?![0-9])"
+    r"|[xX]0*(?:[0-8bBcCeEfF]|1[0-9a-fA-F]|[fF]{3}[eEfF])(?![0-9a-fA-F]));?"
+)
+_INVALID_XML_CHARREFS_BYTES = re.compile(INVALID_XML_CHARREFS.pattern.encode())
 
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
@@ -293,16 +300,15 @@ def is_dubious_html(beginning: str) -> bool:
     return "html" not in beginning
 
 
-def _has_invalid_xml_chars(text: str) -> bool:
-    "Cheaper than the regex: the invalid C0 characters are ASCII and survive the projection."
-    data = text.encode("ascii", "ignore")
-    return len(data.translate(None, _INVALID_XML_BYTES)) != len(data) or any(c in text for c in _INVALID_XML_NONASCII)
-
-
 def repair_faulty_html(htmlstring: str, beginning: str) -> str:
     "Repair faulty HTML strings to make then palatable for libxml2."
-    if _has_invalid_xml_chars(htmlstring):
+    # the invalid characters and char refs are ASCII, "replace" keeps their positions
+    data = htmlstring.encode("ascii", "replace")
+    if len(data.translate(None, _INVALID_XML_BYTES)) != len(data) or any(c in htmlstring for c in _INVALID_XML_NONASCII):
         htmlstring = INVALID_XML_CHARS.sub("", htmlstring)
+        data = htmlstring.encode("ascii", "replace")
+    if _INVALID_XML_CHARREFS_BYTES.search(data):
+        htmlstring = INVALID_XML_CHARREFS.sub("", htmlstring)
     # libxml2/LXML issue: https://bugs.launchpad.net/lxml/+bug/1955915
     if "doctype" in beginning:
         firstline, _, rest = htmlstring.partition("\n")
