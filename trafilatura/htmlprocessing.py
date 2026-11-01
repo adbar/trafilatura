@@ -380,6 +380,15 @@ def convert_quotes(elem: _Element) -> None:
     elem.tag = "code" if is_code else "quote"
 
 
+def _is_permalink_anchor(element: _Element) -> bool:
+    "Whether an <a> inside a heading is a documentation permalink (Sphinx ¶, rustdoc §)."
+    if "headerlink" in (element.get("class") or "").split():
+        return True
+    href = element.get("href") or ""
+    text = "".join(element.itertext())
+    return bool(text) and href.startswith("#") and not any(ch.isalnum() or ch == "_" for ch in text)
+
+
 def convert_headings(elem: _Element) -> None:
     "Add head tags and delete attributes."
     elem.attrib.clear()
@@ -429,6 +438,14 @@ def convert_link(elem: HtmlElement, base_url: str | None) -> None:
 
 def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) -> HtmlElement:
     "Simplify markup and convert relevant HTML tags to an XML standard."
+    # drop documentation permalinks inside headings before the <a> pass: their visible
+    # text is a pure symbol (¶/§) and the target is a same-page fragment, so the anchor
+    # is a link target, not content. An empty anchor is kept for the #1024 render pass.
+    for elem in tree.iter("h1", "h2", "h3", "h4", "h5", "h6"):
+        for subelem in list(elem.iter("a")):
+            if _is_permalink_anchor(subelem):
+                delete_element(subelem)
+
     # delete links for faster processing
     if not options.links:
         containers = ("div", "li", "p", "table") if options.tables else ("div", "li", "p")
