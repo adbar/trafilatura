@@ -89,7 +89,7 @@ class FeedParameters:
 
 def is_potential_feed(feed_string: str) -> bool:
     "Check if the string could be a feed."
-    if FEED_OPENING.match(feed_string):
+    if FEED_OPENING.match(feed_string) or has_rss_root(feed_string):
         return True
     beginning = feed_string[:100]
     return "<rss" in beginning or "<feed" in beginning

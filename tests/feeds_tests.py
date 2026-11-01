@@ -20,6 +20,7 @@ from trafilatura.feeds import (
     find_links,
     handle_link_list,
     has_rss_root,
+    is_potential_feed,
     probe_gnews,
     try_homepage,
 )
@@ -33,6 +34,35 @@ TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(TEST_DIR, "resources")
 
 XMLDECL = '<?xml version="1.0" encoding="utf-8"?>\n'
+
+
+@pytest.mark.parametrize(
+    "prefix",
+    ["", "\ufeff", "<!-- generator -->", "<!--" + "generator " * 20 + "-->", "<!DOCTYPE rdf:RDF>", XMLDECL],
+)
+def test_rdf_feed_admission(prefix):
+    "RSS 1.0 feeds do not need an XML declaration to reach the RSS parser."
+    feed_url = "https://example.org/feed.rdf"
+    article_url = "https://example.org/article1"
+    feed = (
+        prefix + '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/">'
+        '<channel rdf:about="https://example.org/feed.rdf"><title>Example</title><link>https://example.org/</link>'
+        '<description>Example feed</description><items><rdf:Seq><rdf:li rdf:resource="https://example.org/article1"/>'
+        '</rdf:Seq></items></channel><item rdf:about="https://example.org/article1"><title>Article</title>'
+        f"<link>{article_url}</link></item></rdf:RDF>"
+    )
+    params = FeedParameters("https://example.org", "example.org", feed_url)
+    assert extract_links(feed, params) == [article_url]
+    with patch("trafilatura.feeds.fetch_url", return_value=feed):
+        assert find_feed_urls(feed_url, sleep_time=0) == [article_url]
+
+
+@pytest.mark.parametrize(
+    "source",
+    ["<html></html>", "<RDFnotfeed><link>https://example.org/article1</link></RDFnotfeed>", "<!-- unclosed <rdf:RDF>"],
+)
+def test_feed_admission_rejects_non_feed_roots(source):
+    assert not is_potential_feed(source)
 
 
 def test_atom_extraction():
