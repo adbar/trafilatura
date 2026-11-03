@@ -106,6 +106,8 @@ def _discourse_texts(tree: HtmlElement) -> list[str]:
             posts = json.loads(value)["post_stream"]["posts"]
         except Exception:
             continue
+        if not isinstance(posts, list):
+            continue
         texts.extend(post["cooked"] for post in posts if isinstance(post, dict) and isinstance(post.get("cooked"), str))
     return texts
 
