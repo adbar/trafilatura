@@ -102,3 +102,12 @@ def test_to_lxml_invalid_attribute_keeps_later_attributes() -> None:
     element = dom.Element("g:p", {"id": "before", 'x":': "invalid", "title": "after"})
 
     assert dict(dom.to_lxml(element).attrib) == {"id": "before", "title": "after"}
+
+
+@pytest.mark.skipif(sys.version_info < (3, 11), reason="the lxml backend keeps lxml's own trees")
+def test_to_lxml_drops_xml_illegal_characters() -> None:
+    element = dom.from_lxml(html.fromstring("<p title='a\x01b'>x\x01y<b>z</b>\x0bt</p>"))
+
+    copied = dom.to_lxml(element)
+
+    assert (copied.get("title"), copied.text, copied[0].tail) == ("ab", "xy", "t")
