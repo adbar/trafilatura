@@ -549,3 +549,31 @@ def test_html2txt():
 def test_html_markup_detection(text, expected):
     "Known tags, bare or with an attribute value, count as markup, prose comparisons do not."
     assert bool(_HTML_MARKUP.search(text)) is expected
+
+
+@pytest.mark.parametrize("posts", [None, 42, True, "not a post list", {"cooked": "not a post list"}])
+def test_baseline_discourse_invalid_posts_falls_back(posts):
+    para = "Real paragraph content that should be extracted by the paragraph strategy, comfortably long enough for the gate."
+    topic = json.dumps({"post_stream": {"posts": posts}})
+    preloaded = escape(json.dumps({"topic_12": topic}), quote=True)
+    doc = f'<html><body><div id="data-preloaded" data-preloaded="{preloaded}"></div><p>{para}</p></body></html>'
+    _, result, _ = baseline(doc)
+    assert para in result
+
+
+def test_baseline_discourse_invalid_posts_keeps_other_topics():
+    post = (
+        "A valid forum post with enough substantive discussion to pass the minimum content length gate without any fallback."
+    )
+    preloaded = escape(
+        json.dumps(
+            {
+                "topic_12": json.dumps({"post_stream": {"posts": None}}),
+                "topic_13": json.dumps({"post_stream": {"posts": [{"cooked": post}]}}),
+            }
+        ),
+        quote=True,
+    )
+    doc = f'<html><body><div id="data-preloaded" data-preloaded="{preloaded}"></div></body></html>'
+    _, result, _ = baseline(doc)
+    assert post in result
