@@ -819,9 +819,9 @@ def _copy_to_lxml(node: _Node, factory: Callable[..., Any]) -> Any:
                 continue
             if texts:
                 if last is None:
-                    parent.text = "".join(texts)
+                    parent.text = _xml_text(texts)
                 else:
-                    last.tail = "".join(texts)
+                    last.tail = _xml_text(texts)
                 texts = []
             copied = _lxml_element(parent.makeelement, child)
             parent.append(copied)
@@ -829,10 +829,18 @@ def _copy_to_lxml(node: _Node, factory: Callable[..., Any]) -> Any:
             last = copied
         if texts:
             if last is None:
-                parent.text = "".join(texts)
+                parent.text = _xml_text(texts)
             else:
-                last.tail = "".join(texts)
+                last.tail = _xml_text(texts)
     return target
+
+
+# lxml refuses these characters, which the HTML parser keeps
+_XML_ILLEGAL = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff]")
+
+
+def _xml_text(texts: list[str]) -> str:
+    return _XML_ILLEGAL.sub("", "".join(texts))
 
 
 _LXML_NAME_INVALID = re.compile(r"[^\w.-]|^[^A-Za-z_]")
@@ -840,7 +848,7 @@ _LXML_NAME_INVALID = re.compile(r"[^\w.-]|^[^A-Za-z_]")
 
 def _lxml_element(factory: Callable[..., Any], node: _Node) -> Any:
     "An lxml element for the node; lxml refuses some names the HTML parser accepts, e.g. 'g:plusone'."
-    attrs = {key: node.attr(key) for key in node.attrs}
+    attrs = {key: _XML_ILLEGAL.sub("", node.attr(key) or "") for key in node.attrs}
     try:
         return factory(node.tag, attrs)
     except ValueError:
