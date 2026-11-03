@@ -336,50 +336,27 @@ def _relocate_head_content(tree: HtmlElement) -> None:
     libxml2 keeps the implied head open across HTML5 semantic sectioning
     elements (main, header, article, ...), so a document omitting the
     explicit <head> tag can parse with its article inside <head> -- which
-    tree_cleaning then deletes wholesale. Repair the tree the way a
-    spec-conformant parser builds it: element children of <head> that are
-    not head content move, in document order, subtrees and tails intact,
-    to the front of <body> (created if absent). Non-whitespace text
-    stranded in <head> ahead of a moved element (the head's own text, the
-    tails of elements staying in <head>) moves along, in front of the
-    element it preceded; the body's own leading text followed the moved
-    elements in document order and becomes the last one's tail.
-    Documents whose head holds only head content are left untouched.
+    tree_cleaning then deletes wholesale. Element children of <head> that
+    are not head content move, in document order and with their subtrees
+    and tails, to the front of <body> (created if absent). Text that
+    libxml2 2.14+ makes the body's leading text followed those elements
+    in the source, so it goes after them.
     """
     head = tree.find("head")
     if head is None:
         return
-    children = list(head)
-    if not any(isinstance(child.tag, str) and child.tag not in HEAD_CONTENT_TAGS for child in children):
+    moved = [child for child in head if isinstance(child.tag, str) and child.tag not in HEAD_CONTENT_TAGS]
+    if not moved:
         return
     body = tree.find("body")
     if body is None:
         body = tree.makeelement("body")
         tree.append(body)
-    body_text = body.text
-    body.text = None
-    # text stranded ahead of the first moved element becomes the body's
-    # leading text; text stranded between two moved elements is appended
-    # to the tail of the one it followed
-    leading = head.text or ""
-    head.text = None
-    index, last_moved = 0, None
-    for child in children:
-        if isinstance(child.tag, str) and child.tag not in HEAD_CONTENT_TAGS:
-            if leading.strip():
-                if last_moved is None:
-                    body.text = leading
-                else:
-                    last_moved.tail = (last_moved.tail or "") + leading
-            leading = ""
-            body.insert(index, child)
-            index += 1
-            last_moved = child
-        elif child.tail and child.tail.strip():
-            leading += child.tail
-            child.tail = None
-    if last_moved is not None:
-        last_moved.tail = (last_moved.tail or "") + leading + (body_text or "")
+    if body.text:
+        moved[-1].tail = (moved[-1].tail or "") + body.text
+        body.text = None
+    for index, child in enumerate(moved):
+        body.insert(index, child)
 
 
 def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
