@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 import pytest
 from courlan import get_hostinfo
+from lxml.etree import Resolver, XMLParser
 
 from trafilatura.cli import main
 from trafilatura.feeds import (
@@ -126,6 +127,106 @@ def test_atom_related_link():
         '<link rel="related" type="text/html" href="https://example.org/linked/2026/10/29/story"/></entry></feed>'
     )
     assert find_links(feed, params) == ["https://news.example.net/story", "https://example.org/linked/2026/10/29/story"]
+
+
+@pytest.mark.parametrize("prefix", ["a", "atom", "news-feed", "a.b"])
+@pytest.mark.parametrize("declaration", ["", XMLDECL])
+def test_atom_namespace_prefixes(prefix, declaration):
+    "Namespace aliases must not hide Atom entry URLs or bypass link filtering."
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = (
+        f'{declaration}<{prefix}:feed xmlns:{prefix}="http://www.w3.org/2005/Atom">'
+        f'<{prefix}:link rel="self" href="https://example.org/updates"/>'
+        f'<{prefix}:entry><{prefix}:link rel="alternate" href="https://example.org/article"/>'
+        f"<{prefix}:link rel='related' href='https://example.org/related'/>"
+        f'<{prefix}:link rel="replies" href="https://example.org/comments"/>'
+        f'<{prefix}:link rel="enclosure" href="https://example.org/audio.mp3"/>'
+        f'<{prefix}:link type="application/atom+xml" href="https://example.org/other-feed"/>'
+        f"</{prefix}:entry></{prefix}:feed>"
+    )
+    assert extract_links(feed, params) == ["https://example.org/article", "https://example.org/related"]
+
+
+def test_atom_namespace_scopes():
+    "Only the Atom namespace counts, including when an alias is rebound in an entry."
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = (
+        '<feed xmlns="http://www.w3.org/2005/Atom" xmlns:a="urn:foreign">'
+        '<a:link href="https://example.org/foreign"/>'
+        '<entry xmlns:a="http://www.w3.org/2005/Atom">'
+        '<a:link href="https://example.org/article"/></entry></feed>'
+    )
+    assert extract_links(feed, params) == ["https://example.org/article"]
+    # An empty parsed result must not fall back to regexes that ignore namespaces.
+    foreign_only = (
+        '<feed xmlns="http://www.w3.org/2005/Atom" xmlns:a="urn:foreign">'
+        '<a:link href="https://example.org/foreign"/>'
+        '<link xmlns="urn:foreign" href="https://example.org/also-foreign"/></feed>'
+    )
+    assert extract_links(foreign_only, params) == []
+
+
+def test_atom_prefixed_link_limit():
+    "Apply the link budget before the same rel filtering as unprefixed feeds."
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = (
+        '<a:feed xmlns:a="http://www.w3.org/2005/Atom">'
+        '<a:link rel="self" href="https://example.org/updates"/>'
+        '<a:link href="https://example.org/article"/>'
+        '<a:link href="https://example.org/unexamined"/></a:feed>'
+    )
+    with patch("trafilatura.feeds.MAX_LINKS", 2):
+        assert extract_links(feed, params) == ["https://example.org/article"]
+
+
+@pytest.mark.parametrize("query", ["x=1&amp;y=2", "x=1&amp;amp;y=2"])
+def test_atom_prefixed_url_entities(query):
+    "XML parsing and URL normalization together decode an escaped href only once."
+    params = FeedParameters("https://example.org", "example.org", "")
+    normal = f'<feed xmlns="http://www.w3.org/2005/Atom"><link href="https://example.org/article?{query}"/></feed>'
+    prefixed = f'<a:feed xmlns:a="http://www.w3.org/2005/Atom"><a:link href="https://example.org/article?{query}"/></a:feed>'
+    assert extract_links(prefixed, params) == extract_links(normal, params)
+
+
+def test_atom_prefixed_malformed_fallback():
+    "An unrelated qualified fragment does not remove legacy malformed-feed tolerance."
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = f'{XMLDECL}<a:link/><link href="https://example.org/article"rest"/>'
+    assert extract_links(feed, params) == ["https://example.org/article"]
+
+
+def test_atom_prefixed_no_external_resources():
+    "Qualified Atom parsing must not request external DTDs or entity contents."
+
+    class RejectExternalResources(Resolver):
+        def resolve(self, url, _pubid, _context):
+            raise AssertionError(f"Unexpected external resource: {url}")
+
+    def parser_without_external_resources(**kwargs):
+        parser = XMLParser(**kwargs)
+        parser.resolvers.add(RejectExternalResources())
+        return parser
+
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = (
+        '<!DOCTYPE a:feed SYSTEM "https://example.org/external.dtd" ['
+        '<!ENTITY external SYSTEM "https://example.org/external.txt">]>'
+        '<a:feed xmlns:a="http://www.w3.org/2005/Atom">'
+        '<a:title>&external;</a:title><a:link href="https://example.org/article"/></a:feed>'
+    )
+    with patch("trafilatura.feeds.XMLParser", side_effect=parser_without_external_resources):
+        assert extract_links(feed, params) == ["https://example.org/article"]
+
+
+def test_rss_with_prefixed_atom_link():
+    "Atom extension links do not take priority over RSS item links."
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = (
+        '<rss xmlns:a="http://www.w3.org/2005/Atom"><channel>'
+        '<a:link href="https://example.org/feed-info"/>'
+        "<item><link>https://example.org/article</link></item></channel></rss>"
+    )
+    assert extract_links(feed, params) == ["https://example.org/article"]
 
 
 def test_rss_extraction():

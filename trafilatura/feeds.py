@@ -5,7 +5,9 @@ Examining feeds and extracting links for further processing.
 import json
 import logging
 import re
+from collections.abc import Mapping
 from configparser import ConfigParser
+from html import escape
 from itertools import islice
 from time import sleep
 
@@ -16,6 +18,7 @@ from courlan import (
     get_hostinfo,
     is_valid_url,
 )
+from lxml.etree import XMLParser, XMLSyntaxError, fromstring
 
 from .deduplication import is_similar_domain
 from .downloads import fetch_url
@@ -50,6 +53,8 @@ FEED_TYPES = {
 
 FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
 RSS_ROOT = re.compile(r"<(?:rss|(?:\w+:)?RDF)\b")
+QUALIFIED_ATOM_TAG = re.compile(r"<[\w.-]+:(?:feed|link)(?=[\s/>])")
+ATOM_NAMESPACE = "{http://www.w3.org/2005/Atom}"
 
 LINK_ATTRS = re.compile(r"""<link\s+(?:[^>"']|"[^"]*"|'[^']*')*["']?/?>""")
 LINK_ATTRIBUTES = re.compile(r"""\s([\w:-]+)\s*=\s*(["'])(.*?)\2""", re.DOTALL)
@@ -132,8 +137,40 @@ def handle_link_list(linklist: list[str], params: FeedParameters) -> list[str]:
     return output_links
 
 
+def _is_atom_page_link(attributes: Mapping[str, str]) -> bool:
+    "Keep article links, rather than the feed, comments, enclosures or editing URLs."
+    rel = attributes.get("rel", "").strip().lower()
+    return bool(
+        attributes.get("href") and rel in ("", "alternate", "related") and "atom+xml" not in attributes.get("type", "")
+    )
+
+
+def _prefixed_atom_links(feed_string: str) -> list[str] | None:
+    "Read qualified Atom tags without treating foreign namespace links as Atom."
+    if not QUALIFIED_ATOM_TAG.search(feed_string) or has_rss_root(feed_string):
+        return None
+    try:
+        # The response is already decoded; do not apply its XML encoding declaration again.
+        parser = XMLParser(encoding="utf-8", resolve_entities=False, load_dtd=False, no_network=True)
+        root = fromstring(feed_string.encode("utf-8"), parser=parser)
+    except (XMLSyntaxError, ValueError):
+        # Keep the historical tolerant handling of incomplete or malformed feeds.
+        return None
+    if root.tag != f"{ATOM_NAMESPACE}feed":
+        return None
+    return [
+        # URL normalization decodes entities, just as for the raw regex attributes below.
+        escape(attributes["href"], quote=True)
+        for element in islice(root.iter(f"{ATOM_NAMESPACE}link"), MAX_LINKS)
+        if _is_atom_page_link(attributes := dict(element.attrib))
+    ]
+
+
 def find_links(feed_string: str, params: FeedParameters) -> list[str]:
     "Try different feed types and return the corresponding links."
+    prefixed_links = _prefixed_atom_links(feed_string)
+    if prefixed_links is not None:
+        return prefixed_links
     if not is_potential_feed(feed_string):
         # JSON
         if feed_string.startswith("{"):
@@ -170,8 +207,7 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
             # only candidates for page links: e.g. rel="self" is the feed itself,
             # rel="replies" is the comments link WordPress adds to every entry,
             # link blogs put the external link in rel="alternate" and the post itself in rel="related"
-            rel = attributes.get("rel", "").strip().lower()
-            if attributes.get("href") and rel in ("", "alternate", "related") and "atom+xml" not in attributes.get("type", ""):
+            if _is_atom_page_link(attributes):
                 links.append(attributes["href"])
         return links
 
