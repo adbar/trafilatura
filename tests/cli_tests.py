@@ -140,8 +140,10 @@ def test_seed_filters(tmp_path, filters, option, fetcher, capsys):
     "Crawler and probe start URLs go through the blacklist and URL filter."
     (tmp_path / "blacklist").write_text("https://example.org/start\n", encoding="utf-8")
     filters = [str(tmp_path / f) if f == "blacklist" else f for f in filters]
-    with patch.object(cli_utils, fetcher, return_value=[]) as fetch:
+    with patch.object(cli_utils, fetcher, return_value=[]) as fetch, pytest.raises(SystemExit) as exit_info:
         cli.process_args(cli.parse_args([option, "https://example.org/start", *filters]))
+    # no start URL left is an input error
+    assert exit_info.value.code == 1
     assert all(not c.args[0] for c in fetch.call_args_list)
     assert not capsys.readouterr().out.strip()
 
@@ -155,7 +157,13 @@ def test_probe_download_failure_exit_code(capsys):
 
 @pytest.mark.parametrize(
     "errors, archived_errors, expected",
-    [([], [], 0), (["https://example.org/a"], [], 0), (["https://example.org/a"], ["archived"], 126)],
+    [
+        ([], [], 0),
+        (["https://example.org/a"], [], 0),
+        # the ratio is computed over all input URLs
+        (["https://example.org/a"], ["archived"], 1),
+        (["https://example.org/a", "https://example.org/b"], ["archived1", "archived2"], 126),
+    ],
 )
 def test_archived_retry_exit_code(errors, archived_errors, expected):
     args = cli.parse_args(["-u", "https://example.org/a", "--archived"])
@@ -165,9 +173,9 @@ def test_archived_retry_exit_code(errors, archived_errors, expected):
         assert cli_utils.url_processing_pipeline(args, url_store) == expected
     assert download.call_count == (2 if errors else 1)
     if errors:
-        (archived,) = download.call_args.args[0].dump_urls()
-        assert archived.startswith("https://web.archive.org/web/20/")
-        assert archived.endswith("example.org/a")
+        archived = download.call_args.args[0].dump_urls()
+        assert all(u.startswith("https://web.archive.org/web/20/") for u in archived)
+        assert len(archived) == len(errors)
 
 
 @pytest.mark.parametrize(
@@ -365,12 +373,13 @@ def exit_code_setup(tmp_path_factory):
         ([], b"<p>x</p>", 0),
         (["--crawl", "{base}/ok"], None, 0),
         (["--crawl", "{base}/dead"], None, 126),
+        (["--crawl", "notaurl"], None, 1),
         (["--probe", "{base}/ok"], None, 0),
         (["--probe", "{base}/dead"], None, 126),
         (["--crawl", "-i", "{tmp}/twohosts"], None, 1),
         (["--probe", "-i", "{tmp}/twohosts"], None, 1),
         (["--probe", "-i", "{tmp}/header"], None, 0),
-        (["--feed", "{base}/dead"], None, 126),
+        (["--feed", "{base}/dead"], None, 1),
         (["--explore", "{base}/dead"], None, 126),
     ],
     ids=[
@@ -388,6 +397,7 @@ def exit_code_setup(tmp_path_factory):
         "stdin-rejected",
         "crawl",
         "crawl-dead",
+        "crawl-invalid",
         "probe",
         "probe-dead",
         "crawl-partial",
@@ -535,7 +545,7 @@ def test_download():
     url = "https://httpbun.com/html"
     teststring = fetch_url(url)
     assert teststring is not None
-    assert cli.examine(teststring, args, url) is not None
+    assert cli.examine(teststring, args) is not None
     # test exit code for faulty URLs
     testargs = ["", "-u", "https://1234.yz/"]
     args = cli.parse_args(testargs[1:])
@@ -835,12 +845,6 @@ def test_input_filtering():
     url_store = add_to_compressed_dict(my_urls)
     assert len(url_store.find_known_urls("https://example.org")) == 1
 
-    # filter before exploration
-    input_store = add_to_compressed_dict(["https://example.org/1", "https://sitemaps.org/test"])
-    input_urls = ["https://example.org", "http://sitemaps.org/", "https://test.info/"]
-    url_store = cli_utils.build_exploration_dict(input_store, input_urls, args)
-    assert url_store.get_known_domains() == ["https://test.info"]
-
 
 def test_crawling():
     "Test crawling and exploration functions."
@@ -938,8 +942,9 @@ def test_blacklist_discovered_urls(tmp_path):
     # start URL of a crawl
     args = cli.parse_args(["--crawl", "https://httpbun.com/html", "--list", "-b", str(blacklist)])
     f = io.StringIO()
-    with redirect_stdout(f):
+    with redirect_stdout(f), pytest.raises(SystemExit) as exit_info:
         cli.process_args(args)
+    assert exit_info.value.code == 1
     assert f.getvalue().strip() == ""
 
 
@@ -1032,7 +1037,9 @@ def test_cli_stdin_rejected(capsys):
         (["-i", "missing.txt"], "-i/--input-file: file not found"),
         (["-u", "https://example.org", "-b", "missing.txt"], "-b/--blacklist: file not found"),
         (["-u", "https://example.org", "--config-file", "missing.cfg"], "--config-file: file not found"),
-        (["-i", "."], "-i/--input-file: file not found"),
+        (["-i", "."], "-i/--input-file: not a file"),
+        (["-u", "https://example.org", "-b", "."], "-b/--blacklist: not a file"),
+        (["-u", "https://example.org", "--config-file", "."], "--config-file: not a file"),
         (["--input-dir", ".", "--parallel", "0"], "--parallel must be a positive integer"),
         (["-u", "https://example.org", "-o", "out", "--keep-dirs"], "--keep-dirs requires --input-dir"),
         (["--keep-dirs"], "--keep-dirs requires --input-dir"),
@@ -1129,20 +1136,21 @@ def test_discovery_processes_found_urls_only(list_mode, capsys):
 
 
 @pytest.mark.parametrize("option", ["--feed", "--sitemap"])
-@pytest.mark.parametrize("found, expected", [({}, 126), ({"https://a.org/": ["https://a.org/x"]}, 1)])
-def test_discovery_without_links_exit_code(tmp_path, option, found, expected):
+@pytest.mark.parametrize("found", [{}, {"https://a.org/": ["https://a.org/x"]}])
+def test_discovery_without_links_exit_code(tmp_path, option, found):
+    "Seeds without links are errors but not download failures: exit 1, never 126."
     (tmp_path / "seeds").write_text("https://a.org/\nhttps://b.org/\n", encoding="utf-8")
     search = "find_feed_urls" if option == "--feed" else "sitemap_search"
     with (
         patch.object(cli_utils, search, lambda url, **kwargs: found.get(url, [])),
         patch.object(cli_utils, "url_processing_pipeline", lambda args, store: 0),
     ):
-        assert cli_utils.cli_discovery(cli.parse_args([option, "-i", str(tmp_path / "seeds")])) == expected
+        assert cli_utils.cli_discovery(cli.parse_args([option, "-i", str(tmp_path / "seeds")])) == 1
 
 
 def test_url_filter_discarding_all_inputs(caplog):
     with patch.object(cli_utils, "sitemap_search") as search:
-        cli_utils.cli_discovery(cli.parse_args(["--sitemap", "https://example.org/", "--url-filter", "/news/"]))
+        assert cli_utils.cli_discovery(cli.parse_args(["--sitemap", "https://example.org/", "--url-filter", "/news/"])) == 1
     search.assert_not_called()
     assert "No input URL left" in caplog.text
 
@@ -1154,12 +1162,16 @@ def test_config_file_with_bom(tmp_path):
 
 
 @pytest.mark.parametrize("list_mode", [False, True], ids=["extract", "list"])
-def test_explore_crawls_sites_without_sitemap(list_mode):
+def test_explore_crawls_seeds_without_links(tmp_path, list_mode):
+    "Only seeds without links are crawled, also after --list flushed the store."
+    seeds = tmp_path / "seeds.txt"
+    seeds.write_text("https://a.org/\nhttps://b.org/\nhttps://nolinks.org/\n")
     crawled = []
     with (
-        patch.object(cli_utils, "sitemap_search", lambda url, **kwargs: []),
+        patch.object(cli_utils, "sitemap_search", lambda url, **kwargs: [] if "nolinks" in url else [url + "page"]),
         patch.object(cli_utils, "url_processing_pipeline", lambda args, store: 0),
         patch.object(cli_utils, "cli_crawler", lambda args, url_store, options: crawled.extend(url_store.dump_urls()) or 0),
     ):
-        cli_utils.cli_discovery(cli.parse_args(["--explore", "https://example.org/"] + (["--list"] if list_mode else [])))
-    assert crawled == ["https://example.org/"]
+        args = cli.parse_args(["-i", str(seeds), "--explore", "--parallel", "1"] + (["--list"] if list_mode else []))
+        assert cli_utils.cli_discovery(args) == 0
+    assert crawled == ["https://nolinks.org/"]

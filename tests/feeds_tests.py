@@ -503,4 +503,4 @@ def test_cli_behavior(capsys):
     with patch.object(sys, "argv", testargs), patch.object(cli_utils, "find_feed_urls", return_value=[]):
         with pytest.raises(SystemExit) as exc:
             main()
-    assert exc.value.code == 126
+    assert exc.value.code == 1

@@ -184,8 +184,9 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
         ("-b/--blacklist", args.blacklist),
         ("--config-file", args.config_file),
     ):
-        if filename and (not Path(filename).exists() or Path(filename).is_dir()):
-            parser.error(f"{option}: file not found: {filename}")
+        if filename and not Path(filename).is_file():
+            reason = "not a file" if Path(filename).exists() else "file not found"
+            parser.error(f"{option}: {reason}: {filename}")
     if args.parallel < 1:
         parser.error("--parallel must be a positive integer")
     if args.name_from_url:

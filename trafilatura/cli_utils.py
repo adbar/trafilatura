@@ -20,7 +20,7 @@ from hashlib import blake2b
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
-from courlan import UrlStore, extract_domain, get_base_url  # validate_url
+from courlan import UrlStore, get_base_url  # validate_url
 
 from trafilatura import spider
 
@@ -294,6 +294,8 @@ def cli_discovery(args: argparse.Namespace) -> int:
     "Group CLI functions dedicated to URL discovery."
     url_store = load_input_dict(args)
     input_urls = url_store.dump_urls()
+    if not input_urls:
+        return 1
     # only process the discovered URLs
     url_store.reset()
 
@@ -327,27 +329,12 @@ def cli_discovery(args: argparse.Namespace) -> int:
     # process the (rest of the) links found
     exit_code = url_processing_pipeline(args, url_store)
 
-    # activate site explorer
-    if args.explore:
-        # add to compressed dict and crawl the remaining websites
-        control_dict = build_exploration_dict(url_store, input_urls, args)
-        # the crawler takes over the seeds without links, keep the worse exit code
-        return max(exit_code, cli_crawler(args, url_store=control_dict, options=options))
+    # the crawler takes over the seeds without links, keep the worse exit code
+    if args.explore and no_links:
+        return max(exit_code, cli_crawler(args, url_store=add_to_compressed_dict(no_links), options=options))
 
-    return max(exit_code, _define_exit_code(no_links, len(input_urls)))
-
-
-def build_exploration_dict(url_store: UrlStore, input_urls: list[str], args: argparse.Namespace) -> UrlStore:
-    "Find domains for which nothing has been found and add info to the crawl dict."
-    input_domains = {extract_domain(u) for u in input_urls}
-    still_to_crawl = input_domains - {extract_domain(u) for u in url_store.get_known_domains()}
-    new_input_urls = [u for u in input_urls if extract_domain(u) in still_to_crawl]
-    return add_to_compressed_dict(
-        new_input_urls,
-        blacklist=args.blacklist,
-        url_filter=args.url_filter,
-        verbose=args.verbose,
-    )
+    # missing links are not download failures
+    return max(exit_code, int(bool(no_links)))
 
 
 def cli_crawler(
@@ -396,6 +383,8 @@ def cli_crawler(
             break
 
     print("\n".join(spider.URL_STORE.dump_urls()))
+    if not starts:
+        return 1
     # start pages that could not be fetched
     errors = [p.base for p in starts if p.i == 0]
     return _define_exit_code(errors, len(starts))
@@ -404,6 +393,8 @@ def cli_crawler(
 def probe_homepage(args: argparse.Namespace) -> int:
     "Probe websites for extractable content and print the fitting ones."
     input_urls = load_input_dict(args).dump_urls()
+    if not input_urls:
+        return 1
     options = args_to_extractor(args)
 
     errors: list[str] = []
@@ -450,7 +441,7 @@ def url_processing_pipeline(args: argparse.Namespace, url_store: UrlStore) -> in
         archived_errors, _ = download_queue_processing(url_store, args, counter, options)
         LOGGER.debug("%s archived URLs out of %s could not be found", len(archived_errors), len(errors))
         # pass information along if URLs are missing
-        return _define_exit_code(archived_errors, url_store.total_url_number())
+        return _define_exit_code(archived_errors, url_count)
 
     return _define_exit_code(errors, url_count)
 
@@ -495,13 +486,12 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
 def examine(
     htmlstring: str | bytes | None,
     args: argparse.Namespace,
-    url: str | None = None,
     options: Extractor | None = None,
 ) -> str | None:
     "Generic safeguards and triggers around extraction function."
     result = None
     if not options:
-        options = args_to_extractor(args, url)
+        options = args_to_extractor(args)
     # safety check
     if htmlstring is None:
         sys.stderr.write("ERROR: empty document\n")

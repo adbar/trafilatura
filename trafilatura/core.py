@@ -26,7 +26,7 @@ from .htmlprocessing import (
 )
 from .main_extractor import DEFERRED_ATTR, _elem_text, extract_comments, extract_content
 from .metadata import Document, extract_metadata
-from .settings import DEFAULT_CONFIG, Extractor, use_config
+from .settings import DEFAULT_CONFIG, Extractor, sanitize_source, use_config
 from .utils import (
     LANGID_FLAG,
     HtmlInput,
@@ -383,7 +383,10 @@ def bare_extraction(
     # the url argument also applies when options are given, without changing them
     if url and url != options.url:
         options = copy(options)
-        options.url = options.source = url
+        # keep a source set by the caller
+        if not options.source or options.source == sanitize_source(options.url):
+            options.source = sanitize_source(url)
+        options.url = url
     url = options.url
 
     try:

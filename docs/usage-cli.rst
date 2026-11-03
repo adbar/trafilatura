@@ -330,7 +330,7 @@ Exit codes
 ----------
 
 - ``0``: success, including inputs without extractable content or rejected for their size.
-- ``1``: some inputs could not be downloaded or read, ``--feed`` or ``--sitemap`` found no links for some of them, or the output directory cannot be written.
+- ``1``: some inputs could not be downloaded or read, ``--feed`` or ``--sitemap`` found no links for some of them, a navigation option has no valid start URL left, or the output directory cannot be written.
 - ``126``: more than 99% of the inputs could not be downloaded (also when ``--crawl`` or ``--probe`` cannot fetch the start pages).
 - ``2``: invalid arguments, for example a missing input file, ``--parallel 0``, or ``--feed`` without a URL.
 

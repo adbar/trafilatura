@@ -1999,6 +1999,16 @@ def test_url_with_options():
     options.url = "https://example.org/options"
     assert bare_extraction(doc, options=options).url == "https://example.org/options"
     assert bare_extraction(doc, url="https://example.org/page", options=options).url == "https://example.org/page"
+    # the source follows the url unless set by the caller, and is sanitized
+    custom = core.Extractor(source="batch-42", config=ZERO_CONFIG)
+    derived = core.Extractor(url="https://example.org/old", config=ZERO_CONFIG)
+    with patch.object(core, "trafilatura_sequence", wraps=core.trafilatura_sequence) as sequence:
+        bare_extraction(doc, url="https://example.org/\udcff", options=custom)
+        bare_extraction(doc, url="https://example.org/\udcff", options=options)
+        bare_extraction(doc, url="https://example.org/new", options=derived)
+    sources = [c.args[1].source for c in sequence.call_args_list]
+    assert sources == ["batch-42", "https://example.org/?", "https://example.org/new"]
+    assert custom.source == "batch-42"
     # log messages name the given URL
     short = core.Extractor()
     short.min_output_size = 100

@@ -59,6 +59,11 @@ def _get_optional_int(config: ConfigParser, option: str) -> int | None:
     return int(value) if value.isdigit() else None
 
 
+def sanitize_source(source: str | None) -> str | None:
+    "Replace characters that cannot be encoded in UTF-8."
+    return source and source.encode("utf-8", "replace").decode("utf-8")
+
+
 # not a dataclass: __init__ contains real logic
 class Extractor:
     "Defines a class to store all extraction options."
@@ -127,8 +132,7 @@ class Extractor:
         if output_format not in SUPPORTED_FORMATS:
             raise ValueError(f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}")
         self.format = output_format
-        source = url or source
-        self.source = source and source.encode("utf-8", "replace").decode("utf-8")
+        self.source = sanitize_source(url or source)
         if tei_validation and self.format != "xmltei":
             LOGGER.warning("tei_validation has no effect unless output_format is 'xmltei'")
         if formatting and self.format == "json":
@@ -166,7 +170,7 @@ class Extractor:
         )
 
 
-def args_to_extractor(args: argparse.Namespace, url: str | None = None) -> Extractor:
+def args_to_extractor(args: argparse.Namespace) -> Extractor:
     "Derive extractor configuration from CLI args."
     return Extractor(
         config=use_config(filename=args.config_file),
@@ -181,7 +185,6 @@ def args_to_extractor(args: argparse.Namespace, url: str | None = None) -> Extra
         links=args.links,
         dedup=args.deduplicate,
         lang=args.target_language,
-        url=url,
         with_metadata=args.with_metadata,
         only_with_metadata=args.only_with_metadata,
         tei_validation=args.validate_tei,
