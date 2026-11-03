@@ -188,6 +188,37 @@ def test_atom_prefixed_url_entities(query):
     assert extract_links(prefixed, params) == extract_links(normal, params)
 
 
+@pytest.mark.parametrize("prefixed", [False, True])
+@pytest.mark.parametrize(
+    "url, expected",
+    [
+        ("https://example.org/it's-here", "https://example.org/it%27s-here"),
+        ("https://example.org/article?x='q'", "https://example.org/article?x=%27q%27"),
+        ("https://example.org/it&apos;s-here", "https://example.org/it%27s-here"),
+        ("https://example.org/article?x=&apos;q&apos;", "https://example.org/article?x=%27q%27"),
+        # Double quotes retain the URL normalizer's existing trimming behavior.
+        ('https://example.org/a"b', "https://example.org/a"),
+        ('https://example.org/article?x="q"', "https://example.org/article"),
+        ("https://example.org/a&quot;b", "https://example.org/a"),
+        ("https://example.org/article?x=&quot;q&quot;", "https://example.org/article"),
+    ],
+)
+def test_atom_namespace_url_quotes(prefixed, url, expected):
+    "Parsed quotes keep existing URL normalization without introducing entity fragments."
+    params = FeedParameters("https://example.org", "example.org", "")
+    quote = "'" if '"' in url else '"'
+    if prefixed:
+        feed = f'<a:feed xmlns:a="http://www.w3.org/2005/Atom"><a:link href={quote}{url}{quote}/></a:feed>'
+    else:
+        # A foreign prefixed tag also activates namespace-aware parsing in a default Atom feed.
+        feed = (
+            '<feed xmlns="http://www.w3.org/2005/Atom" xmlns:f="urn:foreign">'
+            '<f:link href="https://example.org/foreign"/>'
+            f"<link href={quote}{url}{quote}/></feed>"
+        )
+    assert extract_links(feed, params) == [expected]
+
+
 def test_atom_prefixed_malformed_fallback():
     "An unrelated qualified fragment does not remove legacy malformed-feed tolerance."
     params = FeedParameters("https://example.org", "example.org", "")

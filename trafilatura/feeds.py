@@ -159,8 +159,8 @@ def _prefixed_atom_links(feed_string: str) -> list[str] | None:
     if root.tag != f"{ATOM_NAMESPACE}feed":
         return None
     return [
-        # URL normalization decodes entities, just as for the raw regex attributes below.
-        escape(attributes["href"], quote=True)
+        # Keep the regex path's entity layer without introducing numeric quote entities as URL fragments.
+        escape(attributes["href"], quote=False)
         for element in islice(root.iter(f"{ATOM_NAMESPACE}link"), MAX_LINKS)
         if _is_atom_page_link(attributes := dict(element.attrib))
     ]
