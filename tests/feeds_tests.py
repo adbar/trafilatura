@@ -166,6 +166,24 @@ def test_atom_namespace_scopes():
     assert extract_links(foreign_only, params) == []
 
 
+def test_non_atom_qualified_root():
+    "A qualified feed name in another namespace is not an Atom feed."
+    params = FeedParameters("https://example.org", "example.org", "")
+    document = '<a:feed xmlns:a="urn:foreign"><a:link href="https://example.org/not-an-atom-article"/></a:feed>'
+    assert extract_links(document, params) == []
+
+
+def test_non_atom_root_keeps_legacy_link_fallback():
+    "Namespace-aware parsing leaves other XML roots to the existing tolerant path."
+    params = FeedParameters("https://example.org", "example.org", "")
+    document = (
+        f'{XMLDECL}<document xmlns:a="http://www.w3.org/2005/Atom">'
+        '<a:link href="https://example.org/foreign-extension"/>'
+        '<link href="https://example.org/legacy-article"/></document>'
+    )
+    assert extract_links(document, params) == ["https://example.org/legacy-article"]
+
+
 def test_atom_prefixed_link_limit():
     "Apply the link budget before the same rel filtering as unprefixed feeds."
     params = FeedParameters("https://example.org", "example.org", "")
