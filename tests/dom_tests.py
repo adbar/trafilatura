@@ -119,3 +119,15 @@ def test_absolute_path_in_predicate_on_copied_tree(backend: Callable[[html.HtmlE
     tree = backend(html.fromstring("<html><body><div><h2>Preview</h2></div><h1>Title</h1></body></html>"))
 
     assert [element.tag for element in tree.xpath(".//div[not(.//h2[not(//h1)])]")] == ["div"]
+
+
+@pytest.mark.parametrize("markup", [pytest.param(str, id="str"), pytest.param(str.encode, id="bytes")])
+@pytest.mark.parametrize("backend", [dom, html], ids=["turbohtml", "lxml"])
+def test_template_content_parsed_as_children(backend: ModuleType, markup: Callable[[str], str | bytes]) -> None:
+    source = (
+        "<html><body><div>A <template shadowrootmode='open'><p>B <template>C</template> D</p></template> E</div></body></html>"
+    )
+
+    tree = backend.document_fromstring(markup(source))
+
+    assert (tree.text_content(), len(tree.xpath("//template"))) == ("A B C D E", 2)
