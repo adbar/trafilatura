@@ -345,6 +345,11 @@ class HtmlElement:
     def attrib(self) -> _Attrib:
         return _Attrib(self.node)
 
+    @property
+    def nsmap(self) -> dict[str | None, str]:
+        "HTML trees declare no namespace prefixes."
+        return {}
+
     def get(self, key: str, default: Any = None) -> Any:
         value = self.node.attr(key)
         return default if value is None else value

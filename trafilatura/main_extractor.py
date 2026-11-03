@@ -836,6 +836,6 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
             # remove corresponding subtree
             delete_element(subtree, keep_tail=False)
             break
-    comments_body = sanitize_tree(comments_body)
+    sanitize_tree(comments_body)  # in place
     _strip_block_whitespace(comments_body)
     return comments_body, " ".join(comments_body.itertext()).strip(), tree

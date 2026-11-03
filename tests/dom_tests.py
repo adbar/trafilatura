@@ -131,3 +131,8 @@ def test_template_content_parsed_as_children(backend: ModuleType, markup: Callab
     tree = backend.document_fromstring(markup(source))
 
     assert (tree.text_content(), len(tree.xpath("//template"))) == ("A B C D E", 2)
+
+
+@pytest.mark.parametrize("backend", [dom, html], ids=["turbohtml", "lxml"])
+def test_html_tree_has_no_namespace_prefixes(backend: ModuleType) -> None:
+    assert backend.fromstring("<div><p>A</p></div>").nsmap == {}
