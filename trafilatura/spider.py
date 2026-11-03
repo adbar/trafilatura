@@ -6,7 +6,7 @@ Functions dedicated to website navigation and crawling/spidering.
 import logging
 from configparser import ConfigParser
 from time import sleep
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit
 from urllib.robotparser import RobotFileParser
 
 from courlan import (
@@ -74,7 +74,19 @@ class CrawlParameters:
 
     def _get_reference(self, start: str) -> str:
         "Determine the reference URL."
-        return start.rsplit("/", 1)[0] if start.count("/") >= 3 else start
+        return self.base + urlsplit(start).path.rsplit("/", 1)[0]
+
+    def _is_within_reference(self, link: str) -> bool:
+        "Check the origin and directory, excluding query strings and fragments."
+        try:
+            candidate, reference = urlsplit(link), urlsplit(self.ref)
+        except ValueError:
+            return False
+        return (
+            candidate.scheme.lower() == reference.scheme.lower()
+            and candidate.netloc.lower() == reference.netloc.lower()
+            and (candidate.path == reference.path or candidate.path.startswith(reference.path + "/"))
+        )
 
     def update_metadata(self, url_store: UrlStore) -> None:
         "Adjust crawl data based on URL store info."
@@ -85,13 +97,13 @@ class CrawlParameters:
         "Prepare the todo list, excluding invalid URLs."
         if not todo:
             return []
-        return [u for u in todo if u != self.start and self.ref in u]
+        return [u for u in todo if u != self.start and self._is_within_reference(u)]
 
     def is_valid_link(self, link: str) -> bool:
         "Run checks: robots.txt rules, URL type, crawl breadth and blacklist."
         return (
             (not self.rules or self.rules.can_fetch("*", link))
-            and self.ref in link
+            and self._is_within_reference(link)
             and not is_not_crawlable(link)
             and URL_BLACKLIST_REGEX.sub("", link) not in self.blacklist
         )
