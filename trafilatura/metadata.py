@@ -48,6 +48,8 @@ META_URL = re.compile(r"https?://(?:www\.|w[0-9]+\.)?([^/]+)")
 JSON_MINIFY = re.compile(r'("(?:\\.|[^"\\])*")|\s')
 
 HTMLTITLE_REGEX = re.compile(r"^(.+)?\s+[–•·—|⁄*⋆~‹«<›»>:-]\s+(.+)$")  # part without dots?
+# host name: dot-separated labels ending in a top-level domain of letters (or a punycode one)
+HOSTNAME_REGEX = re.compile(r"(?:[\w-]+\.)+(?:[^\W\d_]{2,}|xn--[a-z\d-]+)")
 
 CLEAN_META_TAGS = re.compile(r'["\']')
 
@@ -403,7 +405,7 @@ def extract_url(tree: HtmlElement, default_url: str | None = None) -> str | None
 def extract_sitename(tree: HtmlElement) -> str | None:
     """Extract the name of a site from the main title (if it exists)"""
     _, *parts = examine_title_element(tree)
-    return next((part for part in parts if part and "." in part), None)
+    return next((part for part in parts if part and HOSTNAME_REGEX.fullmatch(part)), None)
 
 
 def extract_catstags(metatype: str, tree: HtmlElement) -> list[str]:
