@@ -1,4 +1,5 @@
 import sys
+from collections.abc import Callable
 from types import ModuleType
 
 import pytest
@@ -111,3 +112,10 @@ def test_to_lxml_drops_xml_illegal_characters() -> None:
     copied = dom.to_lxml(element)
 
     assert (copied.get("title"), copied.text, copied[0].tail) == ("ab", "xy", "t")
+
+
+@pytest.mark.parametrize("backend", [dom.from_lxml, lambda tree: tree], ids=["turbohtml", "lxml"])
+def test_absolute_path_in_predicate_on_copied_tree(backend: Callable[[html.HtmlElement], html.HtmlElement]) -> None:
+    tree = backend(html.fromstring("<html><body><div><h2>Preview</h2></div><h1>Title</h1></body></html>"))
+
+    assert [element.tag for element in tree.xpath(".//div[not(.//h2[not(//h1)])]")] == ["div"]
