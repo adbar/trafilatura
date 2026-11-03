@@ -3947,6 +3947,37 @@ print(os.getcwd())</code></pre></div>"""
     assert "```\nimport os\nprint(os.getcwd())\n```" in testresult
     testresult = extract(unlabeled, config=ZERO_CONFIG, output_format="xml")
     assert "<code>import os\nprint(os.getcwd())</code>" in testresult
+    # a language-* class comes first, lang usually names a natural language
+    hinted = """<div><p>Code:</p>
+<pre lang="en"><code class="language-python">import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(hinted, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    # lang on a blockquote is a natural language: an embedded tweet stays a quote
+    tweet = """<div><p>Before the tweet.</p>
+<blockquote class="twitter-tweet" lang="en">Hello world, this is a tweet.<br>&mdash; Someone (@someone)</blockquote>
+<p>After the tweet.</p></div>"""
+    testresult = extract(tweet, config=ZERO_CONFIG, output_format="xml")
+    assert "<quote>" in testresult
+    assert "<code" not in testresult
+    assert "`" not in extract(tweet, config=ZERO_CONFIG, output_format="markdown")
+    # both sources are checked with one pattern before a value reaches the fence line
+    for markup in (
+        '<pre lang="py\nthon"><code>',
+        '<pre class="language-*"><code class="language-*">',
+        '<pre><code rend="a\nb">',
+    ):
+        unusable = f"<div><p>Code:</p>\n{markup}import os\nprint(os.getcwd())</code></pre></div>"
+        testresult = extract(unusable, config=ZERO_CONFIG, output_format="markdown")
+        assert "```\nimport os\nprint(os.getcwd())\n```" in testresult
+        testresult = extract(unusable, config=ZERO_CONFIG, output_format="xml")
+        assert "<code>import os\nprint(os.getcwd())</code>" in testresult
+    # lang stays the fallback when the class names no usable language
+    fallback = """<div><p>Code:</p>
+<pre lang="python"><code class="language-*">import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(fallback, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
 
 
 def test_markdown_escaping():

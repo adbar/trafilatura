@@ -47,6 +47,8 @@ TABLE_ELEMS = {"td", "th"}
 # meaningful internal attributes to carry onto a rewired sub-element (drop stray class/style/width/etc.)
 KEEP_ATTRS = {"rend", "role", "target", "src", "alt", "title"}
 CODES_QUOTES = {"code", "quote"}
+# a code language hint as it may appear on a markdown fence line
+CODE_LANGUAGE = re.compile(r"[\w+#.-]+")
 # blocks rebuilt as new elements by handle_textelem(), which leaves the source tail behind
 REBUILT_BLOCKS = CODES_QUOTES | {"list", "table"}
 NOT_AT_THE_END = {"head", "ref"}
@@ -225,19 +227,17 @@ def is_code_block_element(element: _Element) -> bool:
 
 
 def code_block_language(element: _Element) -> str | None:
-    "Find an explicit language hint: a lang attribute or a language-* class."
-    nested = element.find(".//code")
-    for candidate in (element, nested):
-        if candidate is None:
-            continue
-        if language := candidate.get("lang"):
-            return language
-        for token in (candidate.get("class") or "").split():
-            if token.startswith("language-"):
-                language = token[len("language-") :]
-                if language and "`" not in language:
-                    return language
-    return None
+    "Find an explicit language hint: a language-* class, else a lang attribute."
+    candidates = [candidate for candidate in (element, element.find(".//code")) if candidate is not None]
+    hints = [
+        token[len("language-") :]
+        for candidate in candidates
+        for token in (candidate.get("class") or "").split()
+        if token.startswith("language-")
+    ]
+    # lang usually names a natural language, it only counts if no class names the code language
+    hints.extend(candidate.get("lang") or "" for candidate in candidates)
+    return next((hint for hint in hints if CODE_LANGUAGE.fullmatch(hint)), None)
 
 
 def handle_code_blocks(element: _Element) -> _Element:
@@ -247,6 +247,9 @@ def handle_code_blocks(element: _Element) -> _Element:
     for child in element.iter("*"):
         child.tag = "done"
     processed_element.tag = "code"
+    # rend on a code element holds the checked hint only, never the page's own attribute
+    for code in processed_element.iter("code"):
+        code.attrib.pop("rend", None)
     if language:
         processed_element.set("rend", language)
         # a nested code element is the one rendered by the serializer
