@@ -190,6 +190,8 @@ def test_reset_caches(monkeypatch):
     caches = {
         id(obj): obj
         for info in pkgutil.iter_modules(trafilatura.__path__)
+        # the turbohtml backend is not installed on Python 3.10
+        if info.name != "_turbohtml" or sys.version_info >= (3, 11)
         for obj in vars(importlib.import_module(f"trafilatura.{info.name}")).values()
         if isinstance(obj, _lru_cache_wrapper) and obj is not _punct_tbl and obj.__module__ != "urllib.parse"
     }
@@ -1998,7 +2000,7 @@ def test_recover_wild_text_list_after_colon():
     htmlstring = f"<body><div><p>{intro}</p><list>{items}</list><p>Unrelated closing paragraph.</p>{other}</div></body>"
 
     def recovered(options):
-        result = recover_wild_text(html.fromstring(htmlstring), etree.Element("body"), options)
+        result = recover_wild_text(_html_tree(htmlstring), dom.Element("body"), options)
         return "".join(result.itertext())
 
     text = recovered(core.Extractor())
@@ -2010,14 +2012,14 @@ def test_recover_wild_text_list_after_colon():
     assert "conduct data analysis" not in recovered(core.Extractor(precision=True))
 
     # the rest of the text is short: the recovered list counts toward the rescue lengths
-    body, text = extract_content(html.fromstring(htmlstring), core.Extractor())
+    body, text = extract_content(_html_tree(htmlstring), core.Extractor())
     assert intro in text
     assert "conduct data analysis" in text
 
     # the rest is long enough on its own: the list is left out of the length that gates the later rescues
     closing = "Unrelated closing paragraph. " + "Some more words here. " * 12
     long_html = htmlstring.replace("Unrelated closing paragraph.", closing)
-    body, text = extract_content(html.fromstring(long_html), core.Extractor())
+    body, text = extract_content(_html_tree(long_html), core.Extractor())
     assert "conduct data analysis" in "".join(body.itertext())
     assert intro in text
     assert "conduct data analysis" not in text
@@ -2179,7 +2181,7 @@ def test_template_content_dropped():
         f"<html><body><div>{article}<template><p>Hidden template row</p></template>tail text"
         '<div><template shadowrootmode="open"><p>Shadow root text</p></template></div></div></body></html>'
     )
-    cleaned = tree_cleaning(load_html(page), options).text_content()
+    cleaned = tree_cleaning(load_html_native(page), options).text_content()
     assert "Hidden template row" not in cleaned
     assert "tail text" in cleaned
     assert "Shadow root text" in cleaned
@@ -3149,7 +3151,7 @@ def test_recall_escalation_justext_over_longer_retry(monkeypatch, jt_words, winn
         etree.SubElement(body, "p").text = f"{label} " * words
         return body, f"{label} " * words
 
-    monkeypatch.setattr(core, "_recall_retry", lambda *args: candidate("retry", 2000))
+    monkeypatch.setattr(core, "_recall_retry", lambda *args, **kwargs: candidate("retry", 2000))
     monkeypatch.setattr(core, "justext_rescue", lambda *args: candidate("justext", jt_words))
     messages = "".join(f"<div class='sidebar'>Menu entry number {i} of the page.</div>" for i in range(200))
     result = extract(f"<html><body>{_ESCALATION_INTRO}{messages}</body></html>", output_format="txt") or ""
@@ -3558,7 +3560,7 @@ def test_infinite_scroll_container_with_primary_h2_kept(mode):
 
 def test_infinite_scroll_h2_preview_before_h1_pruned():
     "The no-h1 condition must inspect the whole document, including a later real article."
-    tree = html.fromstring(
+    tree = _html_tree(
         "<html><body><div class='infinite-scroll'><h2>Preview</h2></div><article><h1>Real title</h1></article></body></html>"
     )
     assert xp.RAW_TREE_PRUNE_XPATH[0](tree) == tree.xpath("//div")
@@ -3587,10 +3589,10 @@ def test_compare_extraction_justext_override(monkeypatch, unclean, own_len, jt_l
 
 def test_compare_extraction_justext_input_cleaned(monkeypatch):
     "Justext reads a tree_cleaning'd copy, the input tree stays untouched."
-    monkeypatch.setattr(external, "try_readability", lambda tree: etree.Element("body"))
+    monkeypatch.setattr(external, "try_readability", lambda tree: dom.Element("body"))
     long = "This sentence is long enough to be classified as content by itself. " * 3
     tree = _html_tree(f"<html><body><p>{long}</p><dialog><p>Dialog {long}</p></dialog></body></html>")
-    _, text = external.compare_extraction(tree, etree.Element("body"), "", core.Extractor())
+    _, text = external.compare_extraction(tree, dom.Element("body"), "", core.Extractor())
     assert text == long.strip()
     assert tree.find(".//dialog") is not None
 
@@ -4924,7 +4926,7 @@ def test_tree_cleaning_undo_without_tables():
     doc = "<html><body><table><tr><td><p>cell one</p></td><td><p>cell two</p></td></tr></table></body></html>"
     for focus, kept in (("balanced", 0), ("precision", 0), ("recall", 1)):
         options = core.Extractor(tables=False, precision=focus == "precision", recall=focus == "recall")
-        cleaned = tree_cleaning(html.fromstring(doc), options)
+        cleaned = tree_cleaning(_html_tree(doc), options)
         assert len(cleaned.findall(".//p")) == 2, focus
         assert len(cleaned.findall(".//table")) == kept, focus
 
@@ -4932,7 +4934,7 @@ def test_tree_cleaning_undo_without_tables():
 def test_tree_cleaning_same_tag_after_nested(options):
     "A nested same-tag element must not end the deletion walk before later matches."
     doc = "<html><body><div><aside>one<aside>inner</aside></aside>tail1<p>text</p><aside>two</aside>tail2</div></body></html>"
-    cleaned = tree_cleaning(html.fromstring(doc), options)
+    cleaned = tree_cleaning(_html_tree(doc), options)
     assert cleaned.find(".//aside") is None
     assert "".join(cleaned.itertext()) == "tail1texttail2"
 

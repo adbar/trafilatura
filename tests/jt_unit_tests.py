@@ -5,20 +5,25 @@ Unit tests for the jusText-derived fallback (trafilatura/justext_lite.py, try_ju
 import pytest
 from lxml import etree, html
 
-from trafilatura import core
+from trafilatura import core, dom
 from trafilatura.external import justext_rescue, try_justext
 from trafilatura.justext_lite import extract_paragraphs
 from trafilatura.utils import trim
 
 
+def _html_tree(markup):
+    "Parse with libxml2, then convert to trafilatura's own tree type for the internals."
+    return dom.from_lxml(html.fromstring(markup))
+
+
 def test_justext_hardening():
     "Unusable input gives an empty body."
     my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.<!-- comment --><?php echo "This is a PHP processing instruction"; ?></p></div></body></html>'
-    assert etree.tostring(try_justext(html.fromstring(my_html), None)) == b"<body/>"
-    assert etree.tostring(try_justext(None, None)) == b"<body/>"
+    assert etree.tostring(dom.to_lxml(try_justext(_html_tree(my_html), None))) == b"<body/>"
+    assert etree.tostring(dom.to_lxml(try_justext(None, None))) == b"<body/>"
     # the former target_language argument fails loudly
     with pytest.raises(TypeError):
-        try_justext(html.fromstring(my_html), None, "de")  # type: ignore[misc]
+        try_justext(_html_tree(my_html), None, "de")  # type: ignore[misc]
 
 
 def test_justext_lite():
@@ -105,27 +110,27 @@ def test_justext_lite():
         f"<pre>{long}</pre><blockquote><p>{long}</p></blockquote><div>{long}</div></body></html>"
     )
     assert [kind for _, kind, *_ in extract_paragraphs(html.fromstring(my_html))] == ["h2", "ul", "ul", "code", "quote", "p"]
-    result = try_justext(html.fromstring(my_html), None)
+    result = try_justext(_html_tree(my_html), None)
     assert [elem.tag for elem in result.iter()] == ["body", "head", "list", "item", "item", "code", "quote", "p"]
     assert result[0].get("rend") == "h2"
     # list types, an ol next to a ul starts a new list
     my_html = f"<html><body><ol><li>{long}</li><li>{long}</li></ol><ul><li>{long}</li></ul></body></html>"
-    result = try_justext(html.fromstring(my_html), None)
+    result = try_justext(_html_tree(my_html), None)
     assert [(elem.get("rend"), len(elem)) for elem in result] == [("ol", 2), ("ul", 1)]
     # adjacent lists of the same type stay apart, code in a list item stays code
     my_html = f"<html><body><ul><li>{long}</li></ul><ul><li>{long}</li><li><pre>{long}</pre></li></ul></body></html>"
-    result = try_justext(html.fromstring(my_html), None)
+    result = try_justext(_html_tree(my_html), None)
     assert [(elem.tag, len(elem)) for elem in result] == [("list", 1), ("list", 1), ("code", 0)]
     # a nested list is flattened into its outermost list, which keeps its type
     my_html = f"<html><body><ul><li>{long}<ol><li>{long}</li></ol></li><li>{long}</li></ul></body></html>"
-    result = try_justext(html.fromstring(my_html), None)
+    result = try_justext(_html_tree(my_html), None)
     assert [(elem.get("rend"), len(elem)) for elem in result] == [("ul", 3)]
     # adjacent definition lists stay apart
     my_html = f"<html><body><dl><dt>{long}</dt><dd>{long}</dd></dl><dl><dt>{long}</dt></dl></body></html>"
-    result = try_justext(html.fromstring(my_html), None)
+    result = try_justext(_html_tree(my_html), None)
     assert [(elem.tag, len(elem)) for elem in result] == [("list", 2), ("list", 1)]
     # characters lxml rejects are removed from the text, the rest of the output stays
-    result = try_justext(html.fromstring(f"<html><body><p>{long}</p><p>{long}x\x01y‌z</p></body></html>"), None)
+    result = try_justext(_html_tree(f"<html><body><p>{long}</p><p>{long}x\x01y‌z</p></body></html>"), None)
     assert [elem.text[-4:] for elem in result] == ["elf.", "xy‌z"]
     # only the direct parent makes a heading: an unclosed one can hold the rest of the page
     my_html = f"<html><body><h1>{long}<div>{long}</div></h1></body></html>"
@@ -149,19 +154,21 @@ def test_justext_lite_markup():
         f'<html><body><p>{long}<b>bold</b>, <a href="/x">a <i>link</i></a><span> and</span> <img src="a.jpg"> end.</p>'
         f"<em><div>{long}</div><div>{long}</div></em><p>{long}x <code>y </code>\n z</p></body></html>"
     )
-    plain = try_justext(html.fromstring(my_html), None)
+    plain = try_justext(_html_tree(my_html), None)
     assert [len(elem) for elem in plain] == [0, 0, 0, 1]
     assert plain[0].text == long + "bold, a link and end."
-    assert etree.tostring(plain[3], encoding=str) == f"<p>{long}x <code>y</code>\nz</p>"
+    assert etree.tostring(dom.to_lxml(plain[3]), encoding=str) == f"<p>{long}x <code>y</code>\nz</p>"
     options = core.Extractor(output_format="xml", links=True, formatting=True, images=True)
     options.url = "https://example.org/a/"
-    body, text = justext_rescue(html.fromstring(my_html), options)
-    assert etree.tostring(body[0], encoding=str) == (
+    body, text = justext_rescue(_html_tree(my_html), options)
+    assert etree.tostring(dom.to_lxml(body[0]), encoding=str) == (
         f'<p>{long}<hi rend="#b">bold</hi>, <ref target="https://example.org/x">a <hi rend="#i">link</hi></ref> and '
         '<graphic src="https://example.org/a/a.jpg"/>end.</p>'
     )
     # formatting around blocks is reopened in each of them
-    assert [etree.tostring(elem, encoding=str) for elem in body[1:3]] == [f'<p><hi rend="#i">{long.strip()}</hi></p>'] * 2
+    assert [etree.tostring(dom.to_lxml(elem), encoding=str) for elem in body[1:3]] == [
+        f'<p><hi rend="#i">{long.strip()}</hi></p>'
+    ] * 2
     # the length is the one of the plain text, without spaces at element boundaries
     assert text == trim(" ".join("".join(elem.itertext()) for elem in plain))
     # headings and list items keep their markup, an image leaves its link, attributes lose control characters
@@ -169,12 +176,15 @@ def test_justext_lite_markup():
         f"<html><body><h2>{long}<b>h</b></h2><ul><li>{long}<b>i</b></li></ul>"
         f'<p>{long}<a href="/z\x01"><img src="b.jpg" alt="p\x0bq">pic</a></p></body></html>'
     )
-    body, _ = justext_rescue(html.fromstring(my_html), options)
-    assert [etree.tostring(elem, encoding=str) for elem in body] == [
+    body, _ = justext_rescue(_html_tree(my_html), options)
+    assert [etree.tostring(dom.to_lxml(elem), encoding=str) for elem in body] == [
         f'<head rend="h2">{long}<hi rend="#b">h</hi></head>',
         f'<list rend="ul"><item>{long}<hi rend="#b">i</hi></item></list>',
         f'<p>{long}<graphic src="https://example.org/a/b.jpg" alt="pq"/><ref target="https://example.org/z">pic</ref></p>',
     ]
     # lazy-loaded images, as in image_src
-    body, _ = justext_rescue(html.fromstring(f'<html><body><p>{long}<img data-src-large="c.jpg"></p></body></html>'), options)
-    assert etree.tostring(body[0], encoding=str) == f'<p>{long.strip()}<graphic src="https://example.org/a/c.jpg"/></p>'
+    body, _ = justext_rescue(_html_tree(f'<html><body><p>{long}<img data-src-large="c.jpg"></p></body></html>'), options)
+    assert (
+        etree.tostring(dom.to_lxml(body[0]), encoding=str)
+        == f'<p>{long.strip()}<graphic src="https://example.org/a/c.jpg"/></p>'
+    )
