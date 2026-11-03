@@ -225,6 +225,8 @@ class _Attrib(MutableMapping[str, str]):
 
 # a location path that starts at the root: at the start, or after "|" or "("
 _ABSOLUTE_PATH = re.compile(r"(^|[|(])(\s*)//")
+# the top element from any context node, so that "//" also resolves inside predicates
+_TOP_STEP = f"ancestor-or-self::node()[not(parent::*) or parent::{_HOLDER}][1]/"
 
 
 class _Expression:
@@ -236,7 +238,7 @@ class _Expression:
 
     def __init__(self, path: str) -> None:
         self._compiled = turbohtml.XPath(path)
-        rewritten = _ABSOLUTE_PATH.sub(r"\1\2descendant-or-self::node()/", path)
+        rewritten = _ABSOLUTE_PATH.sub(rf"\1\2{_TOP_STEP}descendant-or-self::node()/", path)
         self._absolute = rewritten != path
         self._relative = turbohtml.XPath(rewritten) if self._absolute else None
 
