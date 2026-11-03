@@ -21,7 +21,7 @@ import turbohtml
 from lxml import etree as _etree
 from lxml import html as _lxml_html
 from lxml.html import defs as _lxml_defs
-from turbohtml import Axis, Document, Text
+from turbohtml import Axis, Document, DocumentFragment, Text
 from turbohtml import Element as _Node
 from turbohtml import Html as _Html
 
@@ -713,8 +713,15 @@ _BODY_TAG = re.compile(r"<body[\s/>]", re.IGNORECASE)
 _HEAD_ONLY = "self::meta or self::link or self::title or self::base"
 
 
+_TEMPLATE = re.compile("<template", re.IGNORECASE)
+_TEMPLATE_BYTES = re.compile(b"<template", re.IGNORECASE)
+
+
 def _parse_document(markup: str | bytes) -> _Node:
-    document = turbohtml.parse(markup)
+    # declarative shadow roots stay templates, their content is inlined below like the rest
+    document = turbohtml.parse(markup, allow_declarative_shadow_roots=False)
+    if _TEMPLATE.search(markup) if isinstance(markup, str) else _TEMPLATE_BYTES.search(markup):
+        _inline_template_content(document)
     _strip_comments(document)
     root: _Node = document.root  # type: ignore[assignment]
     _restore_head(root, markup if isinstance(markup, str) else markup.decode("utf-8", "replace"))
@@ -725,6 +732,17 @@ def _parse_document(markup: str | bytes) -> _Node:
             paragraph.extract()
     root.normalize()
     return root
+
+
+def _inline_template_content(node: Any) -> None:
+    "Make template content regular children of the template, where lxml parses it."
+    for template in _elements(node.xpath(".//template")):
+        for content in [child for child in template.children if type(child) is DocumentFragment]:
+            for child in content.children:
+                content.insert_before(child)
+            content.extract()
+        # templates declared inside the moved content
+        _inline_template_content(template)
 
 
 def _restore_head(root: _Node, markup: str) -> None:
