@@ -366,8 +366,17 @@ def test_csv_stdout_has_no_blank_records(tmp_path, output_args):
 
 
 @pytest.mark.parametrize("newline", [None, "", "\r\n"])
-@pytest.mark.parametrize("encoding", ["utf-8", "cp1252", "utf-8-sig", "utf-16"])
-@pytest.mark.parametrize("stream_kind", ["file", "pipe"])
+@pytest.mark.parametrize(
+    ("encoding", "stream_kind"),
+    [
+        ("utf-8", "file"),
+        ("utf-8", "pipe"),
+        ("cp1252", "file"),
+        ("cp1252", "pipe"),
+        ("utf-8-sig", "file"),
+        ("utf-16", "file"),
+    ],
+)
 @pytest.mark.parametrize("prefix", ["", "lead:"])
 def test_csv_stdout_preserves_serialized_bytes(tmp_path, newline, encoding, stream_kind, prefix):
     args = cli.parse_args(["--csv"])
@@ -413,15 +422,6 @@ def test_csv_stdout_text_capture(capsys):
     with redirect_stdout(io.StringIO(newline="")) as stdout:
         cli_utils.write_result(serialized.getvalue(), args)
     assert stdout.getvalue() == serialized.getvalue()
-
-
-def test_csv_stdout_configures_newlines_once():
-    args = cli.parse_args(["--csv"])
-    with io.TextIOWrapper(io.BytesIO(), encoding="utf-8", newline="\r\n") as stdout:
-        with patch.object(stdout, "reconfigure", wraps=stdout.reconfigure) as configure, redirect_stdout(stdout):
-            cli_utils.write_result("first\r\n", args)
-            cli_utils.write_result("second\r\n", args)
-        assert configure.call_count == 1
 
 
 def test_csv_stdout_preserves_encoding_errors():

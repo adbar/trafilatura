@@ -10,7 +10,6 @@ except ImportError:
     HAS_GZIP = False
 
 import argparse
-import codecs
 import logging
 import os
 import random
@@ -28,7 +27,6 @@ from io import TextIOWrapper
 from pathlib import Path
 from threading import RLock
 from urllib.parse import unquote, urlsplit
-from weakref import WeakSet
 
 from courlan import UrlStore, extract_domain, get_base_url  # validate_url
 
@@ -57,8 +55,6 @@ from .utils import (
 )
 
 LOGGER = logging.getLogger(__name__)
-
-_CSV_STDOUTS: WeakSet[TextIOWrapper] = WeakSet()
 
 _FILENAME_RANDOM = random.Random(345)  # reproducible names without changing caller RNG state
 CHAR_CLASS = string.ascii_letters + string.digits
@@ -214,18 +210,13 @@ def write_result(
     if result is None:
         return
     if args.output_dir is None:
-        if args.output_format == "csv" and isinstance(sys.stdout, TextIOWrapper) and sys.stdout not in _CSV_STDOUTS:
-            # CSV owns all newlines. Configure each stream once, keeping text writes.
-            encoding = sys.stdout.encoding
-            codec = codecs.lookup(encoding).name
-            if codec in {"utf-8-sig", "utf-16", "utf-32"}:
-                # reconfigure resets encoders on pipes: emit any initial signature
-                # through the existing encoder, then continue without another BOM.
-                sys.stdout.write("")
-                encoding = "utf-8" if codec == "utf-8-sig" else f"{codec}-{'le' if sys.byteorder == 'little' else 'be'}"
-            sys.stdout.reconfigure(encoding=encoding, errors=sys.stdout.errors, newline="")
-            _CSV_STDOUTS.add(sys.stdout)
-        sys.stdout.write(result if args.output_format == "csv" else result + "\n")
+        if args.output_format == "csv":
+            # CSV rows end with \r\n, newline translation would add a \r on Windows
+            if isinstance(sys.stdout, TextIOWrapper):
+                sys.stdout.reconfigure(newline="")
+            sys.stdout.write(result)
+        else:
+            sys.stdout.write(result + "\n")
     else:
         destination_path, destination_dir = determine_output_path(args, orig_filename, result, counter, new_filename)
         # check the directory status
