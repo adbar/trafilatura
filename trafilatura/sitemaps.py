@@ -9,6 +9,7 @@ from configparser import ConfigParser
 from itertools import islice
 from re import Pattern
 from time import sleep
+from urllib.parse import urlsplit
 
 from courlan import (
     clean_url,
@@ -286,7 +287,8 @@ def sitemap_search(
 
     urlfilter = None
 
-    if url.endswith((".gz", "sitemap", ".xml")):
+    path = urlsplit(url).path.rstrip("/")
+    if path.endswith((".gz", "sitemap", ".xml", ".txt")) or "/sitemap/" in path:
         sitemapurls = [url]
     else:
         sitemapurls = []
