@@ -31,8 +31,9 @@ HTML5 block tags, block kinds (headings, lists, code, quotes) and inline markup 
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import re
+from collections.abc import Iterator
 
-from lxml.etree import SubElement, _Element, iterwalk
+from lxml.etree import SubElement, XPath, _Element, iterwalk
 from lxml.html import Element, HtmlElement
 
 from .settings import BASIC_CLEAN_XPATH
@@ -70,6 +71,9 @@ MAX_LINK_DENSITY = 0.25
 
 NEWLINES = re.compile(r"\s*[\n\r]\s*")
 SPACES = re.compile(r"[^\S\n]+")
+
+# the walker runs on lxml trees, the settings expression may target the extraction tree
+BASIC_CLEAN = XPath(BASIC_CLEAN_XPATH.path, namespaces={"re": "http://exslt.org/regular-expressions"})
 
 
 def _normalize(text: str) -> str:
@@ -180,10 +184,19 @@ def _build(text: str, kind: str, nodes: list[str | _Element | None]) -> HtmlElem
     return block
 
 
+def _walk(elem: _Element) -> Iterator[tuple[str, _Element]]:
+    "Start and end events of an element and its descendants, on lxml and extraction trees alike."
+    yield "start", elem
+    for child in elem:
+        if isinstance(child.tag, str):
+            yield from _walk(child)
+    yield "end", elem
+
+
 def tidy_spacing(block: _Element) -> None:
     "Collapse whitespace across the element boundaries of a block, as in its plain text."
     space, last = True, None
-    for event, elem in iterwalk(block, events=("start", "end")):
+    for event, elem in _walk(block):
         attr = "text" if event == "start" else "tail"
         value = getattr(elem, attr)
         if not value:
@@ -218,7 +231,7 @@ def extract_paragraphs(root: _Element) -> list[tuple[str, str, int, HtmlElement]
     link_chars = links = list_count = 0
     skipped: _Element | None = None
     # basic_cleaning targets, skipped instead of deleted so the input stays untouched
-    dropped = set(BASIC_CLEAN_XPATH(root))
+    dropped = set(BASIC_CLEAN(root))
 
     def close() -> None:
         nonlocal link_chars, opened
