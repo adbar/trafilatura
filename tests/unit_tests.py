@@ -2104,7 +2104,7 @@ _MENU_LIST = (
 
 
 def test_link_density_footnote_list_kept():
-    "a footnotes list (short backlinks, ~2% link text) is not a link farm"
+    "a footnotes list (short backlinks, ~1% link text) is not a link farm"
     element = html.fromstring(_FOOTNOTE_LIST)
     assert element.tag == "list"
     assert trafilatura.htmlprocessing.link_density_test(element)[0] is False
