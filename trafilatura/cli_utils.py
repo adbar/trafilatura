@@ -23,6 +23,7 @@ from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_compl
 from datetime import datetime
 from functools import partial
 from hashlib import blake2b
+from io import TextIOWrapper
 from pathlib import Path
 from threading import RLock
 from urllib.parse import unquote, urlsplit
@@ -215,7 +216,13 @@ def write_result(
     if result is None:
         return
     if args.output_dir is None:
-        sys.stdout.write(result + "\n")
+        if args.output_format == "csv":
+            # CSV rows end with \r\n, newline translation would add a \r on Windows
+            if isinstance(sys.stdout, TextIOWrapper):
+                sys.stdout.reconfigure(newline="")
+            sys.stdout.write(result)
+        else:
+            sys.stdout.write(result + "\n")
     else:
         destination_path, destination_dir = determine_output_path(args, orig_filename, result, counter, new_filename)
         # a kept input file maps onto itself when the output format matches its extension (#1038)
@@ -224,7 +231,8 @@ def write_result(
             return
         # check the directory status
         if check_outputdir_status(destination_dir) is True:
-            with Path(destination_path).open(mode="w", encoding="utf-8") as outputfile:
+            newline = "" if args.output_format == "csv" else None
+            with Path(destination_path).open(mode="w", encoding="utf-8", newline=newline) as outputfile:
                 outputfile.write(result)
 
 
