@@ -8,6 +8,7 @@ import json
 import logging
 import pkgutil
 import sys
+import threading
 import time
 from copy import copy, deepcopy
 from functools import _lru_cache_wrapper, partial
@@ -54,6 +55,7 @@ from trafilatura.utils import (
     INVALID_XML_CHARS,
     LANGID_FLAG,
     detect_encoding,
+    get_html_parser,
     is_dubious_html,
     is_image_file,
     language_classifier,
@@ -446,6 +448,21 @@ def test_document_isolation():
     assert d1.commentsbody is not d2.commentsbody
     assert d1.body.tag == "body"
     assert len(d1.body) == 0
+
+
+def test_html_parser_per_thread():
+    "Each thread parses with its own lxml parser: a shared one crashes concurrent extractions (#925)."
+    assert get_html_parser() is get_html_parser()
+    parsers = []
+    thread = threading.Thread(target=lambda: parsers.append(get_html_parser()))
+    thread.start()
+    thread.join()
+    assert parsers[0] is not get_html_parser()
+    # same configuration in every thread
+    tree = load_html("<html><body><!-- comment --><p id='x'>Text</p></body></html>")
+    assert tree is not None
+    assert isinstance(tree, html.HtmlElement)
+    assert tree.xpath("//comment()") == []
 
 
 def test_xmltocsv():
