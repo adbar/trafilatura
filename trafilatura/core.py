@@ -31,6 +31,7 @@ from .utils import (
     LANGID_FLAG,
     HtmlInput,
     check_html_lang,
+    language_classifier,
     language_filter,
     load_html,
     normalize_unicode,
@@ -463,6 +464,9 @@ def bare_extraction(
             if is_not_target_lang is True:
                 LOGGER.debug("wrong language: %s", options.source)
                 raise ValueError
+        # pass the detected language along with the metadata
+        elif options.with_metadata and LANGID_FLAG:
+            document.language = language_classifier(temp_text, temp_comments)
 
     except (TypeError, ValueError):
         LOGGER.warning("discarding data: %s", options.source)
