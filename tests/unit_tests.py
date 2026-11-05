@@ -269,6 +269,7 @@ def test_input(options):
     assert "incompatible" in str(err.value)
 
     assert load_html("<html><body>ÄÖÜ</body></html>") is not None
+    assert load_html('<?xml version="1.0" encoding="utf-8"?><html><body><p>ABC</p></body></html>') is not None
     assert load_html(b"<html><body>\x2f\x2e\x9f</body></html>") is not None
     assert load_html("<html><body>\x2f\x2e\x9f</body></html>".encode("latin-1")) is not None
     # assert load_html(b'0'*int(10e3)) is None

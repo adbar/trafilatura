@@ -50,9 +50,9 @@ _LIST_IGNORED_OPTS = {
 }
 
 # fix output encoding on some systems
-if hasattr(sys.stdout, "reconfigure") and (sys.stdout.encoding or "").lower() != "utf-8":
+if hasattr(sys.stdout, "reconfigure") and (sys.stdout.encoding or "").lower() != "utf-8":  # pragma: no cover
     sys.stdout.reconfigure(encoding="utf-8")
-if hasattr(sys.stderr, "reconfigure") and (sys.stderr.encoding or "").lower() != "utf-8":
+if hasattr(sys.stderr, "reconfigure") and (sys.stderr.encoding or "").lower() != "utf-8":  # pragma: no cover
     sys.stderr.reconfigure(encoding="utf-8")
 
 
