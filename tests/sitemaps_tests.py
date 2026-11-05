@@ -160,12 +160,13 @@ def test_explicit_sitemap_urls(monkeypatch, url):
     if url.endswith(".txt"):
         content = "https://example.org/a\n"
     else:
-        content = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://example.org/a</loc></url></urlset>'
+        content = (
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://example.org/a</loc></url></urlset>'
+        )
     monkeypatch.setattr(sitemaps, "fetch_url", lambda u, **kwargs: content if u == url else None)
     monkeypatch.setattr(sitemaps, "is_live_page", lambda u, config: True)
     monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
     assert sitemaps.sitemap_search(url) == ["https://example.org/a"]
-
 
 
 def test_parse_sitemap_invalid_input():
