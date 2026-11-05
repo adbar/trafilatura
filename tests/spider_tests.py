@@ -211,6 +211,20 @@ def test_process_links_fragment_navigation():
         assert store.find_unvisited_urls(base) == [base + "/tag/topic", base + "/page"]
 
 
+def test_crawl_page_failed_start():
+    "A start page that cannot be fetched is not counted."
+    store = UrlStore(compressed=False, strict=False)
+    with (
+        patch.object(spider, "URL_STORE", store),
+        patch.object(spider, "get_rules", return_value=None),
+        patch.object(spider, "probe_alternative_homepage", return_value=(None, None, None)),
+    ):
+        params = spider.CrawlParameters("https://example.org")
+        store.add_urls(urls=[params.start], visited=False)
+        params = spider.crawl_page(params, initial=True)
+    assert params.i == 0
+
+
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
     url = "https://httpbun.com/html"

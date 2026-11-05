@@ -9,7 +9,7 @@ import logging
 import pkgutil
 import sys
 import time
-from copy import copy
+from copy import copy, deepcopy
 from functools import _lru_cache_wrapper, partial
 from os import path
 from unittest.mock import patch
@@ -308,6 +308,135 @@ def test_input(options):
     elem = etree.Element("unexpected")
     elem.text = "text"
     assert handle_textelem(elem, [], options) is None
+
+
+_HEADBITS = '<meta charset="utf-8"><title>Some title</title>'
+_PARA = "<p>Alpha body paragraph with enough plain text to matter here.</p>"
+
+# the HTML5 semantic sectioning elements libxml2 fails to close the
+# implied head on (26-tag sweep, see load_html head relocation)
+_SEMANTIC_TAGS = ["main", "header", "footer", "nav", "article", "section", "aside", "figure"]
+
+
+def _implied_head_doc(inner: str) -> str:
+    # document with no explicit <head>/<body> tags (danluu.com's shape)
+    return f"<!DOCTYPE html><html>{_HEADBITS}{inner}"
+
+
+@pytest.mark.parametrize("tag", _SEMANTIC_TAGS)
+def test_semantic_element_relocated_to_body(tag):
+    "flow content mis-nested in an implied <head> is relocated to <body> at parse time"
+    tree = load_html(_implied_head_doc(f"<{tag}>{_PARA}</{tag}>"))
+    element = tree.find(f".//{tag}")
+    assert element is not None
+    assert element.getparent().tag == "body"
+    # head keeps exactly its head content
+    assert [child.tag for child in tree.find("head")] == ["meta", "title"]
+
+
+@pytest.mark.parametrize("tag", ["main", "header", "article", "section"])
+def test_relocated_content_survives_cleaning(tag):
+    "relocated content survives tree_cleaning instead of being deleted with <head>"
+    # footer/nav/aside/figure are excluded here because tree_cleaning
+    # prunes those tags wherever they sit (MANUALLY_CLEANED),
+    # independently of this defect
+    tree = load_html(_implied_head_doc(f"<{tag}>{_PARA}</{tag}>"))
+    cleaned = tree_cleaning(deepcopy(tree), core.Extractor())
+    assert "Alpha body paragraph" in cleaned.text_content()
+
+
+def test_head_content_not_relocated():
+    "title/meta/style/link/script stay in <head>; only flow content moves"
+    doc = _implied_head_doc(
+        f'<style>p{{color:red}}</style><link rel="icon" href="data:,"><main>{_PARA}</main><script>var x = 1;</script>'
+    )
+    tree = load_html(doc)
+    assert [child.tag for child in tree.find("head")] == ["meta", "title", "style", "link", "script"]
+    assert tree.find("head").find("title").text == "Some title"
+    assert [child.tag for child in tree.find("body")] == ["main"]
+
+
+def test_explicit_head_document_unchanged():
+    "a well-formed document parses to the same structure as its implied-head twin"
+    explicit = f"<!DOCTYPE html><html><head>{_HEADBITS}</head><body><main>{_PARA}</main></body></html>"
+    for doc in (explicit, _implied_head_doc(f"<main>{_PARA}</main>")):
+        tree = load_html(doc)
+        assert tree.find(".//main").getparent().tag == "body"
+        assert [child.tag for child in tree.find("head")] == ["meta", "title"]
+        cleaned = tree_cleaning(deepcopy(tree), core.Extractor())
+        assert "Alpha body paragraph" in cleaned.text_content()
+
+
+def test_explicit_head_with_misnested_content_repaired():
+    "flow content written inside an explicit <head> is relocated as well"
+    # invalid HTML, which browsers also recover from by closing the head
+    doc = (
+        f"<!DOCTYPE html><html><head><title>T</title><main>{_PARA}</main></head>"
+        "<body><p>Trailing body paragraph.</p></body></html>"
+    )
+    tree = load_html(doc)
+    assert [child.tag for child in tree.find("body")] == ["main", "p"]
+
+
+def test_relocated_siblings_keep_order():
+    "relocated siblings keep document order at the front of an existing body"
+    doc = _implied_head_doc(f"<header>Site header</header><main>{_PARA}</main><p>Trailing para.</p>")
+    tree = load_html(doc)
+    assert [child.tag for child in tree.find("body")] == ["header", "main", "p"]
+
+
+def test_text_after_relocated_elements_keeps_its_place():
+    "text that follows relocated elements in the source stays after them"
+    # libxml2 2.14+ closes the head at such text and makes it the body's
+    # leading text; older versions (e.g. 2.11.9, bundled in lxml's Windows
+    # wheels) wrap it in an implied <p> inside the body
+    tree = load_html(_implied_head_doc(f"<header>Site header</header>Middle text<main>{_PARA}</main>"))
+    text = tree.find("body").text_content()
+    assert text.index("Site header") < text.index("Middle text") < text.index("Alpha body")
+
+    tree = load_html(_implied_head_doc(f"<main>{_PARA}</main>Trailing text"))
+    text = tree.find("body").text_content()
+    assert text.index("Alpha body") < text.index("Trailing text")
+
+
+def test_extract_recovers_implied_head_article():
+    "end-to-end: article and footnote text are extracted from an implied-head document"
+    doc = _implied_head_doc(
+        "<main><article><h1>On implied heads</h1>"
+        "<p>Documents that omit the head and body tags are valid HTML5, "
+        "and hand-written sites in that style are common enough that an "
+        "extractor cannot treat the shape as an error.</p>"
+        '<div class="footnotes"><ol><li id="fn1"><p>The footnote that '
+        "qualifies the claim above and must survive extraction."
+        "</p></li></ol></div>"
+        "</article></main>"
+    )
+    out = extract(doc, url="https://example.org/implied") or ""
+    assert "extractor cannot treat the shape as an error" in out
+    assert "qualifies the claim above" in out
+
+
+def test_extract_recovers_implied_head_article_before_a_list():
+    "end-to-end: an implied-head article followed by a list in <body> is extracted"
+    # without the repair, <head> goes with the article in it while the list
+    # stays in <body>, and the list is all that gets extracted
+    items = "".join(
+        f"<li><p>Reader comment {number}: I tried this on my own site and saw the same "
+        "behaviour, which surprised me because the page renders fine in every browser.</p></li>"
+        for number in range(3)
+    )
+    doc = _implied_head_doc(
+        "<main><article><h1>On implied heads</h1>"
+        "<p>Documents that omit the head and body tags are valid HTML5, and hand-written sites "
+        "in that style are common enough that an extractor cannot treat the shape as an error.</p>"
+        "<p>The second paragraph carries the argument further with more plain prose about parsing, "
+        "so that the article is clearly the main content of the page.</p>"
+        "<p>A third paragraph closes the article with a remark about libxml2 and its implied head.</p>"
+        f"</article></main><ul>{items}</ul>"
+    )
+    for options in ({}, {"fast": True}, {"favor_recall": True}):
+        out = extract(doc, url="https://example.org/implied", **options) or ""
+        assert "extractor cannot treat the shape as an error" in out
 
 
 def test_document_isolation():
@@ -2144,6 +2273,77 @@ def test_delete_by_link_density_backtracking():
     delete = trafilatura.htmlprocessing.delete_by_link_density
     assert delete(html.fromstring(htmlstring), "div").find(".//div") is not None
     assert delete(html.fromstring(htmlstring), "div", backtracking=True).find(".//div") is None
+
+
+# Converted-tree shape of a pandoc footnotes section: a <list> of
+# sentence-length items, each ending in a short <ref> backlink.
+_FOOTNOTE_LIST = (
+    "<list>"
+    "<item><p>The corpus used here excludes paywalled pages, so the results "
+    'say nothing about extraction behind login walls.<ref target="#fnref1">↩</ref></p></item>'
+    "<item><p>In one case the footnote contained the only statement of the "
+    'sample size, which the headline result depended on.<ref target="#fnref2">↩</ref></p></item>'
+    "</list>"
+)
+
+# Same shape, but the items are nothing but short links: a navigation menu.
+_MENU_LIST = (
+    "<list>"
+    '<item><ref target="/">Home</ref></item>'
+    '<item><ref target="/archive">Archive</ref></item>'
+    '<item><ref target="/about">About</ref></item>'
+    '<item><ref target="/rss">RSS feed</ref></item>'
+    "</list>"
+)
+
+
+def test_link_density_footnote_list_kept():
+    "a footnotes list (short backlinks, ~1% link text) is not a link farm"
+    element = html.fromstring(_FOOTNOTE_LIST)
+    assert element.tag == "list"
+    assert trafilatura.htmlprocessing.link_density_test(element)[0] is False
+
+
+def test_link_density_menu_list_pruned():
+    "a list whose items are only short links is still pruned"
+    element = html.fromstring(_MENU_LIST)
+    assert element.tag == "list"
+    assert trafilatura.htmlprocessing.link_density_test(element)[0] is True
+
+
+_FOOTNOTE_DOC = """<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>On Measuring Extraction Quality</title></head>
+<body><main><article>
+<h1>On Measuring Extraction Quality</h1>
+<p>Benchmarks of web-text extraction usually report precision and recall against
+hand-labelled corpora, and the headline numbers look reassuring. The catch is that
+the errors are not distributed evenly across the page: boilerplate is easy to spot,
+while short, dense passages at the end of an article are easy to lose.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>A second effect is less often discussed. When an author qualifies a claim, the
+qualification frequently lives in a footnote rather than in the main text, because
+the main text has to stay readable. Losing the footnote therefore does not merely
+lose information; it changes what the article asserts.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>We measured the effect on a small corpus of essays and documentation pages.
+The full method is described in the appendix, but the summary is simple: check
+the end of the document, not just the beginning, before trusting an extraction.</p>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>The corpus used here excludes paywalled pages, so the results say
+nothing about extraction behind login walls.<a href="#fnref1" class="footnote-backref" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In one case the footnote contained the only statement of the
+sample size, which the headline result depended on.<a href="#fnref2" class="footnote-backref" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</article></main></body></html>"""
+
+
+def test_extract_keeps_pandoc_footnotes():
+    "end-to-end: both endnote texts appear in the extracted output"
+    out = extract(_FOOTNOTE_DOC, url="https://example.org/essay") or ""
+    assert "Benchmarks of web-text extraction" in out
+    assert "excludes paywalled pages" in out
+    assert "only statement of the sample size" in out
 
 
 def test_overall_discard_legacy_tokens():

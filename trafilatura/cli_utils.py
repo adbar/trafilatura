@@ -12,13 +12,25 @@ import string
 import sys
 import traceback
 from base64 import urlsafe_b64encode
-from collections.abc import Callable, Generator, Iterable
+from collections.abc import Callable, Generator, Iterable, Iterator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from contextlib import contextmanager
 from datetime import datetime
 from functools import partial
 from hashlib import blake2b
+from io import TextIOWrapper
 from pathlib import Path
+from typing import Any
 from urllib.parse import unquote, urlsplit
+
+# optional progress bar for batch processing
+try:
+    from tqdm import tqdm
+    from tqdm.contrib.logging import logging_redirect_tqdm
+
+    HAS_TQDM = True
+except ImportError:  # pragma: no cover
+    HAS_TQDM = False
 
 from courlan import UrlStore, get_base_url  # validate_url
 
@@ -27,7 +39,13 @@ from trafilatura import spider
 from .baseline import html2txt
 from .core import extract
 from .deduplication import generate_bow_hash
-from .downloads import add_to_compressed_dict, buffered_downloads, buffered_response_downloads, load_download_buffer
+from .downloads import (
+    add_to_compressed_dict,
+    buffered_downloads,
+    buffered_response_downloads,
+    filter_blacklist,
+    load_download_buffer,
+)
 from .feeds import find_feed_urls
 from .meta import reset_caches
 from .settings import (
@@ -203,7 +221,13 @@ def write_result(
     if result is None:
         return
     if args.output_dir is None:
-        sys.stdout.write(result + "\n")
+        if args.output_format == "csv":
+            # CSV rows end with \r\n, newline translation would add a \r on Windows
+            if isinstance(sys.stdout, TextIOWrapper):
+                sys.stdout.reconfigure(newline="")
+            sys.stdout.write(result)
+        else:
+            sys.stdout.write(result + "\n")
     else:
         destination_path, destination_dir = determine_output_path(args, orig_filename, result, counter, new_filename)
         # a kept input file maps onto itself when the output format matches its extension (#1038)
@@ -211,7 +235,8 @@ def write_result(
             LOGGER.error("Skipping %s: the output path would overwrite the input file", orig_filename)
             return
         if check_outputdir_status(destination_dir):
-            with Path(destination_path).open(mode="w", encoding="utf-8") as outputfile:
+            newline = "" if args.output_format == "csv" else None
+            with Path(destination_path).open(mode="w", encoding="utf-8", newline=newline) as outputfile:
                 outputfile.write(result)
 
 
@@ -266,11 +291,23 @@ def process_result(
     return counter
 
 
+@contextmanager
+def _progress_bar(args: argparse.Namespace, total: int | None, unit: str) -> Iterator[Any]:
+    "Yield a tqdm progress bar if one was requested, else None."
+    if not getattr(args, "progress", False):
+        yield None
+        return
+    # print log messages above the bar instead of through it
+    with logging_redirect_tqdm(), tqdm(total=total, unit=unit) as bar:
+        yield bar
+
+
 def download_queue_processing(
     url_store: UrlStore,
     args: argparse.Namespace,
     counter: int,
     options: Extractor,
+    progress: Any = None,
 ) -> tuple[list[str], int]:
     "Implement a download queue consumer, single- or multi-threaded."
     errors = []
@@ -286,6 +323,8 @@ def download_queue_processing(
             else:
                 LOGGER.warning("No result for URL: %s", url)
                 errors.append(url)
+            if progress is not None:
+                progress.update(1)
     return errors, counter
 
 
@@ -315,7 +354,7 @@ def cli_discovery(args: argparse.Namespace) -> int:
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
             # all links blacklisted = no links
-            links = [u for u in future.result() or [] if URL_BLACKLIST_REGEX.sub("", u) not in (args.blacklist or ())]
+            links = filter_blacklist(future.result() or [], args.blacklist)
             if not links:
                 no_links.append(futures[future])
                 continue
@@ -429,13 +468,15 @@ def url_processing_pipeline(args: argparse.Namespace, url_store: UrlStore) -> in
     counter = 0 if url_count > MAX_FILES_PER_DIRECTORY else -1
 
     # download strategy
-    errors, counter = download_queue_processing(url_store, args, counter, options)
+    with _progress_bar(args, url_count, "URL") as progress:
+        errors, counter = download_queue_processing(url_store, args, counter, options, progress)
     LOGGER.debug("%s / %s URLs could not be found", len(errors), url_count)
 
     if args.archived and errors:
         url_store = UrlStore()
         url_store.add_urls(["https://web.archive.org/web/20/" + e for e in errors])
-        archived_errors, _ = download_queue_processing(url_store, args, counter, options)
+        with _progress_bar(args, url_store.total_url_number(), "URL") as progress:
+            archived_errors, _ = download_queue_processing(url_store, args, counter, options, progress)
         LOGGER.debug("%s archived URLs out of %s could not be found", len(archived_errors), len(errors))
         # pass information along if URLs are missing
         return _define_exit_code(archived_errors, url_count)
@@ -452,6 +493,12 @@ def _process_file(filename: str, args: argparse.Namespace, counter: int, options
     return None
 
 
+def _init_worker_logging(level: int | None) -> None:
+    "Configure fresh worker logging when the parent has configured it."
+    if level is not None:
+        logging.basicConfig(stream=sys.stderr, level=level)
+
+
 def file_processing_pipeline(args: argparse.Namespace) -> int:
     "Define batches for parallel file processing and perform the extraction."
     filecounter = -1
@@ -459,13 +506,24 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
     options = args_to_extractor(args)
     walk_errors: list[OSError] = []
 
+    filelist: Iterable[str] = generate_filelist(
+        args.input_dir, onerror=walk_errors.append, exclude_dirs=(args.output_dir, args.backup_dir)
+    )
+    total = None
+    if getattr(args, "progress", False):
+        # walk once and keep the paths, so the bar total matches the files processed
+        files = list(filelist)
+        total, filelist = len(files), files
+
+    root_logger = logging.getLogger()
+    log_level = root_logger.level if root_logger.handlers else None
     # max_tasks_per_child available in Python >= 3.11
-    with ProcessPoolExecutor(max_workers=args.parallel) as executor:
+    with (
+        ProcessPoolExecutor(max_workers=args.parallel, initializer=_init_worker_logging, initargs=(log_level,)) as executor,
+        _progress_bar(args, total, "file") as progress,
+    ):
         # chunk input: https://github.com/python/cpython/issues/74028
-        for filebatch in make_chunks(
-            generate_filelist(args.input_dir, onerror=walk_errors.append, exclude_dirs=(args.output_dir, args.backup_dir)),
-            MAX_FILES_PER_DIRECTORY,
-        ):
+        for filebatch in make_chunks(filelist, MAX_FILES_PER_DIRECTORY):
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(_process_file, args=args, counter=filecounter, options=options)
@@ -473,6 +531,8 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
                 if error is not None:
                     LOGGER.error("Cannot process file %s", error)
                     exit_code = 1
+                if progress is not None:
+                    progress.update(1)
             # update counter
             if filecounter >= 0:
                 filecounter += len(filebatch)
@@ -483,6 +543,7 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
 def examine(
     htmlstring: str | bytes | None,
     args: argparse.Namespace,
+    *,
     options: Extractor | None = None,
     url: str | None = None,
 ) -> str | None:

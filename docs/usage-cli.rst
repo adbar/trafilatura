@@ -204,6 +204,12 @@ The following command line arguments are relevant:
     ``$ trafilatura --input-file links.txt --output-dir converted/ --backup-dir html-sources/ --xml``
 
 
+.. hint::
+    Long batch runs on URL lists or input directories can display a progress bar with ``--progress``. This option requires the optional ``tqdm`` package (``pip install tqdm``):
+
+    ``$ trafilatura --input-file links.txt --output-dir converted/ --progress``
+
+
 Source-based file names
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -318,10 +324,10 @@ URL inspection prior to download and processing
 
 .. code-block:: bash
 
-    # --url-filter selects which seed URLs get processed — combine with -i/--input-file
+    # --url-filter selects which seed URLs given with -u or -i get processed
     $ trafilatura --sitemap -i seeds.txt --list --url-filter "sitemaps.org"
 
-To filter the discovered *links* by pattern instead, pass a subpart of the site directly as the sitemap URL — for example ``--sitemap "https://www.sitemaps.org/de/"`` only lists German-language pages. ``--url-filter`` does not filter individual discovered links, only which seed URLs (from ``-u`` or ``-i``) are processed in the first place.
+To filter the discovered *links* by pattern instead, pass a subpart of the site directly as the sitemap URL. For example, ``--sitemap "https://www.sitemaps.org/de/"`` only lists German-language pages. ``--url-filter`` does not filter individual discovered links, only which seed URLs (from ``-u`` or ``-i``) are processed in the first place.
 
 For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial-corpus.html#link-filtering>`_.
 
@@ -330,7 +336,7 @@ Exit codes
 ----------
 
 - ``0``: success, including inputs without extractable content and local files or STDIN input rejected for their size.
-- ``1``: some inputs could not be downloaded or read (downloads rejected for their size count as failed), ``--feed`` or ``--sitemap`` found no links for some of them, a navigation option has no valid start URL left, or the output directory cannot be written.
+- ``1``: some inputs could not be downloaded or read (downloads rejected for their size count as failed), ``--feed`` or ``--sitemap`` found no links for some of them, no valid input URL is left (also for an empty input list), or the output directory cannot be written.
 - ``126``: more than 99% of the inputs could not be downloaded (also when ``--crawl``, ``--probe`` or ``--explore`` cannot fetch the start pages).
 - ``2``: invalid arguments, for example a missing input file, ``--parallel 0``, or ``--feed`` without a URL.
 

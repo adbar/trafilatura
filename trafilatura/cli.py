@@ -4,12 +4,14 @@ Implementing a basic command-line interface.
 
 import argparse
 import logging
+import stat
 import sys
 from importlib.metadata import version
 from pathlib import Path
 from platform import python_version
 
 from .cli_utils import (
+    HAS_TQDM,
     check_outputdir_status,
     cli_crawler,
     cli_discovery,
@@ -43,6 +45,7 @@ _LIST_IGNORED_OPTS = {
     "archived",
     "backup_dir",
     "name_from_url",
+    "progress",
 }
 
 # fix output encoding on some systems
@@ -73,6 +76,11 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         help="specify a number of cores/threads for downloads and/or processing",
         type=int,
         default=PARALLEL_CORES,
+    )
+    group1.add_argument(
+        "--progress",
+        help="show a progress bar when processing URL lists or input directories (requires tqdm)",
+        action="store_true",
     )
     group1.add_argument("-b", "--blacklist", help="file containing unwanted URLs to discard during processing", type=str)
 
@@ -179,6 +187,8 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 
 def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) -> None:
     "Catch cross-group incompatibilities that argparse cannot express, move a navigation URL to args.URL."
+    if args.progress and not HAS_TQDM:
+        parser.error("--progress requires the tqdm package: pip install tqdm")
     navigation = next((o for o in _NAVIGATION_OPTS if getattr(args, o) is not False), None)
     if navigation:
         if args.input_dir:
@@ -199,10 +209,14 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
     ):
         if not filename:
             continue
-        path = Path(filename)
-        if not path.exists():
+        # not Path.exists: it raises on an unreadable parent before Python 3.14
+        try:
+            mode = Path(filename).stat().st_mode
+        except FileNotFoundError:
             parser.error(f"{option}: file not found: {filename}")
-        if path.is_dir() or (regular and not path.is_file()):
+        except OSError as err:
+            parser.error(f"{option}: cannot access {filename}: {err.strerror}")
+        if stat.S_ISDIR(mode) or (regular and not stat.S_ISREG(mode)):
             parser.error(f"{option}: not a file: {filename}")
     if args.parallel < 1:
         parser.error("--parallel must be a positive integer")
@@ -283,7 +297,7 @@ def process_args(args: argparse.Namespace) -> None:
     # read url list from input file or process input URL
     elif args.input_file or args.URL:
         url_store = load_input_dict(args)
-        exit_code = url_processing_pipeline(args, url_store)
+        exit_code = url_processing_pipeline(args, url_store) if url_store.total_url_number() else 1
 
     # read input on STDIN directly
     else:
