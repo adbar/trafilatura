@@ -70,7 +70,7 @@ By default, the output is in plain text (TXT) format without metadata. The follo
 - Markdown
 - XML and XML-TEI (following the guidelines of the Text Encoding Initiative)
 
-To specify the output format, use one of the following strings: ``"csv", "json", "html", "markdown", "txt", "xml", "xmltei"``.
+To specify the output format, use one of the following strings: ``"csv", "json", "html", "markdown", "txt", "xml", "xmltei"``. Another value raises a ``ValueError``.
 
 The ``bare_extraction`` function uses the ``python`` format by default and returns a ``Document`` object for direct use in Python.
 
@@ -282,6 +282,8 @@ Here is how to use the class:
 
     # use the options in an extraction function
     >>> extract(downloaded, options=options)
+
+With ``options``, the other extraction parameters are ignored, except ``url``, ``record_id`` and ``prune_xpath``. The ``url`` argument applies on a copy of the options.
 
 
 See the ``settings.py`` file for a full example.

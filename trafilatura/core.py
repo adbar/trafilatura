@@ -341,7 +341,7 @@ def bare_extraction(
         A Python dict() containing all the extracted information or None.
 
     Raises:
-        ValueError: Extraction problem.
+        ValueError: Unknown output format.
 
     Note:
         Low-level primitive: returns a Document with an unserialized .body tree; tei_validation only applies when serializing via extract().
@@ -380,7 +380,7 @@ def bare_extraction(
             date_params=date_extraction_params,
         )
 
-    # the url argument also applies when options are given, without changing them
+    # apply the url argument on a copy of the options
     if url and url != options.url:
         options = copy(options)
         # keep a source set by the caller
@@ -557,6 +557,9 @@ def extract(
     Returns:
         A string in the desired format or None.
 
+    Raises:
+        ValueError: Unknown output format.
+
     """
     # must stay the first statement: a signature drift raises TypeError
     document = _internal_extraction(**locals())
@@ -621,6 +624,9 @@ def extract_with_metadata(
 
     Returns:
         Document metadata with content string in the desired format or None.
+
+    Raises:
+        ValueError: Unknown output format.
     """
     return _internal_extraction(**locals(), with_metadata=True)
 

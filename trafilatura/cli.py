@@ -46,9 +46,9 @@ _LIST_IGNORED_OPTS = {
 }
 
 # fix output encoding on some systems
-if sys.stdout.encoding != "UTF-8" and hasattr(sys.stdout, "reconfigure"):
+if hasattr(sys.stdout, "reconfigure") and (sys.stdout.encoding or "").lower() != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8")
-if sys.stderr.encoding != "UTF-8" and hasattr(sys.stderr, "reconfigure"):
+if hasattr(sys.stderr, "reconfigure") and (sys.stderr.encoding or "").lower() != "utf-8":
     sys.stderr.reconfigure(encoding="utf-8")
 
 
@@ -124,7 +124,7 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     )
     group3.add_argument(
         "--url-filter",
-        help="only process/output URLs containing these patterns (space-separated strings)",
+        help="only process input URLs containing these patterns (space-separated strings)",
         nargs="+",
         type=str,
     )
@@ -178,15 +178,32 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 
 
 def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) -> None:
-    "Catch cross-group incompatibilities that argparse cannot express."
-    for option, filename in (
-        ("-i/--input-file", args.input_file),
-        ("-b/--blacklist", args.blacklist),
-        ("--config-file", args.config_file),
+    "Catch cross-group incompatibilities that argparse cannot express, move a navigation URL to args.URL."
+    navigation = next((o for o in _NAVIGATION_OPTS if getattr(args, o) is not False), None)
+    if navigation:
+        if args.input_dir:
+            parser.error(f"--{navigation} cannot be combined with --input-dir")
+        value = getattr(args, navigation)
+        if isinstance(value, str):
+            if value and (args.URL or args.input_file):
+                parser.error(f"--{navigation}: give the URL once, as its value or with -u/--URL or -i/--input-file")
+            args.URL = args.URL or value or None
+            setattr(args, navigation, True)
+        if not (args.URL or args.input_file):
+            parser.error(f"--{navigation} requires a URL, as its value or with -u/--URL or -i/--input-file")
+    # pipes and /dev/stdin are valid lists, the config file is read several times
+    for option, filename, regular in (
+        ("-i/--input-file", args.input_file, False),
+        ("-b/--blacklist", args.blacklist, False),
+        ("--config-file", args.config_file, True),
     ):
-        if filename and not Path(filename).is_file():
-            reason = "not a file" if Path(filename).exists() else "file not found"
-            parser.error(f"{option}: {reason}: {filename}")
+        if not filename:
+            continue
+        path = Path(filename)
+        if not path.exists():
+            parser.error(f"{option}: file not found: {filename}")
+        if path.is_dir() or (regular and not path.is_file()):
+            parser.error(f"{option}: not a file: {filename}")
     if args.parallel < 1:
         parser.error("--parallel must be a positive integer")
     if args.name_from_url:
@@ -196,15 +213,6 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
             parser.error("--name-from-url requires -u/--URL or -i/--input-file and cannot be combined with --crawl or --probe")
     if args.keep_dirs and not (args.input_dir and args.output_dir):
         parser.error("--keep-dirs requires --input-dir and -o/--output-dir, use --name-from-url to name files after URLs")
-    navigation = next((o for o in _NAVIGATION_OPTS if getattr(args, o) is not False), None)
-    if navigation:
-        if args.input_dir:
-            parser.error(f"--{navigation} cannot be combined with --input-dir")
-        # a URL left by map_args conflicts with -u/--URL or -i/--input-file
-        if isinstance(getattr(args, navigation), str):
-            parser.error(f"--{navigation}: give the URL once, as its value or with -u/--URL or -i/--input-file")
-        if not (args.URL or args.input_file):
-            parser.error(f"--{navigation} requires a URL, as its value or with -u/--URL or -i/--input-file")
     if args.list:
         if args.input_dir:
             print("--list has no effect on --input-dir, the files are processed", file=sys.stderr)
@@ -229,12 +237,6 @@ def map_args(args: argparse.Namespace) -> argparse.Namespace:
         if getattr(args, otype):
             args.output_format = otype
             break
-    # a URL given to a navigation option becomes the input URL
-    for opt in _NAVIGATION_OPTS:
-        value = getattr(args, opt)
-        if value == "" or (isinstance(value, str) and not (args.URL or args.input_file)):
-            args.URL = args.URL or value or None
-            setattr(args, opt, True)
     return args
 
 

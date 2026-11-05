@@ -272,7 +272,7 @@ def _is_suitable_response(url: str, response: Response, options: Extractor) -> b
     if response.status != 200:
         LOGGER.error("not a 200 response: %s for URL %s", response.status, url)
         return False
-    return is_acceptable_length(len(response.html or response.data or ""), options)
+    return is_acceptable_length(len(response.html or response.data or ""), options, url)
 
 
 def fetch_url(

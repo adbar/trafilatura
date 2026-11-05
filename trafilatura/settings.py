@@ -45,7 +45,7 @@ def use_config(filename: str | None = None, config: ConfigParser | None = None) 
         if not Path(filename).is_file():
             raise FileNotFoundError("The given config file does not exist")
         # seed defaults first so a partial user file only overrides the keys it sets
-        # utf-8-sig: accept files saved with a byte order mark
+        # utf-8-sig: accept a byte order mark
         config.read([default_file, filename], encoding="utf-8-sig")
     return config
 

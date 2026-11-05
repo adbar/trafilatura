@@ -122,7 +122,7 @@ def determine_counter_dir(dirname: str, c: int) -> str:
     "Return a destination directory based on a file counter."
     if c < 0:
         return dirname
-    # os.path.join, not Path: pathlib rewrites the separators the caller passed in (test_sysoutput)
+    # os.path.join, not Path: pathlib rewrites the separators the caller passed in
     return os.path.join(dirname, str(int(c / MAX_FILES_PER_DIRECTORY) + 1))
 
 
@@ -234,10 +234,8 @@ def generate_filelist(
             yield os.path.join(root, filename)
 
 
-def file_processing(filename: str, args: argparse.Namespace, counter: int = -1, options: Extractor | None = None) -> None:
+def file_processing(filename: str, args: argparse.Namespace, counter: int, options: Extractor) -> None:
     "Aggregated functions to process a file in a list."
-    if not options:
-        options = args_to_extractor(args)
     options.source = filename
 
     with Path(filename).open("rb") as inputf:
@@ -251,14 +249,16 @@ def file_processing(filename: str, args: argparse.Namespace, counter: int = -1, 
     write_result(result, args, filename, counter)
 
 
-def process_result(htmlstring: str, args: argparse.Namespace, counter: int, options: Extractor | None) -> int:
+def process_result(
+    htmlstring: str, args: argparse.Namespace, counter: int, options: Extractor | None, url: str | None = None
+) -> int:
     "Extract text and metadata from a download webpage and eventually write out the result."
-    fileslug = generate_url_filename(options.url) if args.name_from_url and options and options.url else ""
+    fileslug = generate_url_filename(url) if args.name_from_url and url else ""
     # backup option
     if args.backup_dir:
         fileslug = archive_html(htmlstring, args, counter, new_filename=fileslug)
     # process
-    result = examine(htmlstring, args, options=options)
+    result = examine(htmlstring, args, options=options, url=url)
     write_result(result, args, counter=counter, new_filename=fileslug)
     # increment written file counter
     if counter >= 0 and result:
@@ -282,8 +282,7 @@ def download_queue_processing(
         for url, result in buffered_downloads(bufferlist, args.parallel, options=options):
             # handle result
             if result and isinstance(result, str):
-                options.url = url
-                counter = process_result(result, args, counter, options)
+                counter = process_result(result, args, counter, options, url)
             else:
                 LOGGER.warning("No result for URL: %s", url)
                 errors.append(url)
@@ -315,11 +314,12 @@ def cli_discovery(args: argparse.Namespace) -> int:
         # process results from the parallel threads and add them
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
-            links = future.result()
+            # all links blacklisted = no links
+            links = [u for u in future.result() or [] if URL_BLACKLIST_REGEX.sub("", u) not in (args.blacklist or ())]
             if not links:
                 no_links.append(futures[future])
                 continue
-            add_to_compressed_dict(links, blacklist=args.blacklist, url_store=url_store)
+            add_to_compressed_dict(links, url_store=url_store)
             # empty buffer in order to spare memory
             if args.list and len(url_store.get_known_domains()) >= args.parallel:
                 url_store.print_unvisited_urls()
@@ -355,17 +355,14 @@ def cli_crawler(
 
     # load crawl data
     for hostname in spider.URL_STORE.get_known_domains():
-        if spider.URL_STORE.urldict[hostname].tuples:
-            startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
-            if startpage:
-                params = spider.init_crawl(
-                    startpage, lang=args.target_language, config=options.config, blacklist=args.blacklist
-                )
-                # key by the crawl base: it may differ from hostname after a https upgrade,
-                # but the store may still hold URLs under the original base
-                param_dict[params.base] = params
-                param_dict.setdefault(get_base_url(startpage), params)
-                starts.append(params)
+        startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
+        if startpage:
+            params = spider.init_crawl(startpage, lang=args.target_language, config=options.config, blacklist=args.blacklist)
+            # key by the crawl base: it may differ from hostname after a https upgrade,
+            # but the store may still hold URLs under the original base
+            param_dict[params.base] = params
+            param_dict.setdefault(get_base_url(startpage), params)
+            starts.append(params)
 
     # iterate until the threshold is reached
     while not spider.URL_STORE.done:
@@ -487,6 +484,7 @@ def examine(
     htmlstring: str | bytes | None,
     args: argparse.Namespace,
     options: Extractor | None = None,
+    url: str | None = None,
 ) -> str | None:
     "Generic safeguards and triggers around extraction function."
     result = None
@@ -495,12 +493,12 @@ def examine(
     # safety check
     if htmlstring is None:
         sys.stderr.write("ERROR: empty document\n")
-    elif not is_acceptable_length(len(htmlstring), options):
+    elif not is_acceptable_length(len(htmlstring), options, url):
         sys.stderr.write("ERROR: file size\n")
     # proceed
     else:
         try:
-            result = extract(htmlstring, options=options)
+            result = extract(htmlstring, url=url, options=options)
         # ugly but efficient
         except Exception as err:
             sys.stderr.write(f"ERROR: {err!s}\n{traceback.format_exc()}\n")
