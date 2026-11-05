@@ -214,7 +214,7 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
         try:
             mode = Path(filename).stat().st_mode
         except OSError as err:
-            parser.error(f"{option}: {err.strerror}: {filename}")
+            parser.error(f"{option}: {os.strerror(err.errno) if err.errno else err}: {filename}")
         if stat.S_ISDIR(mode) or (regular and not stat.S_ISREG(mode)):
             parser.error(f"{option}: not a file: {filename}")
         if not os.access(filename, os.R_OK):
