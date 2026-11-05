@@ -106,7 +106,25 @@ def test_input_file_unreadable_parent(tmp_path, run):
     finally:
         locked.chmod(0o700)
     assert code == 2
-    assert "-i/--input-file: cannot access" in err
+    assert "-i/--input-file: Permission denied" in err
+
+
+@pytest.mark.skipif(os.name == "nt" or os.geteuid() == 0, reason="needs POSIX permissions as non-root")
+@pytest.mark.parametrize(
+    "option, label", [("-i", "-i/--input-file"), ("-b", "-b/--blacklist"), ("--config-file", "--config-file")]
+)
+def test_unreadable_file(tmp_path, run, option, label):
+    "A file that exists but cannot be read is reported, not a traceback."
+    unreadable = tmp_path / "list.txt"
+    unreadable.write_text("https://example.org\n")
+    unreadable.chmod(0)
+    argv = [option, str(unreadable)] if option == "-i" else ["-u", "https://example.org", option, str(unreadable)]
+    try:
+        code, _, err = run(argv)
+    finally:
+        unreadable.chmod(0o600)
+    assert code == 2
+    assert f"{label}: cannot read" in err
 
 
 @pytest.mark.parametrize(
@@ -283,16 +301,15 @@ def test_url_filenames_cli_download(tmp_path, batch, run):
 def test_url_filenames_ignored_for_list(run):
     code, out, err = run(["--name-from-url", "--list", "-u", "https://example.org/", "-o", "output"])
     assert code == 0
-    assert "name_from_url" in err
+    assert "--name-from-url" in err
     assert out.strip() == "https://example.org/"
 
 
 def test_list_ignores_extraction_opts(capsys):
     "--list warns about extraction/format options that have no effect in list mode."
-    cli.parse_args(["--list", "--json"])
+    cli.parse_args(["--list", "--json", "--no-comments", "--with-metadata"])
     err = capsys.readouterr().err
-    assert "--list only prints URLs" in err
-    assert "output_format" in err
+    assert "these options are ignored: --no-comments, --output-format, --with-metadata" in err
 
 
 def test_help(run):
@@ -625,7 +642,7 @@ def test_input_files_with_bom(tmp_path):
     assert cli_utils.load_input_urls(args) == ["https://example.org/a", "https://example.org/b"]
     blacklist = tmp_path / "blacklist.txt"
     blacklist.write_bytes(b"\xef\xbb\xbfhttps://example.org/a\n")
-    assert cli_utils.load_blacklist(str(blacklist)) == {"example.org/a"}
+    assert cli_utils.load_blacklist(str(blacklist)) == {"https://example.org/a"}
 
 
 def test_input_file_not_utf8(tmp_path, run):
@@ -980,6 +997,19 @@ def test_probing(run):
     assert run([*argv, "en"])[1].strip() == url
 
 
+def test_probing_wrong_language(capsys):
+    "A page in another language than --target-language is not printed."
+    html = f"<html><body><p>{'Some English text. ' * 20}</p></body></html>"
+    args = cli.parse_args(["--probe", "https://example.org/", "--target-language", "de"])
+    with (
+        patch.object(cli_utils, "buffered_downloads", return_value=[("https://example.org/", html)]),
+        patch.object(cli_utils, "LANGID_FLAG", True),
+        patch.object(cli_utils, "language_classifier", return_value="en"),
+    ):
+        assert cli_utils.probe_homepage(args) == 0
+    assert capsys.readouterr().out == ""
+
+
 @pytest.mark.parametrize("relative_input", [False, True])
 def test_keep_dirs_local_batch(tmp_path, monkeypatch, relative_input):
     """Kept paths stay relative to the input directory, beneath the output directory."""
@@ -1052,9 +1082,9 @@ def test_cli_stdin_rejected(run):
 @pytest.mark.parametrize(
     "argv, message",
     [
-        (["-i", "missing.txt"], "-i/--input-file: file not found"),
-        (["-u", "https://example.org", "-b", "missing.txt"], "-b/--blacklist: file not found"),
-        (["-u", "https://example.org", "--config-file", "missing.cfg"], "--config-file: file not found"),
+        (["-i", "missing.txt"], "-i/--input-file: No such file or directory"),
+        (["-u", "https://example.org", "-b", "missing.txt"], "-b/--blacklist: No such file or directory"),
+        (["-u", "https://example.org", "--config-file", "missing.cfg"], "--config-file: No such file or directory"),
         (["-i", "."], "-i/--input-file: not a file"),
         (["-u", "https://example.org", "-b", "."], "-b/--blacklist: not a file"),
         (["-u", "https://example.org", "--config-file", "."], "--config-file: not a file"),

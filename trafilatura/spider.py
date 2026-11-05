@@ -63,7 +63,7 @@ class CrawlParameters:
         self.known_num: int = 0
         self.is_on: bool = True
         self.prune_xpath: str | list[str] | None = prune_xpath
-        self.blacklist: set[str] = blacklist or set()
+        self.blacklist: set[str] = {URL_BLACKLIST_REGEX.sub("", b) for b in blacklist or ()}
 
     def _get_base_url(self, start: str) -> str:
         "Set reference domain for the crawl."

@@ -406,7 +406,8 @@ def filter_blacklist(urls: list[str], blacklist: set[str] | None) -> list[str]:
     "Remove the URLs found in the blacklist, compared without protocol and trailing slashes."
     if not blacklist:
         return urls
-    return [u for u in urls if URL_BLACKLIST_REGEX.sub("", u) not in blacklist]
+    keys = {URL_BLACKLIST_REGEX.sub("", b) for b in blacklist}
+    return [u for u in urls if URL_BLACKLIST_REGEX.sub("", u) not in keys]
 
 
 def add_to_compressed_dict(

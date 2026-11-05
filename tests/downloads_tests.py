@@ -782,6 +782,10 @@ def test_queue():
         ["https://example.org/page", "https://example.org/skip"], blacklist={"example.org/skip"}, url_filter=["/page"]
     )
     assert url_store.dump_urls() == ["https://example.org/page"]
+    # blacklist entries are compared without protocol and trailing slashes
+    urls = ["https://example.org/a", "https://example.org/b", "http://example.org/c"]
+    blacklist = {"https://example.org/a/", "example.org/c"}
+    assert add_to_compressed_dict(urls, blacklist=blacklist).dump_urls() == ["https://example.org/b"]
 
     # response download buffer (empty input, no network)
     assert list(dl.buffered_response_downloads([], 1)) == []

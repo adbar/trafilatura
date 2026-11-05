@@ -57,7 +57,6 @@ from .settings import (
 from .sitemaps import sitemap_search
 from .utils import (
     LANGID_FLAG,
-    URL_BLACKLIST_REGEX,
     Response,
     is_acceptable_length,
     language_classifier,
@@ -106,7 +105,7 @@ def load_input_urls(args: argparse.Namespace) -> list[str]:
 def load_blacklist(filename: str) -> set[str]:
     "Read list of unwanted URLs."
     with Path(filename).open(encoding="utf-8-sig") as inputfh:
-        return {URL_BLACKLIST_REGEX.sub("", line.strip()) for line in inputfh}
+        return {line.strip() for line in inputfh}
 
 
 def load_input_dict(args: argparse.Namespace) -> UrlStore:
@@ -274,9 +273,7 @@ def file_processing(filename: str, args: argparse.Namespace, counter: int, optio
     write_result(result, args, filename, counter)
 
 
-def process_result(
-    htmlstring: str, args: argparse.Namespace, counter: int, options: Extractor | None, url: str | None = None
-) -> int:
+def process_result(htmlstring: str, args: argparse.Namespace, counter: int, options: Extractor, url: str | None = None) -> int:
     "Extract text and metadata from a download webpage and eventually write out the result."
     fileslug = generate_url_filename(url) if args.name_from_url and url else ""
     # backup option

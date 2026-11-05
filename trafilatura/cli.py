@@ -4,6 +4,7 @@ Implementing a basic command-line interface.
 
 import argparse
 import logging
+import os
 import stat
 import sys
 from importlib.metadata import version
@@ -212,12 +213,12 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
         # not Path.exists: it raises on an unreadable parent before Python 3.14
         try:
             mode = Path(filename).stat().st_mode
-        except FileNotFoundError:
-            parser.error(f"{option}: file not found: {filename}")
         except OSError as err:
-            parser.error(f"{option}: cannot access {filename}: {err.strerror}")
+            parser.error(f"{option}: {err.strerror}: {filename}")
         if stat.S_ISDIR(mode) or (regular and not stat.S_ISREG(mode)):
             parser.error(f"{option}: not a file: {filename}")
+        if not os.access(filename, os.R_OK):
+            parser.error(f"{option}: cannot read {filename}")
     if args.parallel < 1:
         parser.error("--parallel must be a positive integer")
     if args.name_from_url:
@@ -230,7 +231,11 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
     if args.list:
         if args.input_dir:
             print("--list has no effect on --input-dir, the files are processed", file=sys.stderr)
-        elif ignored := sorted(o for o in _LIST_IGNORED_OPTS if getattr(args, o) != parser.get_default(o)):
+        elif ignored := sorted(
+            a.option_strings[-1]
+            for a in parser._actions  # noqa: SLF001 (no public dest to flag mapping)
+            if a.dest in _LIST_IGNORED_OPTS and getattr(args, a.dest) != a.default
+        ):
             # emitted before logging is configured, so print directly
             print(f"--list only prints URLs; these options are ignored: {', '.join(ignored)}", file=sys.stderr)
 

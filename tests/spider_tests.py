@@ -407,6 +407,15 @@ def test_is_same_site():
     assert not spider.is_same_site("https://example.org", "http://example.org")
 
 
+def test_blacklist_full_urls():
+    "Blacklist entries are compared without protocol and trailing slashes."
+    with patch.object(spider, "get_rules", return_value=None):
+        params = spider.CrawlParameters("https://example.org/", blacklist={"https://example.org/a/", "example.org/b"})
+    assert not params.is_valid_link("https://example.org/a")
+    assert not params.is_valid_link("http://example.org/b/")
+    assert params.is_valid_link("https://example.org/c")
+
+
 def test_www_redirect():
     "A homepage redirect between the bare domain and its www twin moves the crawl to the redirected host."
     for start, homepage in [
