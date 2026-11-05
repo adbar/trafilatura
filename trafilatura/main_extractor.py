@@ -247,15 +247,11 @@ def handle_code_blocks(element: _Element) -> _Element:
     for child in element.iter("*"):
         child.tag = "done"
     processed_element.tag = "code"
-    # rend on a code element holds the checked hint only, never the page's own attribute
+    # every code element keeps the checked hint and no page attribute, the serializer may render a nested one
     for code in processed_element.iter("code"):
-        code.attrib.pop("rend", None)
-    if language:
-        processed_element.set("rend", language)
-        # a nested code element is the one rendered by the serializer
-        nested = processed_element.find(".//code")
-        if nested is not None:
-            nested.set("rend", language)
+        code.attrib.clear()
+        if language:
+            code.set("rend", language)
     return processed_element
 
 

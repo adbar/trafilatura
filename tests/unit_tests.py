@@ -3978,6 +3978,14 @@ print(os.getcwd())</code></pre></div>"""
 print(os.getcwd())</code></pre></div>"""
     testresult = extract(fallback, config=ZERO_CONFIG, output_format="markdown")
     assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    # every code element of the block carries the hint: a doubly nested block gets a labeled fence
+    doubly_nested = """<div><p>Code:</p>
+<pre><code class="language-python"><code class="font-mono">import os
+print(os.getcwd())</code></code></pre></div>"""
+    testresult = extract(doubly_nested, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    testresult = extract(doubly_nested, config=ZERO_CONFIG, output_format="xml")
+    assert '<code rend="python">import os\nprint(os.getcwd())</code>' in testresult
 
 
 def test_markdown_escaping():
