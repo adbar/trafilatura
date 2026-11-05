@@ -330,6 +330,41 @@ def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
     return None
 
 
+# elements that legitimately live in <head>: HTML metadata content and the
+# containers a parser may leave there; any other element child of <head> is
+# flow content that belongs in <body>
+HEAD_CONTENT_TAGS = {"base", "link", "meta", "noscript", "script", "style", "template", "title"}
+
+
+def _relocate_head_content(tree: HtmlElement) -> None:
+    """Move flow content mis-nested in <head> to the front of <body>.
+
+    libxml2 keeps the implied head open across HTML5 semantic sectioning
+    elements (main, header, article, ...), so a document omitting the
+    explicit <head> tag can parse with its article inside <head> -- which
+    tree_cleaning then deletes wholesale. Element children of <head> that
+    are not head content move, in document order and with their subtrees
+    and tails, to the front of <body> (created if absent). Text that
+    libxml2 2.14+ makes the body's leading text followed those elements
+    in the source, so it goes after them.
+    """
+    head = tree.find("head")
+    if head is None:
+        return
+    moved = [child for child in head if isinstance(child.tag, str) and child.tag not in HEAD_CONTENT_TAGS]
+    if not moved:
+        return
+    body = tree.find("body")
+    if body is None:
+        body = tree.makeelement("body")
+        tree.append(body)
+    if body.text:
+        moved[-1].tail = (moved[-1].tail or "") + body.text
+        body.text = None
+    for index, child in enumerate(moved):
+        body.insert(index, child)
+
+
 def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string).
@@ -377,6 +412,9 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
     if tree is not None and check_flag is True and len(tree) < 2:
         LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
         tree = None
+    # repair a mis-nested implied head (flow content parsed into <head>)
+    if tree is not None:
+        _relocate_head_content(tree)
     return tree
 
 
