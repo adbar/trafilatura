@@ -7,7 +7,6 @@ content filtering and language detection.
 import logging
 import re
 import sys
-import threading
 import zlib
 from collections.abc import Callable, Iterable, Iterator, Mapping
 from functools import lru_cache
@@ -124,28 +123,13 @@ _INVALID_XML_CHARREFS_BYTES = re.compile(INVALID_XML_CHARREFS.pattern.encode())
 
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
-def _make_html_parser() -> HTMLParser:
-    "Create the HTML parser used by load_html()."
+def get_html_parser() -> HTMLParser:
+    "Return a new HTML parser: a parser shared across threads makes concurrent extractions crash (#925)."
     parser = HTMLParser(collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True)
     # one element class instead of the per-tag lxml.html lookup
     parser.set_element_class_lookup(
         ElementDefaultClassLookup(element=HtmlElement, comment=HtmlComment, pi=HtmlProcessingInstruction, entity=HtmlEntity)
     )
-    return parser
-
-
-# kept for backwards compatibility, load_html() uses one parser per thread
-HTML_PARSER = _make_html_parser()
-# a parser shared across threads makes concurrent extract() calls crash (#925),
-# the lxml FAQ advises against sharing parsers between threads
-_THREAD_LOCAL = threading.local()
-
-
-def get_html_parser() -> HTMLParser:
-    "Return the HTML parser of the current thread, creating it on first use."
-    parser: HTMLParser | None = getattr(_THREAD_LOCAL, "html_parser", None)
-    if parser is None:
-        parser = _THREAD_LOCAL.html_parser = _make_html_parser()
     return parser
 
 
