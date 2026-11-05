@@ -9,6 +9,7 @@ from importlib.metadata import version
 from platform import python_version
 
 from .cli_utils import (
+    HAS_TQDM,
     cli_crawler,
     cli_discovery,
     examine,
@@ -38,6 +39,7 @@ _LIST_IGNORED_OPTS = {
     "archived",
     "backup_dir",
     "name_from_url",
+    "progress",
 }
 
 # fix output encoding on some systems
@@ -68,6 +70,11 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         help="specify a number of cores/threads for downloads and/or processing",
         type=int,
         default=PARALLEL_CORES,
+    )
+    group1.add_argument(
+        "--progress",
+        help="show a progress bar when processing URL lists or input directories (requires tqdm)",
+        action="store_true",
     )
     group1.add_argument("-b", "--blacklist", help="file containing unwanted URLs to discard during processing", type=str)
 
@@ -174,6 +181,8 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 
 def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) -> None:
     "Catch cross-group incompatibilities that argparse cannot express."
+    if args.progress and not HAS_TQDM:
+        parser.error("--progress requires the tqdm package: pip install tqdm")
     if args.keep_dirs and not args.output_dir:
         parser.error("--keep-dirs requires an output directory (-o/--output-dir)")
     if args.name_from_url:
