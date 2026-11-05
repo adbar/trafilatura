@@ -656,6 +656,26 @@ def prune_unwanted_sections(
     return tree
 
 
+def _has_enough_paragraph_text(tree: _Element, minimum: int) -> bool:
+    """Test the absolute paragraph-text threshold without materializing an XPath node set."""
+    length = 0
+    for paragraph in tree.getroottree().getroot().iter("p"):
+        # XPath selects each text node once, even for nested paragraphs.
+        if next(paragraph.iterancestors("p"), None) is not None:
+            continue
+        for element in paragraph.iter():
+            # Exclude comment, PI and unresolved entity contents, but retain their tails.
+            for text in (
+                element.text if isinstance(element.tag, str) else None,
+                element.tail if element is not paragraph else None,
+            ):
+                if text is not None:
+                    length += len(text)
+                    if length >= minimum:
+                        return True
+    return False
+
+
 def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[str]]:
     # init
     potential_tags = set(TAG_CATALOG)
@@ -678,9 +698,8 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
         if len(subtree) == 0:
             continue
         # no paragraphs containing text, or not enough
-        ptest = subtree.xpath("//p//text()")
         factor = 1 if options.focus == "precision" else 3
-        if not ptest or len("".join(ptest)) < options.min_extracted_size * factor:
+        if not _has_enough_paragraph_text(subtree, options.min_extracted_size * factor):
             potential_tags.add("div")
         LOGGER.debug(sorted(potential_tags))
 
