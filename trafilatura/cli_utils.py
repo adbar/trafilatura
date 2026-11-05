@@ -2,14 +2,8 @@
 Functions dedicated to command-line processing.
 """
 
-try:
-    import gzip
-
-    HAS_GZIP = True
-except ImportError:
-    HAS_GZIP = False
-
 import argparse
+import gzip
 import logging
 import os
 import random
@@ -26,7 +20,6 @@ from functools import partial
 from hashlib import blake2b
 from io import TextIOWrapper
 from pathlib import Path
-from threading import RLock
 from typing import Any
 from urllib.parse import unquote, urlsplit
 
@@ -39,14 +32,20 @@ try:
 except ImportError:  # pragma: no cover
     HAS_TQDM = False
 
-from courlan import UrlStore, extract_domain, get_base_url  # validate_url
+from courlan import UrlStore, get_base_url  # validate_url
 
 from trafilatura import spider
 
 from .baseline import html2txt
 from .core import extract
 from .deduplication import generate_bow_hash
-from .downloads import add_to_compressed_dict, buffered_downloads, buffered_response_downloads, load_download_buffer
+from .downloads import (
+    add_to_compressed_dict,
+    buffered_downloads,
+    buffered_response_downloads,
+    filter_blacklist,
+    load_download_buffer,
+)
 from .feeds import find_feed_urls
 from .meta import reset_caches
 from .settings import (
@@ -58,7 +57,6 @@ from .settings import (
 from .sitemaps import sitemap_search
 from .utils import (
     LANGID_FLAG,
-    URL_BLACKLIST_REGEX,
     Response,
     is_acceptable_length,
     language_classifier,
@@ -73,8 +71,6 @@ CHAR_CLASS = string.ascii_letters + string.digits
 STRIP_EXTENSION = re.compile(r"\.[a-z]{2,5}$")
 
 CLEAN_XML = re.compile(r"<[^<]+?>")
-
-INPUT_URLS_ARGS = ["URL", "crawl", "explore", "probe", "feed", "sitemap"]
 
 EXTENSION_MAPPING = {
     "csv": ".csv",
@@ -91,16 +87,13 @@ def load_input_urls(args: argparse.Namespace) -> list[str]:
 
     if args.input_file:
         try:
-            # optional: errors='strict', buffering=1
             with Path(args.input_file).open(encoding="utf-8-sig") as inputfile:
-                input_urls.extend(line.strip() for line in inputfile)
+                # cut at the first space or tab, the rest is a comment
+                input_urls.extend(url for line in inputfile if (url := line.strip().replace("\t", " ").partition(" ")[0]))
         except UnicodeDecodeError:
             sys.exit("ERROR: system, file type or buffer encoding")
-    else:
-        for arg in INPUT_URLS_ARGS:
-            if getattr(args, arg):
-                input_urls = [getattr(args, arg)]
-                break
+    elif args.URL:
+        input_urls = [args.URL]
 
     if not input_urls:
         LOGGER.warning("No input provided")
@@ -112,21 +105,23 @@ def load_input_urls(args: argparse.Namespace) -> list[str]:
 def load_blacklist(filename: str) -> set[str]:
     "Read list of unwanted URLs."
     with Path(filename).open(encoding="utf-8-sig") as inputfh:
-        # if validate_url(url)[0] is True:
-        return {URL_BLACKLIST_REGEX.sub("", line.strip()) for line in inputfh}
+        return {line.strip() for line in inputfh}
 
 
 def load_input_dict(args: argparse.Namespace) -> UrlStore:
     "Read input list of URLs to process and build a domain-aware dictionary."
     inputlist = load_input_urls(args)
     # deduplicate, filter and convert to dict
-    return add_to_compressed_dict(
+    url_store = add_to_compressed_dict(
         inputlist,
         blacklist=args.blacklist,
         compression=(args.sitemap and not args.list),
         url_filter=args.url_filter,
         verbose=args.verbose,
     )
+    if inputlist and url_store.total_url_number() == 0:
+        LOGGER.warning("No input URL left after validation, blacklist and URL filter")
+    return url_store
 
 
 def check_outputdir_status(directory: str) -> bool:
@@ -144,7 +139,7 @@ def determine_counter_dir(dirname: str, c: int) -> str:
     "Return a destination directory based on a file counter."
     if c < 0:
         return dirname
-    # os.path.join, not Path: pathlib rewrites the separators the caller passed in (test_sysoutput)
+    # os.path.join, not Path: pathlib rewrites the separators the caller passed in
     return os.path.join(dirname, str(int(c / MAX_FILES_PER_DIRECTORY) + 1))
 
 
@@ -183,7 +178,7 @@ def determine_output_path(
     extension = EXTENSION_MAPPING.get(args.output_format, ".txt")
 
     if args.keep_dirs:
-        relative_filename = Path(os.path.relpath(orig_filename, args.input_dir) if args.input_dir else orig_filename)
+        relative_filename = Path(os.path.relpath(orig_filename, args.input_dir))
         destination_dir = str(Path(args.output_dir) / relative_filename.parent)
         filename = STRIP_EXTENSION.sub("", relative_filename.name)
     else:
@@ -203,9 +198,7 @@ def archive_html(htmlstring: str, args: argparse.Namespace, counter: int = -1, n
         output_path = os.path.join(destination_directory, filename + ".html.gz")
     else:
         output_path, filename = get_writable_path(destination_directory, ".html.gz")
-    # check the directory status
-    if check_outputdir_status(destination_directory) is True and HAS_GZIP:
-        # write
+    if check_outputdir_status(destination_directory):
         with gzip.open(output_path, "wb") as outputfile:
             outputfile.write(htmlstring.encode("utf-8"))
     return filename
@@ -240,8 +233,7 @@ def write_result(
         if orig_filename and absolute_path(destination_path) == absolute_path(orig_filename):
             LOGGER.error("Skipping %s: the output path would overwrite the input file", orig_filename)
             return
-        # check the directory status
-        if check_outputdir_status(destination_dir) is True:
+        if check_outputdir_status(destination_dir):
             newline = "" if args.output_format == "csv" else None
             with Path(destination_path).open(mode="w", encoding="utf-8", newline=newline) as outputfile:
                 outputfile.write(result)
@@ -266,10 +258,8 @@ def generate_filelist(
             yield os.path.join(root, filename)
 
 
-def file_processing(filename: str, args: argparse.Namespace, counter: int = -1, options: Extractor | None = None) -> None:
+def file_processing(filename: str, args: argparse.Namespace, counter: int, options: Extractor) -> None:
     "Aggregated functions to process a file in a list."
-    if not options:
-        options = args_to_extractor(args)
     options.source = filename
 
     with Path(filename).open("rb") as inputf:
@@ -280,18 +270,18 @@ def file_processing(filename: str, args: argparse.Namespace, counter: int = -1, 
     options.date_params["max_date"] = datetime.fromtimestamp(ref_timestamp).astimezone().strftime("%Y-%m-%d")
 
     result = examine(htmlstring, args, options=options)
-    write_result(result, args, filename, counter, new_filename=None)
+    write_result(result, args, filename, counter)
 
 
-def process_result(htmlstring: str, args: argparse.Namespace, counter: int, options: Extractor | None) -> int:
+def process_result(htmlstring: str, args: argparse.Namespace, counter: int, options: Extractor, url: str | None = None) -> int:
     "Extract text and metadata from a download webpage and eventually write out the result."
-    fileslug = generate_url_filename(options.url) if args.name_from_url and options and options.url else ""
+    fileslug = generate_url_filename(url) if args.name_from_url and url else ""
     # backup option
     if args.backup_dir:
         fileslug = archive_html(htmlstring, args, counter, new_filename=fileslug)
     # process
-    result = examine(htmlstring, args, options=options)
-    write_result(result, args, orig_filename=fileslug, counter=counter, new_filename=fileslug)
+    result = examine(htmlstring, args, options=options, url=url)
+    write_result(result, args, counter=counter, new_filename=fileslug)
     # increment written file counter
     if counter >= 0 and result:
         counter += 1
@@ -326,8 +316,7 @@ def download_queue_processing(
         for url, result in buffered_downloads(bufferlist, args.parallel, options=options):
             # handle result
             if result and isinstance(result, str):
-                options.url = url
-                counter = process_result(result, args, counter, options)
+                counter = process_result(result, args, counter, options, url)
             else:
                 LOGGER.warning("No result for URL: %s", url)
                 errors.append(url)
@@ -340,8 +329,10 @@ def cli_discovery(args: argparse.Namespace) -> int:
     "Group CLI functions dedicated to URL discovery."
     url_store = load_input_dict(args)
     input_urls = url_store.dump_urls()
-    if args.list:
-        url_store.reset()
+    if not input_urls:
+        return 1
+    # only process the discovered URLs
+    url_store.reset()
 
     options = args_to_extractor(args)
     func = partial(
@@ -351,46 +342,35 @@ def cli_discovery(args: argparse.Namespace) -> int:
         sleep_time=options.config.getfloat("DEFAULT", "SLEEP_TIME"),
         config=options.config,
     )
-    lock = RLock()
+    no_links = []
 
     # link discovery and storage
     with ThreadPoolExecutor(max_workers=args.parallel) as executor:
-        futures = (executor.submit(func, url) for url in input_urls)
+        futures = {executor.submit(func, url): url for url in input_urls}
         # process results from the parallel threads and add them
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
-            if future.result() is not None:
-                add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_store=url_store)
-                # empty buffer in order to spare memory
-                if args.list and len(url_store.get_known_domains()) >= args.parallel:
-                    with lock:
-                        url_store.print_unvisited_urls()
-                        url_store.reset()
-                        reset_caches()
+            # all links blacklisted = no links
+            links = filter_blacklist(future.result() or [], args.blacklist)
+            if not links:
+                no_links.append(futures[future])
+                continue
+            add_to_compressed_dict(links, url_store=url_store)
+            # empty buffer in order to spare memory
+            if args.list and len(url_store.get_known_domains()) >= args.parallel:
+                url_store.print_unvisited_urls()
+                url_store.reset()
+                reset_caches()
 
     # process the (rest of the) links found
     exit_code = url_processing_pipeline(args, url_store)
 
-    # activate site explorer
-    if args.explore:
-        # add to compressed dict and crawl the remaining websites
-        control_dict = build_exploration_dict(url_store, input_urls, args)
-        cli_crawler(args, url_store=control_dict, options=options)
+    # the crawler takes over the seeds without links, keep the worse exit code
+    if args.explore and no_links:
+        return max(exit_code, cli_crawler(args, url_store=add_to_compressed_dict(no_links), options=options))
 
-    return exit_code
-
-
-def build_exploration_dict(url_store: UrlStore, input_urls: list[str], args: argparse.Namespace) -> UrlStore:
-    "Find domains for which nothing has been found and add info to the crawl dict."
-    input_domains = {extract_domain(u) for u in input_urls}
-    still_to_crawl = input_domains - {extract_domain(u) for u in url_store.get_known_domains()}
-    new_input_urls = [u for u in input_urls if extract_domain(u) in still_to_crawl]
-    return add_to_compressed_dict(
-        new_input_urls,
-        blacklist=args.blacklist,
-        url_filter=args.url_filter,
-        verbose=args.verbose,
-    )
+    # missing links are not download failures
+    return max(exit_code, int(bool(no_links)))
 
 
 def cli_crawler(
@@ -398,31 +378,27 @@ def cli_crawler(
     n: int = 30,
     url_store: UrlStore | None = None,
     options: Extractor | None = None,
-) -> None:
+) -> int:
     """Start a focused crawler which downloads a fixed number of URLs within a website
     and prints the links found in the process."""
     options = options or args_to_extractor(args)
     sleep_time = options.config.getfloat("DEFAULT", "SLEEP_TIME")
     param_dict = {}
+    starts = []
 
     # load input URLs
-    if url_store is None:
-        add_to_compressed_dict(load_input_urls(args), blacklist=args.blacklist, url_store=spider.URL_STORE)
-    else:
-        spider.URL_STORE = url_store
+    spider.URL_STORE = load_input_dict(args) if url_store is None else url_store
 
     # load crawl data
     for hostname in spider.URL_STORE.get_known_domains():
-        if spider.URL_STORE.urldict[hostname].tuples:
-            startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
-            if startpage:
-                params = spider.init_crawl(
-                    startpage, lang=args.target_language, config=options.config, blacklist=args.blacklist
-                )
-                # key by the crawl base: it may differ from hostname after a https upgrade,
-                # but the store may still hold URLs under the original base
-                param_dict[params.base] = params
-                param_dict.setdefault(get_base_url(startpage), params)
+        startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
+        if startpage:
+            params = spider.init_crawl(startpage, lang=args.target_language, config=options.config, blacklist=args.blacklist)
+            # key by the crawl base: it may differ from hostname after a https upgrade,
+            # but the store may still hold URLs under the original base
+            param_dict[params.base] = params
+            param_dict.setdefault(get_base_url(startpage), params)
+            starts.append(params)
 
     # iterate until the threshold is reached
     while not spider.URL_STORE.done:
@@ -439,20 +415,31 @@ def cli_crawler(
         if any(c >= n for c in spider.URL_STORE.get_all_counts()):
             break
 
-    print("\n".join(u for u in spider.URL_STORE.dump_urls()))
+    print("\n".join(spider.URL_STORE.dump_urls()))
+    if not starts:
+        return 1
+    # start pages that could not be fetched
+    errors = [p.base for p in starts if p.i == 0]
+    return _define_exit_code(errors, len(starts))
 
 
-def probe_homepage(args: argparse.Namespace) -> None:
+def probe_homepage(args: argparse.Namespace) -> int:
     "Probe websites for extractable content and print the fitting ones."
-    input_urls = load_input_urls(args)
+    input_urls = load_input_dict(args).dump_urls()
+    if not input_urls:
+        return 1
     options = args_to_extractor(args)
 
+    errors: list[str] = []
     for url, result in buffered_downloads(input_urls, args.parallel, options=options):
-        if result is not None:
+        if result is None:
+            errors.append(url)
+        else:
             result = html2txt(result)
             if result and len(result) > options.min_extracted_size and any(c.isalpha() for c in result):
                 if not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language:
                     print(url, flush=True)
+    return _define_exit_code(errors, len(input_urls))
 
 
 def _define_exit_code(errors: list[str], total: int) -> int:
@@ -470,8 +457,8 @@ def _define_exit_code(errors: list[str], total: int) -> int:
 def url_processing_pipeline(args: argparse.Namespace, url_store: UrlStore) -> int:
     "Aggregated functions to show a list and download and process an input list."
     if args.list:
-        url_store.print_unvisited_urls()  # and not write_result()
-        return 0  # and not sys.exit(0)
+        url_store.print_unvisited_urls()
+        return 0
 
     options = args_to_extractor(args)
     url_count = url_store.total_url_number()
@@ -482,19 +469,14 @@ def url_processing_pipeline(args: argparse.Namespace, url_store: UrlStore) -> in
         errors, counter = download_queue_processing(url_store, args, counter, options, progress)
     LOGGER.debug("%s / %s URLs could not be found", len(errors), url_count)
 
-    if args.archived is True:
+    if args.archived and errors:
         url_store = UrlStore()
         url_store.add_urls(["https://web.archive.org/web/20/" + e for e in errors])
-        if len(url_store.find_known_urls("https://web.archive.org")) > 0:
-            with _progress_bar(args, url_store.total_url_number(), "URL") as progress:
-                archived_errors, _ = download_queue_processing(url_store, args, counter, options, progress)
-            LOGGER.debug(
-                "%s archived URLs out of %s could not be found",
-                len(archived_errors),
-                len(errors),
-            )
-            # pass information along if URLs are missing
-            return _define_exit_code(archived_errors, url_store.total_url_number())
+        with _progress_bar(args, url_store.total_url_number(), "URL") as progress:
+            archived_errors, _ = download_queue_processing(url_store, args, counter, options, progress)
+        LOGGER.debug("%s archived URLs out of %s could not be found", len(archived_errors), len(errors))
+        # pass information along if URLs are missing
+        return _define_exit_code(archived_errors, url_count)
 
     return _define_exit_code(errors, url_count)
 
@@ -519,13 +501,10 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
     filecounter = -1
     exit_code = 0
     options = args_to_extractor(args)
-
-    def handle_walk_error(_error: OSError) -> None:
-        nonlocal exit_code
-        exit_code = 1
+    walk_errors: list[OSError] = []
 
     filelist: Iterable[str] = generate_filelist(
-        args.input_dir, onerror=handle_walk_error, exclude_dirs=(args.output_dir, args.backup_dir)
+        args.input_dir, onerror=walk_errors.append, exclude_dirs=(args.output_dir, args.backup_dir)
     )
     total = None
     if getattr(args, "progress", False):
@@ -555,28 +534,29 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
             if filecounter >= 0:
                 filecounter += len(filebatch)
 
-    return exit_code
+    return 1 if walk_errors else exit_code
 
 
 def examine(
     htmlstring: str | bytes | None,
     args: argparse.Namespace,
-    url: str | None = None,
+    *,
     options: Extractor | None = None,
+    url: str | None = None,
 ) -> str | None:
     "Generic safeguards and triggers around extraction function."
     result = None
     if not options:
-        options = args_to_extractor(args, url)
+        options = args_to_extractor(args)
     # safety check
     if htmlstring is None:
         sys.stderr.write("ERROR: empty document\n")
-    elif not is_acceptable_length(len(htmlstring), options):
+    elif not is_acceptable_length(len(htmlstring), options, url):
         sys.stderr.write("ERROR: file size\n")
     # proceed
     else:
         try:
-            result = extract(htmlstring, options=options)
+            result = extract(htmlstring, url=url, options=options)
         # ugly but efficient
         except Exception as err:
             sys.stderr.write(f"ERROR: {err!s}\n{traceback.format_exc()}\n")

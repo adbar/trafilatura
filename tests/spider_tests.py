@@ -211,6 +211,20 @@ def test_process_links_fragment_navigation():
         assert store.find_unvisited_urls(base) == [base + "/tag/topic", base + "/page"]
 
 
+def test_crawl_page_failed_start():
+    "A start page that cannot be fetched is not counted."
+    store = UrlStore(compressed=False, strict=False)
+    with (
+        patch.object(spider, "URL_STORE", store),
+        patch.object(spider, "get_rules", return_value=None),
+        patch.object(spider, "probe_alternative_homepage", return_value=(None, None, None)),
+    ):
+        params = spider.CrawlParameters("https://example.org")
+        store.add_urls(urls=[params.start], visited=False)
+        params = spider.crawl_page(params, initial=True)
+    assert params.i == 0
+
+
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
     url = "https://httpbun.com/html"
@@ -391,6 +405,15 @@ def test_is_same_site():
     assert not spider.is_same_site("https://example.org", "https://www2.example.org")
     assert not spider.is_same_site("https://example.org", "https://www.example.org:8443")
     assert not spider.is_same_site("https://example.org", "http://example.org")
+
+
+def test_blacklist_full_urls():
+    "Blacklist entries are compared without protocol and trailing slashes."
+    with patch.object(spider, "get_rules", return_value=None):
+        params = spider.CrawlParameters("https://example.org/", blacklist={"https://example.org/a/", "example.org/b"})
+    assert not params.is_valid_link("https://example.org/a")
+    assert not params.is_valid_link("http://example.org/b/")
+    assert params.is_valid_link("https://example.org/c")
 
 
 def test_www_redirect():

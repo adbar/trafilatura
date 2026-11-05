@@ -269,6 +269,7 @@ def test_input(options):
     assert "incompatible" in str(err.value)
 
     assert load_html("<html><body>ÄÖÜ</body></html>") is not None
+    assert load_html('<?xml version="1.0" encoding="utf-8"?><html><body><p>ABC</p></body></html>') is not None
     assert load_html(b"<html><body>\x2f\x2e\x9f</body></html>") is not None
     assert load_html("<html><body>\x2f\x2e\x9f</body></html>".encode("latin-1")) is not None
     # assert load_html(b'0'*int(10e3)) is None
@@ -295,10 +296,10 @@ def test_input(options):
 
     # output format
     assert "ABC" in extract("<html><body><p>ABC</p></body></html>", output_format="xml")
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         assert extract("<html><body><p>ABC</p></body></html>", output_format="xyz") is not None
     assert bare_extraction("<html><body><p>ABC</p></body></html>", output_format="python").text == "ABC"
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         assert bare_extraction("<html><body><p>ABC</p></body></html>", output_format="xyz") is not None
 
     # text elements
@@ -2104,6 +2105,46 @@ def test_url_blacklist():
     doc = '<html><head><link rel="canonical" href="https://example.org/page"/></head><body><article><p>Some real article body text here.</p></article></body></html>'
     assert extract(doc, config=ZERO_CONFIG) is not None
     assert extract(doc, url_blacklist={"https://example.org/page"}, config=ZERO_CONFIG) is None
+    # the given URL counts too, not only the canonical one
+    assert (
+        extract(doc, url="https://example.org/given", url_blacklist={"https://example.org/given"}, config=ZERO_CONFIG) is None
+    )
+
+
+def test_url_with_options():
+    "The url argument is not dropped when options are passed."
+    doc = '<html><body><article><p>Some real article body text here with a <a href="/x">link</a>.</p></article></body></html>'
+    options = core.Extractor(output_format="xml", links=True, with_metadata=True, config=ZERO_CONFIG)
+    result = extract(doc, url="https://example.org/page", options=options)
+    assert 'url="https://example.org/page"' in result
+    assert 'target="https://example.org/x"' in result
+    # also for images
+    images = core.Extractor(output_format="xml", images=True, config=ZERO_CONFIG)
+    result = extract(doc.replace("</p>", '<img src="/a.png"/></p>'), url="https://example.org/page", options=images)
+    assert 'src="https://example.org/a.png"' in result
+    assert images.url is None
+    assert bare_extraction(doc, url="https://example.org/page", options=options).url == "https://example.org/page"
+    assert options.url is None
+    # the url argument takes precedence over options.url
+    options.url = "https://example.org/options"
+    assert bare_extraction(doc, options=options).url == "https://example.org/options"
+    assert bare_extraction(doc, url="https://example.org/page", options=options).url == "https://example.org/page"
+    # the source follows the url unless set by the caller, and is sanitized
+    custom = core.Extractor(source="batch-42", config=ZERO_CONFIG)
+    derived = core.Extractor(url="https://example.org/old", config=ZERO_CONFIG)
+    with patch.object(core, "trafilatura_sequence", wraps=core.trafilatura_sequence) as sequence:
+        bare_extraction(doc, url="https://example.org/\udcff", options=custom)
+        bare_extraction(doc, url="https://example.org/\udcff", options=options)
+        bare_extraction(doc, url="https://example.org/new", options=derived)
+    sources = [c.args[1].source for c in sequence.call_args_list]
+    assert sources == ["batch-42", "https://example.org/?", "https://example.org/new"]
+    assert custom.source == "batch-42"
+    # log messages name the given URL
+    short = core.Extractor()
+    short.min_output_size = 100
+    with patch.object(core.LOGGER, "warning") as warning:
+        assert extract("<html><body><p>x</p></body></html>", url="https://example.org/short", options=short) is None
+    assert warning.call_args.args[1:] == ("https://example.org/short",)
 
 
 def test_recover_wild_text_default_tags():

@@ -26,7 +26,7 @@ from .htmlprocessing import (
 )
 from .main_extractor import DEFERRED_ATTR, _elem_text, extract_comments, extract_content
 from .metadata import Document, extract_metadata
-from .settings import DEFAULT_CONFIG, Extractor, use_config
+from .settings import DEFAULT_CONFIG, Extractor, sanitize_source, use_config
 from .utils import (
     LANGID_FLAG,
     HtmlInput,
@@ -341,7 +341,7 @@ def bare_extraction(
         A Python dict() containing all the extracted information or None.
 
     Raises:
-        ValueError: Extraction problem.
+        ValueError: Unknown output format.
 
     Note:
         Low-level primitive: returns a Document with an unserialized .body tree; tei_validation only applies when serializing via extract().
@@ -380,6 +380,15 @@ def bare_extraction(
             date_params=date_extraction_params,
         )
 
+    # apply the url argument on a copy of the options
+    if url and url != options.url:
+        options = copy(options)
+        # keep a source set by the caller
+        if not options.source or options.source == sanitize_source(options.url):
+            options.source = sanitize_source(url)
+        options.url = url
+    url = options.url
+
     try:
         # load the HTML tree
         tree = load_html(filecontent, options.max_file_size)
@@ -399,15 +408,15 @@ def bare_extraction(
         if options.with_metadata:
             document = extract_metadata(
                 tree,
-                options.url,
+                url,
                 options.date_params,
                 options.fast,
                 options.author_blacklist,
             )
 
-            # cut short if extracted URL in blacklist
-            if document.url in options.url_blacklist:
-                LOGGER.warning("blacklisted URL: %s", document.url)
+            # cut short if the given or extracted URL is in the blacklist
+            if blacklisted := {url, document.url} & options.url_blacklist:
+                LOGGER.warning("blacklisted URL: %s", blacklisted.pop())
                 raise ValueError
 
             # cut short if core elements are missing
@@ -425,7 +434,7 @@ def bare_extraction(
                 prune_xpath = [prune_xpath]
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
-        postbody, temp_text, commentsbody, temp_comments = trafilatura_sequence(tree, options, options.url or document.url)
+        postbody, temp_text, commentsbody, temp_comments = trafilatura_sequence(tree, options, url or document.url)
         len_text, len_comments = len(temp_text), len(temp_comments)
 
         # tree size sanity check
@@ -548,6 +557,9 @@ def extract(
     Returns:
         A string in the desired format or None.
 
+    Raises:
+        ValueError: Unknown output format.
+
     """
     # must stay the first statement: a signature drift raises TypeError
     document = _internal_extraction(**locals())
@@ -612,6 +624,9 @@ def extract_with_metadata(
 
     Returns:
         Document metadata with content string in the desired format or None.
+
+    Raises:
+        ValueError: Unknown output format.
     """
     return _internal_extraction(**locals(), with_metadata=True)
 
@@ -707,6 +722,7 @@ def _internal_extraction(
     # extraction
     document = bare_extraction(
         filecontent,
+        url=url,
         options=options,
         as_dict=False,
         prune_xpath=prune_xpath,

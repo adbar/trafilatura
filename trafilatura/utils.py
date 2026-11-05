@@ -553,13 +553,14 @@ def make_chunks(iterable: Iterable[str], n: int) -> Iterator[tuple[str, ...]]:
         yield batch
 
 
-def is_acceptable_length(my_len: int, options: "Extractor") -> bool:
+def is_acceptable_length(my_len: int, options: "Extractor", url: str | None = None) -> bool:
     "Check if the document length is within acceptable boundaries."
+    url = url or options.url
     if my_len < options.min_file_size:
-        LOGGER.error("too small/incorrect for URL %s", options.url)
+        LOGGER.error("too small/incorrect for URL %s", url)
         return False
     if my_len > options.max_file_size:
-        LOGGER.error("too large: length %s for URL %s", my_len, options.url)
+        LOGGER.error("too large: length %s for URL %s", my_len, url)
         return False
     return True
 

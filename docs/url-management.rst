@@ -110,7 +110,7 @@ To filter an existing list of links by a substring pattern (e.g. after discoveri
     ['https://www.sitemaps.org/de/']
 
 .. note::
-    This is what the CLI's ``--url-filter`` flag would do on discovered links; on the command-line the flag instead filters the *seed* URLs given via ``-i``/``--input-file``, see the `command-line documentation <usage-cli.html#url-inspection-prior-to-download-and-processing>`_.
+    This is what the CLI's ``--url-filter`` flag would do on discovered links. On the command-line the flag instead filters the *seed* URLs given via ``-u``/``--URL`` or ``-i``/``--input-file``, see the `command-line documentation <usage-cli.html#url-inspection-prior-to-download-and-processing>`_.
 
 Two additional helpers can explain why a given URL might be rejected during filtering:
 

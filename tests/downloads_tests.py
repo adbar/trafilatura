@@ -182,7 +182,7 @@ def test_urllib_request_resolves_redirect_against_last_hop(path, expected_path, 
     assert response.url == f"{other}{expected_path}"
 
 
-def test_response_object():
+def test_response_object(caplog):
     "Test if the Response class is functioning as expected."
     my_html = b"<html><body><p>ABC</p></body></html>"
     resp = Response(my_html, 200, "https://example.org")
@@ -199,6 +199,8 @@ def test_response_object():
     for size in (10000000, 1):
         response.data = b"ABC" * size
         assert _is_suitable_response(response.url, response, DEFAULT_OPTS) is False
+    # the size check names the downloaded URL
+    assert "for URL https://httpbin.org/encoding/utf8" in caplog.text
     # straight handling of response object
     with open(os.path.join(RESOURCES_DIR, "utf8.html"), "rb") as filehandle:
         response.data = filehandle.read()
@@ -780,6 +782,10 @@ def test_queue():
         ["https://example.org/page", "https://example.org/skip"], blacklist={"example.org/skip"}, url_filter=["/page"]
     )
     assert url_store.dump_urls() == ["https://example.org/page"]
+    # blacklist entries are compared without protocol and trailing slashes
+    urls = ["https://example.org/a", "https://example.org/b", "http://example.org/c"]
+    blacklist = {"https://example.org/a/", "example.org/c"}
+    assert add_to_compressed_dict(urls, blacklist=blacklist).dump_urls() == ["https://example.org/b"]
 
     # response download buffer (empty input, no network)
     assert list(dl.buffered_response_downloads([], 1)) == []

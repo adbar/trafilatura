@@ -272,7 +272,7 @@ def _is_suitable_response(url: str, response: Response, options: Extractor) -> b
     if response.status != 200:
         LOGGER.error("not a 200 response: %s for URL %s", response.status, url)
         return False
-    return is_acceptable_length(len(response.html or response.data or ""), options)
+    return is_acceptable_length(len(response.html or response.data or ""), options, url)
 
 
 def fetch_url(
@@ -402,6 +402,14 @@ def is_live_page(url: str, config: ConfigParser = DEFAULT_CONFIG) -> bool:
     return result or _urllib3_is_live_page(url, config)
 
 
+def filter_blacklist(urls: list[str], blacklist: set[str] | None) -> list[str]:
+    "Remove the URLs found in the blacklist, compared without protocol and trailing slashes."
+    if not blacklist:
+        return urls
+    keys = {URL_BLACKLIST_REGEX.sub("", b) for b in blacklist}
+    return [u for u in urls if URL_BLACKLIST_REGEX.sub("", u) not in keys]
+
+
 def add_to_compressed_dict(
     inputlist: list[str],
     blacklist: set[str] | None = None,
@@ -416,8 +424,7 @@ def add_to_compressed_dict(
 
     inputlist = list(dict.fromkeys(inputlist))
 
-    if blacklist:
-        inputlist = [u for u in inputlist if URL_BLACKLIST_REGEX.sub("", u) not in blacklist]
+    inputlist = filter_blacklist(inputlist, blacklist)
 
     if url_filter:
         inputlist = [u for u in inputlist if any(f in u for f in url_filter)]

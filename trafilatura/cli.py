@@ -4,12 +4,16 @@ Implementing a basic command-line interface.
 
 import argparse
 import logging
+import os
+import stat
 import sys
 from importlib.metadata import version
+from pathlib import Path
 from platform import python_version
 
 from .cli_utils import (
     HAS_TQDM,
+    check_outputdir_status,
     cli_crawler,
     cli_discovery,
     examine,
@@ -21,6 +25,9 @@ from .cli_utils import (
     write_result,
 )
 from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI
+
+# options taking a URL as optional value
+_NAVIGATION_OPTS = ("feed", "sitemap", "crawl", "explore", "probe")
 
 # options that --list neither downloads nor extracts, hence ignores
 _LIST_IGNORED_OPTS = {
@@ -43,9 +50,9 @@ _LIST_IGNORED_OPTS = {
 }
 
 # fix output encoding on some systems
-if sys.stdout.encoding != "UTF-8" and hasattr(sys.stdout, "reconfigure"):
+if hasattr(sys.stdout, "reconfigure") and (sys.stdout.encoding or "").lower() != "utf-8":  # pragma: no cover
     sys.stdout.reconfigure(encoding="utf-8")
-if sys.stderr.encoding != "UTF-8" and hasattr(sys.stderr, "reconfigure"):
+if hasattr(sys.stderr, "reconfigure") and (sys.stderr.encoding or "").lower() != "utf-8":  # pragma: no cover
     sys.stderr.reconfigure(encoding="utf-8")
 
 
@@ -126,7 +133,7 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     )
     group3.add_argument(
         "--url-filter",
-        help="only process/output URLs containing these patterns (space-separated strings)",
+        help="only process input URLs containing these patterns (space-separated strings)",
         nargs="+",
         type=str,
     )
@@ -180,25 +187,55 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 
 
 def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) -> None:
-    "Catch cross-group incompatibilities that argparse cannot express."
+    "Catch cross-group incompatibilities that argparse cannot express, move a navigation URL to args.URL."
     if args.progress and not HAS_TQDM:
         parser.error("--progress requires the tqdm package: pip install tqdm")
-    if args.keep_dirs and not args.output_dir:
-        parser.error("--keep-dirs requires an output directory (-o/--output-dir)")
+    navigation = next((o for o in _NAVIGATION_OPTS if getattr(args, o) is not False), None)
+    if navigation:
+        if args.input_dir:
+            parser.error(f"--{navigation} cannot be combined with --input-dir")
+        value = getattr(args, navigation)
+        if isinstance(value, str):
+            if value and (args.URL or args.input_file):
+                parser.error(f"--{navigation}: give the URL once, as its value or with -u/--URL or -i/--input-file")
+            args.URL = args.URL or value or None
+            setattr(args, navigation, True)
+        if not (args.URL or args.input_file):
+            parser.error(f"--{navigation} requires a URL, as its value or with -u/--URL or -i/--input-file")
+    # pipes and /dev/stdin are valid lists, the config file is read several times
+    for option, filename, regular in (
+        ("-i/--input-file", args.input_file, False),
+        ("-b/--blacklist", args.blacklist, False),
+        ("--config-file", args.config_file, True),
+    ):
+        if not filename:
+            continue
+        # not Path.exists: it raises on an unreadable parent before Python 3.14
+        try:
+            mode = Path(filename).stat().st_mode
+        except OSError as err:
+            parser.error(f"{option}: {os.strerror(err.errno) if err.errno else err}: {filename}")
+        if stat.S_ISDIR(mode) or (regular and not stat.S_ISREG(mode)):
+            parser.error(f"{option}: not a file: {filename}")
+        if not os.access(filename, os.R_OK):
+            parser.error(f"{option}: cannot read {filename}")
+    if args.parallel < 1:
+        parser.error("--parallel must be a positive integer")
     if args.name_from_url:
         if not args.output_dir:
             parser.error("--name-from-url requires an output directory (-o/--output-dir)")
-        if (
-            args.keep_dirs
-            or args.input_dir
-            or args.crawl
-            or args.probe
-            or not any((args.URL, args.input_file, args.feed, args.sitemap, args.explore))
-        ):
-            parser.error("--name-from-url requires URL extraction input and cannot be combined with --keep-dirs")
+        if args.crawl or args.probe or not (args.URL or args.input_file):
+            parser.error("--name-from-url requires -u/--URL or -i/--input-file and cannot be combined with --crawl or --probe")
+    if args.keep_dirs and not (args.input_dir and args.output_dir):
+        parser.error("--keep-dirs requires --input-dir and -o/--output-dir, use --name-from-url to name files after URLs")
     if args.list:
-        ignored = sorted(o for o in _LIST_IGNORED_OPTS if getattr(args, o) != parser.get_default(o))
-        if ignored:
+        if args.input_dir:
+            print("--list has no effect on --input-dir, the files are processed", file=sys.stderr)
+        elif ignored := sorted(
+            a.option_strings[-1]
+            for a in parser._actions  # noqa: SLF001 (no public dest to flag mapping)
+            if a.dest in _LIST_IGNORED_OPTS and getattr(args, a.dest) != a.default
+        ):
             # emitted before logging is configured, so print directly
             print(f"--list only prints URLs; these options are ignored: {', '.join(ignored)}", file=sys.stderr)
 
@@ -238,6 +275,12 @@ def process_args(args: argparse.Namespace) -> None:
     if args.blacklist:
         args.blacklist = load_blacklist(args.blacklist)
 
+    # crawl, probe and lists of URLs print to STDOUT
+    if not (args.crawl or args.probe or (args.list and not args.input_dir)):
+        for directory in (args.output_dir, args.backup_dir):
+            if directory and not check_outputdir_status(directory):
+                sys.exit(1)
+
     # processing according to mutually exclusive options
 
     # fetch urls from a feed or a sitemap
@@ -246,11 +289,11 @@ def process_args(args: argparse.Namespace) -> None:
 
     # activate crawler/spider
     elif args.crawl:
-        cli_crawler(args)
+        exit_code = cli_crawler(args)
 
     # probe and print only
     elif args.probe:
-        probe_homepage(args)
+        exit_code = probe_homepage(args)
 
     # read files from an input directory
     elif args.input_dir:
@@ -259,15 +302,14 @@ def process_args(args: argparse.Namespace) -> None:
     # read url list from input file or process input URL
     elif args.input_file or args.URL:
         url_store = load_input_dict(args)
-        exit_code = url_processing_pipeline(args, url_store)
+        exit_code = url_processing_pipeline(args, url_store) if url_store.total_url_number() else 1
 
     # read input on STDIN directly
     else:
-        result = examine(sys.stdin.buffer.read(), args, url=args.URL)
-        write_result(result, args)
+        write_result(examine(sys.stdin.buffer.read(), args), args)
 
     # change exit code if there are errors
-    if exit_code != 0:
+    if exit_code:
         sys.exit(exit_code)
 
 
