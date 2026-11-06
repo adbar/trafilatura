@@ -1312,6 +1312,18 @@ def test_wrong_language_discarded():
     assert extract(doc, target_language="en", config=ZERO_CONFIG) is None
 
 
+@pytest.mark.skipif(not LANGID_FLAG, reason="py3langid not installed")
+def test_language_in_metadata():
+    "the detected language is passed along even without a target language."
+    doc = (
+        "<html><body>"
+        + "<p>This is a perfectly ordinary English sentence about the weather today.</p>" * 20
+        + "</body></html>"
+    )
+    assert extract_with_metadata(doc, config=ZERO_CONFIG).language == "en"
+    assert '"language": "en"' in extract(doc, output_format="json", with_metadata=True, config=ZERO_CONFIG)
+
+
 def test_sanitize_tree_absolutizes_links():
     "Regression: sanitize_tree must absolutize relative links when url is set (convert_tags fix)."
     doc = html.fromstring('<html><body><p><a href="/path/page">link</a> ' + "padding " * 10 + "</p></body></html>")
@@ -4963,13 +4975,13 @@ def test_html_conversion():
     excepted_html = """<html>
   <head>
     <meta name="title" content="Title 1"/>
-    <meta name="fingerprint" content="f6fd180b8fbe3670"/>
+    <meta name="fingerprint" content="f6fd180b8fbe3670"/>{}
   </head>
   <body>
     <h1>Title 1</h1>
     <p>Text.</p>
   </body>
-</html>"""
+</html>""".format('\n    <meta name="language" content="ext"/>' if LANGID_FLAG else "")
     result = extract(html, output_format="html", config=ZERO_CONFIG, with_metadata=True)
     assert result == excepted_html
 
