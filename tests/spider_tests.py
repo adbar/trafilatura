@@ -284,6 +284,61 @@ def test_crawl_logic():
     assert params.known_num == 2
 
 
+@pytest.mark.parametrize(
+    "start",
+    [
+        "https://example.org/blog/",
+        "https://example.org/blog/index.html",
+        "https://example.org/blog/?next=/elsewhere/file",
+        "https://example.org/blog/index.html?next=/elsewhere/file#part",
+    ],
+)
+def test_crawl_directory_scope(start):
+    "A directory crawl keeps descendants, not siblings or matches in query strings."
+    spider.URL_STORE = UrlStore()
+    inside = "https://example.org/blog/article"
+    outside = "https://example.org/blogger/article"
+    html = (
+        '<html><body><a href="article">relative</a>'
+        f'<a href="{outside}">sibling</a>'
+        '<a href="/search?next=https://example.org/blog/article">query</a>'
+        '<a href="/outside#https://example.org/blog/article">fragment</a></body></html>'
+    )
+    requested = []
+
+    def fake_fetch_response(url, **_kwargs):
+        requested.append(url)
+        return Response(html.encode(), 200, url)
+
+    with patch.object(spider, "fetch_response", fake_fetch_response), patch.object(spider, "get_rules", return_value=None):
+        todo, known = spider.focused_crawler(start, max_seen_urls=5)
+    assert requested[1:] == [inside]
+    assert not todo
+    assert outside not in known
+
+
+@pytest.mark.parametrize(
+    "link, expected",
+    [
+        ("https://example.org/blog", True),
+        ("https://example.org/blog/article?page=2#part", True),
+        ("https://example.org/blog/nested/article", True),
+        ("https://example.org/blogger/article", False),
+        ("https://example.org/blog%2Farticle", False),
+        ("https://example.org/other?next=https://example.org/blog/article", False),
+        ("https://other.org/https://example.org/blog/article", False),
+        ("https://example.org.evil/blog/article", False),
+        ("https://[::1/blog/article", False),
+    ],
+)
+def test_crawl_resumed_directory_scope(link, expected):
+    "Resumed frontier URLs use the same origin and directory boundary as new links."
+    with patch.object(spider, "get_rules", return_value=None):
+        params = spider.CrawlParameters("https://example.org/blog/")
+    assert params.filter_list([link]) == ([link] if expected else [])
+    assert params.is_valid_link(link) is expected
+
+
 def test_crawl_page():
     "Test page-by-page processing."
     base_url = "https://httpbun.com"
