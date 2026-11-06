@@ -233,8 +233,13 @@ def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
 def clean_attributes(tree: _Element) -> _Element:
     """Remove unnecessary attributes."""
     for elem in tree.iter("*"):
-        if elem.tag not in WITH_ATTRIBUTES:
-            elem.attrib.clear()
+        if elem.tag in WITH_ATTRIBUTES:
+            continue
+        # keep the language hint of code blocks
+        language = elem.get("rend") if elem.tag == "code" else None
+        elem.attrib.clear()
+        if language:
+            elem.set("rend", language)
     return tree
 
 
@@ -674,7 +679,8 @@ def replace_element_text(element: _Element, include_formatting: bool, in_cell: b
                     elem_text = f"{elem_text}\n{lb.tail or ''}"
                     lb.getparent().remove(lb)
                 fence = _code_fence(elem_text, min_len=3)
-                elem_text = f"{fence}\n{elem_text}\n{fence}\n"
+                language = element.get("rend") or ""
+                elem_text = f"{fence}{language}\n{elem_text}\n{fence}\n"
             else:
                 elem_text = _md_code(elem_text)
     # handle links

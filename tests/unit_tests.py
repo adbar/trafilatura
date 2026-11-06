@@ -4084,7 +4084,7 @@ def test_code_blocks():
 </code></pre>
 </div>"""
     testresult = extract(highlightjs, config=ZERO_CONFIG, output_format="xml")
-    assert "<code>code\n\nhighlighted more code\n</code>" in testresult
+    assert '<code rend="sql">code\n\nhighlighted more code\n</code>' in testresult
     assert "quote" not in testresult
     github = """<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>$ pip install PyGithub</pre><div class="zeroclipboard-container position-absolute right-0 top-0">
     <clipboard-copy aria-label="Copy" class="ClipboardButton btn js-clipboard-copy m-2 p-0 tooltipped-no-delay" data-copy-feedback="Copied!" data-tooltip-direction="w" value="$ pip install PyGithub" tabindex="0" role="button" style="display: inherit;">
@@ -4124,7 +4124,7 @@ for name and age:</p>
     pip = """<div><p>Code:</p>
 <pre lang="python3"><span class="kn">import</span> <span class="nn">openai</span>
 <span class="kn">from</span> <span class="nn">openai_function_call</span> <span class="kn">import</span> <span class="n">openai_function</span></pre></div>"""
-    expected = """<code>import openai
+    expected = """<code rend="python3">import openai
 from openai_function_call import openai_function</code>"""
     testresult = extract(pip, config=ZERO_CONFIG, output_format="xml")
     assert expected in testresult
@@ -4162,6 +4162,73 @@ base_dir = os.getcwd()</code>"""
     assert "<quote>" in extract(bq_text, output_format="xml", config=ZERO_CONFIG)
     bq_tail = "<html><body><article><blockquote><code>x</code> tail</blockquote></article></body></html>"
     assert "<quote>" in extract(bq_tail, output_format="xml", config=ZERO_CONFIG)
+    # explicit language hints are kept and become the markdown fence info string
+    labeled = """<div><p>Code:</p>
+<pre><code class="language-python">import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(labeled, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    testresult = extract(labeled, config=ZERO_CONFIG, output_format="xml")
+    assert '<code rend="python">import os\nprint(os.getcwd())</code>' in testresult
+    testresult = extract(labeled, config=ZERO_CONFIG, output_format="xmltei")
+    assert '<code rend="python">import os\nprint(os.getcwd())</code>' in testresult
+    # the hint can also sit on the pre element
+    labeled_pre = """<div><p>Code:</p>
+<pre class="language-python"><code>import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(labeled_pre, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    # a payload with backtick runs keeps the widened fence and gains the info string
+    nested = '<div><p>Code:</p>\n<pre><code class="language-python">a = 1\n```\nb = 2\n</code></pre></div>'
+    testresult = extract(nested, config=ZERO_CONFIG, output_format="markdown")
+    assert "````python\na = 1\n```\nb = 2\n````" in testresult
+    # no hint: bare fence, no language is invented
+    unlabeled = """<div><p>Code:</p>
+<pre><code>import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(unlabeled, config=ZERO_CONFIG, output_format="markdown")
+    assert "```\nimport os\nprint(os.getcwd())\n```" in testresult
+    testresult = extract(unlabeled, config=ZERO_CONFIG, output_format="xml")
+    assert "<code>import os\nprint(os.getcwd())</code>" in testresult
+    # a language-* class comes first, lang usually names a natural language
+    hinted = """<div><p>Code:</p>
+<pre lang="en"><code class="language-python">import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(hinted, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    # lang on a blockquote is a natural language: an embedded tweet stays a quote
+    tweet = """<div><p>Before the tweet.</p>
+<blockquote class="twitter-tweet" lang="en">Hello world, this is a tweet.<br>&mdash; Someone (@someone)</blockquote>
+<p>After the tweet.</p></div>"""
+    testresult = extract(tweet, config=ZERO_CONFIG, output_format="xml")
+    assert "<quote>" in testresult
+    assert "<code" not in testresult
+    assert "`" not in extract(tweet, config=ZERO_CONFIG, output_format="markdown")
+    # both sources are checked with one pattern before a value reaches the fence line
+    for markup in (
+        '<pre lang="py\nthon"><code>',
+        '<pre class="language-*"><code class="language-*">',
+        '<pre><code rend="a\nb">',
+    ):
+        unusable = f"<div><p>Code:</p>\n{markup}import os\nprint(os.getcwd())</code></pre></div>"
+        testresult = extract(unusable, config=ZERO_CONFIG, output_format="markdown")
+        assert "```\nimport os\nprint(os.getcwd())\n```" in testresult
+        testresult = extract(unusable, config=ZERO_CONFIG, output_format="xml")
+        assert "<code>import os\nprint(os.getcwd())</code>" in testresult
+    # lang stays the fallback when the class names no usable language
+    fallback = """<div><p>Code:</p>
+<pre lang="python"><code class="language-*">import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(fallback, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    # every code element of the block carries the hint: a doubly nested block gets a labeled fence
+    doubly_nested = """<div><p>Code:</p>
+<pre><code class="language-python"><code class="font-mono">import os
+print(os.getcwd())</code></code></pre></div>"""
+    testresult = extract(doubly_nested, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    testresult = extract(doubly_nested, config=ZERO_CONFIG, output_format="xml")
+    assert '<code rend="python">import os\nprint(os.getcwd())</code>' in testresult
 
 
 def test_markdown_escaping():
@@ -4198,6 +4265,10 @@ def test_markdown_escaping():
     result = _md(b"<body><code>a\x60\x60\x60b</code></body>")
     assert "````" in result
     assert "a```b" in result
+
+    # a language hint on a block code element becomes the fence info string
+    result = _md(b'<body><code rend="python">a\nb</code></body>')
+    assert "```python\na\nb\n```" in result
 
     # ~~ inside del content must not close the strikethrough early
     assert "~~a\\~\\~b~~" in _md(b"<body><p><del>a~~b</del></p></body>")

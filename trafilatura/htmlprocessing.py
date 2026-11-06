@@ -370,6 +370,9 @@ def convert_lists(elem: _Element) -> None:
 
 def convert_quotes(elem: _Element) -> None:
     "Convert quoted elements while accounting for nested structures."
+    # lang on a blockquote names a natural language (embedded tweets): no code marker or code language
+    if elem.tag == "blockquote":
+        elem.attrib.pop("lang", None)
     # a pre is code if it wraps a single span, carries highlight.js spans or code-like text
     hljs = elem.xpath(".//span[starts-with(@class,'hljs')]") if elem.tag == "pre" else []
     for subelem in hljs:
