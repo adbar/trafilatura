@@ -253,13 +253,14 @@ def _normalize_hostname(url: str) -> str:
     hostname = parsed.hostname
     if hostname is None:
         return url
-    userinfo, separator, hostport = parsed.netloc.rpartition("@")
+    start = url.index("//") + 2
+    raw_authority = re.split(r"[/?#]", url[start:], maxsplit=1)[0]
+    userinfo, separator, hostport = raw_authority.rpartition("@")
     bracketed = hostport.startswith("[")
     host_length = hostport.index("]") + 1 if bracketed else len(hostport.partition(":")[0])
     host = f"[{hostname}]" if bracketed else hostname
     authority = f"{userinfo}{separator}{host}{hostport[host_length:]}"
-    start = url.index("//") + 2
-    return url[:start] + authority + url[start + len(parsed.netloc) :]
+    return url[:start] + authority + url[start + len(raw_authority) :]
 
 
 def sitemap_search(
