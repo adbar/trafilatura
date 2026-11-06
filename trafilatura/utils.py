@@ -431,6 +431,11 @@ def line_processing(line: str, preserve_space: bool = False, trailing_space: boo
             space_before = " " if line[0].isspace() else ""
             space_after = " " if line[-1].isspace() else ""
             new_line = f"{space_before}{new_line}{space_after}"
+    # drop text made only of zero-width characters (invisible lines in TXT/XML)
+    if new_line is not None:
+        without_zw = new_line.translate(str.maketrans("", "", ZERO_WIDTH_JOINERS))
+        if without_zw != new_line and not without_zw.strip():
+            new_line = None
     return new_line
 
 
@@ -580,4 +585,7 @@ def textfilter(element: _Element) -> bool:
 
 def text_chars_test(string: str | None) -> bool:
     """Determine if a string is only composed of spaces and/or control characters"""
+    # zero-width joiners alone are invisible — treat like empty for TXT/XML pruning
+    if string:
+        string = string.translate(str.maketrans("", "", ZERO_WIDTH_JOINERS))
     return bool(string and not string.isspace())
