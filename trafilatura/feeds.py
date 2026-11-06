@@ -48,10 +48,10 @@ FEED_TYPES = {
     "text/xml",
 }
 
-FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
+FEED_OPENING = re.compile(r"<(?:[\w.-]+:)?feed|<rss|<\?xml")
 RSS_ROOT = re.compile(r"<(?:rss|(?:\w+:)?RDF)\b")
 
-LINK_ATTRS = re.compile(r"""<link\s+(?:[^>"']|"[^"]*"|'[^']*')*["']?/?>""")
+LINK_ATTRS = re.compile(r"""<(?:[\w.-]+:)?link\s+(?:[^>"']|"[^"]*"|'[^']*')*["']?/?>""")
 LINK_ATTRIBUTES = re.compile(r"""\s([\w:-]+)\s*=\s*(["'])(.*?)\2""", re.DOTALL)
 LINK_ELEMENTS = re.compile(r"<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>", re.DOTALL)
 
