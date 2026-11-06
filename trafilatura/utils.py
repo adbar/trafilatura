@@ -120,13 +120,18 @@ INVALID_XML_CHARREFS = re.compile(
 )
 _INVALID_XML_CHARREFS_BYTES = re.compile(INVALID_XML_CHARREFS.pattern.encode())
 
+
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
-HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True)
-# one element class instead of the per-tag lxml.html lookup
-HTML_PARSER.set_element_class_lookup(
-    ElementDefaultClassLookup(element=HtmlElement, comment=HtmlComment, pi=HtmlProcessingInstruction, entity=HtmlEntity)
-)
+def get_html_parser() -> HTMLParser:
+    "Return a new HTML parser: a parser shared across threads makes concurrent extractions crash (#925)."
+    parser = HTMLParser(collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True)
+    # one element class instead of the per-tag lxml.html lookup
+    parser.set_element_class_lookup(
+        ElementDefaultClassLookup(element=HtmlElement, comment=HtmlComment, pi=HtmlProcessingInstruction, entity=HtmlEntity)
+    )
+    return parser
+
 
 URL_BLACKLIST_REGEX = re.compile(r"^https?://|/+$")
 
@@ -324,7 +329,7 @@ def repair_faulty_html(htmlstring: str, beginning: str) -> str:
 def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
     "Try to pass bytes to LXML parser."
     try:
-        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=HTML_PARSER)
+        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=get_html_parser())
     except Exception as err:
         LOGGER.error("lxml parser bytestring %s", err)
     return None
@@ -397,7 +402,7 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
     # first pass: use Unicode string
     fallback_parse = False
     try:
-        tree = fromstring(htmlobject, parser=HTML_PARSER)
+        tree = fromstring(htmlobject, parser=get_html_parser())
     except ValueError:
         # "Unicode strings with encoding declaration are not supported."
         tree = fromstring_bytes(htmlobject)

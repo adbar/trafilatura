@@ -49,8 +49,6 @@ TEI_DTD = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
 TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 
-CONTROL_PARSER = XMLParser(remove_blank_text=True)
-
 NEWLINE_ELEMS = {"graphic", "head", "lb", "list", "p", "quote", "row", "table"}
 SPECIAL_FORMATTING = {"code", "del", "head", "hi", "ref", "item", "cell"}
 WITH_ATTRIBUTES = {"cell", "row", "del", "graphic", "head", "hi", "item", "list", "ref"}
@@ -267,7 +265,7 @@ def control_xml_output(document: Document, options: Extractor) -> str:
 
     output_tree = sanitize_tree(output_tree)
     # necessary for cleaning
-    output_tree = fromstring(tostring(output_tree, encoding="unicode"), CONTROL_PARSER)
+    output_tree = fromstring(tostring(output_tree, encoding="unicode"), XMLParser(remove_blank_text=True))
 
     # validate
     if options.format == "xmltei" and options.tei_validation:

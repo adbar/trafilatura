@@ -54,6 +54,7 @@ from trafilatura.utils import (
     INVALID_XML_CHARS,
     LANGID_FLAG,
     detect_encoding,
+    get_html_parser,
     is_dubious_html,
     is_image_file,
     language_classifier,
@@ -447,6 +448,16 @@ def test_document_isolation():
     assert d1.commentsbody is not d2.commentsbody
     assert d1.body.tag == "body"
     assert len(d1.body) == 0
+
+
+def test_html_parser_per_call():
+    "Each call gets its own lxml parser: a shared one crashes concurrent extractions (#925)."
+    assert get_html_parser() is not get_html_parser()
+    # same configuration as before
+    tree = load_html("<html><body><!-- comment --><p id='x'>Text</p></body></html>")
+    assert tree is not None
+    assert isinstance(tree, html.HtmlElement)
+    assert tree.xpath("//comment()") == []
 
 
 def test_xmltocsv():
