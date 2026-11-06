@@ -258,7 +258,12 @@ def _normalize_hostname(url: str) -> str:
     userinfo, separator, hostport = raw_authority.rpartition("@")
     bracketed = hostport.startswith("[")
     host_length = hostport.index("]") + 1 if bracketed else len(hostport.partition(":")[0])
-    host = f"[{hostname}]" if bracketed else hostname
+    host = hostport[:host_length]
+    if bracketed and "%" in host:
+        address, percent, zone = host.partition("%")
+        host = address.lower() + percent + zone
+    else:
+        host = host.lower()
     authority = f"{userinfo}{separator}{host}{hostport[host_length:]}"
     return url[:start] + authority + url[start + len(raw_authority) :]
 
