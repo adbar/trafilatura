@@ -241,6 +241,7 @@ def test_sample_tokens():
     # words with combining marks, see issue #1055
     assert sample_tokens("ประเทศไทย สวยงาม") == ["ประเทศไทย", "สวยงาม"]
     assert sample_tokens("தமிழ் மொழி") == ["தமிழ்", "மொழி"]
+    assert sample_tokens("भारत देश") == ["भारत", "देश"]
     assert sample_tokens("cafe\u0301 nai\u0308ve") == ["cafe\u0301", "nai\u0308ve"]
     assert sample_tokens("\u0301\u0308 ab") == ["ab"]
 
@@ -253,6 +254,9 @@ def test_fingerprint_combining_marks():
     assert "ffffffffffffffff" not in (thai, other)
     tamil = content_fingerprint("தமிழ் ஒரு பழமையான மொழி")
     assert tamil != content_fingerprint("இன்று வானிலை நன்றாக உள்ளது")
+    hindi = content_fingerprint("भारत एक विशाल देश है जिसकी संस्कृति प्राचीन है")
+    assert hindi != content_fingerprint("आज मौसम अच्छा है हम पार्क में घूमने जाएँगे")
+    assert hindi != "ffffffffffffffff"
     decomposed = "cafe\u0301 re\u0301sume\u0301 nai\u0308ve"
     assert content_fingerprint(decomposed) != content_fingerprint("cafe\u0301 sold out")
     # enough long tokens keep the strict threshold: short ones are dropped
