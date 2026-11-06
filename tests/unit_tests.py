@@ -197,6 +197,28 @@ def test_remove_control_characters():
         assert remove_control_characters(text) == text
     assert remove_control_characters("a\nb\x07c\u200bd") == "a\nbcd"
     assert remove_control_characters("\x00\x07") == ""
+    # zero-width non-joiner and joiner are kept (Persian, Indic scripts, emoji)
+    for text in ("نگاه\u200cها", "क्\u200dष", "\U0001f469\u200d\U0001f4bb"):
+        assert remove_control_characters(text) == text
+    assert remove_control_characters("a\u200cb\x07\u200dc") == "a\u200cb\u200dc"
+    # end to end, see issue #1056
+    page = "<html><body><article><p>" + "نگاه\u200cها " * 30 + "</p></article></body></html>"
+    for fmt in ("txt", "markdown", "xml", "json"):
+        assert "نگاه\u200cها" in extract(page, output_format=fmt)
+    # drop paragraphs / lines made only of zero-width characters (TXT and XML)
+    page = (
+        "<html><body><article>"
+        "<p>hello world this is a long enough paragraph for extraction to work properly yes</p>"
+        "<p>\u200c\u200d</p>"
+        "<p>" + "نگاه\u200cها " * 20 + "</p>"
+        "</article></body></html>"
+    )
+    txt = extract(page, output_format="txt")
+    assert "\u200c\u200d" not in txt
+    assert "نگاه\u200cها" in txt
+    xml = extract(page, output_format="xml")
+    assert "<p>\u200c\u200d</p>" not in xml
+    assert "نگاه\u200cها" in xml
 
 
 @pytest.mark.parametrize(
@@ -216,6 +238,12 @@ def test_remove_control_characters():
         ("a  b", False, True, "a b"),
         ("\ta b", False, True, " a b"),
         (" ", False, True, None),
+        # text made only of zero-width joiners is dropped (invisible lines)
+        ("\u200c\u200d", False, False, None),
+        ("\u200c \u200d", False, False, None),
+        ("نگاه\u200cها", False, False, "نگاه\u200cها"),
+        ("\u200c\u200d", True, False, None),
+        ("  \u200c\u200d  ", True, False, None),
     ],
 )
 def test_line_processing(line, preserve_space, trailing_space, expected):
