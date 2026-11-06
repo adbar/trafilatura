@@ -145,6 +145,8 @@ def test_parse_sitemap_hostname_case(input_host):
         ("https://[ABCD::EF%ZoneID]:80/Blog", "https://[abcd::ef%ZoneID]:80/Blog"),
         ("https://EXAM\tPLE.ORG/Blog?Q=A#Frag", "https://exam\tple.org/Blog?Q=A#Frag"),
         ("https://USER\t:Pass@EXAMPLE.ORG/Blog", "https://USER\t:Pass@example.org/Blog"),
+        ("/Blog?view=Mixed#Frag", "/Blog?view=Mixed#Frag"),
+        ("https:///Blog?view=Mixed#Frag", "https:///Blog?view=Mixed#Frag"),
     ],
 )
 def test_normalize_hostname_preserves_other_url_parts(url, expected):
