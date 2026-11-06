@@ -236,7 +236,7 @@ def parse_sitemap(
     if domainname is None:
         LOGGER.warning("invalid URL: %s", url)
         return []
-    sitemap = SitemapObject(baseurl, domainname, [], target_lang, external)
+    sitemap = SitemapObject(baseurl, domainname.lower(), [], target_lang, external)
     sitemap.current_url = url
     sitemap.content = content.lstrip(LEADING_SPACE)
     try:
@@ -245,6 +245,27 @@ def parse_sitemap(
         LOGGER.warning("invalid Unicode in sitemap: %s", url)
         return []
     return filter_urls(sitemap.urls + sitemap.sitemap_urls, None)
+
+
+def _normalize_hostname(url: str) -> str:
+    """Normalize only the hostname, keeping user info and the URL suffix literal."""
+    parsed = urlsplit(url)
+    hostname = parsed.hostname
+    if hostname is None:
+        return url
+    start = url.index("//") + 2
+    raw_authority = re.split(r"[/?#]", url[start:], maxsplit=1)[0]
+    userinfo, separator, hostport = raw_authority.rpartition("@")
+    bracketed = hostport.startswith("[")
+    host_length = hostport.index("]") + 1 if bracketed else len(hostport.partition(":")[0])
+    host = hostport[:host_length]
+    if bracketed and "%" in host:
+        address, percent, zone = host.partition("%")
+        host = address.lower() + percent + zone
+    else:
+        host = host.lower()
+    authority = f"{userinfo}{separator}{host}{hostport[host_length:]}"
+    return url[:start] + authority + url[start + len(raw_authority) :]
 
 
 def sitemap_search(
@@ -294,9 +315,9 @@ def sitemap_search(
         sitemapurls = []
         # set url filter to target subpages
         if len(url) > len(baseurl) + 2:
-            urlfilter = url
+            urlfilter = _normalize_hostname(url)
 
-    sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external, config)
+    sitemap = SitemapObject(baseurl, domainname.lower(), sitemapurls, target_lang, external, config)
 
     # try sitemaps in robots.txt file, additional URLs just in case
     if not sitemap.sitemap_urls:

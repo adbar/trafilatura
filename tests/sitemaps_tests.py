@@ -95,6 +95,64 @@ def test_location_kind_comes_from_xml_structure(monkeypatch, namespace, index):
     assert fetched == ([root, nested] if index else [root])
 
 
+@pytest.mark.parametrize("input_host", ["example.org", "EXAMPLE.ORG", "www.EXAMPLE.org", "WWW.Example.Org"])
+@pytest.mark.parametrize("scheme", ["https", "http"])
+def test_subpage_filter_hostname_case(monkeypatch, input_host, scheme):
+    root = "https://example.org/sitemap.xml"
+    pages = [
+        "https://example.org/blog/one",
+        "https://www.example.org/blog/two",
+        "https://example.org/blogroll/three",
+        "https://example.org/Blog/four",
+        "https://example.org/other",
+    ]
+    content = "<urlset>" + "".join(f"<url><loc>{url}</loc></url>" for url in pages) + "</urlset>"
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: content if url == root else None)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "find_robots_sitemaps", lambda url, config: [root])
+    assert sitemaps.sitemap_search(f"{scheme}://{input_host}/blog", sleep_time=0) == sorted(pages[:3])
+
+
+@pytest.mark.parametrize("path", ["/Blog", "/blog"])
+def test_subpage_filter_keeps_path_case(monkeypatch, path):
+    root = "https://example.org/sitemap.xml"
+    page = f"https://example.org{path}/one"
+    content = f"<urlset><url><loc>{page}</loc></url></urlset>"
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: content if url == root else None)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "find_robots_sitemaps", lambda url, config: [root])
+    assert sitemaps.sitemap_search(f"https://example.org{path}", sleep_time=0) == [page]
+    assert sitemaps.sitemap_search(f"https://example.org{path.swapcase()}", sleep_time=0) == []
+
+
+@pytest.mark.parametrize("input_host", ["example.org", "EXAMPLE.ORG", "www.EXAMPLE.org", "WWW.Example.Org"])
+def test_parse_sitemap_hostname_case(input_host):
+    page = "https://example.org/Blog/one"
+    content = f"<urlset><url><loc>{page}</loc></url></urlset>"
+    assert sitemaps.parse_sitemap(content, f"https://{input_host}/sitemap.xml") == [page]
+
+
+@pytest.mark.parametrize(
+    ("url", "expected"),
+    [
+        ("https://WWW.Example.Org:443/Blog?view=Mixed#Frag", "https://www.example.org:443/Blog?view=Mixed#Frag"),
+        ("https://Example.Org:0443/Blog?#", "https://example.org:0443/Blog?#"),
+        (
+            "https://EXAMPLE.ORG:Pass@EXAMPLE.ORG/EXAMPLE.ORG#EXAMPLE.ORG",
+            "https://EXAMPLE.ORG:Pass@example.org/EXAMPLE.ORG#EXAMPLE.ORG",
+        ),
+        ("http://User:Pass@Example.Org:80/Blog", "http://User:Pass@example.org:80/Blog"),
+        ("https://[ABCD::EF%ZoneID]:80/Blog", "https://[abcd::ef%ZoneID]:80/Blog"),
+        ("https://EXAM\tPLE.ORG/Blog?Q=A#Frag", "https://exam\tple.org/Blog?Q=A#Frag"),
+        ("https://USER\t:Pass@EXAMPLE.ORG/Blog", "https://USER\t:Pass@example.org/Blog"),
+        ("/Blog?view=Mixed#Frag", "/Blog?view=Mixed#Frag"),
+        ("https:///Blog?view=Mixed#Frag", "https:///Blog?view=Mixed#Frag"),
+    ],
+)
+def test_normalize_hostname_preserves_other_url_parts(url, expected):
+    assert sitemaps._normalize_hostname(url) == expected
+
+
 def test_parse_sitemap_without_fetching(monkeypatch):
     def unexpected_request(*args, **kwargs):
         pytest.fail("Parsing supplied sitemap text must not make network requests")
