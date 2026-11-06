@@ -100,6 +100,63 @@ def test_urllib_request_releases_conn_on_oversize():
     resp.release_conn.assert_called_once()
 
 
+def test_urllib_request_recovers_after_oversize():
+    "An unread oversized response must not poison the next pooled request."
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    release_tail = threading.Event()
+    peers = []
+
+    class Handler(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"
+
+        def do_GET(self):
+            peers.append(self.client_address[1])
+            self.send_response(200)
+            if self.path == "/oversize":
+                self.send_header("Content-Length", str(2**17 + 1))
+                self.end_headers()
+                self.wfile.write(b"x" * (2**17))
+                self.wfile.flush()
+                # Keep the socket live with an unread tail until the following request finishes.
+                release_tail.wait(3)
+                self.close_connection = True
+            else:
+                self.send_header("Content-Length", "2")
+                self.end_headers()
+                self.wfile.write(b"ok")
+
+        def log_message(self, *_args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    thread = threading.Thread(target=lambda: server.serve_forever(poll_interval=0.01))
+    thread.start()
+    base = f"http://127.0.0.1:{server.server_port}"
+    config = use_config()
+    config.set("DEFAULT", "SSRF_PROTECTION", "off")
+    config.set("DEFAULT", "MAX_FILE_SIZE", "1024")
+    config.set("DEFAULT", "DOWNLOAD_TIMEOUT", "1")
+    # Retrying the poisoned connection on a fresh one would hide the regression.
+    config.set("DEFAULT", "MAX_REDIRECTS", "0")
+    try:
+        assert _send_urllib_request(f"{base}/oversize", False, config) is None
+        response = _send_urllib_request(f"{base}/ok", False, config)
+        assert response is not None
+        assert response.data == b"ok"
+        assert len(peers) == 2
+        assert peers[0] != peers[1]
+    finally:
+        release_tail.set()
+        if dl.HTTP_POOL is not None:
+            dl.HTTP_POOL.clear()
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
+        assert not thread.is_alive()
+
+
 @pytest.mark.parametrize(
     "geturl_result, expected",
     [
