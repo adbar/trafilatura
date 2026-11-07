@@ -208,6 +208,8 @@ def handle_lists(element: _Element, options: Extractor) -> _Element | None:
     element.tag = "done"
     if is_text_element(processed_element):
         update_elem_rendition(element, processed_element)
+        if start := element.get("start"):
+            processed_element.set("start", start)
         return processed_element
     return None
 

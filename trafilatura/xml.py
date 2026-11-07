@@ -324,6 +324,9 @@ def check_tei(xmldoc: _Element, url: str | None) -> _Element:
             _handle_text_content_of_div_nodes(elem)
             _wrap_unwanted_siblings_of_div(elem)
         # check attributes
+        if elem.tag == "list":
+            # TEI lists have no start attribute, drop it without a warning
+            elem.attrib.pop("start", None)
         for attribute in [a for a in elem.attrib if a not in TEI_VALID_ATTRS]:
             LOGGER.warning("not a valid TEI attribute, removing: %s in %s %s", attribute, elem.tag, url)
             elem.attrib.pop(attribute)
@@ -529,7 +532,8 @@ def _list_marker(item: _Element, include_formatting: bool = True, list_positions
     if include_formatting and parent is not None and parent.get("rend") == "ol":
         # Cache direct item numbers once per list, including those needed for nested markers.
         if item not in list_positions:
-            position = 1
+            # the start number is validated in convert_lists
+            position = int(parent.get("start", "1"))
             for child in parent.iterchildren():
                 list_positions[child] = position
                 if child.tag == "item":
