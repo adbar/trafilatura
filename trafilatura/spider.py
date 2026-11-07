@@ -289,8 +289,9 @@ def init_crawl(
     URL store and retrieving the initial page if the crawl starts."""
     params = CrawlParameters(start, lang, rules, prune_xpath, config, blacklist)
 
-    # todo: just known or also visited?
-    URL_STORE.add_urls(urls=known or [], visited=True)
+    # known links count as visited, except the ones still waiting in the todo list
+    pending = set(todo or ())
+    URL_STORE.add_urls(urls=[u for u in known or [] if u not in pending], visited=True)
     URL_STORE.add_urls(urls=params.filter_list(todo))
     URL_STORE.store_rules(params.base, params.rules)
 
