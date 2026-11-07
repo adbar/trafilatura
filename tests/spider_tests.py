@@ -438,7 +438,7 @@ def test_scheme_upgrade():
 
 
 def test_host_redirect():
-    "A homepage redirecting to another host keeps the crawl on the start host, links resolved against the start URL."
+    "A homepage redirecting to another host must not add that page's links to the crawl."
     spider.URL_STORE = UrlStore()
     html = '<html><body><a href="/p1.html">x</a><a href="https://other-host.org/p2.html">y</a></body></html>'
 
@@ -451,7 +451,31 @@ def test_host_redirect():
     ):
         params = spider.init_crawl("http://host-redirect.org")
     assert params.base == "http://host-redirect.org"
-    assert spider.URL_STORE.find_unvisited_urls(params.base) == ["http://host-redirect.org/p1.html"]
+    assert spider.URL_STORE.find_unvisited_urls(params.base) == []
+
+
+@pytest.mark.parametrize(
+    ("start", "final_url", "should_queue"),
+    [
+        ("https://example.org", "https://other.org/landing", False),
+        ("https://example.org", "https://example.org.evil/landing", False),
+        ("https://example.org", "https://example.org:8443/landing", False),
+        ("https://example.org", "http://example.org/landing", False),
+        ("https://example.org", "https://example.org/landing", True),
+        ("https://example.org", "https://www.example.org/landing", True),
+    ],
+)
+def test_response_redirect_links(start, final_url, should_queue):
+    "Only responses from the crawl site may contribute relative links."
+    spider.URL_STORE = UrlStore()
+    params = spider.CrawlParameters(start, rules=spider.parse_robots("", ""))
+    response = Response(b'<a href="/about">About</a>', 200, final_url)
+
+    spider.process_response(response, params)
+
+    expected = [f"{start}/about"] if should_queue else []
+    assert spider.URL_STORE.find_unvisited_urls(params.base) == expected
+    assert spider.URL_STORE.has_been_visited(final_url)
 
 
 def test_is_same_site():
