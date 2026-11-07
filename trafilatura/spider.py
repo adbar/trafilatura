@@ -290,7 +290,9 @@ def init_crawl(
     params = CrawlParameters(start, lang, rules, prune_xpath, config, blacklist)
 
     # todo: just known or also visited?
-    URL_STORE.add_urls(urls=known or [], visited=True)
+    # URLs still to visit must not be registered as visited
+    pending = set(todo or ())
+    URL_STORE.add_urls(urls=[u for u in known or [] if u not in pending], visited=True)
     URL_STORE.add_urls(urls=params.filter_list(todo))
     URL_STORE.store_rules(params.base, params.rules)
 

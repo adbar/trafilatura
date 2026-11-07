@@ -283,6 +283,12 @@ def test_crawl_logic():
     assert params.is_on
     assert params.known_num == 2
 
+    # resuming in a new process: todo URLs are also part of the known URLs
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    todo = ["https://httpbun.com/a", "https://httpbun.com/b"]
+    params = spider.init_crawl(url, todo=todo, known=["https://httpbun.com/", *todo])
+    assert sorted(spider.URL_STORE.find_unvisited_urls(params.base)) == todo
+
 
 @pytest.mark.parametrize(
     "start",
