@@ -4,7 +4,7 @@ Deriving link info from sitemaps.
 
 import logging
 import re
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from configparser import ConfigParser
 from itertools import islice
 from re import Pattern
@@ -298,25 +298,32 @@ def sitemap_search(
 
     sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external, config)
 
-    # try sitemaps in robots.txt file, additional URLs just in case
+    # A sitemap can use a different scheme or www. form of the same host.
+    prefix = SCHEME_AND_WWW.sub("", urlfilter) if urlfilter is not None else None
+    # Guesses are fallbacks, while listed and discovered sitemaps are all followed.
+    guesses: Iterator[str] = iter(())
     if not sitemap.sitemap_urls:
-        # reversed: the queue is consumed from the end, so the most likely guess is tried first
-        sitemap.sitemap_urls = find_robots_sitemaps(baseurl, config) or [f"{baseurl}/{g}" for g in reversed(GUESSES)]
+        sitemap.sitemap_urls = find_robots_sitemaps(baseurl, config)
+        if not sitemap.sitemap_urls:
+            guesses = (f"{baseurl}/{guess}" for guess in GUESSES)
 
-    # iterate through nested sitemaps and results
-    while sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
-        sitemap.current_url = sitemap.sitemap_urls.pop()
+    while len(sitemap.seen) < max_sitemaps:
+        if sitemap.sitemap_urls:
+            sitemap.current_url = sitemap.sitemap_urls.pop()
+        else:
+            next_guess = next((guess for guess in guesses if guess not in sitemap.seen), None)
+            if next_guess is None or any(prefix is None or SCHEME_AND_WWW.sub("", u).startswith(prefix) for u in sitemap.urls):
+                break
+            sitemap.current_url = next_guess
+
+        if sitemap.seen:
+            sleep(sleep_time)
         sitemap.fetch()
         sitemap.process()
         # sanity check: keep track of visited sitemaps and exclude them
         sitemap.sitemap_urls = [s for s in sitemap.sitemap_urls if s not in sitemap.seen]
 
-        if sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
-            sleep(sleep_time)
-
-    if urlfilter is not None:
-        # subpage filter: the sitemap may use another scheme or host form (www.) than the input URL
-        prefix = SCHEME_AND_WWW.sub("", urlfilter)
+    if prefix is not None:
         sitemap.urls = [u for u in sitemap.urls if SCHEME_AND_WWW.sub("", u).startswith(prefix)]
     sitemap.urls = filter_urls(sitemap.urls, None)
 
