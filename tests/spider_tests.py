@@ -339,6 +339,16 @@ def test_crawl_resumed_directory_scope(link, expected):
     assert params.is_valid_link(link) is expected
 
 
+def test_crawl_resumed_with_known_links():
+    "Todo URLs returned as known links by a previous run are still visited."
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    todo = ["https://example.org/a", "https://example.org/b"]
+    known = ["https://example.org/", *todo]
+    params = spider.init_crawl("https://example.org", todo=todo, known=known, rules=spider.parse_robots("", ""))
+    assert spider.URL_STORE.find_unvisited_urls(params.base) == todo
+    assert spider.URL_STORE.find_known_urls(params.base) == known
+
+
 def test_crawl_page():
     "Test page-by-page processing."
     base_url = "https://httpbun.com"
