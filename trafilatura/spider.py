@@ -28,7 +28,7 @@ from .baseline import baseline
 from .downloads import fetch_response, fetch_url
 from .htmlprocessing import prune_unwanted_nodes
 from .settings import DEFAULT_CONFIG
-from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, Response, decode_file, load_html
+from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, Response, decode_file, detectable_languages, load_html
 
 LOGGER = logging.getLogger(__name__)
 
@@ -202,7 +202,7 @@ def is_target_language(htmlstring: str, language: str | None) -> bool:
     """Run a baseline extraction and use a language detector to
     check if the content matches the target language.
     Return True if language checks are bypassed."""
-    if htmlstring and language and LANGID_FLAG:
+    if htmlstring and language and LANGID_FLAG and language in (detectable_languages() or set()):
         _, text, _ = baseline(htmlstring)
         result, _ = py3langid.classify(text)
         return bool(result == language)

@@ -603,12 +603,24 @@ def language_classifier(temp_text: str, temp_comments: str) -> str | None:
     return None  # pragma: no cover
 
 
+def detectable_languages() -> set[str] | None:
+    """Return the language codes the language detector can output, None if it is not installed"""
+    if LANGID_FLAG is True:
+        return {lang for lang, _ in py3langid.rank("")}
+    return None
+
+
 def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: "Document") -> tuple[bool, "Document"]:
     """Filter text based on language detection and store relevant information"""
     # todo: run and pass info along anyway?
     if target_language is not None:
         # more thorough: detection on actual text content
         docmeta.language = language_classifier(temp_text, temp_comments)
+        # the detector can never return this language, so do not filter (as documented)
+        available = detectable_languages()
+        if available is not None and target_language not in available:
+            LOGGER.warning("target language not available in the detector, skipping filter: %s", target_language)
+            return False, docmeta
         # HTML lang check? sometimes contradicted by detection above
         if docmeta.language is not None and docmeta.language != target_language:
             LOGGER.warning("wrong language: %s %s", docmeta.language, docmeta.url)
