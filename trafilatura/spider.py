@@ -287,6 +287,14 @@ def init_crawl(
 ) -> CrawlParameters:
     """Initialize crawl by setting variables, copying values to the
     URL store and retrieving the initial page if the crawl starts."""
+    # resume after a same-site redirect (e.g. http -> https): the saved
+    # todo URLs use the redirected base, switch the start URL to match
+    # so that filter_list() does not drop them
+    if todo:
+        base, todo_base = get_base_url(start), get_base_url(todo[0])
+        if todo_base and todo_base != base and is_same_site(base, todo_base):
+            start = start.replace(base, todo_base, 1)
+
     params = CrawlParameters(start, lang, rules, prune_xpath, config, blacklist)
 
     # todo: just known or also visited?
