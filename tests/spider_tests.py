@@ -339,6 +339,35 @@ def test_crawl_resumed_directory_scope(link, expected):
     assert params.is_valid_link(link) is expected
 
 
+@pytest.mark.parametrize(
+    "start, todo",
+    [
+        ("http://example.org", ["https://example.org/a", "https://example.org/b"]),
+        ("https://example.org", ["https://www.example.org/a"]),
+        ("http://www.example.org", ["https://example.org/a"]),
+    ],
+)
+def test_resume_after_same_site_redirect(start, todo):
+    "Resuming a crawl after a same-site redirect keeps the saved todo URLs."
+    spider.URL_STORE = UrlStore()
+    with patch.object(spider, "get_rules", return_value=None):
+        resumed, _known = spider.focused_crawler(start, max_seen_urls=0, todo=todo, rules=spider.parse_robots("", ""))
+    assert resumed == todo
+
+
+def test_resume_after_cross_site_redirect():
+    "Todo URLs from another site are still dropped when resuming a crawl."
+    spider.URL_STORE = UrlStore()
+    with patch.object(spider, "get_rules", return_value=None):
+        resumed, _known = spider.focused_crawler(
+            "http://example.org",
+            max_seen_urls=0,
+            todo=["https://other.org/a"],
+            rules=spider.parse_robots("", ""),
+        )
+    assert resumed == []
+
+
 def test_crawl_page():
     "Test page-by-page processing."
     base_url = "https://httpbun.com"
