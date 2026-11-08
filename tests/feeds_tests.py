@@ -534,3 +534,10 @@ def test_cli_behavior(capsys):
         with pytest.raises(SystemExit) as exc:
             main()
     assert exc.value.code == 1
+
+
+@pytest.mark.parametrize("entity", ["&#38;", "&#x26;", "&#X26;"])
+def test_atom_decodes_numeric_character_references_in_links(entity):
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = f'<feed><entry><link href="https://example.org/article?a=1{entity}b=2"/></entry></feed>'
+    assert extract_links(feed, params) == ["https://example.org/article?a=1&b=2"]

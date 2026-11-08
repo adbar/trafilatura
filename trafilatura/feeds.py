@@ -6,6 +6,7 @@ import json
 import logging
 import re
 from configparser import ConfigParser
+from html import unescape
 from itertools import islice
 from time import sleep
 
@@ -172,7 +173,7 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
             # link blogs put the external link in rel="alternate" and the post itself in rel="related"
             rel = attributes.get("rel", "").strip().lower()
             if attributes.get("href") and rel in ("", "alternate", "related") and "atom+xml" not in attributes.get("type", ""):
-                links.append(attributes["href"])
+                links.append(unescape(attributes["href"]))
         return links
 
     # RSS
