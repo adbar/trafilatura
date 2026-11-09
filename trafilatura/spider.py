@@ -25,7 +25,7 @@ except ImportError:
 from lxml.etree import XPath, tostring
 
 from .baseline import baseline
-from .downloads import fetch_response, fetch_url
+from .downloads import USER_AGENT, fetch_response, fetch_url
 from .htmlprocessing import prune_unwanted_nodes
 from .settings import DEFAULT_CONFIG
 from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, Response, decode_file, load_html
@@ -102,7 +102,7 @@ class CrawlParameters:
     def is_valid_link(self, link: str) -> bool:
         "Run checks: robots.txt rules, URL type, crawl breadth and blacklist."
         return (
-            (not self.rules or self.rules.can_fetch("*", link))
+            (not self.rules or self.rules.can_fetch(USER_AGENT, link))
             and self._is_within_reference(link)
             and not is_not_crawlable(link)
             and URL_BLACKLIST_REGEX.sub("", link) not in self.blacklist

@@ -471,6 +471,26 @@ def test_blacklist_full_urls():
     assert params.is_valid_link("https://example.org/c")
 
 
+def test_robots_rules_naming_trafilatura():
+    "robots.txt rules naming trafilatura are honored, wildcard rules still apply as fallback."
+    rules = spider.parse_robots("", "User-agent: trafilatura\nDisallow: /")
+    params = spider.CrawlParameters("https://example.org", rules=rules)
+    assert not params.is_valid_link("https://example.org/page")
+
+    rules = spider.parse_robots("", "User-agent: *\nDisallow: /")
+    params = spider.CrawlParameters("https://example.org", rules=rules)
+    assert not params.is_valid_link("https://example.org/page")
+
+    rules = spider.parse_robots("", "User-agent: googlebot\nDisallow: /")
+    params = spider.CrawlParameters("https://example.org", rules=rules)
+    assert params.is_valid_link("https://example.org/page")
+
+    rules = spider.parse_robots("", "User-agent: trafilatura\nDisallow: /private")
+    params = spider.CrawlParameters("https://example.org", rules=rules)
+    assert not params.is_valid_link("https://example.org/private")
+    assert params.is_valid_link("https://example.org/public")
+
+
 def test_www_redirect():
     "A homepage redirect between the bare domain and its www twin moves the crawl to the redirected host."
     for start, homepage in [
