@@ -58,6 +58,7 @@ from .sitemaps import sitemap_search
 from .utils import (
     LANGID_FLAG,
     Response,
+    detectable_languages,
     is_acceptable_length,
     language_classifier,
     make_chunks,
@@ -429,6 +430,7 @@ def probe_homepage(args: argparse.Namespace) -> int:
     if not input_urls:
         return 1
     options = args_to_extractor(args)
+    available = detectable_languages()
 
     errors: list[str] = []
     for url, result in buffered_downloads(input_urls, args.parallel, options=options):
@@ -437,7 +439,12 @@ def probe_homepage(args: argparse.Namespace) -> int:
         else:
             result = html2txt(result)
             if result and len(result) > options.min_extracted_size and any(c.isalpha() for c in result):
-                if not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language:
+                if (
+                    not LANGID_FLAG
+                    or not args.target_language
+                    or (available is not None and args.target_language not in available)
+                    or language_classifier(result, "") == args.target_language
+                ):
                     print(url, flush=True)
     return _define_exit_code(errors, len(input_urls))
 
