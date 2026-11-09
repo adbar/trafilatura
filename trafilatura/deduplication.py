@@ -33,13 +33,12 @@ def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -
     return SequenceMatcher(None, reference, new_string).ratio() >= threshold
 
 
-@lru_cache(maxsize=2**14)
 def _is_word_with_marks(token: str) -> bool:
     """True if token is letters/digits plus combining marks (category M).
 
     str.isalnum() rejects Thai, Tamil and Hindi matras and NFD accents.
-    Single pass (not any+all) and an LRU cache keep Hindi-like text fast:
-    those scripts fail isalnum() on most tokens and often repeat words.
+    Single pass (not any+all); sample_tokens also skips ASCII via isalnum()
+    and not t.isascii() so this path is rare on Latin text.
     """
     category = unicodedata.category
     has_alnum = False

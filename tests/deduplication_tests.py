@@ -237,7 +237,10 @@ def test_sample_tokens():
     assert sample_tokens("。、！") == []
     # many short tokens force the length threshold down
     assert sample_tokens("ab " * 40) == ["ab"] * 40
-
+    # enough long tokens keep the strict threshold: short ones are dropped
+    tokens = sample_tokens(" ".join(f"token{i}" for i in range(40)) + " ab cd")
+    assert "ab" not in tokens
+    assert len(tokens) == 40
     # words with combining marks, see issue #1055
     assert sample_tokens("ประเทศไทย สวยงาม") == ["ประเทศไทย", "สวยงาม"]
     assert sample_tokens("தமிழ் மொழி") == ["தமிழ்", "மொழி"]
@@ -259,10 +262,6 @@ def test_fingerprint_combining_marks():
     assert hindi != "ffffffffffffffff"
     decomposed = "cafe\u0301 re\u0301sume\u0301 nai\u0308ve"
     assert content_fingerprint(decomposed) != content_fingerprint("cafe\u0301 sold out")
-    # enough long tokens keep the strict threshold: short ones are dropped
-    tokens = sample_tokens(" ".join(f"token{i}" for i in range(40)) + " ab cd")
-    assert "ab" not in tokens
-    assert len(tokens) == 40
 
 
 def test_generate_bow_hash():
