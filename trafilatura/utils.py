@@ -442,6 +442,7 @@ def safe_relative_url(baseurl: str, url: str) -> str:
 # zero-width non-joiner and joiner: needed for Persian, Urdu and Indic
 # spelling and emoji sequences, although str.isprintable() rejects them
 ZERO_WIDTH_JOINERS = "\u200c\u200d"
+ZERO_WIDTH_TABLE = str.maketrans("", "", ZERO_WIDTH_JOINERS)
 
 
 @lru_cache(maxsize=2**14)  # sys.maxunicode = 1114111
@@ -483,9 +484,9 @@ def line_processing(line: str, preserve_space: bool = False, trailing_space: boo
             space_after = " " if line[-1].isspace() else ""
             new_line = f"{space_before}{new_line}{space_after}"
     # drop text made only of zero-width characters (invisible lines in TXT/XML)
-    if new_line is not None:
-        without_zw = new_line.translate(str.maketrans("", "", ZERO_WIDTH_JOINERS))
-        if without_zw != new_line and not without_zw.strip():
+    # (only checked when a joiner is present, to keep the common path fast)
+    if new_line is not None and ("\u200c" in new_line or "\u200d" in new_line):
+        if not new_line.translate(ZERO_WIDTH_TABLE).strip():
             new_line = None
     return new_line
 
@@ -638,6 +639,6 @@ def textfilter(element: _Element) -> bool:
 def text_chars_test(string: str | None) -> bool:
     """Determine if a string is only composed of spaces and/or control characters"""
     # zero-width joiners alone are invisible — treat like empty for TXT/XML pruning
-    if string:
-        string = string.translate(str.maketrans("", "", ZERO_WIDTH_JOINERS))
+    if string and ("\u200c" in string or "\u200d" in string):
+        string = string.translate(ZERO_WIDTH_TABLE)
     return bool(string and not string.isspace())
