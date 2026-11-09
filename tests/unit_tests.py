@@ -839,17 +839,17 @@ def test:
     </article></body></html>
     """)
     my_result = extract(my_document, output_format="markdown", include_formatting=True, config=ZERO_CONFIG)
-    assert "python code below:\n```\ndef test:\n    print('hello')\n    print('world')\n    \n```" == my_result
+    assert "python code below:\n> ```\n> def test:\n>     print('hello')\n>     print('world')\n>     \n> ```" == my_result
 
     my_result = extract(my_document, output_format="markdown", include_formatting=True, config=ZERO_CONFIG)
     assert (
         """python code below:
-```
-def test:
-    print('hello')
-    print('world')
-    
-```"""
+> ```
+> def test:
+>     print('hello')
+>     print('world')
+>     
+> ```"""
         == my_result
     )
 
@@ -3806,6 +3806,37 @@ def test_prefer_readability_rejects_raw_json():
 @pytest.mark.parametrize(
     "body,expected",
     [
+        pytest.param("<blockquote><p>One</p><p>Two</p></blockquote><p>After</p>", "> One\n>\n> Two\n\nAfter", id="paragraphs"),
+        pytest.param("<blockquote>quoted</blockquote>tail", "> quoted\n\ntail", id="tail-outside"),
+        pytest.param(
+            "<blockquote><p>Lead</p><ul><li>one</li><li>two</li></ul></blockquote><p>After</p>",
+            "> Lead\n>\n> - one\n> - two\n\nAfter",
+            id="list",
+        ),
+        pytest.param(
+            "<blockquote><p>Run</p><pre><code>a = 1\nb = 2</code></pre></blockquote><p>After</p>",
+            "> Run\n>\n> ```\n> a = 1\n> b = 2\n> ```\n\nAfter",
+            id="code-block",
+        ),
+    ],
+)
+def test_markdown_blockquote(body, expected):
+    "Every line of a quote carries the '>' marker, the text after it does not (#1111)."
+    assert _md_inline(body) == f"{_INTRO}\n\n{expected}"
+
+
+def test_markdown_blockquote_nested():
+    assert _md("<doc><quote><p>outer</p><quote><p>inner</p></quote></quote></doc>") == "> outer\n>\n> > inner"
+
+
+def test_txt_blockquote_unmarked():
+    body = "<blockquote><p>One</p><p>Two</p></blockquote><p>After</p>"
+    assert _extract_doc(body, output_format="txt") == f"{_INTRO}\nOne\nTwo\nAfter"
+
+
+@pytest.mark.parametrize(
+    "body,expected",
+    [
         pytest.param("<ul><li><p>x <b>bold</b> y</p></li></ul>", "- x **bold** y", id="item-block-child-single-bullet"),
         pytest.param("<p>a <b> x </b> b</p>", "a  **x**  b", id="843-flanking-b"),
         pytest.param("<p>a <i> x </i> b</p>", "a  *x*  b", id="843-flanking-i"),
@@ -3847,21 +3878,23 @@ def test_prefer_readability_rejects_raw_json():
         pytest.param("<p>text <b><i>nested</i></b> end</p>", "text ***nested*** end", id="nested-bold-italic"),
         pytest.param("<p><b>prefix <i>italic</i></b></p>", "**prefix *italic***", id="nested-italic-in-bold"),
         pytest.param("<ul><li>text <b><i>nested</i></b> end</li></ul>", "- text ***nested*** end", id="nested-in-item"),
-        pytest.param("<blockquote><b>bold</b> text here</blockquote>", "**bold** text here", id="blockquote-bare-inline"),
+        pytest.param("<blockquote><b>bold</b> text here</blockquote>", "> **bold** text here", id="blockquote-bare-inline"),
         pytest.param("<del>gone</del>", "~~gone~~", id="del-top-level"),
         pytest.param("<ul><li>text <del>struck</del> more</li></ul>", "- text ~~struck~~ more", id="del-in-item"),
-        pytest.param("<blockquote>text <del>struck</del> more</blockquote>", "text ~~struck~~ more", id="del-in-blockquote"),
+        pytest.param("<blockquote>text <del>struck</del> more</blockquote>", "> text ~~struck~~ more", id="del-in-blockquote"),
         pytest.param("<ul><li>use <code>func()</code> here</li></ul>", "- use `func()` here", id="code-in-item"),
         pytest.param("<p>before <b>bold <del>struck</del></b></p>", "before **bold ~~struck~~**", id="del-in-bold-with-text"),
         pytest.param("<ol><li>Foo <em>bar</em> baz.</li></ol>", "1. Foo *bar* baz.", id="845-item-tail-space"),
-        pytest.param("<blockquote><p>A <b>bold</b> word</p></blockquote>", "A **bold** word", id="blockquote-bold"),
+        pytest.param("<blockquote><p>A <b>bold</b> word</p></blockquote>", "> A **bold** word", id="blockquote-bold"),
         pytest.param(
             "<blockquote><p>see <a href='http://x.com'>link</a></p></blockquote>",
-            "see [link](http://x.com)",
+            "> see [link](http://x.com)",
             id="blockquote-link",
         ),
         pytest.param(
-            "<blockquote><p>text</p><img src='x.jpg' alt='img'/></blockquote>", "text\n\n![img](x.jpg)", id="blockquote-image"
+            "<blockquote><p>text</p><img src='x.jpg' alt='img'/></blockquote>",
+            "> text\n>\n> ![img](x.jpg)",
+            id="blockquote-image",
         ),
         pytest.param(
             "<ul><li><img src='/i.jpg' alt='a'></li><li>plain</li></ul>", "- ![a](/i.jpg)\n- plain", id="item-image-bullet"
@@ -4504,7 +4537,7 @@ def test_markdown_special_char_escaping():
     )
 
     # a blockquote element's own leading '>' must also be escaped
-    assert _md(b"<body><quote>&gt; quoted text with - marker</quote></body>") == "\\> quoted text with - marker"
+    assert _md(b"<body><quote>&gt; quoted text with - marker</quote></body>") == "> \\> quoted text with - marker"
 
     # a heading's own '#' prefix already claims the line, so an inner leading '#' is inert
     assert _md(b'<body><head rend="h2"># nested hash in heading</head></body>') == "## # nested hash in heading"
