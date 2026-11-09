@@ -70,7 +70,7 @@ Drop ``--check`` to let ``ruff format`` fix the formatting in place.
 Documentation tests
 -------------------
 
-The documentation tests need the ``docs`` extra:
+The documentation tests need the ``docs`` extra, which requires Python 3.12 or later:
 
 .. code-block:: bash
 
@@ -81,9 +81,11 @@ The documentation tests need the ``docs`` extra:
 Benchmark and evaluation
 ------------------------
 
-If you work on text extraction, it is useful to check whether the performance is
-equal or better on the benchmark. The evaluation allows for comparing changes
-made to Trafilatura, for example in a new version or pull request.
+If you work on text extraction, report scores before and after on the external
+benchmarks listed in `CONTRIBUTING.md
+<https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_. The
+evaluation allows for comparing changes made to Trafilatura, for example in a
+new version or pull request.
 
 The quality gate scores the whole benchmark corpus with Trafilatura alone and
 exits non-zero if the F1-scores fall below the pinned baseline. It needs no
@@ -105,11 +107,11 @@ committed: on a clone made before the ``.gitattributes`` rules were added, run
 ``git add --renormalize .`` and reset (or re-clone) so line endings match the
 repository.
 
-Comparing Trafilatura with other extractors needs the ``eval`` extra:
+Comparing Trafilatura with other extractors needs the ``eval`` extra and Python 3.11+:
 
 .. code-block:: bash
 
-    $ pip install -e ".[eval]"
+    $ uv pip install -e ".[eval]"
     $ python tests/evaluate.py --help
 
 Each competitor library is imported only by the algorithm that uses it, so any
@@ -125,7 +127,7 @@ information on the evaluation and its data sources.
 Building the documentation
 --------------------------
 
-The documentation needs the ``docs`` extra. From the root of the repository:
+The documentation needs the ``docs`` extra, which requires Python 3.12 or later. From the root of the repository:
 
 .. code-block:: bash
 
