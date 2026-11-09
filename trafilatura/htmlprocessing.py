@@ -31,7 +31,7 @@ REND_TAG_MAPPING = {
     "sup": "#sup",
 }
 
-HTML_TAG_MAPPING = {v: k for k, v in REND_TAG_MAPPING.items()}
+HTML_TAG_MAPPING = {"#i": "i", "#b": "strong", "#u": "u", "#t": "code", "#sub": "sub", "#sup": "sup"}
 
 PRESERVE_IMG_CLEANING = {"figure", "picture", "source"}
 
@@ -502,16 +502,31 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
     return tree
 
 
+def html_code_tag(element: _Element) -> str:
+    "Keep nested and inline code out of preformatted block elements."
+    parent = element.getparent()
+    parent_tag = parent.tag if parent is not None else None
+    if parent_tag in {"code", "pre", "p", "head", "h1", "h2", "h3", "h4", "h5", "h6", "hi", "ref", "span", "a"}:
+        return "code"
+    if parent_tag in HTML_TAG_MAPPING.values():
+        return "code"
+    if parent_tag in {"body", "div", "quote", "blockquote", "item", "li", "cell", "td", "th"} or "\n" in "".join(
+        element.itertext()
+    ):
+        return "pre"
+    return "code"
+
+
 HTML_CONVERSIONS = {
     "list": lambda elem: "ol" if elem.get("rend") == "ol" else "ul",
     "item": "li",
-    "code": "pre",
+    "code": html_code_tag,
     "quote": "blockquote",
     "head": lambda elem: f"h{int(elem.get('rend', 'h3')[1:])}",
     "lb": "br",
     "graphic": "img",
     "ref": "a",
-    "hi": lambda elem: HTML_TAG_MAPPING[elem.get("rend", "#i")],
+    "hi": lambda elem: HTML_TAG_MAPPING.get(elem.get("rend", "#i"), "span"),
     "row": "tr",
     "cell": lambda elem: "th" if elem.get("role") == "head" else "td",
 }

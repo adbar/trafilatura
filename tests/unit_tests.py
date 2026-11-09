@@ -5052,6 +5052,53 @@ def test_html_conversion():
     assert "<ol>\n      <li>first</li>\n      <li>second</li>\n    </ol>" in out
 
 
+@pytest.mark.parametrize(
+    ("source", "expected"),
+    [
+        (
+            '<body><p>Press <hi rend="#t">Ctrl</hi>, call <code>run()</code>.</p></body>',
+            "<html><body><p>Press <code>Ctrl</code>, call <code>run()</code>.</p></body></html>",
+        ),
+        ('<body><p><hi rend="#small">small</hi></p></body>', "<html><body><p><span>small</span></p></body></html>"),
+        ("<body><code>run()</code></body>", "<html><body><pre>run()</pre></body></html>"),
+        (
+            '<body><code><code rend="bash">$ a\n$ b</code></code></body>',
+            "<html><body><pre><code>$ a\n$ b</code></pre></body></html>",
+        ),
+        (
+            "<body><quote><code>run()</code></quote></body>",
+            "<html><body><blockquote><pre>run()</pre></blockquote></body></html>",
+        ),
+        (
+            "<body><list><item><code>run()</code></item></list></body>",
+            "<html><body><ul><li><pre>run()</pre></li></ul></body></html>",
+        ),
+        ('<body><head rend="h2"><code>run()</code></head></body>', "<html><body><h2><code>run()</code></h2></body></html>"),
+        (
+            "<body><p><code>line one\nline two</code></p></body>",
+            "<html><body><p><code>line one\nline two</code></p></body></html>",
+        ),
+    ],
+)
+def test_html_code_and_formatting(source, expected):
+    "Code blocks, inline code and formatting produce valid HTML elements."
+    result = trafilatura.htmlprocessing.convert_to_html(etree.fromstring(source))
+    assert etree.tostring(result, encoding="unicode") == expected
+
+
+def test_html_extraction_code():
+    "The public extractor preserves inline code and a nested code block."
+    source = (
+        "<html><body><article><p>Press <kbd>Ctrl</kbd>, call <code>run()</code>.</p>"
+        '<pre><code class="language-bash">$ a\n$ b</code></pre></article></body></html>'
+    )
+    result = extract(source, output_format="html", include_formatting=True, config=ZERO_CONFIG)
+    tree = etree.fromstring(result)
+    assert tree.xpath("body/p/code/text()") == ["Ctrl", "run()"]
+    assert tree.xpath("body/pre/code/text()") == ["$ a\n$ b"]
+    assert not tree.xpath(".//p/pre | .//pre/pre")
+
+
 def test_deprecations():
     "Test deprecated function parameters."
     htmlstring = "<html><body><article>ABC</article></body></html>"
