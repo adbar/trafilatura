@@ -173,9 +173,10 @@ def trafilatura_sequence(
     1. main extractor (includes wild-text recovery for short documents)
     2. comparison with external extractors (readability/justext), skipped in fast mode
     3. baseline rescue on the original, uncleaned tree
-    4. recall escalation, if the result still covers little of the page: a justext candidate
-       first (a different algorithm, not just stricter rules, so it reaches content the rule-based
-       retry cannot), if rejected stages 1-2 re-run in recall mode (_recall_retry)
+    4. recall escalation in balanced or recall mode, if the result still covers little of the
+       page: try justext first (except in fast mode), which can reach content the rule-based
+       retry misses. If rejected, re-run stages 1-2 only in balanced mode, using recall settings
+       (_recall_retry). Recall mode has already run these stages with the same settings.
     Returns the body and comments elements with their text.
 
     Internal helper: its signature and 4-tuple return are not a stable API — call
@@ -218,10 +219,11 @@ def trafilatura_sequence(
             forum_posts = None  # the dump saw the whole page: missing posts are boilerplate, not lost
 
     # 4. recall escalation: a short extraction covering little of the page suggests
-    # under-extraction (non-article layout) — retry in recall mode, keep if clearly bigger.
+    # under-extraction (non-article layout). Try justext, then a recall retry in balanced mode.
     # NOTE: the page measure html2txt(tree) is coupled to BASIC_CLEAN_XPATH — see settings.py.
     if (
-        options.focus == "balanced"
+        options.focus != "precision"
+        and (options.focus == "balanced" or not options.fast)
         and 0 < len(temp_text) < ESCALATION_MAX_LENGTH
         and len(temp_text) < ESCALATION_PAGE_SHARE * len(html2txt(tree))
     ):
@@ -249,7 +251,7 @@ def trafilatura_sequence(
         len_text = len(temp_text)
         if len(j_text) > ESCALATION_JUSTEXT_RATIO * len_text:
             postbody, temp_text, forum_posts = j_body, j_text, None
-        else:
+        elif options.focus != "recall":
             r_text = ""
             try:
                 r_body, r_text = _recall_retry(esc_tree, r_options, url)

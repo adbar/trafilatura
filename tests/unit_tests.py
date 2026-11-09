@@ -3400,21 +3400,49 @@ _ESCALATION_INTRO = (
 )
 
 
-def test_recall_escalation_justext():
+@pytest.mark.parametrize("focus", ["balanced", "recall", "precision"])
+@pytest.mark.parametrize("intro_layout", ["bare", "content"])
+def test_recall_escalation_justext(focus, intro_layout):
     "the recall escalation also tries justext, which reaches content the rule-based retry \
     cannot: 'sidebar'-classed divs are discarded by both the main extractor/recall retry \
     (OVERALL_DISCARD_XPATH) and readability (unlikelyCandidatesRe), but justext classifies \
     them on paragraph density alone and keeps them."
-    messages = "".join(
-        f"<div class='sidebar'>Message number {i} contains substantial discussion content with "
+    messages = [
+        f"Message number {i} contains substantial discussion content with "
         "plenty of genuine words and enough length to be recognized as real text by a paragraph "
-        f"density classifier, not boilerplate at all today, said the author.</div>"
+        "density classifier, not boilerplate at all today, said the author."
         for i in range(8)
+    ]
+    divs = "".join(f"<div class='sidebar'>{message}</div>" for message in messages)
+    intro_html = _ESCALATION_INTRO if intro_layout == "bare" else f"<div id='content'>{_ESCALATION_INTRO}</div>"
+    doc = f"<html><body>{intro_html}{divs}</body></html>"
+    result = extract(
+        doc,
+        favor_recall=focus == "recall",
+        favor_precision=focus == "precision",
     )
-    doc = f"<html><body>{_ESCALATION_INTRO}{messages}</body></html>"
-    result = extract(doc, output_format="txt") or ""
-    assert "Introductory paragraph" in result
-    assert result.count("Message number") == 8
+    intro = _ESCALATION_INTRO.removeprefix("<p>").removesuffix("</p>").strip()
+    expected = intro if focus == "precision" else "\n".join([intro, *messages])
+    assert result == expected
+
+
+@pytest.mark.parametrize("focus", ["balanced", "recall", "precision"])
+@pytest.mark.parametrize("fast", [False, True])
+def test_recall_escalation_rejected_justext(focus, fast):
+    "Reject short menu entries without repeating stages 1-2 in recall mode."
+    menus = "".join(f"<div class='sidebar'>Menu entry number {i} of the page.</div>" for i in range(200))
+    doc = f"<html><body><div id='content'>{_ESCALATION_INTRO}</div>{menus}</body></html>"
+    with (
+        patch.object(core, "html2txt", wraps=core.html2txt) as page_text,
+        patch.object(core, "justext_rescue", wraps=core.justext_rescue) as rescue,
+        patch.object(core, "_recall_retry", wraps=core._recall_retry) as retry,
+    ):
+        result = extract(doc, fast=fast, favor_recall=focus == "recall", favor_precision=focus == "precision")
+    assert result == _ESCALATION_INTRO.removeprefix("<p>").removesuffix("</p>").strip()
+    assert rescue.call_count == int(not fast and focus != "precision")
+    assert retry.call_count == int(focus == "balanced")
+    if fast and focus == "recall":
+        page_text.assert_not_called()
 
 
 @pytest.mark.parametrize(("jt_words", "winner"), [(1000, "justext"), (40, "retry")])
