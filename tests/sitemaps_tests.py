@@ -2,6 +2,7 @@
 Unit tests for sitemaps parsing.
 """
 
+import gzip
 import logging
 import os
 import sys
@@ -12,10 +13,10 @@ import pytest
 from courlan import get_hostinfo
 
 import trafilatura
-from trafilatura import sitemaps
+from trafilatura import downloads, sitemaps
 from trafilatura.deduplication import is_similar_domain
 from trafilatura.settings import DEFAULT_CONFIG
-from trafilatura.utils import decode_file
+from trafilatura.utils import Response, decode_file
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -65,6 +66,44 @@ def test_search_returns_sorted_unique_urls(monkeypatch, nested, plain_text):
     monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
 
     assert sitemaps.sitemap_search(root) == expected
+
+
+@pytest.mark.parametrize(
+    ("size", "config_max", "expected"),
+    [
+        # within the sitemaps.org limits (50,000 URLs, 50 MB), above the 20 MB cap
+        (23_000_000, None, 50000),
+        # above the 50 MB sitemap limit: still rejected
+        (64_000_000, None, 0),
+        # a lower configured cap is raised to the 50 MB floor
+        (23_000_000, 1_000_000, 50000),
+        # a higher configured cap is kept
+        (55_000_000, 60_000_000, 50000),
+    ],
+)
+def test_sitemap_size_limit(monkeypatch, size, config_max, expected):
+    """Sitemaps up to 50 MB uncompressed are read, larger ones are rejected."""
+    url = "https://example.org/sitemap.xml.gz"
+    # 50,000 URLs padded to reach roughly the target uncompressed size
+    padding = max((size - 50_000 * 45) // 50_000, 0)
+    xml = (
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        + "".join(f"<url><loc>https://example.org/{i}-{'a' * padding}</loc></url>" for i in range(50000))
+        + "</urlset>"
+    )
+    assert len(xml.encode()) >= size
+    payload = gzip.compress(xml.encode())
+    config = DEFAULT_CONFIG
+    if config_max is not None:
+        config = ConfigParser()
+        config.read_dict(DEFAULT_CONFIG)
+        config.set("DEFAULT", "MAX_FILE_SIZE", str(config_max))
+    monkeypatch.setattr(downloads, "HAS_PYCURL", False)
+    monkeypatch.setattr(downloads, "_send_urllib_request", lambda u, no_ssl, cfg: Response(payload, 200, u))
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda u, config: True)
+    assert len(sitemaps.sitemap_search(url, config=config)) == expected
+    # the caller's config is never mutated by the raised limit
+    assert DEFAULT_CONFIG.getint("DEFAULT", "MAX_FILE_SIZE") == 20000000
 
 
 @pytest.mark.parametrize("namespace", ["", ' xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'])
