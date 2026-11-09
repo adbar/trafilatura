@@ -18,7 +18,7 @@ from .settings import (
     Extractor,
 )
 from .utils import LINK_FARM_RATIO, image_src, safe_base_url, safe_relative_url, textfilter, trim
-from .xml import delete_element, meta_items, separates_inline
+from .xml import delete_element, meta_items, remove_empty_elements, separates_inline
 
 LOGGER = logging.getLogger(__name__)
 
@@ -535,7 +535,13 @@ def convert_to_html(tree: _Element) -> _Element:
 
 def build_html_output(document: Document, with_metadata: bool = False) -> str:
     "Convert the document to HTML and return a string."
-    html_tree = convert_to_html(document.body)
+    body = remove_empty_elements(deepcopy(document.body))
+    comments = remove_empty_elements(deepcopy(document.commentsbody))
+    if len(comments) or (comments.text or "").strip():
+        comments.tag = "section"
+        comments.set("class", "comments")
+        body.append(comments)
+    html_tree = convert_to_html(body)
 
     if with_metadata:
         head = Element("head")

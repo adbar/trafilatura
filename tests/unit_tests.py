@@ -5052,6 +5052,39 @@ def test_html_conversion():
     assert "<ol>\n      <li>first</li>\n      <li>second</li>\n    </ol>" in out
 
 
+@pytest.mark.parametrize("with_metadata", [False, True])
+def test_html_output_preserves_document(with_metadata):
+    "HTML output keeps comments and leaves the extracted XML available for other formats."
+    document = Document(
+        title="Title",
+        body=etree.fromstring('<body><p>Body text.</p><p> </p><list rend="ol"><item>First</item></list></body>'),
+        commentsbody=etree.fromstring('<body><p>A <hi rend="#b">comment</hi>.</p><p> </p></body>'),
+    )
+    before = (etree.tostring(document.body), etree.tostring(document.commentsbody))
+
+    result = trafilatura.htmlprocessing.build_html_output(document, with_metadata=with_metadata)
+    tree = etree.fromstring(result)
+    assert tree.xpath("body/ol/li/text()") == ["First"]
+    assert tree.xpath("body/section[@class='comments']/p/strong/text()") == ["comment"]
+    assert not tree.xpath(".//p[not(normalize-space())]")
+    assert (etree.tostring(document.body), etree.tostring(document.commentsbody)) == before
+    assert trafilatura.htmlprocessing.build_html_output(document, with_metadata=with_metadata) == result
+    assert (tree.find("head") is not None) is with_metadata
+
+
+def test_html_output_comments_option():
+    "The public extractor includes comments only when requested."
+    source = (
+        '<html><body><article><p>Body text.</p></article><div class="comments"><p>A reader comment.</p></div></body></html>'
+    )
+    for include_comments in (False, True):
+        result = extract(source, output_format="html", config=ZERO_CONFIG, include_comments=include_comments)
+        tree = etree.fromstring(result)
+        assert bool(tree.xpath("body/section[@class='comments']")) is include_comments
+        if include_comments:
+            assert tree.xpath("body/section/p/text()") == ["A reader comment."]
+
+
 def test_deprecations():
     "Test deprecated function parameters."
     htmlstring = "<html><body><article>ABC</article></body></html>"
