@@ -9,6 +9,7 @@ from configparser import ConfigParser
 from itertools import islice
 from re import Pattern
 from time import sleep
+from urllib.parse import urlsplit
 
 from courlan import (
     clean_url,
@@ -27,6 +28,8 @@ from .utils import safe_relative_url
 LOGGER = logging.getLogger(__name__)
 
 SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
+# sitemaps.org (http or https, with or without a trailing slash) and the legacy Google namespaces
+SITEMAP_NAMESPACE_REGEX = re.compile(r"https?://(?:www\.)?(?:sitemaps\.org|google\.com)/schemas/sitemap/[\d.]+/?$")
 XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
 SCHEME_AND_WWW = re.compile(r"^https?://(?:www\.)?", re.IGNORECASE)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
@@ -38,7 +41,9 @@ WHITELISTED_PLATFORMS = re.compile(
 LEADING_SPACE = "\ufeff \t\r\n"
 SITEMAP_FORMAT = re.compile(r"^.{0,5}<\?xml|<(?:[\w.-]+:)?(?:sitemapindex|sitemap|urlset)\b")
 DETECT_SITEMAP_LINK = re.compile(r"\.xml(\..{2,4})?$|\.xml[?#]")
-DETECT_LINKS = re.compile(r'https?://[^\s<"]+')
+# links end before whitespace, "<", a double quote or a closing single quote
+DETECT_LINKS = re.compile(r'https?://[^\s<"]+(?<!\')')
+HTML_START = re.compile(r"<!doctype html|<html", re.IGNORECASE)
 SCRUB_REGEX = re.compile(r"\?.*$|#.*$")
 POTENTIAL_SITEMAP = re.compile(r"\.xml\b")  # |\bsitemap\b
 
@@ -161,16 +166,26 @@ class SitemapObject:
             return
         if tree is None:
             return
-        for element in islice(tree.iter("loc", f"{{{SITEMAP_NAMESPACE}}}loc"), MAX_LINKS):
+        # no namespace, the standard sitemap namespace anywhere, other sitemap namespaces declared on the root element
+        prefixes = dict.fromkeys(
+            [
+                "",
+                f"{{{SITEMAP_NAMESPACE}}}",
+                *(f"{{{ns}}}" for ns in tree.nsmap.values() if ns and SITEMAP_NAMESPACE_REGEX.match(ns)),
+            ]
+        )
+        sitemap_tags = {f"{prefix}sitemap" for prefix in prefixes}
+        url_tags = {f"{prefix}url" for prefix in prefixes}
+        for element in islice(tree.iter(*(f"{prefix}loc" for prefix in prefixes)), MAX_LINKS):
             # Entity references and nested markup are not part of a location URL.
             location = (element.text or "").strip()
             if len(element) == 0 and location.startswith("http"):
                 parent = element.getparent()
                 parent_tag = parent.tag if parent is not None else None
                 is_sitemap = None
-                if parent_tag in ("sitemap", f"{{{SITEMAP_NAMESPACE}}}sitemap"):
+                if parent_tag in sitemap_tags:
                     is_sitemap = True
-                elif parent_tag in ("url", f"{{{SITEMAP_NAMESPACE}}}url"):
+                elif parent_tag in url_tags:
                     is_sitemap = False
                 self.handle_link(location, is_sitemap=is_sitemap)
 
@@ -236,7 +251,7 @@ def sitemap_search(
     url: str,
     target_lang: str | None = None,
     external: bool = False,
-    sleep_time: float = 2.0,
+    sleep_time: float | None = None,
     max_sitemaps: int = MAX_SITEMAPS_SEEN,
     config: ConfigParser = DEFAULT_CONFIG,
 ) -> list[str]:
@@ -249,7 +264,8 @@ def sitemap_search(
                      (two-letter string, ISO 639-1 format).
         external: Similar hosts only or external URLs
                   (boolean, defaults to False).
-        sleep_time: Wait between requests on the same website.
+        sleep_time: Wait between requests on the same website
+                    (defaults to SLEEP_TIME in the config).
         max_sitemaps: Maximum number of sitemaps to process.
         config: Pass configuration values for download control.
 
@@ -262,13 +278,17 @@ def sitemap_search(
         LOGGER.warning("invalid URL: %s", url)
         return []
 
+    if sleep_time is None:
+        sleep_time = config.getfloat("DEFAULT", "SLEEP_TIME")
+
     if not is_live_page(baseurl, config):
         LOGGER.warning("base URL unreachable, dropping sitemap: %s", url)
         return []
 
     urlfilter = None
 
-    if url.endswith((".gz", "sitemap", ".xml")):
+    path = urlsplit(url).path.rstrip("/")
+    if path.endswith((".gz", "sitemap", ".xml", ".txt")) or "/sitemap/" in path:
         sitemapurls = [url]
     else:
         sitemapurls = []
@@ -318,7 +338,7 @@ def is_plausible_sitemap(url: str, contents: str | None) -> bool:
     # check content
     if (
         POTENTIAL_SITEMAP.search(url) and (not isinstance(contents, str) or not SITEMAP_FORMAT.match(contents))
-    ) or "<html" in contents[:150].lower():
+    ) or HTML_START.search(contents[:150]):
         LOGGER.warning("not a valid XML sitemap: %s", url)
         return False
 

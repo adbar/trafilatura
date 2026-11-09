@@ -9,7 +9,7 @@ import logging
 import pkgutil
 import sys
 import time
-from copy import copy
+from copy import copy, deepcopy
 from functools import _lru_cache_wrapper, partial
 from os import path
 from unittest.mock import patch
@@ -28,7 +28,7 @@ from trafilatura import bare_extraction, baseline, core, external, extract, extr
 from trafilatura import main_extractor as me
 from trafilatura.baseline import html2txt
 from trafilatura.deduplication import LRU_TEST, LRUCache, _punct_tbl
-from trafilatura.external import _prefer_readability, sanitize_tree, try_justext, try_readability
+from trafilatura.external import _prefer_readability, sanitize_tree, try_readability
 from trafilatura.htmlprocessing import convert_tags, tree_cleaning
 from trafilatura.main_extractor import (
     _span,
@@ -50,8 +50,11 @@ from trafilatura.readability_lxml import Document as ReadabilityDocument
 from trafilatura.readability_lxml import is_probably_readerable
 from trafilatura.settings import MANUALLY_CLEANED, TAG_CATALOG, use_config
 from trafilatura.utils import (
+    INVALID_XML_CHARREFS,
+    INVALID_XML_CHARS,
     LANGID_FLAG,
     detect_encoding,
+    get_html_parser,
     is_dubious_html,
     is_image_file,
     language_classifier,
@@ -295,6 +298,7 @@ def test_input(options):
     assert "incompatible" in str(err.value)
 
     assert load_html("<html><body>ÄÖÜ</body></html>") is not None
+    assert load_html('<?xml version="1.0" encoding="utf-8"?><html><body><p>ABC</p></body></html>') is not None
     assert load_html(b"<html><body>\x2f\x2e\x9f</body></html>") is not None
     assert load_html("<html><body>\x2f\x2e\x9f</body></html>".encode("latin-1")) is not None
     # assert load_html(b'0'*int(10e3)) is None
@@ -321,10 +325,10 @@ def test_input(options):
 
     # output format
     assert "ABC" in extract("<html><body><p>ABC</p></body></html>", output_format="xml")
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         assert extract("<html><body><p>ABC</p></body></html>", output_format="xyz") is not None
     assert bare_extraction("<html><body><p>ABC</p></body></html>", output_format="python").text == "ABC"
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         assert bare_extraction("<html><body><p>ABC</p></body></html>", output_format="xyz") is not None
 
     # text elements
@@ -336,6 +340,135 @@ def test_input(options):
     assert handle_textelem(elem, [], options) is None
 
 
+_HEADBITS = '<meta charset="utf-8"><title>Some title</title>'
+_PARA = "<p>Alpha body paragraph with enough plain text to matter here.</p>"
+
+# the HTML5 semantic sectioning elements libxml2 fails to close the
+# implied head on (26-tag sweep, see load_html head relocation)
+_SEMANTIC_TAGS = ["main", "header", "footer", "nav", "article", "section", "aside", "figure"]
+
+
+def _implied_head_doc(inner: str) -> str:
+    # document with no explicit <head>/<body> tags (danluu.com's shape)
+    return f"<!DOCTYPE html><html>{_HEADBITS}{inner}"
+
+
+@pytest.mark.parametrize("tag", _SEMANTIC_TAGS)
+def test_semantic_element_relocated_to_body(tag):
+    "flow content mis-nested in an implied <head> is relocated to <body> at parse time"
+    tree = load_html(_implied_head_doc(f"<{tag}>{_PARA}</{tag}>"))
+    element = tree.find(f".//{tag}")
+    assert element is not None
+    assert element.getparent().tag == "body"
+    # head keeps exactly its head content
+    assert [child.tag for child in tree.find("head")] == ["meta", "title"]
+
+
+@pytest.mark.parametrize("tag", ["main", "header", "article", "section"])
+def test_relocated_content_survives_cleaning(tag):
+    "relocated content survives tree_cleaning instead of being deleted with <head>"
+    # footer/nav/aside/figure are excluded here because tree_cleaning
+    # prunes those tags wherever they sit (MANUALLY_CLEANED),
+    # independently of this defect
+    tree = load_html(_implied_head_doc(f"<{tag}>{_PARA}</{tag}>"))
+    cleaned = tree_cleaning(deepcopy(tree), core.Extractor())
+    assert "Alpha body paragraph" in cleaned.text_content()
+
+
+def test_head_content_not_relocated():
+    "title/meta/style/link/script stay in <head>; only flow content moves"
+    doc = _implied_head_doc(
+        f'<style>p{{color:red}}</style><link rel="icon" href="data:,"><main>{_PARA}</main><script>var x = 1;</script>'
+    )
+    tree = load_html(doc)
+    assert [child.tag for child in tree.find("head")] == ["meta", "title", "style", "link", "script"]
+    assert tree.find("head").find("title").text == "Some title"
+    assert [child.tag for child in tree.find("body")] == ["main"]
+
+
+def test_explicit_head_document_unchanged():
+    "a well-formed document parses to the same structure as its implied-head twin"
+    explicit = f"<!DOCTYPE html><html><head>{_HEADBITS}</head><body><main>{_PARA}</main></body></html>"
+    for doc in (explicit, _implied_head_doc(f"<main>{_PARA}</main>")):
+        tree = load_html(doc)
+        assert tree.find(".//main").getparent().tag == "body"
+        assert [child.tag for child in tree.find("head")] == ["meta", "title"]
+        cleaned = tree_cleaning(deepcopy(tree), core.Extractor())
+        assert "Alpha body paragraph" in cleaned.text_content()
+
+
+def test_explicit_head_with_misnested_content_repaired():
+    "flow content written inside an explicit <head> is relocated as well"
+    # invalid HTML, which browsers also recover from by closing the head
+    doc = (
+        f"<!DOCTYPE html><html><head><title>T</title><main>{_PARA}</main></head>"
+        "<body><p>Trailing body paragraph.</p></body></html>"
+    )
+    tree = load_html(doc)
+    assert [child.tag for child in tree.find("body")] == ["main", "p"]
+
+
+def test_relocated_siblings_keep_order():
+    "relocated siblings keep document order at the front of an existing body"
+    doc = _implied_head_doc(f"<header>Site header</header><main>{_PARA}</main><p>Trailing para.</p>")
+    tree = load_html(doc)
+    assert [child.tag for child in tree.find("body")] == ["header", "main", "p"]
+
+
+def test_text_after_relocated_elements_keeps_its_place():
+    "text that follows relocated elements in the source stays after them"
+    # libxml2 2.14+ closes the head at such text and makes it the body's
+    # leading text; older versions (e.g. 2.11.9, bundled in lxml's Windows
+    # wheels) wrap it in an implied <p> inside the body
+    tree = load_html(_implied_head_doc(f"<header>Site header</header>Middle text<main>{_PARA}</main>"))
+    text = tree.find("body").text_content()
+    assert text.index("Site header") < text.index("Middle text") < text.index("Alpha body")
+
+    tree = load_html(_implied_head_doc(f"<main>{_PARA}</main>Trailing text"))
+    text = tree.find("body").text_content()
+    assert text.index("Alpha body") < text.index("Trailing text")
+
+
+def test_extract_recovers_implied_head_article():
+    "end-to-end: article and footnote text are extracted from an implied-head document"
+    doc = _implied_head_doc(
+        "<main><article><h1>On implied heads</h1>"
+        "<p>Documents that omit the head and body tags are valid HTML5, "
+        "and hand-written sites in that style are common enough that an "
+        "extractor cannot treat the shape as an error.</p>"
+        '<div class="footnotes"><ol><li id="fn1"><p>The footnote that '
+        "qualifies the claim above and must survive extraction."
+        "</p></li></ol></div>"
+        "</article></main>"
+    )
+    out = extract(doc, url="https://example.org/implied") or ""
+    assert "extractor cannot treat the shape as an error" in out
+    assert "qualifies the claim above" in out
+
+
+def test_extract_recovers_implied_head_article_before_a_list():
+    "end-to-end: an implied-head article followed by a list in <body> is extracted"
+    # without the repair, <head> goes with the article in it while the list
+    # stays in <body>, and the list is all that gets extracted
+    items = "".join(
+        f"<li><p>Reader comment {number}: I tried this on my own site and saw the same "
+        "behaviour, which surprised me because the page renders fine in every browser.</p></li>"
+        for number in range(3)
+    )
+    doc = _implied_head_doc(
+        "<main><article><h1>On implied heads</h1>"
+        "<p>Documents that omit the head and body tags are valid HTML5, and hand-written sites "
+        "in that style are common enough that an extractor cannot treat the shape as an error.</p>"
+        "<p>The second paragraph carries the argument further with more plain prose about parsing, "
+        "so that the article is clearly the main content of the page.</p>"
+        "<p>A third paragraph closes the article with a remark about libxml2 and its implied head.</p>"
+        f"</article></main><ul>{items}</ul>"
+    )
+    for options in ({}, {"fast": True}, {"favor_recall": True}):
+        out = extract(doc, url="https://example.org/implied", **options) or ""
+        assert "extractor cannot treat the shape as an error" in out
+
+
 def test_document_isolation():
     "Documents must not share a mutable Element default (thread-safety / correctness)."
     d1, d2 = Document(), Document()
@@ -343,6 +476,16 @@ def test_document_isolation():
     assert d1.commentsbody is not d2.commentsbody
     assert d1.body.tag == "body"
     assert len(d1.body) == 0
+
+
+def test_html_parser_per_call():
+    "Each call gets its own lxml parser: a shared one crashes concurrent extractions (#925)."
+    assert get_html_parser() is not get_html_parser()
+    # same configuration as before
+    tree = load_html("<html><body><!-- comment --><p id='x'>Text</p></body></html>")
+    assert tree is not None
+    assert isinstance(tree, html.HtmlElement)
+    assert tree.xpath("//comment()") == []
 
 
 def test_xmltocsv():
@@ -975,6 +1118,32 @@ def test_inline_quotation_stays_in_its_paragraph(body, expected):
     "An inline <q> is unwrapped, so its sentence stays in one paragraph in every output format."
     assert expected in _md_inline(body).splitlines()
     assert expected.replace("**", "") in _extract_doc(body, output_format="txt").splitlines()
+
+
+@pytest.mark.parametrize(
+    "body,unwrapped",
+    [
+        ("<ul><li>x <o:p>y</o:p> z</li></ul>", "<ul><li>x y z</li></ul>"),
+        ("<blockquote>x <o:p>y</o:p> z</blockquote>", "<blockquote>x y z</blockquote>"),
+        ("<pre>x <fb:like>y</fb:like> z</pre>", "<pre>x y z</pre>"),
+    ],
+    ids=["item", "quote", "code"],
+)
+@pytest.mark.parametrize("fmt", ["txt", "xml", "markdown"])
+def test_prefixed_tag_unwrapped(body, unwrapped, fmt):
+    "A prefixed tag such as Word's <o:p> is unwrapped and its text kept instead of losing the document (#1010)."
+    result = _extract_doc(body, output_format=fmt)
+    assert result is not None
+    assert result == _extract_doc(unwrapped, output_format=fmt)
+
+
+def test_prefixed_tag_in_paragraph_xml_output():
+    "A prefixed tag kept in a paragraph made the XML output check fail on its undeclared namespace."
+    text = "Some article text. " * 30
+    result = extract(
+        f"<html><body><article><p>{text}</p><div>x <o:p>y</o:p> z</div></article></body></html>", output_format="xml"
+    )
+    assert "<p>x y z</p>" in result
 
 
 def test_srcless_graphic_dropped_text_kept():
@@ -1845,10 +2014,6 @@ def test_extraction_options():
     assert extract(my_html, only_with_metadata=True, output_format="xml", config=ZERO_CONFIG) is None
     assert extract(my_html, target_language="de", config=ZERO_CONFIG) is None
     assert extract(my_html, target_language="de", fast=True, config=ZERO_CONFIG) is None
-
-    # justext hardening
-    assert etree.tostring(try_justext(html.fromstring(my_html), None, "de")) == b"<body/>"
-    assert etree.tostring(try_justext(None, None, "de")) == b"<body/>"
     # assert extract(my_html) is None
 
     # readability
@@ -1959,8 +2124,9 @@ def test_precision_recall():
     assert "Test" not in result
 
     my_document = html.fromstring("<html><body><article><aside><p>Here is the text.</p></aside></article></body></html>")
+    # the cleaning would remove every paragraph and leave no text: undone in every mode
     result = extract(copy(my_document), favor_recall=False, config=ZERO_CONFIG, fast=True)
-    assert result != "Here is the text."
+    assert result == "Here is the text."
     result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True)
     assert result == "Here is the text."
 
@@ -1978,6 +2144,46 @@ def test_url_blacklist():
     doc = '<html><head><link rel="canonical" href="https://example.org/page"/></head><body><article><p>Some real article body text here.</p></article></body></html>'
     assert extract(doc, config=ZERO_CONFIG) is not None
     assert extract(doc, url_blacklist={"https://example.org/page"}, config=ZERO_CONFIG) is None
+    # the given URL counts too, not only the canonical one
+    assert (
+        extract(doc, url="https://example.org/given", url_blacklist={"https://example.org/given"}, config=ZERO_CONFIG) is None
+    )
+
+
+def test_url_with_options():
+    "The url argument is not dropped when options are passed."
+    doc = '<html><body><article><p>Some real article body text here with a <a href="/x">link</a>.</p></article></body></html>'
+    options = core.Extractor(output_format="xml", links=True, with_metadata=True, config=ZERO_CONFIG)
+    result = extract(doc, url="https://example.org/page", options=options)
+    assert 'url="https://example.org/page"' in result
+    assert 'target="https://example.org/x"' in result
+    # also for images
+    images = core.Extractor(output_format="xml", images=True, config=ZERO_CONFIG)
+    result = extract(doc.replace("</p>", '<img src="/a.png"/></p>'), url="https://example.org/page", options=images)
+    assert 'src="https://example.org/a.png"' in result
+    assert images.url is None
+    assert bare_extraction(doc, url="https://example.org/page", options=options).url == "https://example.org/page"
+    assert options.url is None
+    # the url argument takes precedence over options.url
+    options.url = "https://example.org/options"
+    assert bare_extraction(doc, options=options).url == "https://example.org/options"
+    assert bare_extraction(doc, url="https://example.org/page", options=options).url == "https://example.org/page"
+    # the source follows the url unless set by the caller, and is sanitized
+    custom = core.Extractor(source="batch-42", config=ZERO_CONFIG)
+    derived = core.Extractor(url="https://example.org/old", config=ZERO_CONFIG)
+    with patch.object(core, "trafilatura_sequence", wraps=core.trafilatura_sequence) as sequence:
+        bare_extraction(doc, url="https://example.org/\udcff", options=custom)
+        bare_extraction(doc, url="https://example.org/\udcff", options=options)
+        bare_extraction(doc, url="https://example.org/new", options=derived)
+    sources = [c.args[1].source for c in sequence.call_args_list]
+    assert sources == ["batch-42", "https://example.org/?", "https://example.org/new"]
+    assert custom.source == "batch-42"
+    # log messages name the given URL
+    short = core.Extractor()
+    short.min_output_size = 100
+    with patch.object(core.LOGGER, "warning") as warning:
+        assert extract("<html><body><p>x</p></body></html>", url="https://example.org/short", options=short) is None
+    assert warning.call_args.args[1:] == ("https://example.org/short",)
 
 
 def test_recover_wild_text_default_tags():
@@ -2107,6 +2313,77 @@ def test_delete_by_link_density_backtracking():
     delete = trafilatura.htmlprocessing.delete_by_link_density
     assert delete(html.fromstring(htmlstring), "div").find(".//div") is not None
     assert delete(html.fromstring(htmlstring), "div", backtracking=True).find(".//div") is None
+
+
+# Converted-tree shape of a pandoc footnotes section: a <list> of
+# sentence-length items, each ending in a short <ref> backlink.
+_FOOTNOTE_LIST = (
+    "<list>"
+    "<item><p>The corpus used here excludes paywalled pages, so the results "
+    'say nothing about extraction behind login walls.<ref target="#fnref1">↩</ref></p></item>'
+    "<item><p>In one case the footnote contained the only statement of the "
+    'sample size, which the headline result depended on.<ref target="#fnref2">↩</ref></p></item>'
+    "</list>"
+)
+
+# Same shape, but the items are nothing but short links: a navigation menu.
+_MENU_LIST = (
+    "<list>"
+    '<item><ref target="/">Home</ref></item>'
+    '<item><ref target="/archive">Archive</ref></item>'
+    '<item><ref target="/about">About</ref></item>'
+    '<item><ref target="/rss">RSS feed</ref></item>'
+    "</list>"
+)
+
+
+def test_link_density_footnote_list_kept():
+    "a footnotes list (short backlinks, ~1% link text) is not a link farm"
+    element = html.fromstring(_FOOTNOTE_LIST)
+    assert element.tag == "list"
+    assert trafilatura.htmlprocessing.link_density_test(element)[0] is False
+
+
+def test_link_density_menu_list_pruned():
+    "a list whose items are only short links is still pruned"
+    element = html.fromstring(_MENU_LIST)
+    assert element.tag == "list"
+    assert trafilatura.htmlprocessing.link_density_test(element)[0] is True
+
+
+_FOOTNOTE_DOC = """<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>On Measuring Extraction Quality</title></head>
+<body><main><article>
+<h1>On Measuring Extraction Quality</h1>
+<p>Benchmarks of web-text extraction usually report precision and recall against
+hand-labelled corpora, and the headline numbers look reassuring. The catch is that
+the errors are not distributed evenly across the page: boilerplate is easy to spot,
+while short, dense passages at the end of an article are easy to lose.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>A second effect is less often discussed. When an author qualifies a claim, the
+qualification frequently lives in a footnote rather than in the main text, because
+the main text has to stay readable. Losing the footnote therefore does not merely
+lose information; it changes what the article asserts.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>We measured the effect on a small corpus of essays and documentation pages.
+The full method is described in the appendix, but the summary is simple: check
+the end of the document, not just the beginning, before trusting an extraction.</p>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>The corpus used here excludes paywalled pages, so the results say
+nothing about extraction behind login walls.<a href="#fnref1" class="footnote-backref" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In one case the footnote contained the only statement of the
+sample size, which the headline result depended on.<a href="#fnref2" class="footnote-backref" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</article></main></body></html>"""
+
+
+def test_extract_keeps_pandoc_footnotes():
+    "end-to-end: both endnote texts appear in the extracted output"
+    out = extract(_FOOTNOTE_DOC, url="https://example.org/essay") or ""
+    assert "Benchmarks of web-text extraction" in out
+    assert "excludes paywalled pages" in out
+    assert "only statement of the sample size" in out
 
 
 def test_overall_discard_legacy_tokens():
@@ -3140,6 +3417,22 @@ def test_recall_escalation_justext():
     assert result.count("Message number") == 8
 
 
+@pytest.mark.parametrize(("jt_words", "winner"), [(1000, "justext"), (40, "retry")])
+def test_recall_escalation_justext_over_longer_retry(monkeypatch, jt_words, winner):
+    "Above the justext ratio, the justext candidate wins even when the recall retry is longer."
+
+    def candidate(label, words):
+        body = etree.Element("body")
+        etree.SubElement(body, "p").text = f"{label} " * words
+        return body, f"{label} " * words
+
+    monkeypatch.setattr(core, "_recall_retry", lambda *args: candidate("retry", 2000))
+    monkeypatch.setattr(core, "justext_rescue", lambda *args: candidate("justext", jt_words))
+    messages = "".join(f"<div class='sidebar'>Menu entry number {i} of the page.</div>" for i in range(200))
+    result = extract(f"<html><body>{_ESCALATION_INTRO}{messages}</body></html>", output_format="txt") or ""
+    assert result.startswith(winner)
+
+
 def _formatted_comment_doc(comment):
     article = "".join(
         f"<p>Article paragraph number {i} with plenty of text to be extracted properly by the main extractor here.</p>"
@@ -3446,6 +3739,16 @@ def test_compare_extraction_justext_override(monkeypatch, unclean, own_len, jt_l
     own = "a" * own_len
     _, text = external.compare_extraction(empty_tree, body, own, core.Extractor())
     assert text == (jt_text if expect_jt else own)
+
+
+def test_compare_extraction_justext_input_cleaned(monkeypatch):
+    "Justext reads a tree_cleaning'd copy, the input tree stays untouched."
+    monkeypatch.setattr(external, "try_readability", lambda tree: etree.Element("body"))
+    long = "This sentence is long enough to be classified as content by itself. " * 3
+    tree = html.fromstring(f"<html><body><p>{long}</p><dialog><p>Dialog {long}</p></dialog></body></html>")
+    _, text = external.compare_extraction(tree, etree.Element("body"), "", core.Extractor())
+    assert text == long.strip()
+    assert tree.find(".//dialog") is not None
 
 
 def test_prefer_readability_rejects_raw_json():
@@ -3820,7 +4123,7 @@ def test_code_blocks():
 </code></pre>
 </div>"""
     testresult = extract(highlightjs, config=ZERO_CONFIG, output_format="xml")
-    assert "<code>code\n\nhighlighted more code\n</code>" in testresult
+    assert '<code rend="sql">code\n\nhighlighted more code\n</code>' in testresult
     assert "quote" not in testresult
     github = """<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>$ pip install PyGithub</pre><div class="zeroclipboard-container position-absolute right-0 top-0">
     <clipboard-copy aria-label="Copy" class="ClipboardButton btn js-clipboard-copy m-2 p-0 tooltipped-no-delay" data-copy-feedback="Copied!" data-tooltip-direction="w" value="$ pip install PyGithub" tabindex="0" role="button" style="display: inherit;">
@@ -3860,7 +4163,7 @@ for name and age:</p>
     pip = """<div><p>Code:</p>
 <pre lang="python3"><span class="kn">import</span> <span class="nn">openai</span>
 <span class="kn">from</span> <span class="nn">openai_function_call</span> <span class="kn">import</span> <span class="n">openai_function</span></pre></div>"""
-    expected = """<code>import openai
+    expected = """<code rend="python3">import openai
 from openai_function_call import openai_function</code>"""
     testresult = extract(pip, config=ZERO_CONFIG, output_format="xml")
     assert expected in testresult
@@ -3898,6 +4201,73 @@ base_dir = os.getcwd()</code>"""
     assert "<quote>" in extract(bq_text, output_format="xml", config=ZERO_CONFIG)
     bq_tail = "<html><body><article><blockquote><code>x</code> tail</blockquote></article></body></html>"
     assert "<quote>" in extract(bq_tail, output_format="xml", config=ZERO_CONFIG)
+    # explicit language hints are kept and become the markdown fence info string
+    labeled = """<div><p>Code:</p>
+<pre><code class="language-python">import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(labeled, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    testresult = extract(labeled, config=ZERO_CONFIG, output_format="xml")
+    assert '<code rend="python">import os\nprint(os.getcwd())</code>' in testresult
+    testresult = extract(labeled, config=ZERO_CONFIG, output_format="xmltei")
+    assert '<code rend="python">import os\nprint(os.getcwd())</code>' in testresult
+    # the hint can also sit on the pre element
+    labeled_pre = """<div><p>Code:</p>
+<pre class="language-python"><code>import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(labeled_pre, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    # a payload with backtick runs keeps the widened fence and gains the info string
+    nested = '<div><p>Code:</p>\n<pre><code class="language-python">a = 1\n```\nb = 2\n</code></pre></div>'
+    testresult = extract(nested, config=ZERO_CONFIG, output_format="markdown")
+    assert "````python\na = 1\n```\nb = 2\n````" in testresult
+    # no hint: bare fence, no language is invented
+    unlabeled = """<div><p>Code:</p>
+<pre><code>import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(unlabeled, config=ZERO_CONFIG, output_format="markdown")
+    assert "```\nimport os\nprint(os.getcwd())\n```" in testresult
+    testresult = extract(unlabeled, config=ZERO_CONFIG, output_format="xml")
+    assert "<code>import os\nprint(os.getcwd())</code>" in testresult
+    # a language-* class comes first, lang usually names a natural language
+    hinted = """<div><p>Code:</p>
+<pre lang="en"><code class="language-python">import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(hinted, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    # lang on a blockquote is a natural language: an embedded tweet stays a quote
+    tweet = """<div><p>Before the tweet.</p>
+<blockquote class="twitter-tweet" lang="en">Hello world, this is a tweet.<br>&mdash; Someone (@someone)</blockquote>
+<p>After the tweet.</p></div>"""
+    testresult = extract(tweet, config=ZERO_CONFIG, output_format="xml")
+    assert "<quote>" in testresult
+    assert "<code" not in testresult
+    assert "`" not in extract(tweet, config=ZERO_CONFIG, output_format="markdown")
+    # both sources are checked with one pattern before a value reaches the fence line
+    for markup in (
+        '<pre lang="py\nthon"><code>',
+        '<pre class="language-*"><code class="language-*">',
+        '<pre><code rend="a\nb">',
+    ):
+        unusable = f"<div><p>Code:</p>\n{markup}import os\nprint(os.getcwd())</code></pre></div>"
+        testresult = extract(unusable, config=ZERO_CONFIG, output_format="markdown")
+        assert "```\nimport os\nprint(os.getcwd())\n```" in testresult
+        testresult = extract(unusable, config=ZERO_CONFIG, output_format="xml")
+        assert "<code>import os\nprint(os.getcwd())</code>" in testresult
+    # lang stays the fallback when the class names no usable language
+    fallback = """<div><p>Code:</p>
+<pre lang="python"><code class="language-*">import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(fallback, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    # every code element of the block carries the hint: a doubly nested block gets a labeled fence
+    doubly_nested = """<div><p>Code:</p>
+<pre><code class="language-python"><code class="font-mono">import os
+print(os.getcwd())</code></code></pre></div>"""
+    testresult = extract(doubly_nested, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    testresult = extract(doubly_nested, config=ZERO_CONFIG, output_format="xml")
+    assert '<code rend="python">import os\nprint(os.getcwd())</code>' in testresult
 
 
 def test_markdown_escaping():
@@ -3934,6 +4304,10 @@ def test_markdown_escaping():
     result = _md(b"<body><code>a\x60\x60\x60b</code></body>")
     assert "````" in result
     assert "a```b" in result
+
+    # a language hint on a block code element becomes the fence info string
+    result = _md(b'<body><code rend="python">a\nb</code></body>')
+    assert "```python\na\nb\n```" in result
 
     # ~~ inside del content must not close the strikethrough early
     assert "~~a\\~\\~b~~" in _md(b"<body><p><del>a~~b</del></p></body>")
@@ -4742,15 +5116,40 @@ def test_incompatible_options(caplog):
 
 
 def test_tree_cleaning_recall_keeps_paragraphs(options, monkeypatch):
-    "Recall undoes the deletions when they would remove every paragraph."
-    doc = "<html><body><aside><p>only text</p></aside></body></html>"
-    assert tree_cleaning(html.fromstring(doc), options).find(".//p") is None
+    "The deletions are undone when they would remove every paragraph, outside recall only if almost no text is left."
+    words = "word " * 60
+    page_shapes = {
+        # a page swallowed by an unclosed aside or button
+        "<html><body><aside><p>only text</p></aside></body></html>": (True, True),
+        "<html><body><button>Menu<div><p>only text</p><p>more text</p></div></button></body></html>": (True, True),
+        # fallback copy: its paragraphs do not count as removed content
+        "<html><body><noscript><p>only text</p></noscript></body></html>": (False, False),
+        "<html><body><noscript><p>Enable JS</p></noscript><aside><p>only text</p></aside></body></html>": (True, True),
+        # enough text survives outside the paragraphs
+        f"<html><body><div>{words}</div><aside><p>only text</p></aside></body></html>": (False, True),
+    }
+    for doc, expected in page_shapes.items():
+        for focus, restored in zip(("balanced", "recall"), expected, strict=True):
+            options.focus = focus
+            assert (tree_cleaning(html.fromstring(doc), options).find(".//p") is not None) is restored, (doc, focus)
     options.focus = "recall"
-    assert tree_cleaning(html.fromstring(doc), options).find(".//p") is not None
+    # a later paragraph survives: nothing to undo
+    doc = "<html><body><aside><p>only text</p></aside><p>kept</p></body></html>"
+    assert tree_cleaning(html.fromstring(doc), options).find(".//aside") is None
     # a user-added "p" deletes the paragraphs themselves
     monkeypatch.setattr(trafilatura.htmlprocessing, "MANUALLY_CLEANED", ["p"])
     doc = "<html><body><div><p>only text</p></div></body></html>"
     assert tree_cleaning(html.fromstring(doc), options).find(".//p") is not None
+
+
+def test_tree_cleaning_undo_without_tables():
+    "Outside recall, the restored copy keeps the cell paragraphs but not the table markup."
+    doc = "<html><body><table><tr><td><p>cell one</p></td><td><p>cell two</p></td></tr></table></body></html>"
+    for focus, kept in (("balanced", 0), ("precision", 0), ("recall", 1)):
+        options = core.Extractor(tables=False, precision=focus == "precision", recall=focus == "recall")
+        cleaned = tree_cleaning(html.fromstring(doc), options)
+        assert len(cleaned.findall(".//p")) == 2, focus
+        assert len(cleaned.findall(".//table")) == kept, focus
 
 
 def test_tree_cleaning_same_tag_after_nested(options):
@@ -4770,3 +5169,48 @@ def test_convert_tags_links_off_keeps_contained_links(options):
     options.tables = False
     converted = convert_tags(html.fromstring(doc), options)
     assert [ref.text for ref in converted.iter("ref")] == ["para"]
+
+
+@pytest.mark.parametrize(
+    "ref",
+    [
+        "&#1;",
+        "&#8;",
+        "&#11;",
+        "&#12;",
+        "&#31;",
+        "&#001;",
+        "&#x1;",
+        "&#X1F;",
+        "&#x0001;",
+        "&#65534;",
+        "&#65535;",
+        "&#xFFFE;",
+        "&#xffff;",
+        "&#1",
+    ],
+)
+def test_invalid_charref_does_not_discard_document(ref):
+    "regression #1009: a numeric reference to an XML-illegal character used to make extract() return None"
+    text = "Some article text. " * 30
+    page = f"<html><body><article><p>{text}{ref}</p></article></body></html>"
+    for output_format in ("txt", "xml", "json", "markdown"):
+        result = extract(page, output_format=output_format)
+        assert result is not None
+        assert "Some article text." in result
+
+
+def test_invalid_charref_pattern():
+    "Only references to the characters INVALID_XML_CHARS strips are matched, in any spelling."
+    for codepoint in range(0x10020):
+        if 0xD800 <= codepoint < 0xE000:
+            continue
+        expected = INVALID_XML_CHARS.fullmatch(chr(codepoint)) is not None
+        for template in ("&#{0};", "&#{0:07d};", "&#x{0:x};", "&#x{0:X};", "&#x{0:07x};", "&#{0}", "&#x{0:x}"):
+            reference = template.format(codepoint)
+            assert (INVALID_XML_CHARREFS.sub("", reference) == "") is expected, reference
+    # valid references and following text are left alone
+    assert (
+        INVALID_XML_CHARREFS.sub("", "&#9;&#10;&#13;&#32;&#039;&#x1F600;&#123;&#x10000;&#xFFFF0;&#1x")
+        == "&#9;&#10;&#13;&#32;&#039;&#x1F600;&#123;&#x10000;&#xFFFF0;x"
+    )

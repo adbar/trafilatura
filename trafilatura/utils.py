@@ -112,14 +112,26 @@ HTML_STRIP_TAGS = re.compile(r"(<!--.*?-->|<[^>]*>)")
 _INVALID_XML_BYTES = bytes(range(9)) + b"\x0b\x0c" + bytes(range(14, 32))
 _INVALID_XML_NONASCII = "\ufffe\uffff"
 INVALID_XML_CHARS = re.compile(f"[{re.escape(_INVALID_XML_BYTES.decode() + _INVALID_XML_NONASCII)}]")
+# numeric character references to the same characters (&#1;, &#x1F;, &#65535;...), which libxml2
+# decodes and lxml then refuses to store; the closing semicolon is optional for libxml2
+INVALID_XML_CHARREFS = re.compile(
+    r"&#(?:0*(?:[0-8]|1[124-9]|2[0-9]|3[01]|6553[45])(?![0-9])"
+    r"|[xX]0*(?:[0-8bBcCeEfF]|1[0-9a-fA-F]|[fF]{3}[eEfF])(?![0-9a-fA-F]));?"
+)
+_INVALID_XML_CHARREFS_BYTES = re.compile(INVALID_XML_CHARREFS.pattern.encode())
+
 
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
-HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True)
-# one element class instead of the per-tag lxml.html lookup
-HTML_PARSER.set_element_class_lookup(
-    ElementDefaultClassLookup(element=HtmlElement, comment=HtmlComment, pi=HtmlProcessingInstruction, entity=HtmlEntity)
-)
+def get_html_parser() -> HTMLParser:
+    "Return a new HTML parser: a parser shared across threads makes concurrent extractions crash (#925)."
+    parser = HTMLParser(collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True)
+    # one element class instead of the per-tag lxml.html lookup
+    parser.set_element_class_lookup(
+        ElementDefaultClassLookup(element=HtmlElement, comment=HtmlComment, pi=HtmlProcessingInstruction, entity=HtmlEntity)
+    )
+    return parser
+
 
 URL_BLACKLIST_REGEX = re.compile(r"^https?://|/+$")
 
@@ -293,16 +305,15 @@ def is_dubious_html(beginning: str) -> bool:
     return "html" not in beginning
 
 
-def _has_invalid_xml_chars(text: str) -> bool:
-    "Cheaper than the regex: the invalid C0 characters are ASCII and survive the projection."
-    data = text.encode("ascii", "ignore")
-    return len(data.translate(None, _INVALID_XML_BYTES)) != len(data) or any(c in text for c in _INVALID_XML_NONASCII)
-
-
 def repair_faulty_html(htmlstring: str, beginning: str) -> str:
     "Repair faulty HTML strings to make then palatable for libxml2."
-    if _has_invalid_xml_chars(htmlstring):
+    # the invalid characters and char refs are ASCII, "replace" keeps their positions
+    data = htmlstring.encode("ascii", "replace")
+    if len(data.translate(None, _INVALID_XML_BYTES)) != len(data) or any(c in htmlstring for c in _INVALID_XML_NONASCII):
         htmlstring = INVALID_XML_CHARS.sub("", htmlstring)
+        data = htmlstring.encode("ascii", "replace")
+    if _INVALID_XML_CHARREFS_BYTES.search(data):
+        htmlstring = INVALID_XML_CHARREFS.sub("", htmlstring)
     # libxml2/LXML issue: https://bugs.launchpad.net/lxml/+bug/1955915
     if "doctype" in beginning:
         firstline, _, rest = htmlstring.partition("\n")
@@ -318,10 +329,45 @@ def repair_faulty_html(htmlstring: str, beginning: str) -> str:
 def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
     "Try to pass bytes to LXML parser."
     try:
-        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=HTML_PARSER)
+        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=get_html_parser())
     except Exception as err:
         LOGGER.error("lxml parser bytestring %s", err)
     return None
+
+
+# elements that legitimately live in <head>: HTML metadata content and the
+# containers a parser may leave there; any other element child of <head> is
+# flow content that belongs in <body>
+HEAD_CONTENT_TAGS = {"base", "link", "meta", "noscript", "script", "style", "template", "title"}
+
+
+def _relocate_head_content(tree: HtmlElement) -> None:
+    """Move flow content mis-nested in <head> to the front of <body>.
+
+    libxml2 keeps the implied head open across HTML5 semantic sectioning
+    elements (main, header, article, ...), so a document omitting the
+    explicit <head> tag can parse with its article inside <head> -- which
+    tree_cleaning then deletes wholesale. Element children of <head> that
+    are not head content move, in document order and with their subtrees
+    and tails, to the front of <body> (created if absent). Text that
+    libxml2 2.14+ makes the body's leading text followed those elements
+    in the source, so it goes after them.
+    """
+    head = tree.find("head")
+    if head is None:
+        return
+    moved = [child for child in head if isinstance(child.tag, str) and child.tag not in HEAD_CONTENT_TAGS]
+    if not moved:
+        return
+    body = tree.find("body")
+    if body is None:
+        body = tree.makeelement("body")
+        tree.append(body)
+    if body.text:
+        moved[-1].tail = (moved[-1].tail or "") + body.text
+        body.text = None
+    for index, child in enumerate(moved):
+        body.insert(index, child)
 
 
 def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
@@ -356,7 +402,7 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
     # first pass: use Unicode string
     fallback_parse = False
     try:
-        tree = fromstring(htmlobject, parser=HTML_PARSER)
+        tree = fromstring(htmlobject, parser=get_html_parser())
     except ValueError:
         # "Unicode strings with encoding declaration are not supported."
         tree = fromstring_bytes(htmlobject)
@@ -371,6 +417,9 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
     if tree is not None and check_flag is True and len(tree) < 2:
         LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
         tree = None
+    # repair a mis-nested implied head (flow content parsed into <head>)
+    if tree is not None:
+        _relocate_head_content(tree)
     return tree
 
 
@@ -519,13 +568,14 @@ def make_chunks(iterable: Iterable[str], n: int) -> Iterator[tuple[str, ...]]:
         yield batch
 
 
-def is_acceptable_length(my_len: int, options: "Extractor") -> bool:
+def is_acceptable_length(my_len: int, options: "Extractor", url: str | None = None) -> bool:
     "Check if the document length is within acceptable boundaries."
+    url = url or options.url
     if my_len < options.min_file_size:
-        LOGGER.error("too small/incorrect for URL %s", options.url)
+        LOGGER.error("too small/incorrect for URL %s", url)
         return False
     if my_len > options.max_file_size:
-        LOGGER.error("too large: length %s for URL %s", my_len, options.url)
+        LOGGER.error("too large: length %s for URL %s", my_len, url)
         return False
     return True
 

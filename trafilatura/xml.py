@@ -49,8 +49,6 @@ TEI_DTD = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
 TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 
-CONTROL_PARSER = XMLParser(remove_blank_text=True)
-
 NEWLINE_ELEMS = {"graphic", "head", "lb", "list", "p", "quote", "row", "table"}
 SPECIAL_FORMATTING = {"code", "del", "head", "hi", "ref", "item", "cell"}
 WITH_ATTRIBUTES = {"cell", "row", "del", "graphic", "head", "hi", "item", "list", "ref"}
@@ -233,8 +231,13 @@ def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
 def clean_attributes(tree: _Element) -> _Element:
     """Remove unnecessary attributes."""
     for elem in tree.iter("*"):
-        if elem.tag not in WITH_ATTRIBUTES:
-            elem.attrib.clear()
+        if elem.tag in WITH_ATTRIBUTES:
+            continue
+        # keep the language hint of code blocks
+        language = elem.get("rend") if elem.tag == "code" else None
+        elem.attrib.clear()
+        if language:
+            elem.set("rend", language)
     return tree
 
 
@@ -262,7 +265,7 @@ def control_xml_output(document: Document, options: Extractor) -> str:
 
     output_tree = sanitize_tree(output_tree)
     # necessary for cleaning
-    output_tree = fromstring(tostring(output_tree, encoding="unicode"), CONTROL_PARSER)
+    output_tree = fromstring(tostring(output_tree, encoding="unicode"), XMLParser(remove_blank_text=True))
 
     # validate
     if options.format == "xmltei" and options.tei_validation:
@@ -674,7 +677,8 @@ def replace_element_text(element: _Element, include_formatting: bool, in_cell: b
                     elem_text = f"{elem_text}\n{lb.tail or ''}"
                     lb.getparent().remove(lb)
                 fence = _code_fence(elem_text, min_len=3)
-                elem_text = f"{fence}\n{elem_text}\n{fence}\n"
+                language = element.get("rend") or ""
+                elem_text = f"{fence}{language}\n{elem_text}\n{fence}\n"
             else:
                 elem_text = _md_code(elem_text)
     # handle links
@@ -983,10 +987,10 @@ def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     if docmeta.categories or docmeta.tags:
         textclass = SubElement(profiledesc, "textClass")
         keywords = SubElement(textclass, "keywords")
-        if docmeta.categories:
-            SubElement(keywords, "term", type="categories").text = ",".join(docmeta.categories)
-        if docmeta.tags:
-            SubElement(keywords, "term", type="tags").text = ",".join(docmeta.tags)
+        for category in docmeta.categories or []:
+            SubElement(keywords, "term", type="categories").text = category
+        for tag in docmeta.tags or []:
+            SubElement(keywords, "term", type="tags").text = tag
 
     creation = SubElement(profiledesc, "creation")
     SubElement(creation, "date", type="download").text = docmeta.filedate

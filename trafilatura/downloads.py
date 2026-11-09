@@ -186,6 +186,9 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
         total=max_redirects,
         redirect=max_redirects,  # raise_on_redirect=False,
         connect=0,
+        # one read retry, without backoff: covers a dropped keep-alive connection
+        # while a read timeout costs DOWNLOAD_TIMEOUT twice instead of three times
+        read=1,
         backoff_factor=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2,
         backoff_max=MAX_BACKOFF,
         retry_after_max=MAX_BACKOFF,
@@ -214,6 +217,19 @@ def _initiate_pool(config: ConfigParser, no_ssl: bool = False) -> urllib3.PoolMa
     return pool
 
 
+def _final_url(response: urllib3.BaseHTTPResponse, url: str) -> str:
+    "Return the absolute URL of the page a urllib3 response comes from."
+    # a Location header can be relative to the hop that sent it, which is not
+    # the original URL after a cross-host redirect, and geturl() is empty when
+    # the last hop was retried, so resolve the last redirect from the history
+    history = response.retries.history if response.retries else ()
+    for hop in reversed(history):
+        if hop.redirect_location:
+            return urljoin(hop.url or url, hop.redirect_location)
+    # without a redirect, geturl() returns the request URI, which can be relative
+    return urljoin(url, response.geturl() or url)
+
+
 def _send_urllib_request(url: str, no_ssl: bool, config: ConfigParser) -> Response | None:
     "Internal function to robustly send a request (SSL or not) and return its result."
     try:
@@ -235,9 +251,7 @@ def _send_urllib_request(url: str, no_ssl: bool, config: ConfigParser) -> Respon
             response.release_conn()
 
         # necessary for standardization
-        # geturl() returns the raw Location header after a redirect and the request
-        # URI otherwise, both of which can be relative
-        resp = Response(data, response.status, urljoin(url, response.geturl() or url))
+        resp = Response(data, response.status, _final_url(response, url))
         resp.store_headers(response.headers)
         return resp
 
@@ -258,7 +272,7 @@ def _is_suitable_response(url: str, response: Response, options: Extractor) -> b
     if response.status != 200:
         LOGGER.error("not a 200 response: %s for URL %s", response.status, url)
         return False
-    return is_acceptable_length(len(response.html or response.data or ""), options)
+    return is_acceptable_length(len(response.html or response.data or ""), options, url)
 
 
 def fetch_url(
@@ -366,6 +380,7 @@ def _urllib3_is_live_page(url: str, config: ConfigParser = DEFAULT_CONFIG) -> bo
             retries=urllib3.util.Retry(
                 total=config.getint("DEFAULT", "MAX_REDIRECTS"),
                 connect=0,
+                read=1,
                 raise_on_redirect=False,
                 status_forcelist=FORCE_STATUS,
                 backoff_factor=1,
@@ -387,6 +402,14 @@ def is_live_page(url: str, config: ConfigParser = DEFAULT_CONFIG) -> bool:
     return result or _urllib3_is_live_page(url, config)
 
 
+def filter_blacklist(urls: list[str], blacklist: set[str] | None) -> list[str]:
+    "Remove the URLs found in the blacklist, compared without protocol and trailing slashes."
+    if not blacklist:
+        return urls
+    keys = {URL_BLACKLIST_REGEX.sub("", b) for b in blacklist}
+    return [u for u in urls if URL_BLACKLIST_REGEX.sub("", u) not in keys]
+
+
 def add_to_compressed_dict(
     inputlist: list[str],
     blacklist: set[str] | None = None,
@@ -401,8 +424,7 @@ def add_to_compressed_dict(
 
     inputlist = list(dict.fromkeys(inputlist))
 
-    if blacklist:
-        inputlist = [u for u in inputlist if URL_BLACKLIST_REGEX.sub("", u) not in blacklist]
+    inputlist = filter_blacklist(inputlist, blacklist)
 
     if url_filter:
         inputlist = [u for u in inputlist if any(f in u for f in url_filter)]

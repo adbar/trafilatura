@@ -131,7 +131,7 @@ Downloads on the command-line are automatically run with threads and domain-awar
     $ trafilatura -i list.txt -o txtfiles/ --backup-dir htmlbackup/
 
 .. hint::
-    To check for download errors you can use the exit code (0 if all pages could be downloaded, 1 otherwise) and sift through the logs if necessary.
+    To check for download errors you can use the exit code (0 if all pages could be downloaded, 1 if some could not, 126 if almost none could) and sift through the logs if necessary. See the `list of exit codes <usage-cli.html#exit-codes>`_.
 
 For more information, see `page on command-line use <usage-cli.html>`_.
 

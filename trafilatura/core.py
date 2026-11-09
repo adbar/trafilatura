@@ -26,7 +26,7 @@ from .htmlprocessing import (
 )
 from .main_extractor import DEFERRED_ATTR, _elem_text, extract_comments, extract_content
 from .metadata import Document, extract_metadata
-from .settings import DEFAULT_CONFIG, Extractor, use_config
+from .settings import DEFAULT_CONFIG, Extractor, sanitize_source, use_config
 from .utils import (
     LANGID_FLAG,
     HtmlInput,
@@ -52,7 +52,8 @@ ESCALATION_PAGE_SHARE = 0.2  # ... covering less than this share of the page tex
 ESCALATION_ACCEPT_RATIO = 1.5  # accept the retry if it is this much longer
 # justext tends to over-include (whole pricing tables, unrelated sections) rather than stop at
 # page boundaries the way the rule-based retry does, so it needs a stricter bar than the
-# retry's own 1.5x: swept 1.5-10x, 2.0x is the best balance across the full suite.
+# retry's own 1.5x: swept 1.5-10x, 2.0x is the best balance across the full suite. Re-checked
+# on the built-in jusText without the retry-length gate: 1.5x fails the gate, 3.0x loses on WCXB/WMB.
 ESCALATION_JUSTEXT_RATIO = 2.0
 
 TXT_FORMATS = {"markdown", "txt"}
@@ -172,9 +173,9 @@ def trafilatura_sequence(
     1. main extractor (includes wild-text recovery for short documents)
     2. comparison with external extractors (readability/justext), skipped in fast mode
     3. baseline rescue on the original, uncleaned tree
-    4. recall escalation, if the result still covers little of the page: stages 1-2 re-run
-       in recall mode (_recall_retry), plus a justext candidate tried alongside (a different
-       algorithm, not just stricter rules, so it reaches content the rule-based retry cannot)
+    4. recall escalation, if the result still covers little of the page: a justext candidate
+       first (a different algorithm, not just stricter rules, so it reaches content the rule-based
+       retry cannot), if rejected stages 1-2 re-run in recall mode (_recall_retry)
     Returns the body and comments elements with their text.
 
     Internal helper: its signature and 4-tuple return are not a stable API — call
@@ -235,29 +236,27 @@ def trafilatura_sequence(
             if is_forum or not options.comments
             else prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_AND_LISTS_XPATH if temp_comments else REMOVE_COMMENTS_XPATH)
         )
-        r_text = ""
-        try:
-            r_body, r_text = _recall_retry(esc_tree, r_options, url)
-        except Exception as err:  # pragma: no cover
-            LOGGER.warning("recall retry failed: %s %s", err, url)
-        # justext reaches div-buried content the rule retry misses (gated: ungated regressed
-        # own-fallback). No region scoping of its own -> esc_tree is comment-pruned above
+        # justext reaches div-buried content the rule retry misses, accepted when it clearly
+        # outgrows the main text. No region scoping of its own -> esc_tree is comment-pruned above
         j_text = ""
         if not options.fast:
-            try:
-                j_body, j_text = justext_rescue(copy(esc_tree), options)
-            except Exception as err:  # pragma: no cover
-                LOGGER.warning("justext candidate failed: %s %s", err, url)
+            j_body, j_text = justext_rescue(esc_tree, options)
 
         # floor on the retry: a result below the pipeline's own minimum is noise (the retry's
         # former internal baseline used to displace such outputs). cookie/consent banners justext
-        # could pick up are pruned from its input in basic_cleaning. An accepted candidate saw the
+        # could pick up are skipped by its walker (BASIC_CLEAN_XPATH). An accepted candidate saw the
         # full page, so its exclusions are deliberate -> drop the forum-post salvage.
-        len_text, r_len, j_len = len(temp_text), len(r_text), len(j_text)
-        if j_len > r_len and j_len > ESCALATION_JUSTEXT_RATIO * len_text:
+        len_text = len(temp_text)
+        if len(j_text) > ESCALATION_JUSTEXT_RATIO * len_text:
             postbody, temp_text, forum_posts = j_body, j_text, None
-        elif r_len >= options.min_extracted_size and r_len > ESCALATION_ACCEPT_RATIO * len_text:
-            postbody, temp_text, forum_posts = r_body, r_text, None
+        else:
+            r_text = ""
+            try:
+                r_body, r_text = _recall_retry(esc_tree, r_options, url)
+            except Exception as err:  # pragma: no cover
+                LOGGER.warning("recall retry failed: %s %s", err, url)
+            if len(r_text) >= options.min_extracted_size and len(r_text) > ESCALATION_ACCEPT_RATIO * len_text:
+                postbody, temp_text, forum_posts = r_body, r_text, None
 
     # lists recovered after a colon (#431) stayed out of the lengths above, count them now
     deferred = postbody.findall(f"list[@{DEFERRED_ATTR}]")
@@ -342,7 +341,7 @@ def bare_extraction(
         A Python dict() containing all the extracted information or None.
 
     Raises:
-        ValueError: Extraction problem.
+        ValueError: Unknown output format.
 
     Note:
         Low-level primitive: returns a Document with an unserialized .body tree; tei_validation only applies when serializing via extract().
@@ -381,6 +380,15 @@ def bare_extraction(
             date_params=date_extraction_params,
         )
 
+    # apply the url argument on a copy of the options
+    if url and url != options.url:
+        options = copy(options)
+        # keep a source set by the caller
+        if not options.source or options.source == sanitize_source(options.url):
+            options.source = sanitize_source(url)
+        options.url = url
+    url = options.url
+
     try:
         # load the HTML tree
         tree = load_html(filecontent, options.max_file_size)
@@ -400,15 +408,15 @@ def bare_extraction(
         if options.with_metadata:
             document = extract_metadata(
                 tree,
-                options.url,
+                url,
                 options.date_params,
                 options.fast,
                 options.author_blacklist,
             )
 
-            # cut short if extracted URL in blacklist
-            if document.url in options.url_blacklist:
-                LOGGER.warning("blacklisted URL: %s", document.url)
+            # cut short if the given or extracted URL is in the blacklist
+            if blacklisted := {url, document.url} & options.url_blacklist:
+                LOGGER.warning("blacklisted URL: %s", blacklisted.pop())
                 raise ValueError
 
             # cut short if core elements are missing
@@ -426,7 +434,7 @@ def bare_extraction(
                 prune_xpath = [prune_xpath]
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
-        postbody, temp_text, commentsbody, temp_comments = trafilatura_sequence(tree, options, options.url or document.url)
+        postbody, temp_text, commentsbody, temp_comments = trafilatura_sequence(tree, options, url or document.url)
         len_text, len_comments = len(temp_text), len(temp_comments)
 
         # tree size sanity check
@@ -549,6 +557,9 @@ def extract(
     Returns:
         A string in the desired format or None.
 
+    Raises:
+        ValueError: Unknown output format.
+
     """
     # must stay the first statement: a signature drift raises TypeError
     document = _internal_extraction(**locals())
@@ -613,6 +624,9 @@ def extract_with_metadata(
 
     Returns:
         Document metadata with content string in the desired format or None.
+
+    Raises:
+        ValueError: Unknown output format.
     """
     return _internal_extraction(**locals(), with_metadata=True)
 
@@ -708,6 +722,7 @@ def _internal_extraction(
     # extraction
     document = bare_extraction(
         filecontent,
+        url=url,
         options=options,
         as_dict=False,
         prune_xpath=prune_xpath,

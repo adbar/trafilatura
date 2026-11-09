@@ -170,7 +170,7 @@ To reset the cache between batches, call ``reset_caches()``:
     >>> from trafilatura.meta import reset_caches
     >>> reset_caches()  # clears dedup cache, plus other internal caches
 
-This also frees memory held by other internal caches (jusText stopwords, htmldate, courlan).
+This also frees memory held by other internal caches (htmldate, courlan).
 
 .. note::
     Each thread maintains its own dedup state, but ``reset_caches()`` clears the shared caches. Call it from the main thread between independent processing runs.

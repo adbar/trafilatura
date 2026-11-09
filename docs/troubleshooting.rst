@@ -176,7 +176,7 @@ Performance problems
 Memory keeps growing
 ^^^^^^^^^^^^^^^^^^^^
 
-Trafilatura uses internal caches (deduplication, stopwords, URL processing) that grow over time. Call ``reset_caches()`` between unrelated batches:
+Trafilatura uses internal caches (deduplication, URL processing) that grow over time. Call ``reset_caches()`` between unrelated batches:
 
 .. doctest::
 
