@@ -469,13 +469,15 @@ def line_processing(line: str, preserve_space: bool = False, trailing_space: boo
     and invalid XML characters on line level"""
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     # unique code spaces
-    new_line = remove_control_characters(line.replace("&#13;", "\r").replace("&#10;", "\n").replace("&nbsp;", "\u00a0"))
+    new_line: str | None = remove_control_characters(
+        line.replace("&#13;", "\r").replace("&#10;", "\n").replace("&nbsp;", "\u00a0")
+    )
     if not preserve_space:
         # normalize space characters (including newlines and Unicode spaces)
         new_line = trim(new_line)
         # prune empty lines
         if not new_line:
-            new_line = None  # type: ignore[assignment]
+            new_line = None
         elif trailing_space:
             space_before = " " if line[0].isspace() else ""
             space_after = " " if line[-1].isspace() else ""
