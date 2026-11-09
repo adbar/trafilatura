@@ -271,7 +271,10 @@ def process_response(
         return
 
     # convert urllib3 response to string and proceed to link extraction
-    url = response.url if get_base_url(response.url) == params.base else params.base
+    final_base = get_base_url(response.url)
+    if not is_same_site(params.base, final_base):
+        return
+    url = response.url if final_base == params.base else params.base
     process_links(decode_file(response.data), params, url)
 
 
@@ -320,15 +323,13 @@ def crawl_page(
         htmlstring, homepage, new_base_url = probe_alternative_homepage(url, params.config)
         if htmlstring and homepage and new_base_url:
             params.i += 1
+            URL_STORE.add_urls([homepage], visited=True)
             # follow the site's http -> https upgrade and the redirects between the bare domain and www
             if is_same_site(params.base, new_base_url):
                 params.ref = params.ref.replace(params.base, new_base_url, 1)
                 params.base = new_base_url
                 URL_STORE.store_rules(params.base, params.rules)
-            # register potentially new homepage
-            URL_STORE.add_urls([homepage], visited=get_base_url(homepage) == params.base)
-            # resolve links against the final URL unless the redirect left the crawled host
-            process_links(htmlstring, params, url=homepage if get_base_url(homepage) == params.base else url)
+                process_links(htmlstring, params, url=homepage)
     else:
         params.i += 1
         response = fetch_response(url, decode=False, config=params.config)
