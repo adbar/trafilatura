@@ -187,6 +187,12 @@ def test_filters():
     )
 
 
+def test_detectable_languages_without_detector(monkeypatch):
+    "Without the language detector there is no list of detectable languages"
+    monkeypatch.setattr("trafilatura.utils.LANGID_FLAG", False)
+    assert detectable_languages() is None
+
+
 def test_prune_xpath():
     """test xpath pruning (parameter in extract and bare_extraction)"""
 
