@@ -470,6 +470,51 @@ def test_guess_order():
     assert fetched[1] == "https://example.org/sitemap.xml"
 
 
+@pytest.mark.parametrize(
+    ("start", "maps", "fetched", "expected"),
+    [
+        ("", {"sitemap.xml": ["a"], "sitemap.xml.gz": ["b"]}, ["sitemap.xml"], ["a"]),
+        ("", {"sitemap.xml.gz": ["b"]}, ["sitemap.xml", "sitemap.xml.gz"], ["b"]),
+        (
+            "",
+            {"sitemap.xml": ["part-a.xml", "part-b.xml"], "part-a.xml": ["a"], "part-b.xml": ["b"]},
+            ["sitemap.xml", "part-b.xml", "part-a.xml"],
+            ["a", "b"],
+        ),
+        (
+            "",
+            {"sitemap.xml": ["sitemap.xml.gz"], "sitemap": ["a"]},
+            ["sitemap.xml", "sitemap.xml.gz", "sitemap"],
+            ["a"],
+        ),
+        (
+            "/blog",
+            {"sitemap.xml": ["news/a"], "sitemap.xml.gz": ["blog/b"]},
+            ["sitemap.xml", "sitemap.xml.gz"],
+            ["blog/b"],
+        ),
+    ],
+)
+def test_stop_guessing_after_a_sitemap_yields_links(monkeypatch, start, maps, fetched, expected):
+    base = "https://example.org"
+
+    def fetch(url, **kwargs):
+        entries = maps.get(url.removeprefix(f"{base}/"))
+        if not entries:
+            return None
+        root, tag = ("sitemapindex", "sitemap") if entries[0].endswith((".xml", ".xml.gz")) else ("urlset", "url")
+        locations = "".join(f"<{tag}><loc>{base}/{entry}</loc></{tag}>" for entry in entries)
+        return f"<{root}>{locations}</{root}>"
+
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "find_robots_sitemaps", lambda url, config: [])
+    with patch.object(sitemaps, "fetch_url", side_effect=fetch) as request, patch.object(sitemaps, "sleep") as wait:
+        assert sitemaps.sitemap_search(f"{base}{start}", sleep_time=0.25) == [f"{base}/{page}" for page in expected]
+
+    assert [args[0] for args, _ in request.call_args_list] == [f"{base}/{path}" for path in fetched]
+    assert wait.call_args_list == [call(0.25)] * (len(fetched) - 1)
+
+
 def test_whole():
     "Test whole process."
     results = sitemaps.sitemap_search("https://www.sitemaps.org", target_lang="de", max_sitemaps=1)
