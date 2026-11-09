@@ -1,0 +1,22 @@
+name: Bug report
+description: Something does not work as expected
+labels: ["bug"]
+body:
+  - type: checkboxes
+    attributes:
+      label: Existing issues
+      options:
+        - label: I searched the open and closed issues and found no report of this problem.
+          required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: What happened, what you expected, and how to reproduce it (URL or HTML sample, code or command).
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Versions
+      description: Trafilatura, Python and operating system.
+    validations:
+      required: true
