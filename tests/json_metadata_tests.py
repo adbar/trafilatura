@@ -1187,6 +1187,7 @@ def test_json_article_subtypes(article_type):
         ("<![CDATA[", "]]>"),
         ("<!--", "-->"),
         (" <!-- ", " --> "),
+        ("<!--", "--!>"),
     ],
 )
 def test_json_wrapped(prefix, suffix):
