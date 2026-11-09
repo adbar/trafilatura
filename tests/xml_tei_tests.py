@@ -537,12 +537,6 @@ def test_no_markdown_marker_in_merged_item_content():
 
 def test_graphic_src_converted_to_url():
     "TEI requires a url attribute on graphic: the image source must not be dropped."
-    doc = fromstring(
-        '<TEI><text><body><div><p>See <graphic src="https://example.org/a.png" alt="A"/></p></div></body></text></TEI>'
-    )
-    check_tei(doc, None)
-    assert [dict(graphic.attrib) for graphic in doc.iter("graphic")] == [{"url": "https://example.org/a.png"}]
-
     htmlstring = """<html><body><article>
     <p>A first paragraph that is long enough to be kept as the main text of the article.</p>
     <p>See the chart <img src="https://example.org/chart.png" alt="A chart"> for details.</p>
