@@ -161,7 +161,7 @@ Trafilatura will work as well provided web pages (HTML documents) are used as in
 
 -  ``--input-dir`` to select a directory to read files from
 -  ``-o`` or ``--output-dir`` to define a directory to eventually store the results
--  ``--keep-dirs`` to mirror the input directory structure in the output (requires ``-o/--output-dir``)
+-  ``--keep-dirs`` to mirror the input directory structure in the output (requires ``--input-dir`` and ``-o/--output-dir``)
 
 
 .. note::
@@ -175,7 +175,7 @@ Process a list of links
 .. note::
     Beware that there should be a tacit scraping etiquette and that a server may block you after the download of a certain number of pages from the same website/domain in a short period of time.
 
-    In addition, some websites may block the ``requests`` `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
+    In addition, some websites may block the default `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
 
     For more information see the `page on downloads <downloads.html>`_.
 
@@ -184,7 +184,7 @@ The following command line arguments are relevant:
 
 -  ``-i`` or ``--input-file`` to select an input list to read links from.
 
-   This option allows for bulk download and processing of a list of URLs from a file listing one link per line. The input list will be read sequentially, only lines beginning with a valid URL will be read, the file can thus contain other information which will be discarded.
+   This option allows for bulk download and processing of a list of URLs from a file listing one link per line. The input list will be read sequentially, only lines beginning with a valid URL will be read. Each line is cut at the first space or tab, so the rest of the line can hold other information which will be discarded.
 
 -  ``-o`` or ``--output-dir`` to define a directory to eventually store the results.
 
@@ -202,6 +202,12 @@ The following command line arguments are relevant:
     Backup of HTML sources can be useful for archival and further processing:
     
     ``$ trafilatura --input-file links.txt --output-dir converted/ --backup-dir html-sources/ --xml``
+
+
+.. hint::
+    Long batch runs on URL lists or input directories can display a progress bar with ``--progress``. This option requires the optional ``tqdm`` package (``pip install tqdm``):
+
+    ``$ trafilatura --input-file links.txt --output-dir converted/ --progress``
 
 
 Source-based file names
@@ -242,9 +248,9 @@ Link discovery
 
 Link discovery can be performed over `web feeds <https://en.wikipedia.org/wiki/Web_feed>`_ (Atom and RSS, mostly for fresh content), `sitemaps <https://en.wikipedia.org/wiki/Sitemaps>`_ for exhaustivity (all potential pages as listed by the owners), and discovery by web crawling (i.e. by following the internal links, more experimental).
 
-Both the homepage and a particular page can be used as input depending on the selected options (e.g. a sitemap or feed URL).
+Both the homepage and a particular page can be used as input depending on the selected options (e.g. a sitemap or feed URL). The URL is given either as the option's value or with ``-u``/``--URL`` or ``-i``/``--input-file``, not both.
 
-The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
+Without ``--list``, the discovered links are downloaded and processed, the input URLs themselves are not. The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
 
 For more information please refer to the `tutorial on content discovery <tutorial-corpus.html#content-discovery>`_.
 
@@ -308,8 +314,8 @@ See the `page on web crawling <crawls.html>`_ for more information.
 Explore and probe
 ~~~~~~~~~~~~~~~~~
 
-- ``--explore``: combines sitemap and crawl discovery for broader coverage.
-- ``--probe``: probes pages for extractable content, works best with ``--target-language`` to find pages in a specific language.
+- ``--explore``: combines sitemap and crawl discovery for broader coverage. Websites whose sitemaps yield no links are crawled, and as with ``--crawl`` the crawled links are printed, not processed.
+- ``--probe``: probes pages for extractable content and prints the URLs of those which have some, works best with ``--target-language`` to find pages in a specific language.
 
 
 URL inspection prior to download and processing
@@ -318,12 +324,21 @@ URL inspection prior to download and processing
 
 .. code-block:: bash
 
-    # --url-filter selects which seed URLs get processed — combine with -i/--input-file
+    # --url-filter selects which seed URLs given with -u or -i get processed
     $ trafilatura --sitemap -i seeds.txt --list --url-filter "sitemaps.org"
 
-To filter the discovered *links* by pattern instead, pass a subpart of the site directly as the sitemap URL — for example ``--sitemap "https://www.sitemaps.org/de/"`` only lists German-language pages. ``--url-filter`` does not filter individual discovered links, only which seed URLs (from ``-i``) are processed in the first place.
+To filter the discovered *links* by pattern instead, pass a subpart of the site directly as the sitemap URL. For example, ``--sitemap "https://www.sitemaps.org/de/"`` only lists German-language pages. ``--url-filter`` does not filter individual discovered links, only which seed URLs (from ``-u`` or ``-i``) are processed in the first place.
 
 For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial-corpus.html#link-filtering>`_.
+
+
+Exit codes
+----------
+
+- ``0``: success, including inputs without extractable content and local files or STDIN input rejected for their size.
+- ``1``: some inputs could not be downloaded or read (downloads rejected for their size count as failed), ``--feed`` or ``--sitemap`` found no links for some of them, no valid input URL is left (also for an empty input list), or the output directory cannot be written.
+- ``126``: more than 99% of the inputs could not be downloaded (also when ``--crawl``, ``--probe`` or ``--explore`` cannot fetch the start pages).
+- ``2``: invalid arguments, for example a missing input file, ``--parallel 0``, or ``--feed`` without a URL.
 
 
 Deprecations

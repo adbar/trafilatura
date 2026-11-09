@@ -6,7 +6,7 @@ Functions dedicated to website navigation and crawling/spidering.
 import logging
 from configparser import ConfigParser
 from time import sleep
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit
 from urllib.robotparser import RobotFileParser
 
 from courlan import (
@@ -28,7 +28,7 @@ from .baseline import baseline
 from .downloads import fetch_response, fetch_url
 from .htmlprocessing import prune_unwanted_nodes
 from .settings import DEFAULT_CONFIG
-from .utils import LANGID_FLAG, Response, decode_file, load_html
+from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, Response, decode_file, load_html
 
 LOGGER = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ MAX_KNOWN_URLS = 100000
 class CrawlParameters:
     "Store necessary information to manage a focused crawl."
 
-    __slots__ = ["base", "config", "i", "is_on", "known_num", "lang", "prune_xpath", "ref", "rules", "start"]
+    __slots__ = ["base", "blacklist", "config", "i", "is_on", "known_num", "lang", "prune_xpath", "ref", "rules", "start"]
 
     def __init__(
         self,
@@ -51,6 +51,7 @@ class CrawlParameters:
         rules: RobotFileParser | None = None,
         prune_xpath: str | list[str] | None = None,
         config: ConfigParser = DEFAULT_CONFIG,
+        blacklist: set[str] | None = None,
     ) -> None:
         self.start: str = start
         self.base: str = self._get_base_url(start)
@@ -62,6 +63,7 @@ class CrawlParameters:
         self.known_num: int = 0
         self.is_on: bool = True
         self.prune_xpath: str | list[str] | None = prune_xpath
+        self.blacklist: set[str] = {URL_BLACKLIST_REGEX.sub("", b) for b in blacklist or ()}
 
     def _get_base_url(self, start: str) -> str:
         "Set reference domain for the crawl."
@@ -72,7 +74,19 @@ class CrawlParameters:
 
     def _get_reference(self, start: str) -> str:
         "Determine the reference URL."
-        return start.rsplit("/", 1)[0] if start.count("/") >= 3 else start
+        return self.base + urlsplit(start).path.rsplit("/", 1)[0]
+
+    def _is_within_reference(self, link: str) -> bool:
+        "Check the origin and directory, excluding query strings and fragments."
+        try:
+            candidate, reference = urlsplit(link), urlsplit(self.ref)
+        except ValueError:
+            return False
+        return (
+            candidate.scheme.lower() == reference.scheme.lower()
+            and candidate.netloc.lower() == reference.netloc.lower()
+            and (candidate.path == reference.path or candidate.path.startswith(reference.path + "/"))
+        )
 
     def update_metadata(self, url_store: UrlStore) -> None:
         "Adjust crawl data based on URL store info."
@@ -83,11 +97,16 @@ class CrawlParameters:
         "Prepare the todo list, excluding invalid URLs."
         if not todo:
             return []
-        return [u for u in todo if u != self.start and self.ref in u]
+        return [u for u in todo if u != self.start and self._is_within_reference(u)]
 
     def is_valid_link(self, link: str) -> bool:
-        "Run checks: robots.txt rules, URL type and crawl breadth."
-        return (not self.rules or self.rules.can_fetch("*", link)) and self.ref in link and not is_not_crawlable(link)
+        "Run checks: robots.txt rules, URL type, crawl breadth and blacklist."
+        return (
+            (not self.rules or self.rules.can_fetch("*", link))
+            and self._is_within_reference(link)
+            and not is_not_crawlable(link)
+            and URL_BLACKLIST_REGEX.sub("", link) not in self.blacklist
+        )
 
 
 def refresh_detection(htmlstring: str, homepage: str, config: ConfigParser = DEFAULT_CONFIG) -> tuple[str | None, str | None]:
@@ -264,10 +283,11 @@ def init_crawl(
     known: list[str] | None = None,
     prune_xpath: str | list[str] | None = None,
     config: ConfigParser = DEFAULT_CONFIG,
+    blacklist: set[str] | None = None,
 ) -> CrawlParameters:
     """Initialize crawl by setting variables, copying values to the
     URL store and retrieving the initial page if the crawl starts."""
-    params = CrawlParameters(start, lang, rules, prune_xpath, config)
+    params = CrawlParameters(start, lang, rules, prune_xpath, config, blacklist)
 
     # todo: just known or also visited?
     URL_STORE.add_urls(urls=known or [], visited=True)
@@ -294,12 +314,11 @@ def crawl_page(
         params.update_metadata(URL_STORE)
         return params
 
-    params.i += 1
-
     if initial:
-        # probe and process homepage
+        # probe and process homepage, only count it if it could be fetched
         htmlstring, homepage, new_base_url = probe_alternative_homepage(url, params.config)
         if htmlstring and homepage and new_base_url:
+            params.i += 1
             # follow the site's http -> https upgrade and the redirects between the bare domain and www
             if is_same_site(params.base, new_base_url):
                 params.ref = params.ref.replace(params.base, new_base_url, 1)
@@ -310,6 +329,7 @@ def crawl_page(
             # resolve links against the final URL unless the redirect left the crawled host
             process_links(htmlstring, params, url=homepage if get_base_url(homepage) == params.base else url)
     else:
+        params.i += 1
         response = fetch_response(url, decode=False, config=params.config)
         process_response(response, params)
 

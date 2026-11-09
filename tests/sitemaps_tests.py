@@ -5,7 +5,8 @@ Unit tests for sitemaps parsing.
 import logging
 import os
 import sys
-from unittest.mock import patch
+from configparser import ConfigParser
+from unittest.mock import call, patch
 
 import pytest
 from courlan import get_hostinfo
@@ -13,6 +14,7 @@ from courlan import get_hostinfo
 import trafilatura
 from trafilatura import sitemaps
 from trafilatura.deduplication import is_similar_domain
+from trafilatura.settings import DEFAULT_CONFIG
 from trafilatura.utils import decode_file
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -127,6 +129,40 @@ def test_leading_whitespace_before_sitemap(monkeypatch, prefix):
     assert sitemaps.is_plausible_sitemap(url, content) is True
     assert sitemaps.is_plausible_sitemap(url, prefix + "<!DOCTYPE html><html><body/></html>") is False
 
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda u, **kwargs: content if u == url else None)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda u, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+    assert sitemaps.sitemap_search(url) == ["https://example.org/a"]
+
+
+def test_plain_text_sitemap_html_and_quotes():
+    # an HTML page whose <html> tag comes after a long comment is not a TXT sitemap
+    html = "<!DOCTYPE html>\n<!-- " + "x" * 150 + " -->\n<html><body><a href='https://example.org/page'>Page</a></body></html>"
+    assert sitemaps.is_plausible_sitemap("https://example.org/sitemap", html) is False
+    assert sitemaps.is_plausible_sitemap("https://example.org/sitemap", html.lower()) is False
+    assert sitemaps.parse_sitemap(html, "https://example.org/sitemap") == []
+    # closing single quotes are not part of the link, inner apostrophes are kept
+    url = "https://example.org/sitemap.txt"
+    assert sitemaps.parse_sitemap("'https://example.org/page'", url) == ["https://example.org/page"]
+    assert sitemaps.parse_sitemap("https://example.org/it's-here\n", url) == ["https://example.org/it%27s-here"]
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "https://example.org/sitemap.xml?page=1",
+        "https://example.org/sitemap.xml/",
+        "https://example.org/sitemap/index",
+        "https://example.org/sitemap.txt",
+    ],
+)
+def test_explicit_sitemap_urls(monkeypatch, url):
+    if url.endswith(".txt"):
+        content = "https://example.org/a\n"
+    else:
+        content = (
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://example.org/a</loc></url></urlset>'
+        )
     monkeypatch.setattr(sitemaps, "fetch_url", lambda u, **kwargs: content if u == url else None)
     monkeypatch.setattr(sitemaps, "is_live_page", lambda u, config: True)
     monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
@@ -478,6 +514,34 @@ def test_sitemap_namespace_scope():
     assert sitemap.urls == ["https://example.org/page"]
 
 
+@pytest.mark.parametrize(
+    "namespace",
+    [
+        "http://www.google.com/schemas/sitemap/0.84",
+        "https://www.sitemaps.org/schemas/sitemap/0.9",
+        "http://www.sitemaps.org/schemas/sitemap/0.9/",
+        "http://www.sitemaps.org/schemas/sitemap/0.90",
+    ],
+)
+@pytest.mark.parametrize("prefix", ["", "sm:"])
+@pytest.mark.parametrize("index", [False, True])
+def test_sitemap_namespace_variants(namespace, prefix, index):
+    """Legacy, https and trailing-slash sitemap namespaces are accepted, extension locations are not."""
+    root, child = ("sitemapindex", "sitemap") if index else ("urlset", "url")
+    url = "https://example.org/nested.xml" if index else "https://example.org/page"
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.current_url = "https://example.org/sitemap.xml"
+    sitemap.content = (
+        f'<{prefix}{root} xmlns{":" + prefix[:-1] if prefix else ""}="{namespace}"'
+        ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">'
+        f"<{prefix}{child}><{prefix}loc>{url}</{prefix}loc>"
+        "<image:image><image:loc>https://example.org/image.jpg</image:loc></image:image>"
+        f"</{prefix}{child}></{prefix}{root}>"
+    )
+    sitemap.process()
+    assert (sitemap.sitemap_urls, sitemap.urls) == (([url], []) if index else ([], [url]))
+
+
 @pytest.mark.parametrize("location", ["&external;", "https://example.org/&external;", "https://example.org/<nested/>"])
 def test_sitemap_locations_do_not_expand_entities(location):
     """Location extraction does not resolve entities or concatenate child markup."""
@@ -530,3 +594,22 @@ def test_sitemap_xml_without_a_root_is_ignored(content):
     sitemap.extract_sitemap_links()
     assert sitemap.urls == []
     assert sitemap.sitemap_urls == []
+
+
+def test_sleep_time_defaults_to_config(monkeypatch):
+    """Without an explicit sleep_time, the wait comes from SLEEP_TIME in the config."""
+    config = ConfigParser()
+    config.read_dict(DEFAULT_CONFIG)
+    config.set("DEFAULT", "SLEEP_TIME", "10")
+    robots = ["https://example.org/a.xml", "https://example.org/b.xml"]
+    monkeypatch.setattr(sitemaps, "find_robots_sitemaps", lambda url, config: list(robots))
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: None)
+
+    with patch.object(sitemaps, "sleep") as mock_sleep:
+        sitemaps.sitemap_search("https://example.org", config=config)
+    assert mock_sleep.call_args_list == [call(10.0)]
+
+    with patch.object(sitemaps, "sleep") as mock_sleep:
+        sitemaps.sitemap_search("https://example.org", sleep_time=0.5, config=config)
+    assert mock_sleep.call_args_list == [call(0.5)]

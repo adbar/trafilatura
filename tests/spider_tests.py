@@ -211,6 +211,20 @@ def test_process_links_fragment_navigation():
         assert store.find_unvisited_urls(base) == [base + "/tag/topic", base + "/page"]
 
 
+def test_crawl_page_failed_start():
+    "A start page that cannot be fetched is not counted."
+    store = UrlStore(compressed=False, strict=False)
+    with (
+        patch.object(spider, "URL_STORE", store),
+        patch.object(spider, "get_rules", return_value=None),
+        patch.object(spider, "probe_alternative_homepage", return_value=(None, None, None)),
+    ):
+        params = spider.CrawlParameters("https://example.org")
+        store.add_urls(urls=[params.start], visited=False)
+        params = spider.crawl_page(params, initial=True)
+    assert params.i == 0
+
+
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
     url = "https://httpbun.com/html"
@@ -268,6 +282,61 @@ def test_crawl_logic():
     assert params.i == 0
     assert params.is_on
     assert params.known_num == 2
+
+
+@pytest.mark.parametrize(
+    "start",
+    [
+        "https://example.org/blog/",
+        "https://example.org/blog/index.html",
+        "https://example.org/blog/?next=/elsewhere/file",
+        "https://example.org/blog/index.html?next=/elsewhere/file#part",
+    ],
+)
+def test_crawl_directory_scope(start):
+    "A directory crawl keeps descendants, not siblings or matches in query strings."
+    spider.URL_STORE = UrlStore()
+    inside = "https://example.org/blog/article"
+    outside = "https://example.org/blogger/article"
+    html = (
+        '<html><body><a href="article">relative</a>'
+        f'<a href="{outside}">sibling</a>'
+        '<a href="/search?next=https://example.org/blog/article">query</a>'
+        '<a href="/outside#https://example.org/blog/article">fragment</a></body></html>'
+    )
+    requested = []
+
+    def fake_fetch_response(url, **_kwargs):
+        requested.append(url)
+        return Response(html.encode(), 200, url)
+
+    with patch.object(spider, "fetch_response", fake_fetch_response), patch.object(spider, "get_rules", return_value=None):
+        todo, known = spider.focused_crawler(start, max_seen_urls=5)
+    assert requested[1:] == [inside]
+    assert not todo
+    assert outside not in known
+
+
+@pytest.mark.parametrize(
+    "link, expected",
+    [
+        ("https://example.org/blog", True),
+        ("https://example.org/blog/article?page=2#part", True),
+        ("https://example.org/blog/nested/article", True),
+        ("https://example.org/blogger/article", False),
+        ("https://example.org/blog%2Farticle", False),
+        ("https://example.org/other?next=https://example.org/blog/article", False),
+        ("https://other.org/https://example.org/blog/article", False),
+        ("https://example.org.evil/blog/article", False),
+        ("https://[::1/blog/article", False),
+    ],
+)
+def test_crawl_resumed_directory_scope(link, expected):
+    "Resumed frontier URLs use the same origin and directory boundary as new links."
+    with patch.object(spider, "get_rules", return_value=None):
+        params = spider.CrawlParameters("https://example.org/blog/")
+    assert params.filter_list([link]) == ([link] if expected else [])
+    assert params.is_valid_link(link) is expected
 
 
 def test_crawl_page():
@@ -391,6 +460,15 @@ def test_is_same_site():
     assert not spider.is_same_site("https://example.org", "https://www2.example.org")
     assert not spider.is_same_site("https://example.org", "https://www.example.org:8443")
     assert not spider.is_same_site("https://example.org", "http://example.org")
+
+
+def test_blacklist_full_urls():
+    "Blacklist entries are compared without protocol and trailing slashes."
+    with patch.object(spider, "get_rules", return_value=None):
+        params = spider.CrawlParameters("https://example.org/", blacklist={"https://example.org/a/", "example.org/b"})
+    assert not params.is_valid_link("https://example.org/a")
+    assert not params.is_valid_link("http://example.org/b/")
+    assert params.is_valid_link("https://example.org/c")
 
 
 def test_www_redirect():

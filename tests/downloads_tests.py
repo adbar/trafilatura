@@ -121,7 +121,68 @@ def test_urllib_request_resolves_relative_url(geturl_result, expected):
     assert result.url == expected
 
 
-def test_response_object():
+@pytest.mark.parametrize(
+    "path, expected_path",
+    [
+        # issue #1068: a relative Location after a cross-host hop
+        ("/cross", "/final"),
+        ("/cross-relative", "/sub/final"),
+        # the redirect target was retried, geturl() is then empty
+        ("/retried", "/flaky"),
+    ],
+)
+def test_urllib_request_resolves_redirect_against_last_hop(path, expected_path, monkeypatch):
+    "regression: Response.url is the last redirect target resolved against the hop that sent it."
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    hits = []
+
+    class _Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            hits.append(self.path)
+            redirects = {
+                # the original request goes to the first server, the next hop to the other one
+                "/cross": f"{other}/hop",
+                "/hop": "/final",
+                "/cross-relative": f"{other}/sub/hop",
+                "/sub/hop": "final",
+                "/retried": f"{other}/flaky",
+            }
+            if self.path in redirects:
+                self.send_response(302)
+                self.send_header("Location", redirects[self.path])
+            elif self.path == "/flaky" and hits.count("/flaky") == 1:
+                self.send_response(503)
+                self.send_header("Retry-After", "0")
+            else:
+                self.send_response(200)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+
+        def log_message(self, *_args):
+            pass
+
+    servers = [ThreadingHTTPServer(("127.0.0.1", 0), _Handler) for _ in range(2)]
+    for server in servers:
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+    first, other = (f"http://127.0.0.1:{server.server_port}" for server in servers)
+    config = use_config()
+    config.set("DEFAULT", "SSRF_PROTECTION", "off")
+    monkeypatch.setattr(dl.urllib3.util.retry.time, "sleep", lambda _: None)
+
+    try:
+        response = _send_urllib_request(f"{first}{path}", False, config)
+    finally:
+        for server in servers:
+            server.shutdown()
+            server.server_close()
+    assert response is not None
+    assert response.status == 200
+    assert response.url == f"{other}{expected_path}"
+
+
+def test_response_object(caplog):
     "Test if the Response class is functioning as expected."
     my_html = b"<html><body><p>ABC</p></body></html>"
     resp = Response(my_html, 200, "https://example.org")
@@ -138,13 +199,15 @@ def test_response_object():
     for size in (10000000, 1):
         response.data = b"ABC" * size
         assert _is_suitable_response(response.url, response, DEFAULT_OPTS) is False
+    # the size check names the downloaded URL
+    assert "for URL https://httpbin.org/encoding/utf8" in caplog.text
     # straight handling of response object
     with open(os.path.join(RESOURCES_DIR, "utf8.html"), "rb") as filehandle:
         response.data = filehandle.read()
     assert _is_suitable_response(response.url, response, DEFAULT_OPTS) is True
     assert load_html(response) is not None
-    # nothing to see here
-    assert extract(response, url=response.url, config=ZERO_CONFIG) is None
+    # the stray <http:> tag in the file used to discard the whole document
+    assert "UTF-8 encoded sample plain-text file" in extract(response, url=response.url, config=ZERO_CONFIG)
 
 
 @pytest.mark.filterwarnings("ignore::urllib3.exceptions.InsecureRequestWarning")
@@ -322,6 +385,63 @@ def test_urllib3_live_page_retries(monkeypatch):
         naps.clear()
         assert _urllib3_is_live_page(f"{base}/stall", config) is False
         assert naps == [dl.MAX_BACKOFF, dl.MAX_BACKOFF]
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
+def test_urllib3_read_errors_retried_once(monkeypatch):
+    "A read error is retried once without backoff: a dropped connection recovers, a read timeout gives up quickly."
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    hits = []
+    body = b"<html><body>" + b"x" * 100 + b"</body></html>"
+
+    class _Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            hits.append((self.command, self.path))
+            if self.path == "/drop" and hits.count((self.command, self.path)) == 1:
+                # close without a response, as a server does with a stale keep-alive connection
+                self.close_connection = True
+                return
+            if self.path == "/slow":
+                sleep(2)  # longer than DOWNLOAD_TIMEOUT
+            try:
+                self.send_response(200)
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                if self.command == "GET":
+                    self.wfile.write(body)
+            except OSError:
+                pass  # the client has given up
+
+        def do_HEAD(self):
+            self.do_GET()
+
+        def log_message(self, *_args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{server.server_port}"
+    config = use_config()
+    config.set("DEFAULT", "SSRF_PROTECTION", "off")
+    config.set("DEFAULT", "DOWNLOAD_TIMEOUT", "1")
+    naps = []
+    monkeypatch.setattr(dl.urllib3.util.retry.time, "sleep", naps.append)
+
+    try:
+        with patch.object(dl, "HAS_PYCURL", False):
+            assert fetch_url(f"{base}/drop", config=config) == body.decode()
+            assert fetch_url(f"{base}/slow", config=config) is None
+        assert hits.count(("GET", "/drop")) == 2
+        assert hits.count(("GET", "/slow")) == 2
+        assert _urllib3_is_live_page(f"{base}/drop", config) is True
+        assert _urllib3_is_live_page(f"{base}/slow", config) is False
+        assert hits.count(("HEAD", "/drop")) == 2
+        assert hits.count(("HEAD", "/slow")) == 2
+        assert naps == []
     finally:
         server.shutdown()
         server.server_close()
@@ -662,6 +782,10 @@ def test_queue():
         ["https://example.org/page", "https://example.org/skip"], blacklist={"example.org/skip"}, url_filter=["/page"]
     )
     assert url_store.dump_urls() == ["https://example.org/page"]
+    # blacklist entries are compared without protocol and trailing slashes
+    urls = ["https://example.org/a", "https://example.org/b", "http://example.org/c"]
+    blacklist = {"https://example.org/a/", "example.org/c"}
+    assert add_to_compressed_dict(urls, blacklist=blacklist).dump_urls() == ["https://example.org/b"]
 
     # response download buffer (empty input, no network)
     assert list(dl.buffered_response_downloads([], 1)) == []

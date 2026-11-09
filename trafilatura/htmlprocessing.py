@@ -78,6 +78,11 @@ def _handle_forms(tree: HtmlElement) -> None:
             delete_element(form)
 
 
+# fallback or embedded copies: paragraphs inside them neither count as removed nor as surviving content
+ALTERNATE_CONTENT = {"noscript", "fencedframe"}
+UNDO_MAX_WORDS = 50
+
+
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
     # salvage formulas before <math> is discarded along with its subtree
@@ -118,17 +123,26 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     # strip targeted elements
     strip_tags(tree, *stripping_list)
 
-    # recall: undo the deletions if they remove every paragraph (copy only if none can survive)
+    # undo the deletions if they remove every paragraph and leave almost no text, e.g. a page swallowed
+    # by an unclosed <aside> or <button> (copy only if none can survive)
     tcopy = None
-    if (
-        options.focus == "recall"
-        and tree.find(".//p") is not None
-        and ("p" in cleaning_list or not any(next(p.iterancestors(cleaning_list), tree) is tree for p in tree.iter("p")))
-    ):
+    survives = (
+        "p" not in cleaning_list and next(p.iterancestors(cleaning_list), None) is None
+        for p in tree.iter("p")
+        if next(p.iterancestors(ALTERNATE_CONTENT), None) is None
+    )
+    if next(survives, True) is False and not any(survives):
         tcopy = deepcopy(tree)
     strip_elements(tree, *cleaning_list, with_tail=False)
-    if tcopy is not None and tree.find(".//p") is None:
+    if tcopy is not None and (options.focus == "recall" or len(" ".join(tree.itertext()).split()) < UNDO_MAX_WORDS):
         tree = tcopy
+        # honour tables=False, recall keeps them as before
+        if not options.tables and options.focus != "recall":
+            strip_tags(tree, "table", "tr", "td", "th")
+
+    # prefixed tags like Word's <o:p> or <fb:like> are not valid element names in the output, keep their text
+    if prefixed := {tag for tag in {elem.tag for elem in tree.iter("*")} if isinstance(tag, str) and ":" in tag}:
+        strip_tags(tree, *prefixed)
 
     if clean_forms:
         _handle_forms(tree)
@@ -215,7 +229,7 @@ def link_density_test(element: HtmlElement, favor_precision: bool = False) -> tu
             shortelems,
             elemnum,
         )
-        return linklen > elemlen * 0.8 or (elemnum > 1 and shortelems / elemnum > 0.8), True
+        return linklen > elemlen * 0.8 or (elemnum > 1 and shortelems / elemnum > 0.8 and linklen > elemlen * 0.02), True
     # large near-total-link farms ("latest news" sidebars) at/above limitlen, which the size gate
     # above never tests (#584); small farms are already caught there at the plain 0.8 ratio.
     # >4: a farm is MANY links -- a handful of long sentence-links is editorial (knowtechie realworld test)
@@ -356,6 +370,9 @@ def convert_lists(elem: _Element) -> None:
 
 def convert_quotes(elem: _Element) -> None:
     "Convert quoted elements while accounting for nested structures."
+    # lang on a blockquote names a natural language (embedded tweets): no code marker or code language
+    if elem.tag == "blockquote":
+        elem.attrib.pop("lang", None)
     # a pre is code if it wraps a single span, carries highlight.js spans or code-like text
     hljs = elem.xpath(".//span[starts-with(@class,'hljs')]") if elem.tag == "pre" else []
     for subelem in hljs:
