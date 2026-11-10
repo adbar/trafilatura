@@ -4,6 +4,7 @@ Functions dedicated to website navigation and crawling/spidering.
 """
 
 import logging
+import re
 from configparser import ConfigParser
 from time import sleep
 from urllib.parse import urljoin, urlsplit
@@ -37,6 +38,10 @@ URL_STORE = UrlStore(compressed=False, strict=False)
 ROBOTS_TXT_URL = "/robots.txt"
 MAX_SEEN_URLS = 10
 MAX_KNOWN_URLS = 100000
+
+# delay and optional URL in a meta-refresh content value, e.g. "0; url=/new"
+# the separator can be ";" or "," and the "url=" prefix is optional
+REFRESH_CONTENT_REGEX = re.compile(r"[^;,]*[;,]\s*(?:url\s*=\s*)?(.*)", re.IGNORECASE)
 
 
 class CrawlParameters:
@@ -118,22 +123,23 @@ def refresh_detection(htmlstring: str, homepage: str, config: ConfigParser = DEF
     if html_tree is None:
         return htmlstring, homepage
 
-    # test meta-refresh redirection
+    # test meta-refresh redirection, ignore tags inside <noscript>
     # https://stackoverflow.com/questions/2318446/how-to-follow-meta-refreshes-in-python
     result = next(
-        (e.get("content", "") for e in html_tree.iter("meta") if e.get("http-equiv", "").lower() == "refresh"),
+        (
+            e.get("content", "")
+            for e in html_tree.xpath("//meta[not(ancestor::noscript)]")
+            if e.get("http-equiv", "").lower() == "refresh"
+        ),
         "",
     )
-    if ";" not in result:
+    match = REFRESH_CONTENT_REGEX.match(result)
+    url2 = match[1].strip().strip("'\"").strip() if match else ""
+    if not url2 or url2.lower().startswith("javascript:"):
         LOGGER.info("no redirect found: %s", homepage)
         return htmlstring, homepage
-
-    url2 = result.split(";", 1)[1].strip()
-    if url2.lower().startswith("url="):
-        url2 = url2[4:].strip("'\"")
-    if not url2.lower().startswith("http"):
-        # relative URL, adapt using the page being processed
-        url2 = urljoin(homepage, url2)
+    # relative URL, adapt using the page being processed
+    url2 = urljoin(homepage, url2)
     # second fetch
     newhtmlstring = fetch_url(url2, config=config)
     if newhtmlstring is None:
