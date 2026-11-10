@@ -115,6 +115,10 @@ def test_input_file_unreadable_parent(tmp_path, run):
         ("MIN_OUTPUT_SIZE = 1\n", "File contains no section headers"),
         ("[DEFAULT]\nMIN_EXTRACTED_SIZE = 250.5\n", "invalid literal for int()"),
         ("[DEFAULT]\nEXTENSIVE_DATE_SEARCH = maybe\n", "Not a boolean: maybe"),
+        # download settings are read lazily, their types must be checked up front too
+        ("[DEFAULT]\nSLEEP_TIME = abc\n", "could not convert string to float: 'abc'"),
+        ("[DEFAULT]\nMAX_REDIRECTS = x\n", "invalid literal for int()"),
+        ("[DEFAULT]\nSSRF_PROTECTION = maybe\n", "Not a boolean: maybe"),
     ],
 )
 def test_config_file_malformed_content(tmp_path, run, content, message):
@@ -1055,6 +1059,20 @@ def test_probing_wrong_language(capsys):
     ):
         assert cli_utils.probe_homepage(args) == 0
     assert capsys.readouterr().out == ""
+
+
+def test_probing_undetectable_language(capsys):
+    "A --target-language the detector cannot output does not filter, as documented."
+    html = f"<html><body><p>{'Some English text. ' * 20}</p></body></html>"
+    args = cli.parse_args(["--probe", "https://example.org/", "--target-language", "zz"])
+    with (
+        patch.object(cli_utils, "buffered_downloads", return_value=[("https://example.org/", html)]),
+        patch.object(cli_utils, "LANGID_FLAG", True),
+        patch.object(cli_utils, "detectable_languages", return_value={"de", "en"}),
+        patch.object(cli_utils, "language_classifier", return_value="en"),
+    ):
+        assert cli_utils.probe_homepage(args) == 0
+    assert capsys.readouterr().out == "https://example.org/\n"
 
 
 @pytest.mark.parametrize("relative_input", [False, True])

@@ -225,7 +225,15 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
     # a config file that cannot be parsed would crash mid-run with a traceback
     if args.config_file:
         try:
-            Extractor(config=use_config(args.config_file))
+            config = use_config(args.config_file)
+            Extractor(config=config)
+            # download settings are only read once a download starts, check their types now
+            config.getfloat("DEFAULT", "SLEEP_TIME")
+            config.getint("DEFAULT", "DOWNLOAD_TIMEOUT")
+            config.getint("DEFAULT", "MAX_REDIRECTS")
+            config.getboolean("DEFAULT", "SSRF_PROTECTION")
+            config.getboolean("DEFAULT", "INSECURE_SSL_FALLBACK")
+            config.getboolean("DEFAULT", "EXTERNAL_URLS")
         except (ConfigError, ValueError, OSError) as err:
             parser.error(f"--config-file: {err}")
     if args.parallel < 1:
@@ -237,21 +245,19 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
             parser.error("--name-from-url requires -u/--URL or -i/--input-file and cannot be combined with --crawl or --probe")
     if args.keep_dirs and not (args.input_dir and args.output_dir):
         parser.error("--keep-dirs requires --input-dir and -o/--output-dir, use --name-from-url to name files after URLs")
+    navigation = any(getattr(args, o) is not False for o in _NAVIGATION_OPTS)
     if args.list:
         if args.input_dir:
             print("--list has no effect on --input-dir, the files are processed", file=sys.stderr)
-        else:
-            ignored = sorted(
-                a.option_strings[-1]
-                for a in parser._actions  # noqa: SLF001 (no public dest to flag mapping)
-                if a.dest in _LIST_IGNORED_OPTS and getattr(args, a.dest) != a.default
-            )
+        elif ignored := sorted(
+            a.option_strings[-1]
+            for a in parser._actions  # noqa: SLF001 (no public dest to flag mapping)
             # the language filters URLs on the navigation options, otherwise --list ignores it
-            if args.target_language is not None and not any(getattr(args, o) is not False for o in _NAVIGATION_OPTS):
-                ignored.append("--target-language")
+            if (a.dest in _LIST_IGNORED_OPTS or (a.dest == "target_language" and not navigation))
+            and getattr(args, a.dest) != a.default
+        ):
             # emitted before logging is configured, so print directly
-            if ignored:
-                print(f"--list only prints URLs; these options are ignored: {', '.join(ignored)}", file=sys.stderr)
+            print(f"--list only prints URLs; these options are ignored: {', '.join(ignored)}", file=sys.stderr)
 
 
 def parse_args(args: list[str]) -> argparse.Namespace:
