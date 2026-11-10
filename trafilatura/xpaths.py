@@ -229,6 +229,8 @@ _AD_CLASS_TOKENS = (
     "-ad-",
     "(?:^| )ad-",
     "dfp[Aa]d",
+    # the class "adv" alone: "advert-placement" wrappers hold the story between their slots
+    "(?:^| )adv(?:$| )",
     "outbrain",
     "taboola",
     "criteo",
