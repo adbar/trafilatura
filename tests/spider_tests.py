@@ -13,10 +13,7 @@ import pytest
 from courlan import UrlStore
 
 from trafilatura import spider  # for global variables
-from trafilatura.utils import Response
-
-# from trafilatura.utils import LANGID_FLAG
-
+from trafilatura.utils import LANGID_FLAG, Response
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -399,6 +396,17 @@ def test_crawl_page():
     assert len(known_links) == 1
     assert params.i == 1
     ## TODO: find a better page for language tests
+
+
+def test_is_target_language():
+    "Language check of the crawler, including a language the detector cannot output."
+    htmlstring = "<html><body><p>" + "Hier ist ein Text auf Deutsch. " * 20 + "</p></body></html>"
+    if LANGID_FLAG is True:
+        assert spider.is_target_language(htmlstring, "de") is True
+        assert spider.is_target_language(htmlstring, "en") is False
+        assert spider.is_target_language(htmlstring, "zz") is True
+    else:
+        assert spider.is_target_language(htmlstring, "en") is True
 
 
 def test_error_pages():

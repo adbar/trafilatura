@@ -1010,6 +1010,20 @@ def test_probing_wrong_language(capsys):
     assert capsys.readouterr().out == ""
 
 
+def test_probing_undetectable_language(capsys):
+    "A --target-language the detector cannot output does not filter, as documented."
+    html = f"<html><body><p>{'Some English text. ' * 20}</p></body></html>"
+    args = cli.parse_args(["--probe", "https://example.org/", "--target-language", "zz"])
+    with (
+        patch.object(cli_utils, "buffered_downloads", return_value=[("https://example.org/", html)]),
+        patch.object(cli_utils, "LANGID_FLAG", True),
+        patch.object(cli_utils, "detectable_languages", return_value={"de", "en"}),
+        patch.object(cli_utils, "language_classifier", return_value="en"),
+    ):
+        assert cli_utils.probe_homepage(args) == 0
+    assert capsys.readouterr().out == "https://example.org/\n"
+
+
 @pytest.mark.parametrize("relative_input", [False, True])
 def test_keep_dirs_local_batch(tmp_path, monkeypatch, relative_input):
     """Kept paths stay relative to the input directory, beneath the output directory."""

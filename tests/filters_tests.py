@@ -8,7 +8,7 @@ from lxml import html
 from trafilatura import extract
 from trafilatura.metadata import Document
 from trafilatura.settings import Extractor, use_config
-from trafilatura.utils import LANGID_FLAG, check_html_lang, language_filter
+from trafilatura.utils import LANGID_FLAG, check_html_lang, detectable_languages, language_filter
 
 ZERO_CONFIG = use_config()
 ZERO_CONFIG["DEFAULT"]["MIN_OUTPUT_SIZE"] = "0"
@@ -31,8 +31,16 @@ def test_filters():
         )
         assert extract(doc, config=ZERO_CONFIG, target_language="de") is None
         assert extract(doc, config=ZERO_CONFIG, target_language="en") is not None
+        # a language the detector cannot output: no filtering, as documented
+        available = detectable_languages()
+        assert available is not None
+        assert {"de", "en"} <= available
+        assert "zz" not in available
+        assert language_filter("Hier ist ein Text auf Deutsch", "", "zz", SAMPLE_META)[0] is False
+        assert extract(doc, config=ZERO_CONFIG, target_language="zz") is not None
     else:
         # no detection
+        assert detectable_languages() is None
         assert language_filter("Hier ist ein Text.", "", "en", SAMPLE_META)[0] is False
     # test URL blacklist (non-empty body so the None is caused by the blacklist, not missing content)
     doc = '<html><head><link rel="canonical" href="https://example.org"/></head><body><article><p>Real body text here.</p></article></body></html>'
@@ -177,6 +185,12 @@ def test_filters():
         )
         is True
     )
+
+
+def test_detectable_languages_without_detector(monkeypatch):
+    "Without the language detector there is no list of detectable languages"
+    monkeypatch.setattr("trafilatura.utils.LANGID_FLAG", False)
+    assert detectable_languages() is None
 
 
 def test_prune_xpath():
