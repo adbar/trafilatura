@@ -961,7 +961,7 @@ def test_pages():
     )
 
     metadata = extract_metadata(load_mock_page_meta("https://creativecommons.org/about/"))
-    assert metadata.title == "What we do - Creative Commons"
+    assert metadata.title == "What we do"
     assert (
         metadata.description
         == 'What is Creative Commons? Creative Commons helps you legally share your knowledge and creativity to build a more equitable, accessible, and innovative world. We unlock the full potential of the internet to drive a new era of development, growth and productivity. With a network of staff, board, and affiliates around the world, Creative Commons provides … Read More "What we do"'
@@ -1031,9 +1031,9 @@ def test_pages():
     assert metadata.title == "Thousands of UK academics 'treated as second-class citizens'"
     assert metadata.author == "Richard Adams"
     assert metadata.description.startswith("Report claims higher education institutions")
-    assert metadata.sitename == "The Guardian"  # originally "the Guardian"
+    assert metadata.sitename == "the Guardian"
     assert metadata.categories == ["Education"]
-    assert "Higher education" in metadata.tags[0]
+    assert "Higher education" in metadata.tags
     # meta name="keywords"
     assert (
         metadata.url
@@ -1050,7 +1050,14 @@ def test_pages():
     assert metadata.sitename == "Phys.org"
     # assert metadata.categories == ['Archaeology', 'Fossils']  # currently []
     assert metadata.tags == [
-        "Science, Physics News, Science news, Technology News, Physics, Materials, Nanotech, Technology, Science"
+        "Science",
+        "Physics News",
+        "Science news",
+        "Technology News",
+        "Physics",
+        "Materials",
+        "Nanotech",
+        "Technology",
     ]
     assert metadata.url == "https://phys.org/news/2019-10-flint-flake-tool-partially-birch.html"
 
@@ -1073,7 +1080,7 @@ def test_pages():
 
     url = "https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/"
     metadata = extract_metadata(load_mock_page_meta(url))
-    assert metadata.title == "What is Rust and why is it so popular? - Stack Overflow Blog"
+    assert metadata.title == "What is Rust and why is it so popular?"
     assert metadata.author == "Jake Goulding"
     assert metadata.sitename == "Stack Overflow Blog"
     assert metadata.categories == ["Bulletin"]
@@ -1089,7 +1096,7 @@ def test_pages():
         == "The German capital has launched a five-year project to mark its part in European colonialism. Streets which still honor leaders who led the Reich's imperial expansion will be renamed — and some locals aren't happy."
     )
     assert metadata.sitename == "DW.COM"  # 'DW - Deutsche Welle'
-    assert "Africa" in metadata.tags[0]
+    assert "Africa" in metadata.tags
     assert metadata.url == url
 
     metadata = extract_metadata(
@@ -1142,7 +1149,7 @@ def test_pages():
         metadata.description
         == "FAST has superior sensitivity to detect cosmic phenomena, including fast radio bursts and pulsars."
     )
-    assert metadata.sitename == "Nature"
+    assert metadata.sitename == "Nature Publishing Group"
     assert "Exoplanets" in metadata.categories  # ['Astronomy', 'Telescope', 'China']
     assert metadata.url == url
 

@@ -38,6 +38,8 @@ The following allows for comparing changes made to Trafilatura, for example in a
 
 ``eval_gate.py`` scores the whole corpus with Trafilatura alone and compares the F1-scores with the floors pinned in ``eval_baseline.json``, exiting non-zero on a regression. It needs no competitor library and is also run in CI.
 
+It also checks metadata: for title, author, date, tags and categories, the share of annotated values found by ``extract_metadata`` is compared with the floors in ``eval_meta_baseline.json``. Empty annotations are skipped.
+
 After editing the annotations or an HTML input, re-pin the corpus fingerprint with ``python tests/eval_gate.py --update``. A re-pin never lowers the baseline on its own: an F1 below a pinned floor keeps the floor and exits non-zero, and accepting a lower bar takes an explicit ``--allow-regression``.
 
 Note for Windows: the corpus fingerprint requires the HTML inputs exactly as committed. On a clone made before the ``.gitattributes`` rules were added, run ``git add --renormalize .`` and reset (or re-clone) so line endings match the repository.
