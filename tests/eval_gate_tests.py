@@ -125,6 +125,7 @@ def test_real_meta_baseline_matches_fields():
         ("author", "Jane Doe; John Roe", ["jane doe", "john roe"]),
         ("author", "John Roe, Jane Doe", ["jane doe", "john roe"]),
         ("author", ["Jane Doe", "John Roe"], ["jane doe", "john roe"]),
+        ("author", "John Roe and Jane Doe", ["jane doe", "john roe"]),
         ("tags", ["b", "A", ""], ["a", "b"]),
         ("date", "2020-01-02", ["2020-01-02"]),
     ],
@@ -145,6 +146,17 @@ def test_meta_scores_skip_empty_gold():
     assert scores["title"] == 0.5
     assert scores["author"] == 1.0
     assert scores["date"] == 0.0
+
+
+def test_meta_scores_count_crash_as_miss(monkeypatch, capsys):
+    def crash(*_args, **_kwargs):
+        raise ValueError("boom")
+
+    monkeypatch.setattr(eval_gate, "extract_metadata", crash)
+    evaldata = {"https://example.org/a": {"title": "Head Line", "author": "", "date": "", "tags": [], "categories": []}}
+    docs = {"https://example.org/a": ("eval/x.html", b"<html><head><title>Head Line</title></head><body/></html>")}
+    assert eval_gate.meta_scores(evaldata, docs)["title"] == 0.0
+    assert "metadata: eval/x.html: ValueError: boom" in capsys.readouterr().out
 
 
 def test_repin_meta(tmp_path, monkeypatch):

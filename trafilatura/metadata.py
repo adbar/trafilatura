@@ -47,13 +47,15 @@ logging.getLogger("htmldate").setLevel(logging.WARNING)
 META_URL = re.compile(r"https?://(?:www\.|w[0-9]+\.)?([^/]+)")
 
 JSON_MINIFY = re.compile(r'("(?:\\.|[^"\\])*")|\s')
-JSON_WRAPPER = re.compile(r"^\s*(?://|/\*)?\s*(?:<!\[CDATA\[|<!--)(?:\s*\*/)?|(?://|/\*)?\s*(?:\]\]>|--!?>)(?:\s*\*/)?\s*$")
+# \s* only after an anchor or a comment marker, else long whitespace runs take quadratic time
+JSON_WRAPPER = re.compile(
+    r"^\s*(?:(?://|/\*)\s*)?(?:<!\[CDATA\[|<!--)(?:\s*\*/)?|(?:(?://|/\*)\s*)?(?:\]\]>|--!?>)(?:\s*\*/)?\s*$"
+)
 
 TITLE_SEPARATORS = "–•·—|⁄*⋆~‹«<›»>:-"
 TITLE_SPLIT = re.compile(rf"(?:\s+[{TITLE_SEPARATORS}])+\s+")
 NON_WORD = re.compile(r"\W+")
-# a comma outside numbers such as 1,000
-TAG_SPLIT = re.compile(r"(?<!\d),|,(?!\d)")
+GENERIC_HOST_LABELS = {"blog", "blogs", "home", "info", "news", "online", "shop", "store", "web"}
 # host name: dot-separated labels ending in a top-level domain of letters (or a punycode one)
 HOSTNAME_REGEX = re.compile(r"(?:[\w-]+\.)+(?:[^\W\d_]{2,}|xn--[a-z\d-]+)")
 
@@ -236,22 +238,30 @@ def split_title(title: str) -> tuple[str, str] | None:
     return title[: matches[-1].start()], title[matches[-1].end() :]
 
 
+def names_site(name: str, segment: str, max_extra: int) -> bool:
+    "Tell if a squashed title segment names the site."
+    name = NON_WORD.sub("", name.lower())
+    if not name or not segment:
+        return False
+    return segment == name or (
+        len(name) > 3
+        and ((len(segment) > 3 and segment in name) or (name in segment and len(segment) - len(name) <= max_extra))
+    )
+
+
 def strip_site_suffix(title: str, sitename: str | None, hostname: str | None) -> str:
     "Remove the last title segment if it names the site, e.g. 'Article | Site'."
     parts = split_title(title)
     if not parts:
         return title
     last = NON_WORD.sub("", parts[1].lower())
-    host = (hostname or "").removeprefix("www.")
-    # first host label and registered domain, e.g. 'edition' and 'cnn' for edition.cnn.com
-    labels = (host.split(".")[0], (extract_domain("http://" + host) or "").split(".")[0])
-    for candidate in (NON_WORD.sub("", name.lower()) for name in (sitename or "", *labels)):
-        if (
-            candidate
-            and last
-            and (last == candidate or (len(candidate) > 3 and (candidate in last or (len(last) > 3 and last in candidate))))
-        ):
-            return parts[0]
+    host = (hostname or "").lower().removeprefix("www.")
+    # first host label (unless generic) and registered domain, e.g. 'edition' and 'cnn' for edition.cnn.com
+    first = host.split(".")[0]
+    labels = ("" if first in GENERIC_HOST_LABELS else first, (extract_domain("http://" + host) or "").split(".")[0])
+    # the site name allows a short extra word ('Site Blog'), host labels match at any length
+    if names_site(sitename or "", last, 4) or any(names_site(label, last, len(last)) for label in labels):
+        return parts[0]
     return title
 
 
@@ -303,7 +313,7 @@ def examine_meta(tree: HtmlElement) -> tuple[Document, str | None]:
         elif field == "tags":
             # keyword lists hold several tags, article:tag only one
             content = normalize_tags(content)
-            tags.extend(TAG_SPLIT.split(content) if attr == "name" else [content])
+            tags.extend(content.split(",") if attr == "name" else [content])
         elif field == "backup":
             backups.setdefault(key, content)
         elif field and not getattr(metadata, field) and (field != "url" or is_valid_url(content)):

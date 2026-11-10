@@ -187,7 +187,8 @@ def process_parent(parent: Any, metadata: Document, backup_sitename: str | None 
             candidate = content.get("name") or content.get("legalName") or content.get("alternateName")
             # a WebPage name is usually the page title: last resort only
             if content_type == "webpage":
-                webpage_name = webpage_name or candidate
+                if not webpage_name and isinstance(candidate, str):
+                    webpage_name = candidate
             elif is_plausible_sitename(metadata, candidate, content_type):
                 metadata.sitename = candidate
 
@@ -208,10 +209,8 @@ def process_parent(parent: Any, metadata: Document, backup_sitename: str | None 
 
             # category
             if not metadata.categories and "articleSection" in content:
-                if isinstance(content["articleSection"], str):
-                    metadata.categories = [content["articleSection"]]
-                else:
-                    metadata.categories = list(filter(None, content["articleSection"]))
+                sections = as_list(content["articleSection"])
+                metadata.categories = [s for s in sections if isinstance(s, str) and s]
 
             # try to extract title
             if not metadata.title:

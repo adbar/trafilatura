@@ -13,7 +13,6 @@ import argparse
 import hashlib
 import json
 import os
-import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -32,6 +31,7 @@ from eval_common import (
     validate,
 )
 
+from trafilatura.json_metadata import AUTHOR_SPLIT
 from trafilatura.metadata import extract_metadata
 from trafilatura.utils import load_html
 
@@ -112,7 +112,7 @@ def meta_values(field: str, value: Any) -> list[str]:
     if not value:
         return []
     if field == "author":
-        value = re.split(r"[;,]", "; ".join(value) if isinstance(value, list) else value)
+        value = AUTHOR_SPLIT.split("; ".join(value) if isinstance(value, list) else value)
     elif not isinstance(value, list):
         value = [value]
     return sorted(item for item in (norm(v).casefold() for v in value) if item)
@@ -122,12 +122,17 @@ def meta_scores(evaldata: dict[str, dict[str, Any]], docs: dict[str, tuple[str, 
     "Share of annotated values matched, per metadata field."
     hits: Counter[str] = Counter()
     totals: Counter[str] = Counter()
+    reported: set[str] = set()
     for url, item in evaldata.items():
         gold = {field: meta_values(field, item.get(field)) for field in META_FIELDS}
         if not any(gold.values()):
             continue
         tree = load_html(docs[url][1])
-        metadata = extract_metadata(tree, default_url=url) if tree is not None else None
+        try:
+            metadata = extract_metadata(tree, default_url=url) if tree is not None else None
+        except Exception as err:
+            report_first_error(reported, "metadata", docs[url][0], err)
+            metadata = None
         for field, expected in gold.items():
             if expected:
                 totals[field] += 1

@@ -1235,6 +1235,16 @@ ARTICLE_LD = {"@context": "https://schema.org", "@type": "NewsArticle"}
         ),
         # an empty script block does not stop the next one
         (("", {**ARTICLE_LD, "author": {"@type": "Person", "name": "Jane Doe"}}), {"author": "Jane Doe"}),
+        # a WebPage name that is not a string does not hide a later one
+        (
+            (
+                {
+                    "@context": "https://schema.org",
+                    "@graph": [{"@type": "WebPage", "name": ["x"]}, {"@type": "WebPage", "name": "Example Site Online"}],
+                },
+            ),
+            {"sitename": "Example Site Online"},
+        ),
     ],
 )
 def test_json_values(payloads, expected):
@@ -1444,3 +1454,23 @@ def test_json_non_string_values(output_format):
     assert metadata.title == "a"
     assert metadata.categories == ["News"]
     assert metadata.tags == ["a", "b"]
+
+
+@pytest.mark.parametrize(
+    ("section", "categories"),
+    [
+        (None, []),
+        (3, []),
+        (["Weather", None, 3], ["Weather"]),
+    ],
+)
+def test_json_article_section_values(section, categories):
+    "an articleSection that is not a string or a list of strings must not discard the headline"
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "headline": "Storm hits coast",
+        "articleSection": section,
+    }
+    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
+    assert (metadata.title, metadata.categories) == ("Storm hits coast", categories)

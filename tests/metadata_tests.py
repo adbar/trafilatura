@@ -562,12 +562,12 @@ def test_normalize_tags():
         ),
         # article:tag meta -> tags
         ('<html><head><meta property="article:tag" content="Sports"/></head><body/></html>', "tags", ["Sports"]),
-        # article:tag holds one tag, keywords split on commas outside numbers
+        # article:tag holds one tag, keywords split on every comma
         ('<html><head><meta property="article:tag" content="Smith, John"/></head><body/></html>', "tags", ["Smith, John"]),
         (
-            '<html><head><meta name="keywords" content="1,000 ways,cooking"/></head><body/></html>',
+            '<html><head><meta name="keywords" content="2019,2020,elections"/></head><body/></html>',
             "tags",
-            ["1,000 ways", "cooking"],
+            ["2019", "2020", "elections"],
         ),
         ('<html><head><meta name="keywords" content="1, 2"/></head><body/></html>', "tags", ["1", "2"]),
         # category fallback via article:section meta (no category links)
@@ -814,6 +814,14 @@ def test_tei_publisher_from_hostname():
         # a host label inside the segment or the segment inside a host label
         ("Azure Functions | Microsoft Azure", None, "https://azure.microsoft.com/a", "Azure Functions"),
         ("Hooks at a Glance – React", None, "https://legacy.reactjs.org/a", "Hooks at a Glance"),
+        # a generic first host label does not name the site
+        ("Election results - live news", None, "https://news.bbc.co.uk/a", "Election results - live news"),
+        ("Election results - live news", None, "https://NEWS.bbc.co.uk/a", "Election results - live news"),
+        ("Election results - BBC", None, "https://news.bbc.co.uk/a", "Election results"),
+        # the site name plus a short word names the site, plus more words it does not
+        ("Release notes - Example Blog", "Example", None, "Release notes"),
+        ("Release notes - Example Media", "Example", None, "Release notes - Example Media"),
+        ("Python 3.14 - What is new in Python", "Python", None, "Python 3.14 - What is new in Python"),
     ],
 )
 def test_title_site_suffix(title, sitename, url, expected):
