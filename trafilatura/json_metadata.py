@@ -192,10 +192,8 @@ def process_parent(parent: Any, metadata: Document) -> Document:
 
             # category
             if not metadata.categories and "articleSection" in content:
-                if isinstance(content["articleSection"], str):
-                    metadata.categories = [content["articleSection"]]
-                else:
-                    metadata.categories = list(filter(None, content["articleSection"]))
+                sections = as_list(content["articleSection"])
+                metadata.categories = [s for s in sections if isinstance(s, str) and s]
 
             # try to extract title
             if not metadata.title:
