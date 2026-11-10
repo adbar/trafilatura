@@ -110,8 +110,6 @@ AUTHOR_REMOVE_SPECIAL = re.compile(r"[^\w]+$|[:()?*$#!%/<>{}~¿]")
 AUTHOR_REMOVE_PREPOSITION = re.compile(r"\b\s+(am|on|for|at|in|to|from|of|via|with|—|-|–)\s+(.*)", flags=re.IGNORECASE)
 AUTHOR_EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 AUTHOR_SPLIT = re.compile(r"/|;|,|\||&|(?:^|\W)[ua]nd(?:$|\W)", flags=re.IGNORECASE)
-# A dateline runs to the next person, commas included: "Jane Doe in Nadi, Fiji", "Jane Doe in London
-# and John Roe in Washington"; after a comma, a person with a dateline of their own is the next credit.
 AUTHOR_DATELINE = re.compile(
     r"\s+(?:in|reporting\s+from)\s+[A-ZÀ-Þ][^;|/&]*?"
     r"(?=\s+(?:and|with)\s+|\s*[;|/&]|\s*,[^,;|/&]+\s(?:in|reporting\s+from)\s+[A-ZÀ-Þ]|$)"
