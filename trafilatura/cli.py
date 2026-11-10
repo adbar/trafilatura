@@ -245,7 +245,6 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
             parser.error("--name-from-url requires -u/--URL or -i/--input-file and cannot be combined with --crawl or --probe")
     if args.keep_dirs and not (args.input_dir and args.output_dir):
         parser.error("--keep-dirs requires --input-dir and -o/--output-dir, use --name-from-url to name files after URLs")
-    navigation = any(getattr(args, o) is not False for o in _NAVIGATION_OPTS)
     if args.list:
         if args.input_dir:
             print("--list has no effect on --input-dir, the files are processed", file=sys.stderr)
