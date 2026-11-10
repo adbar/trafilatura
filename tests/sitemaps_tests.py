@@ -71,38 +71,40 @@ def test_search_returns_sorted_unique_urls(monkeypatch, nested, plain_text):
 @pytest.mark.parametrize(
     ("size", "config_max", "expected"),
     [
-        # within the sitemaps.org limits (50,000 URLs, 50 MB), above the 20 MB cap
-        (23_000_000, None, 50000),
-        # above the 50 MB sitemap limit: still rejected
-        (64_000_000, None, 0),
-        # a lower configured cap is raised to the 50 MB floor
-        (23_000_000, 1_000_000, 50000),
+        # within the sitemap size limit, above the general download cap
+        (7_500, None, 100),
+        # above the sitemap size limit: still rejected
+        (15_000, None, 0),
+        # a lower configured cap is raised to the sitemap limit
+        (7_500, 1_000, 100),
         # a higher configured cap is kept
-        (55_000_000, 60_000_000, 50000),
+        (15_000, 20_000, 100),
     ],
 )
 def test_sitemap_size_limit(monkeypatch, size, config_max, expected):
-    """Sitemaps up to 50 MB uncompressed are read, larger ones are rejected."""
+    """Sitemaps up to MAX_SITEMAP_SIZE uncompressed are read, larger ones are rejected."""
     url = "https://example.org/sitemap.xml.gz"
-    # 50,000 URLs padded to reach roughly the target uncompressed size
-    padding = max((size - 50_000 * 45) // 50_000, 0)
+    # shrink the limits to a few KB so the test stays small and fast:
+    # general download cap (MAX_FILE_SIZE) 5 KB, sitemap limit 10 KB
+    monkeypatch.setattr(sitemaps, "MAX_SITEMAP_SIZE", 10_000)
+    config = ConfigParser()
+    config.read_dict(DEFAULT_CONFIG)
+    config.set("DEFAULT", "MAX_FILE_SIZE", str(config_max if config_max is not None else 5_000))
+    # 100 URLs padded to reach roughly the target uncompressed size
+    padding = max((size - 100 * 45) // 100, 0)
     xml = (
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-        + "".join(f"<url><loc>https://example.org/{i}-{'a' * padding}</loc></url>" for i in range(50000))
+        + "".join(f"<url><loc>https://example.org/{i}-{'a' * padding}</loc></url>" for i in range(100))
         + "</urlset>"
     )
     assert len(xml.encode()) >= size
     payload = gzip.compress(xml.encode())
-    config = DEFAULT_CONFIG
-    if config_max is not None:
-        config = ConfigParser()
-        config.read_dict(DEFAULT_CONFIG)
-        config.set("DEFAULT", "MAX_FILE_SIZE", str(config_max))
     monkeypatch.setattr(downloads, "HAS_PYCURL", False)
     monkeypatch.setattr(downloads, "_send_urllib_request", lambda u, no_ssl, cfg: Response(payload, 200, u))
     monkeypatch.setattr(sitemaps, "is_live_page", lambda u, config: True)
     assert len(sitemaps.sitemap_search(url, config=config)) == expected
     # the caller's config is never mutated by the raised limit
+    assert config.getint("DEFAULT", "MAX_FILE_SIZE") == (config_max if config_max is not None else 5_000)
     assert DEFAULT_CONFIG.getint("DEFAULT", "MAX_FILE_SIZE") == 20000000
 
 
