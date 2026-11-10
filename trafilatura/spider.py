@@ -4,6 +4,7 @@ Functions dedicated to website navigation and crawling/spidering.
 """
 
 import logging
+import re
 from configparser import ConfigParser
 from time import sleep
 from urllib.parse import urljoin, urlsplit
@@ -25,10 +26,10 @@ except ImportError:
 from lxml.etree import XPath, tostring
 
 from .baseline import baseline
-from .downloads import fetch_response, fetch_url
+from .downloads import USER_AGENT, fetch_response, fetch_url
 from .htmlprocessing import prune_unwanted_nodes
 from .settings import DEFAULT_CONFIG
-from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, Response, decode_file, load_html
+from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, Response, decode_file, detectable_languages, load_html
 
 LOGGER = logging.getLogger(__name__)
 
@@ -37,6 +38,10 @@ URL_STORE = UrlStore(compressed=False, strict=False)
 ROBOTS_TXT_URL = "/robots.txt"
 MAX_SEEN_URLS = 10
 MAX_KNOWN_URLS = 100000
+
+# delay and optional URL in a meta-refresh content value, e.g. "0; url=/new"
+# the separator can be ";" or "," and the "url=" prefix is optional
+REFRESH_CONTENT_REGEX = re.compile(r"[^;,]*[;,]\s*(?:url\s*=\s*)?(.*)", re.IGNORECASE)
 
 
 class CrawlParameters:
@@ -102,7 +107,7 @@ class CrawlParameters:
     def is_valid_link(self, link: str) -> bool:
         "Run checks: robots.txt rules, URL type, crawl breadth and blacklist."
         return (
-            (not self.rules or self.rules.can_fetch("*", link))
+            (not self.rules or self.rules.can_fetch(USER_AGENT, link))
             and self._is_within_reference(link)
             and not is_not_crawlable(link)
             and URL_BLACKLIST_REGEX.sub("", link) not in self.blacklist
@@ -118,22 +123,23 @@ def refresh_detection(htmlstring: str, homepage: str, config: ConfigParser = DEF
     if html_tree is None:
         return htmlstring, homepage
 
-    # test meta-refresh redirection
+    # test meta-refresh redirection, ignore tags inside <noscript>
     # https://stackoverflow.com/questions/2318446/how-to-follow-meta-refreshes-in-python
     result = next(
-        (e.get("content", "") for e in html_tree.iter("meta") if e.get("http-equiv", "").lower() == "refresh"),
+        (
+            e.get("content", "")
+            for e in html_tree.xpath("//meta[not(ancestor::noscript)]")
+            if e.get("http-equiv", "").lower() == "refresh"
+        ),
         "",
     )
-    if ";" not in result:
+    match = REFRESH_CONTENT_REGEX.match(result)
+    url2 = match[1].strip().strip("'\"").strip() if match else ""
+    if not url2 or url2.lower().startswith("javascript:"):
         LOGGER.info("no redirect found: %s", homepage)
         return htmlstring, homepage
-
-    url2 = result.split(";", 1)[1].strip()
-    if url2.lower().startswith("url="):
-        url2 = url2[4:].strip("'\"")
-    if not url2.lower().startswith("http"):
-        # relative URL, adapt using the page being processed
-        url2 = urljoin(homepage, url2)
+    # relative URL, adapt using the page being processed
+    url2 = urljoin(homepage, url2)
     # second fetch
     newhtmlstring = fetch_url(url2, config=config)
     if newhtmlstring is None:
@@ -202,7 +208,7 @@ def is_target_language(htmlstring: str, language: str | None) -> bool:
     """Run a baseline extraction and use a language detector to
     check if the content matches the target language.
     Return True if language checks are bypassed."""
-    if htmlstring and language and LANGID_FLAG:
+    if htmlstring and language and LANGID_FLAG and language in (detectable_languages() or set()):
         _, text, _ = baseline(htmlstring)
         result, _ = py3langid.classify(text)
         return bool(result == language)
@@ -271,7 +277,10 @@ def process_response(
         return
 
     # convert urllib3 response to string and proceed to link extraction
-    url = response.url if get_base_url(response.url) == params.base else params.base
+    final_base = get_base_url(response.url)
+    if not is_same_site(params.base, final_base):
+        return
+    url = response.url if final_base == params.base else params.base
     process_links(decode_file(response.data), params, url)
 
 
@@ -289,8 +298,9 @@ def init_crawl(
     URL store and retrieving the initial page if the crawl starts."""
     params = CrawlParameters(start, lang, rules, prune_xpath, config, blacklist)
 
-    # todo: just known or also visited?
-    URL_STORE.add_urls(urls=known or [], visited=True)
+    # known links count as visited, except the ones still waiting in the todo list
+    pending = set(todo or ())
+    URL_STORE.add_urls(urls=[u for u in known or [] if u not in pending], visited=True)
     URL_STORE.add_urls(urls=params.filter_list(todo))
     URL_STORE.store_rules(params.base, params.rules)
 
@@ -319,15 +329,13 @@ def crawl_page(
         htmlstring, homepage, new_base_url = probe_alternative_homepage(url, params.config)
         if htmlstring and homepage and new_base_url:
             params.i += 1
+            URL_STORE.add_urls([homepage], visited=True)
             # follow the site's http -> https upgrade and the redirects between the bare domain and www
             if is_same_site(params.base, new_base_url):
                 params.ref = params.ref.replace(params.base, new_base_url, 1)
                 params.base = new_base_url
                 URL_STORE.store_rules(params.base, params.rules)
-            # register potentially new homepage
-            URL_STORE.add_urls([homepage], visited=get_base_url(homepage) == params.base)
-            # resolve links against the final URL unless the redirect left the crawled host
-            process_links(htmlstring, params, url=homepage if get_base_url(homepage) == params.base else url)
+                process_links(htmlstring, params, url=homepage)
     else:
         params.i += 1
         response = fetch_response(url, decode=False, config=params.config)

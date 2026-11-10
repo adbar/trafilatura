@@ -4,7 +4,9 @@ Functions to process nodes in HTML code.
 """
 
 import logging
+from collections.abc import Callable, Sequence
 from copy import deepcopy
+from typing import Any
 
 from lxml.etree import Element, SubElement, XPath, _Element, strip_elements, strip_tags, tostring
 from lxml.html import HtmlElement
@@ -18,7 +20,7 @@ from .settings import (
     Extractor,
 )
 from .utils import LINK_FARM_RATIO, image_src, safe_base_url, safe_relative_url, textfilter, trim
-from .xml import delete_element, meta_items, separates_inline
+from .xml import delete_element, meta_items, remove_empty_elements, separates_inline
 
 LOGGER = logging.getLogger(__name__)
 
@@ -158,7 +160,9 @@ def prune_html(tree: HtmlElement, focus: str = "balanced") -> HtmlElement:
     return tree
 
 
-def prune_unwanted_nodes(tree: HtmlElement, nodelist: list[XPath], with_backup: bool = False) -> HtmlElement:
+def prune_unwanted_nodes(
+    tree: HtmlElement, nodelist: Sequence[Callable[[HtmlElement], Any]], with_backup: bool = False
+) -> HtmlElement:
     "Prune the HTML tree by removing unwanted sections."
     if not with_backup:
         for expression in nodelist:
@@ -535,7 +539,13 @@ def convert_to_html(tree: _Element) -> _Element:
 
 def build_html_output(document: Document, with_metadata: bool = False) -> str:
     "Convert the document to HTML and return a string."
-    html_tree = convert_to_html(document.body)
+    body = remove_empty_elements(deepcopy(document.body))
+    comments = remove_empty_elements(deepcopy(document.commentsbody))
+    if len(comments) or (comments.text or "").strip():
+        comments.tag = "section"
+        comments.set("class", "comments")
+        body.append(comments)
+    html_tree = convert_to_html(body)
 
     if with_metadata:
         head = Element("head")

@@ -9,134 +9,122 @@ import sys
 import pytest
 from lxml import html
 
+from trafilatura import extract, json_metadata
 from trafilatura.json_metadata import (
     JSON_AUTHOR_1,
     JSON_AUTHOR_2,
     extract_json,
     extract_json_author,
+    extract_json_parse_error,
     normalize_json,
     process_parent,
 )
-from trafilatura.metadata import Document, extract_meta_json, extract_metadata, normalize_authors
+from trafilatura.metadata import JSON_MINIFY, Document, extract_meta_json, extract_metadata, normalize_authors
+from trafilatura.xml import build_json_output
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
-def test_json_extraction():
-    ## JSON extraction
-    metadata = extract_metadata(
-        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org","@type":"NewsArticle","description":"The president and his campaign competed again on Monday, with his slash-and-burn remarks swamping news coverage even as his advisers used conventional levers to try to lift his campaign.","image":[{"@context":"http://schema.org","@type":"ImageObject","url":"https://static01.nyt.com/images/2020/10/19/us/politics/19campaign/19campaign-videoSixteenByNineJumbo1600.jpg","height":900,"width":1600,"caption":"In Arizona on Monday, President Trump aired grievances against people including former President Barack Obama and Michelle Obama; Joseph R. Biden Jr. and Hunter Biden; Dr. Anthony S. Fauci; and two female NBC News hosts. "},{"@context":"http://schema.org","@type":"ImageObject","url":"https://static01.nyt.com/images/2020/10/19/us/politics/19campaign/merlin_178764738_11d22ae6-9e7e-4d7a-b28a-20bf52b23e86-superJumbo.jpg","height":1365,"width":2048,"caption":"In Arizona on Monday, President Trump aired grievances against people including former President Barack Obama and Michelle Obama; Joseph R. Biden Jr. and Hunter Biden; Dr. Anthony S. Fauci; and two female NBC News hosts. "},{"@context":"http://schema.org","@type":"ImageObject","url":"https://static01.nyt.com/images/2020/10/19/us/politics/19campaign/19campaign-mediumSquareAt3X.jpg","height":1800,"width":1800,"caption":"In Arizona on Monday, President Trump aired grievances against people including former President Barack Obama and Michelle Obama; Joseph R. Biden Jr. and Hunter Biden; Dr. Anthony S. Fauci; and two female NBC News hosts. "}],"mainEntityOfPage":"https://www.nytimes.com/2020/10/19/us/politics/trump-ads-biden-election.html","url":"https://www.nytimes.com/2020/10/19/us/politics/trump-ads-biden-election.html","inLanguage":"en","author":[{"@context":"http://schema.org","@type":"Person","url":"https://www.nytimes.com/by/maggie-haberman","name":"Maggie Haberman"},{"@context":"http://schema.org","@type":"Person","url":"https://www.nytimes.com/by/shane-goldmacher","name":"Shane Goldmacher"},{"@context":"http://schema.org","@type":"Person","url":"https://www.nytimes.com/by/michael-crowley","name":"Michael Crowley"}],"dateModified":"2020-10-20T01:22:07.000Z","datePublished":"2020-10-19T22:24:02.000Z","headline":"Trump Team Unveils $55 Million Ad Blitz on a Day of Scattershot Attacks","publisher":{"@id":"https://www.nytimes.com/#publisher"},"copyrightHolder":{"@id":"https://www.nytimes.com/#publisher"},"sourceOrganization":{"@id":"https://www.nytimes.com/#publisher"},"copyrightYear":2020,"isAccessibleForFree":false,"hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".meteredContent"},"isPartOf":{"@type":["CreativeWork","Product"],"name":"The New York Times","productID":"nytimes.com:basic"}}</script><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org","@type":"NewsMediaOrganization","name":"The New York Times","logo":{"@context":"http://schema.org","@type":"ImageObject","url":"https://static01.nyt.com/images/misc/NYT_logo_rss_250x40.png","height":40,"width":250},"url":"https://www.nytimes.com/","@id":"https://www.nytimes.com/#publisher","diversityPolicy":"https://www.nytco.com/diversity-and-inclusion-at-the-new-york-times/","ethicsPolicy":"https://www.nytco.com/who-we-are/culture/standards-and-ethics/","masthead":"https://www.nytimes.com/interactive/2019/admin/the-new-york-times-masthead.html","foundingDate":"1851-09-18","sameAs":"https://en.wikipedia.org/wiki/The_New_York_Times"}</script><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@context":"http://schema.org","@type":"ListItem","name":"U.S.","position":1,"item":"https://www.nytimes.com/section/us"},{"@context":"http://schema.org","@type":"ListItem","name":"Politics","position":2,"item":"https://www.nytimes.com/section/politics"}]}</script></body></html>"""
-    )
-    assert metadata.author == "Maggie Haberman; Shane Goldmacher; Michael Crowley"
-    assert metadata.pagetype == "newsarticle"
+def ld_page(*payloads):
+    scripts = "".join(f'<script type="application/ld+json">{payload}</script>' for payload in payloads)
+    return f"<html><head>{scripts}</head><body/></html>"
 
-    metadata = extract_metadata(
-        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org","@type":"Organization","legalName":"Safety Insurance Group, Inc.","alternateName":["Safety Insurance","Safety Insurance Company"],"foundingDate":"1979","url":"https://www.safetyinsurance.com","logo":"https://www.safetyinsurance.com/images/base/png/safety_logo.png","sameAs":["https://www.facebook.com/safetyinsurance","https://twitter.com/safetyins","https://www.linkedin.com/company/safety-insurance","https://plus.google.com/+safetyinsurance/","https://www.youtube.com/channel/UCcSbxDPCiLjpXSu-Y67aRvQ"],"contactPoint":[{"@type":"ContactPoint","telephone":"+1-800-951-0200","contactType":"customer service","contactOption":"TollFree","areaServed":"US","hoursAvailable":"Mo-Fr 08:15-16:30"},{"@type":"ContactPoint","telephone":"+1-617-951-0600","contactType":"customer service","areaServed":"US","hoursAvailable":"Mo-Fr 08:15-16:30"}],"address":{"@type":"PostalAddress","addressLocality":"Boston","addressRegion":"MA","streetAddress":"20 Custom House Street","postalCode":"02110"}}</script></body></html>"""
-    )
-    assert metadata.sitename == "Safety Insurance Group, Inc."
 
-    metadata = extract_metadata(
-        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.perthnow.com.au/news/government-defends-graphic-covid-19-ad-after-backlash-c-3376985"},"dateline":null,"publisher":{"@type":"Organization","name":"PerthNow","url":"https://www.perthnow.com.au","logo":{"@type":"ImageObject","url":"https://www.perthnow.com.au/static/publisher-logos/publisher-logo-60px-high.png","width":575,"height":60}},"keywords":["News","News","Australia","Politics","Federal Politics","News","TAS News"],"articleSection":"News","headline":"Government defends graphic Covid-19 ad after backlash","description":"A graphic COVID-19 ad showing a young woman apparently on the verge of death has prompted a backlash, but the government insists it wasn’t done lightly.","dateCreated":"2021-07-12T00:11:50.000Z","datePublished":"2021-07-12T00:11:50.000Z","dateModified":"2021-07-12T01:25:20.617Z","isAccessibleForFree":"True","articleBody":"The man tasked with co-ordinating Australia&rsquo;s Covid-19 vaccine rollout insists a confronting ad depicting a woman on the verge of death was not run lightly. The 30-second clip, depicting a woman apparently in her 20s or 30s gasping for air on a hospital bed, was filmed last year, but the federal government held off running it as no outbreak was deemed serious enough to warrant it. The government has been forced to defend the ad, reminiscent of the &ldquo;Grim Reaper&rdquo; HIV ads in the 1980s, after it prompted a backlash over claims it was too confronting. A more temperate series of ads, depicting arms on ordinary Australians with the moniker &ldquo;Arm Yourself&rdquo;, began last week, but Covid-19 taskforce commander Lieutenant General John Frewen said the escalating situation in Sydney called for a more explicit response. &ldquo;It is absolutely confronting and we didn&rsquo;t use it lightly. There was serious consideration given to whether it was required and we took expert advice,&rdquo; he told Today on Monday. &ldquo;It is confronting but leaves people in no doubt about the seriousness of getting Covid, and it seeks to have people stay home, get tested and get vaccinated as quickly as they can.&rdquo; NSW on Sunday confirmed another 77 cases, 31 of which had been in the community while infectious, and Premier Gladys Berejiklian warned she would be &ldquo;shocked&rdquo; if the number did not exceed 100 on Monday. General Frewen said the &ldquo;concerning situation&rdquo; had prompted the government to shift an additional 300,000 doses to NSW over the coming fortnight. &ldquo;The Delta variant is proving to be very difficult to contain, so we&rsquo;re working very closely with NSW authorities and standing ready to help them in any way we can,&rdquo; he said. Agriculture Minister David Littleproud said the ad was designed to shock Sydneysiders into action as the situation deteriorated. &ldquo;This is about shooting home that this is a serious situation and can get anybody. The fact we&rsquo;re actually debating this I think says to me that the campaign we&rsquo;ve approved is working,&rdquo; he said. The age of the woman in the ad has sparked controversy, with most younger Australians still ineligible to receive their vaccine. But with 11 of the 52 people in hospital across NSW under 35, Labor frontbencher Tanya Plibersek warned the Delta variant was &ldquo;hitting younger people as well&rdquo;. Labor had long demanded a national Covid-19 advertising campaign, which Ms Plibersek said was delayed as a result of the government&rsquo;s sluggish vaccine rollout. &ldquo;Perhaps the reason it&rsquo;s taken so long is if you encourage people to go and get vaccinated, you&rsquo;ve got to have enough of the vaccine available. We simply haven&rsquo;t; we&rsquo;ve been absolutely behind the eight ball in getting another vaccine for Australians,&rdquo; she told Sunrise. Labor frontbencher Chris Bowen, whose western Sydney electorate was in the grip of the outbreak, said the issue was &ldquo;not vaccine hesitancy so much, it&rsquo;s vaccine scarcity&rdquo;. He accepted there was a role for &ldquo;pointing out the consequences of not getting vaccinated&rdquo; to those that were hesitant about the jab, but said the new campaign lacked the &ldquo;creative spark&rdquo; of the Grim Reaper ads. &ldquo;That was a very tough message, a very stark message, but in a very creative way. I think the government really needs to rethink this advertising campaign from scratch; it&rsquo;s too late, and it&rsquo;s pretty low impact,&rdquo; he told ABC radio. He also dismissed the &ldquo;Arm Yourself&rdquo; campaign as &ldquo;very low energy&rdquo;. &ldquo;I don&rsquo;t think that&rsquo;s going to have any impact,&rdquo; he said.","image":[{"@type":"ImageObject","url":"https://images.perthnow.com.au/publication/C-3376985/6c07502f73bdccd45d879356219c325574873a6d-16x9-x0y444w1151h647.jpg","width":1151,"height":647},{"@type":"ImageObject","url":"https://images.perthnow.com.au/publication/C-3376985/6c07502f73bdccd45d879356219c325574873a6d-4x3-x0y336w1151h863.jpg","width":1151,"height":863}],"thumbnailUrl":"https://images.perthnow.com.au/publication/C-3376985/6c07502f73bdccd45d879356219c325574873a6d-16x9-x0y444w1151h647.jpg","url":"https://www.perthnow.com.au/news/government-defends-graphic-covid-19-ad-after-backlash-c-3376985","author":{"@type":"Organization","name":"NCA NewsWire"},"name":"Government defends graphic Covid-19 ad after backlash"}</script><span itemprop="author name">Jenny Smith</span></span></body></html>"""
-    )
-    assert metadata.author == "Jenny Smith"
-    assert metadata.pagetype == "newsarticle"
-
-    metadata = extract_metadata(
-        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org/","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"https://google.com/article"},"description":"At least three people have died after a shooting Monday night at Michigan State University, police said. Follow for live updates.","publisher":{"@type":"Organization","name":"CNN","logo":{"@type":"ImageObject","url":"https://dynaimage.cdn.cnn.com/cnn/q_auto,h_60/%2F%2Fcdn.cnn.com%2Fcnn%2F.e%2Fimg%2F4.0%2Flogos%2Fcnn_logo_social.jpg"}},"url":"https://www.cnn.com/us/live-news/michigan-state-university-shooting-updates-2-13-23/index.html","headline":"Live updates: Michigan State University shooting, East Lansing campus","image":{"@type":"ImageObject","url":"https://cdn.cnn.com/cnnnext/dam/assets/230213183317-01-michigan-state-shooting-0213-super-tease.jpg","height":"1100","width":"619"},"datePublished":"2023-02-14T02:46:42Z","dateModified":"2023-02-14T07:17:52Z","author":{"@type":"Person","name":"By <a href=\"/profiles/amir-vera\">Amir Vera</a>, Seán Federico O'Murchú, <a href=\"/profiles/tara-subramaniam\">Tara Subramaniam</a> and Adam Renton, CNN"},"speakable":{"@type":"SpeakableSpecification","cssSelector":[".speakable"]}}</script></body></html>"""
-    )
-    assert metadata.author == "Amir Vera; Seán Federico O'Murchú; Tara Subramaniam; Adam Renton; CNN"
-    assert metadata.pagetype == "newsarticle"
-
-    metadata = extract_metadata(
-        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://traveltomorrow.com/#organization","name":"Travel tomorrow","url":"https://traveltomorrow.com/","sameAs":["https://www.facebook.com/traveltomorrow.eu","https://www.instagram.com/traveltomorrow.eu/","https://www.linkedin.com/company/traveltomorrow/","https://twitter.com/TravelTomorrowX"],"logo":{"@type":"ImageObject","@id":"https://traveltomorrow.com/#logo","inLanguage":"en-GB","url":"https://traveltomorrow.com/wp-content/uploads/2020/05/logo-travel-tomorrow-vertical.png","width":3508,"height":1154,"caption":"Travel tomorrow"},"image":{"@id":"https://traveltomorrow.com/#logo"}},{"@type":"WebSite","@id":"https://traveltomorrow.com/#website","url":"https://traveltomorrow.com/","name":"Travel Tomorrow","description":"","publisher":{"@id":"https://traveltomorrow.com/#organization"},"potentialAction":[{"@type":"SearchAction","target":"https://traveltomorrow.com/?s={search_term_string}","query-input":"required name=search_term_string"}],"inLanguage":"en-GB"},{"@type":"ImageObject","@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#primaryimage","inLanguage":"en-GB","url":"https://traveltomorrow.com/wp-content/uploads/2023/03/2905262_new.jpeg","width":1800,"height":1274},{"@type":"WebPage","@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#webpage","url":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/","name":"Traditional and classical music from Kazakhstan to hit Brussels - Travel Tomorrow","isPartOf":{"@id":"https://traveltomorrow.com/#website"},"primaryImageOfPage":{"@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#primaryimage"},"datePublished":"2023-03-22T11:46:01+00:00","dateModified":"2023-03-22T12:29:54+00:00","inLanguage":"en-GB","potentialAction":[{"@type":"ReadAction","target":["https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/"]}]},{"@type":"Article","@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#article","isPartOf":{"@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#webpage"},"author":{"@id":"https://traveltomorrow.com/#/schema/person/793ea32cfc4e3c0d891ddf002ed1ea2e"},"headline":"Traditional and classical music from Kazakhstan to hit Brussels","datePublished":"2023-03-22T11:46:01+00:00","dateModified":"2023-03-22T12:29:54+00:00","mainEntityOfPage":{"@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#webpage"},"publisher":{"@id":"https://traveltomorrow.com/#organization"},"image":{"@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#primaryimage"},"articleSection":"Culture,Music,\ud83c\udde7\ud83c\uddea Belgium","inLanguage":"en-GB"},{"@type":"Person","@id":"https://traveltomorrow.com/#/schema/person/793ea32cfc4e3c0d891ddf002ed1ea2e","name":"Deborah O'Donoghue","image":{"@type":"ImageObject","@id":"https://traveltomorrow.com/#personlogo","inLanguage":"en-GB","url":"http://2.gravatar.com/avatar/27467e77f62506f419a9fbe6eef750c4?s=96&d=mm&r=g","caption":"Deborah O'Donoghue"},"description":"Deborah O\u2019Donoghue is a British-Irish writer who has lived in the UK, France and Belgium. She has travelled all over the world and worked in car body repairs, in the best fish \u2018n\u2019 chip shop in Brighton, and been a gopher in a comedy club, as well as a teacher. She\u2019s a past winner of the Commonwealth Broadcasting Association Short Story Prize. Her d\u00e9but novel, Sea of Bones, was published by Legend Press in 2019 and comes out in Germany in 2021. Follow Deborah on Twitter and Instagram."}]}</script></body></html>"""
-    )
-    assert metadata.author == "Deborah O'Donoghue"
-    assert metadata.pagetype == "website"
-
-    metadata = extract_metadata(
-        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","dateModified":"2022-10-18T07:02:26+0100","image":{"@type":"ImageObject","url":"https://i.dailymail.co.uk/1s/2022/10/18/06/63581747-0-image-a-54_1666070195906.jpg","height":"1146","width":"1908"},"author":[{"@type":"Person","name":"Sam McPhee"},{"@type":"Person","name":"¿\ttara Cosoleto"}],"video":{"width":1024,"height":576,"uploadDate":"2022-10-16T23:49:15+0100","contentUrl":"https://videos.dailymail.co.uk/video/backup/2022/10/16/8580444913529736888/1024x576_MP4_8580444913529736888.mp4","name":"Today weather crew catches looters rifling through evacuated home","thumbnailUrl":"https://i.dailymail.co.uk/1s/2022/10/16/23/63534109-0-image-a-21_1665960603330.jpg","duration":"PT00M28S","@type":"VideoObject","description":"Today weather presenter Tim Davies and his camera crew catch looters in face masks and hoodies rifling through an evacuated home in Maribyrnong, Melbourne: 'It's a sickening sight'"},"id":"https://www.dailymail.co.uk/news/article-11326469/Victoria-floods-Echuca-looters-steal-sandbags-item-towns-work-waters-bay.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.dailymail.co.uk/news/article-11326469/Victoria-floods-Echuca-looters-steal-sandbags-item-towns-work-waters-bay.html","name":"Victoria floods: Echuca looters steal sandbags item as towns work to keep waters at bay","headline":"Victoria floods: Echuca looters steal sandbags item as towns work to keep waters at bay","image":"https://i.dailymail.co.uk/1s/2022/10/18/06/63581747-0-image-a-54_1666070195906.jpg","url":"https://www.dailymail.co.uk/news/article-11326469/Victoria-floods-Echuca-looters-steal-sandbags-item-towns-work-waters-bay.html","mainEntity":{"@type":"Thing","name":"Victoria floods: Echuca looters steal sandbags item as towns work to keep waters at bay"}},"name":"Victoria floods: Echuca looters steal sandbags item as towns work to keep waters at bay","articleBody":"Looters stealing sandbags from outside flood-affected homes in Victoria. Echuca woman Abby said hundreds of bags disappeared from cousin's house. Channel Nine weatherman also caught group of men looting family home. More wet weather is due for Victoria for the remainder of the week","publisher":{"@type":"Organization","name":"Daily Mail","sameAs":["DailyMail","https://www.facebook.com/DailyMail","https://twitter.com/MailOnline","https://www.youtube.com/user/MailOnlineVideo","https://www.instagram.com/dailymail/","https://www.snapchat.com/discover/Daily-Mail/8392137033","https://flipboard.com/@DailyMailUS","https://www.pinterest.co.uk/dailymail/"],"logo":{"@type":"ImageObject","url":"https://i.dailymail.co.uk/i/sitelogos/sd-dailymail.png","width":"600","height":"60"},"address":{"@type":"PostalAddress","streetAddress":"Northcliffe House, 2 Derry Street","addressLocality":"London","addressRegion":"London","postalCode":"W8 5TT","addressCountry":{"@type":"Country","name":"GB"}}},"datePublished":"2022-10-18T07:02:26+0100","@type":"NewsArticle","description":"Shameful looters have resorted to stealing the sandbags protecting homes in Victoria as the state braces for more heavy rainfall.","headline":"Victoria floods: Echuca looters steal sandbags item as towns work to keep waters at bay"}</script></body></html>"""
-    )
-    assert metadata.author == "Sam McPhee; Tara Cosoleto"
-    assert metadata.pagetype == "newsarticle"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring(
-            """<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/#webpage","url":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/","name":"Jean S\u00e9villia : \"L'\u00c9tat fran\u00e7ais et l'\u00c9tat alg\u00e9rien doivent reconna\u00eetre les crimes commis des deux c\u00f4t\u00e9s\" - Boulevard Voltaire","datePublished":"2018-09-13T12:21:13+00:00","dateModified":"2018-09-14T12:33:14+00:00","inLanguage":"fr-FR"},{"@type":"Article","@id":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/#article","isPartOf":{"@id":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/#webpage"},"author":{"@id":"https://www.bvoltaire.fr/#/schema/person/96c0ed8f089950c46afc2044cb23e8da"},"headline":"Jean S\u00e9villia : &#8220;L&#8217;\u00c9tat fran\u00e7ais et l&#8217;\u00c9tat alg\u00e9rien doivent reconna\u00eetre les crimes commis des deux c\u00f4t\u00e9s&#8221;","datePublished":"2018-09-13T12:21:13+00:00","dateModified":"2018-09-14T12:33:14+00:00","mainEntityOfPage":{"@id":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/#webpage"},"publisher":{"@id":"https://www.bvoltaire.fr/#organization"},"image":{"@id":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/#primaryimage"},"keywords":"Guerre d'Alg\u00e9rie","articleSection":"Audio,Editoriaux,Entretiens,Histoire","inLanguage":"fr-FR"},{"@type":"Person","@id":"https://www.bvoltaire.fr/#/schema/person/96c0ed8f089950c46afc2044cb23e8da","name":"Jean S\u00e9villia","image":{"@type":"ImageObject","@id":"https://www.bvoltaire.fr/#personlogo","inLanguage":"fr-FR","url":"https://secure.gravatar.com/avatar/1dd0ad5cb1fc3695880af1725477b22e?s=96&d=mm&r=g","caption":"Jean S\u00e9villia"},"description":"R\u00e9dacteur en chef adjoint au Figaro Magazine, membre du comit\u00e9 scientifique du Figaro Histoire, et auteur de biographies et d\u2019essais historiques.","sameAs":["https://www.bvoltaire.fr/"]}]}</script></body></html>"""
-        ),
-        metadata,
-    )
-    assert metadata.author == "Jean Sévillia"
-    assert metadata.pagetype == "webpage"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring(
-            """<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@type":"Article","name":"Example Article","description":"This is an example article.","datePublished":"2023-06-14".,"dateModified":"2023-06-14","author":{"@type":"Person","name":"John Doe"},"publisher":{"@type":"Organization","name":"Example Publisher","logo":{"@type":"ImageObject","url":"https://www.example.com/logo.png"}},"image":{"@type":"ImageObject","url":"https://www.example.com/article-image.jpg","width":800,"height":600},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.example.com/article"},"url":"https://www.example.com/article"}</script></body></html>"""
-        ),
-        metadata,
-    )
-    assert metadata.author == "John Doe"
-    assert metadata.pagetype == "article"
-    assert metadata.title == "Example Article"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring(
-            """<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@type":"LiveBlogPosting","url":"https://example.com/liveblog/123","headline":"Example Live Blog","datePublished":"2023-06-14T09:00:00Z","dateModified":"2023-06-14T10:30:00Z","articleBody":"This is the live blog update content.","liveBlogUpdate":[{"@type":"BlogPosting","headline":"Breaking News: Example Article","articleBody":"This is the content of the example article.","datePublished":"2023-06-14T10:00:00Z","dateModified":"2023-06-14T10:15:00Z","author":{"@type":"Person","name":"John Doe"}}]}</script></body></html>"""
-        ),
-        metadata,
-    )
-    assert metadata.author == "John Doe"
-    assert metadata.pagetype == "blogposting"
-    assert metadata.title == "Breaking News: Example Article"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring(
-            """<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@type":"WebPage","name":"Example Webpage","headline":"Example Webpage","datePublished":"2023-06-14","dateModified":"2023-06-14","description":"This is an example webpage.","author":{"@type":"Person","name":"John Doe"},"publisher":{"@type":"Organization","name":"https://www.example.com","logo":{"@type":"ImageObject","url":"https://www.example.com/logo.jpg","width":600,"height":60}},"image":{"@type":"ImageObject","url":"https://www.example.com/webpage-image.jpg","width":800,"height":600}}</script></body></html>"""
-        ),
-        metadata,
-    )
-    assert metadata.sitename == "Example Webpage"
-
-    ### Test for potential errors
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
-<html><body>
-<script type="application/ld+json">
-{
-  "@context":"http://schema.org",
-  "@type":"LiveBlogPosting",
-  "@id":"http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
-  "about":{
-    "@type":"Event",
-    "startDate":"2015-03-09T13:00:00-07:00",
-    "name":"Apple Spring Forward Event"
-  },
-  "coverageStartTime":"2015-03-09T11:30:00-07:00",
-  "coverageEndTime":"2015-03-09T16:00:00-07:00",
-  "headline":"Apple Spring Forward Event Live Blog",
-  "description":"Welcome to live coverage of the Apple Spring Forward …",
-  "liveBlogUpdate":{
-      "@type":"BlogPosting",
-      "headline":"Coming this April, HBO NOW will be available exclusively in the U.S. on Apple TV and the App Store.",
-      "datePublished":"2015-03-09T13:08:00-07:00",
-      "articleBody": "It's $14.99 a month.<br> And for a limited time, …"
-    },
+LIVEBLOG = {
+    "@context": "http://schema.org",
+    "@type": "LiveBlogPosting",
+    "@id": "http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
+    "about": {"@type": "Event", "startDate": "2015-03-09T13:00:00-07:00", "name": "Apple Spring Forward Event"},
+    "coverageStartTime": "2015-03-09T11:30:00-07:00",
+    "coverageEndTime": "2015-03-09T16:00:00-07:00",
+    "headline": "Apple Spring Forward Event Live Blog",
+    "description": "Welcome to live coverage of the Apple Spring Forward …",
 }
-</script>
-</body></html>"""),
-        metadata,
-    )
-    assert metadata.title == "Apple Spring Forward Event Live Blog"
-    assert metadata.pagetype == "liveblogposting"
+LIVEBLOG_UPDATE = {
+    "@type": "BlogPosting",
+    "headline": "Coming this April, HBO NOW will be available exclusively in the U.S. on Apple TV and the App Store.",
+    "datePublished": "2015-03-09T13:08:00-07:00",
+    "articleBody": "It's $14.99 a month.<br> And for a limited time, …",
+}
 
-    ### Test for potential errors
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+
+def broken(schema):
+    "Serialize with a trailing comma, which sends the block to the regex fallback."
+    return json.dumps(schema)[:-1] + ",}"
+
+
+def check_fields(metadata, expected):
+    assert {field: getattr(metadata, field) for field in expected} == expected
+
+
+PAGES = [
+    pytest.param(
+        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org","@type":"NewsArticle","description":"The president and his campaign competed again on Monday, with his slash-and-burn remarks swamping news coverage even as his advisers used conventional levers to try to lift his campaign.","image":[{"@context":"http://schema.org","@type":"ImageObject","url":"https://static01.nyt.com/images/2020/10/19/us/politics/19campaign/19campaign-videoSixteenByNineJumbo1600.jpg","height":900,"width":1600,"caption":"In Arizona on Monday, President Trump aired grievances against people including former President Barack Obama and Michelle Obama; Joseph R. Biden Jr. and Hunter Biden; Dr. Anthony S. Fauci; and two female NBC News hosts. "},{"@context":"http://schema.org","@type":"ImageObject","url":"https://static01.nyt.com/images/2020/10/19/us/politics/19campaign/merlin_178764738_11d22ae6-9e7e-4d7a-b28a-20bf52b23e86-superJumbo.jpg","height":1365,"width":2048,"caption":"In Arizona on Monday, President Trump aired grievances against people including former President Barack Obama and Michelle Obama; Joseph R. Biden Jr. and Hunter Biden; Dr. Anthony S. Fauci; and two female NBC News hosts. "},{"@context":"http://schema.org","@type":"ImageObject","url":"https://static01.nyt.com/images/2020/10/19/us/politics/19campaign/19campaign-mediumSquareAt3X.jpg","height":1800,"width":1800,"caption":"In Arizona on Monday, President Trump aired grievances against people including former President Barack Obama and Michelle Obama; Joseph R. Biden Jr. and Hunter Biden; Dr. Anthony S. Fauci; and two female NBC News hosts. "}],"mainEntityOfPage":"https://www.nytimes.com/2020/10/19/us/politics/trump-ads-biden-election.html","url":"https://www.nytimes.com/2020/10/19/us/politics/trump-ads-biden-election.html","inLanguage":"en","author":[{"@context":"http://schema.org","@type":"Person","url":"https://www.nytimes.com/by/maggie-haberman","name":"Maggie Haberman"},{"@context":"http://schema.org","@type":"Person","url":"https://www.nytimes.com/by/shane-goldmacher","name":"Shane Goldmacher"},{"@context":"http://schema.org","@type":"Person","url":"https://www.nytimes.com/by/michael-crowley","name":"Michael Crowley"}],"dateModified":"2020-10-20T01:22:07.000Z","datePublished":"2020-10-19T22:24:02.000Z","headline":"Trump Team Unveils $55 Million Ad Blitz on a Day of Scattershot Attacks","publisher":{"@id":"https://www.nytimes.com/#publisher"},"copyrightHolder":{"@id":"https://www.nytimes.com/#publisher"},"sourceOrganization":{"@id":"https://www.nytimes.com/#publisher"},"copyrightYear":2020,"isAccessibleForFree":false,"hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".meteredContent"},"isPartOf":{"@type":["CreativeWork","Product"],"name":"The New York Times","productID":"nytimes.com:basic"}}</script><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org","@type":"NewsMediaOrganization","name":"The New York Times","logo":{"@context":"http://schema.org","@type":"ImageObject","url":"https://static01.nyt.com/images/misc/NYT_logo_rss_250x40.png","height":40,"width":250},"url":"https://www.nytimes.com/","@id":"https://www.nytimes.com/#publisher","diversityPolicy":"https://www.nytco.com/diversity-and-inclusion-at-the-new-york-times/","ethicsPolicy":"https://www.nytco.com/who-we-are/culture/standards-and-ethics/","masthead":"https://www.nytimes.com/interactive/2019/admin/the-new-york-times-masthead.html","foundingDate":"1851-09-18","sameAs":"https://en.wikipedia.org/wiki/The_New_York_Times"}</script><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@context":"http://schema.org","@type":"ListItem","name":"U.S.","position":1,"item":"https://www.nytimes.com/section/us"},{"@context":"http://schema.org","@type":"ListItem","name":"Politics","position":2,"item":"https://www.nytimes.com/section/politics"}]}</script></body></html>""",
+        {"author": "Maggie Haberman; Shane Goldmacher; Michael Crowley", "pagetype": "newsarticle"},
+        id="nytimes",
+    ),
+    pytest.param(
+        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org","@type":"Organization","legalName":"Safety Insurance Group, Inc.","alternateName":["Safety Insurance","Safety Insurance Company"],"foundingDate":"1979","url":"https://www.safetyinsurance.com","logo":"https://www.safetyinsurance.com/images/base/png/safety_logo.png","sameAs":["https://www.facebook.com/safetyinsurance","https://twitter.com/safetyins","https://www.linkedin.com/company/safety-insurance","https://plus.google.com/+safetyinsurance/","https://www.youtube.com/channel/UCcSbxDPCiLjpXSu-Y67aRvQ"],"contactPoint":[{"@type":"ContactPoint","telephone":"+1-800-951-0200","contactType":"customer service","contactOption":"TollFree","areaServed":"US","hoursAvailable":"Mo-Fr 08:15-16:30"},{"@type":"ContactPoint","telephone":"+1-617-951-0600","contactType":"customer service","areaServed":"US","hoursAvailable":"Mo-Fr 08:15-16:30"}],"address":{"@type":"PostalAddress","addressLocality":"Boston","addressRegion":"MA","streetAddress":"20 Custom House Street","postalCode":"02110"}}</script></body></html>""",
+        {"sitename": "Safety Insurance Group, Inc."},
+        id="organization-legal-name",
+    ),
+    pytest.param(
+        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.perthnow.com.au/news/government-defends-graphic-covid-19-ad-after-backlash-c-3376985"},"dateline":null,"publisher":{"@type":"Organization","name":"PerthNow","url":"https://www.perthnow.com.au","logo":{"@type":"ImageObject","url":"https://www.perthnow.com.au/static/publisher-logos/publisher-logo-60px-high.png","width":575,"height":60}},"keywords":["News","News","Australia","Politics","Federal Politics","News","TAS News"],"articleSection":"News","headline":"Government defends graphic Covid-19 ad after backlash","description":"A graphic COVID-19 ad showing a young woman apparently on the verge of death has prompted a backlash, but the government insists it wasn’t done lightly.","dateCreated":"2021-07-12T00:11:50.000Z","datePublished":"2021-07-12T00:11:50.000Z","dateModified":"2021-07-12T01:25:20.617Z","isAccessibleForFree":"True","articleBody":"The man tasked with co-ordinating Australia&rsquo;s Covid-19 vaccine rollout insists a confronting ad depicting a woman on the verge of death was not run lightly. The 30-second clip, depicting a woman apparently in her 20s or 30s gasping for air on a hospital bed, was filmed last year, but the federal government held off running it as no outbreak was deemed serious enough to warrant it. The government has been forced to defend the ad, reminiscent of the &ldquo;Grim Reaper&rdquo; HIV ads in the 1980s, after it prompted a backlash over claims it was too confronting. A more temperate series of ads, depicting arms on ordinary Australians with the moniker &ldquo;Arm Yourself&rdquo;, began last week, but Covid-19 taskforce commander Lieutenant General John Frewen said the escalating situation in Sydney called for a more explicit response. &ldquo;It is absolutely confronting and we didn&rsquo;t use it lightly. There was serious consideration given to whether it was required and we took expert advice,&rdquo; he told Today on Monday. &ldquo;It is confronting but leaves people in no doubt about the seriousness of getting Covid, and it seeks to have people stay home, get tested and get vaccinated as quickly as they can.&rdquo; NSW on Sunday confirmed another 77 cases, 31 of which had been in the community while infectious, and Premier Gladys Berejiklian warned she would be &ldquo;shocked&rdquo; if the number did not exceed 100 on Monday. General Frewen said the &ldquo;concerning situation&rdquo; had prompted the government to shift an additional 300,000 doses to NSW over the coming fortnight. &ldquo;The Delta variant is proving to be very difficult to contain, so we&rsquo;re working very closely with NSW authorities and standing ready to help them in any way we can,&rdquo; he said. Agriculture Minister David Littleproud said the ad was designed to shock Sydneysiders into action as the situation deteriorated. &ldquo;This is about shooting home that this is a serious situation and can get anybody. The fact we&rsquo;re actually debating this I think says to me that the campaign we&rsquo;ve approved is working,&rdquo; he said. The age of the woman in the ad has sparked controversy, with most younger Australians still ineligible to receive their vaccine. But with 11 of the 52 people in hospital across NSW under 35, Labor frontbencher Tanya Plibersek warned the Delta variant was &ldquo;hitting younger people as well&rdquo;. Labor had long demanded a national Covid-19 advertising campaign, which Ms Plibersek said was delayed as a result of the government&rsquo;s sluggish vaccine rollout. &ldquo;Perhaps the reason it&rsquo;s taken so long is if you encourage people to go and get vaccinated, you&rsquo;ve got to have enough of the vaccine available. We simply haven&rsquo;t; we&rsquo;ve been absolutely behind the eight ball in getting another vaccine for Australians,&rdquo; she told Sunrise. Labor frontbencher Chris Bowen, whose western Sydney electorate was in the grip of the outbreak, said the issue was &ldquo;not vaccine hesitancy so much, it&rsquo;s vaccine scarcity&rdquo;. He accepted there was a role for &ldquo;pointing out the consequences of not getting vaccinated&rdquo; to those that were hesitant about the jab, but said the new campaign lacked the &ldquo;creative spark&rdquo; of the Grim Reaper ads. &ldquo;That was a very tough message, a very stark message, but in a very creative way. I think the government really needs to rethink this advertising campaign from scratch; it&rsquo;s too late, and it&rsquo;s pretty low impact,&rdquo; he told ABC radio. He also dismissed the &ldquo;Arm Yourself&rdquo; campaign as &ldquo;very low energy&rdquo;. &ldquo;I don&rsquo;t think that&rsquo;s going to have any impact,&rdquo; he said.","image":[{"@type":"ImageObject","url":"https://images.perthnow.com.au/publication/C-3376985/6c07502f73bdccd45d879356219c325574873a6d-16x9-x0y444w1151h647.jpg","width":1151,"height":647},{"@type":"ImageObject","url":"https://images.perthnow.com.au/publication/C-3376985/6c07502f73bdccd45d879356219c325574873a6d-4x3-x0y336w1151h863.jpg","width":1151,"height":863}],"thumbnailUrl":"https://images.perthnow.com.au/publication/C-3376985/6c07502f73bdccd45d879356219c325574873a6d-16x9-x0y444w1151h647.jpg","url":"https://www.perthnow.com.au/news/government-defends-graphic-covid-19-ad-after-backlash-c-3376985","author":{"@type":"Organization","name":"NCA NewsWire"},"name":"Government defends graphic Covid-19 ad after backlash"}</script><span itemprop="author name">Jenny Smith</span></span></body></html>""",
+        {"author": "Jenny Smith", "pagetype": "newsarticle"},
+        id="perthnow-itemprop-author",
+    ),
+    pytest.param(
+        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"http://schema.org/","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"https://google.com/article"},"description":"At least three people have died after a shooting Monday night at Michigan State University, police said. Follow for live updates.","publisher":{"@type":"Organization","name":"CNN","logo":{"@type":"ImageObject","url":"https://dynaimage.cdn.cnn.com/cnn/q_auto,h_60/%2F%2Fcdn.cnn.com%2Fcnn%2F.e%2Fimg%2F4.0%2Flogos%2Fcnn_logo_social.jpg"}},"url":"https://www.cnn.com/us/live-news/michigan-state-university-shooting-updates-2-13-23/index.html","headline":"Live updates: Michigan State University shooting, East Lansing campus","image":{"@type":"ImageObject","url":"https://cdn.cnn.com/cnnnext/dam/assets/230213183317-01-michigan-state-shooting-0213-super-tease.jpg","height":"1100","width":"619"},"datePublished":"2023-02-14T02:46:42Z","dateModified":"2023-02-14T07:17:52Z","author":{"@type":"Person","name":"By <a href=\"/profiles/amir-vera\">Amir Vera</a>, Seán Federico O'Murchú, <a href=\"/profiles/tara-subramaniam\">Tara Subramaniam</a> and Adam Renton, CNN"},"speakable":{"@type":"SpeakableSpecification","cssSelector":[".speakable"]}}</script></body></html>""",
+        {"author": "Amir Vera; Seán Federico O'Murchú; Tara Subramaniam; Adam Renton; CNN", "pagetype": "newsarticle"},
+        id="cnn-html-author",
+    ),
+    pytest.param(
+        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://traveltomorrow.com/#organization","name":"Travel tomorrow","url":"https://traveltomorrow.com/","sameAs":["https://www.facebook.com/traveltomorrow.eu","https://www.instagram.com/traveltomorrow.eu/","https://www.linkedin.com/company/traveltomorrow/","https://twitter.com/TravelTomorrowX"],"logo":{"@type":"ImageObject","@id":"https://traveltomorrow.com/#logo","inLanguage":"en-GB","url":"https://traveltomorrow.com/wp-content/uploads/2020/05/logo-travel-tomorrow-vertical.png","width":3508,"height":1154,"caption":"Travel tomorrow"},"image":{"@id":"https://traveltomorrow.com/#logo"}},{"@type":"WebSite","@id":"https://traveltomorrow.com/#website","url":"https://traveltomorrow.com/","name":"Travel Tomorrow","description":"","publisher":{"@id":"https://traveltomorrow.com/#organization"},"potentialAction":[{"@type":"SearchAction","target":"https://traveltomorrow.com/?s={search_term_string}","query-input":"required name=search_term_string"}],"inLanguage":"en-GB"},{"@type":"ImageObject","@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#primaryimage","inLanguage":"en-GB","url":"https://traveltomorrow.com/wp-content/uploads/2023/03/2905262_new.jpeg","width":1800,"height":1274},{"@type":"WebPage","@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#webpage","url":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/","name":"Traditional and classical music from Kazakhstan to hit Brussels - Travel Tomorrow","isPartOf":{"@id":"https://traveltomorrow.com/#website"},"primaryImageOfPage":{"@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#primaryimage"},"datePublished":"2023-03-22T11:46:01+00:00","dateModified":"2023-03-22T12:29:54+00:00","inLanguage":"en-GB","potentialAction":[{"@type":"ReadAction","target":["https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/"]}]},{"@type":"Article","@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#article","isPartOf":{"@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#webpage"},"author":{"@id":"https://traveltomorrow.com/#/schema/person/793ea32cfc4e3c0d891ddf002ed1ea2e"},"headline":"Traditional and classical music from Kazakhstan to hit Brussels","datePublished":"2023-03-22T11:46:01+00:00","dateModified":"2023-03-22T12:29:54+00:00","mainEntityOfPage":{"@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#webpage"},"publisher":{"@id":"https://traveltomorrow.com/#organization"},"image":{"@id":"https://traveltomorrow.com/traditional-and-classical-music-from-kazakhstan-to-hit-brussels/#primaryimage"},"articleSection":"Culture,Music,\ud83c\udde7\ud83c\uddea Belgium","inLanguage":"en-GB"},{"@type":"Person","@id":"https://traveltomorrow.com/#/schema/person/793ea32cfc4e3c0d891ddf002ed1ea2e","name":"Deborah O'Donoghue","image":{"@type":"ImageObject","@id":"https://traveltomorrow.com/#personlogo","inLanguage":"en-GB","url":"http://2.gravatar.com/avatar/27467e77f62506f419a9fbe6eef750c4?s=96&d=mm&r=g","caption":"Deborah O'Donoghue"},"description":"Deborah O\u2019Donoghue is a British-Irish writer who has lived in the UK, France and Belgium. She has travelled all over the world and worked in car body repairs, in the best fish \u2018n\u2019 chip shop in Brighton, and been a gopher in a comedy club, as well as a teacher. She\u2019s a past winner of the Commonwealth Broadcasting Association Short Story Prize. Her d\u00e9but novel, Sea of Bones, was published by Legend Press in 2019 and comes out in Germany in 2021. Follow Deborah on Twitter and Instagram."}]}</script></body></html>""",
+        {"author": "Deborah O'Donoghue", "pagetype": "website"},
+        id="traveltomorrow-graph",
+    ),
+    pytest.param(
+        """<html><body><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","dateModified":"2022-10-18T07:02:26+0100","image":{"@type":"ImageObject","url":"https://i.dailymail.co.uk/1s/2022/10/18/06/63581747-0-image-a-54_1666070195906.jpg","height":"1146","width":"1908"},"author":[{"@type":"Person","name":"Sam McPhee"},{"@type":"Person","name":"¿\ttara Cosoleto"}],"video":{"width":1024,"height":576,"uploadDate":"2022-10-16T23:49:15+0100","contentUrl":"https://videos.dailymail.co.uk/video/backup/2022/10/16/8580444913529736888/1024x576_MP4_8580444913529736888.mp4","name":"Today weather crew catches looters rifling through evacuated home","thumbnailUrl":"https://i.dailymail.co.uk/1s/2022/10/16/23/63534109-0-image-a-21_1665960603330.jpg","duration":"PT00M28S","@type":"VideoObject","description":"Today weather presenter Tim Davies and his camera crew catch looters in face masks and hoodies rifling through an evacuated home in Maribyrnong, Melbourne: 'It's a sickening sight'"},"id":"https://www.dailymail.co.uk/news/article-11326469/Victoria-floods-Echuca-looters-steal-sandbags-item-towns-work-waters-bay.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.dailymail.co.uk/news/article-11326469/Victoria-floods-Echuca-looters-steal-sandbags-item-towns-work-waters-bay.html","name":"Victoria floods: Echuca looters steal sandbags item as towns work to keep waters at bay","headline":"Victoria floods: Echuca looters steal sandbags item as towns work to keep waters at bay","image":"https://i.dailymail.co.uk/1s/2022/10/18/06/63581747-0-image-a-54_1666070195906.jpg","url":"https://www.dailymail.co.uk/news/article-11326469/Victoria-floods-Echuca-looters-steal-sandbags-item-towns-work-waters-bay.html","mainEntity":{"@type":"Thing","name":"Victoria floods: Echuca looters steal sandbags item as towns work to keep waters at bay"}},"name":"Victoria floods: Echuca looters steal sandbags item as towns work to keep waters at bay","articleBody":"Looters stealing sandbags from outside flood-affected homes in Victoria. Echuca woman Abby said hundreds of bags disappeared from cousin's house. Channel Nine weatherman also caught group of men looting family home. More wet weather is due for Victoria for the remainder of the week","publisher":{"@type":"Organization","name":"Daily Mail","sameAs":["DailyMail","https://www.facebook.com/DailyMail","https://twitter.com/MailOnline","https://www.youtube.com/user/MailOnlineVideo","https://www.instagram.com/dailymail/","https://www.snapchat.com/discover/Daily-Mail/8392137033","https://flipboard.com/@DailyMailUS","https://www.pinterest.co.uk/dailymail/"],"logo":{"@type":"ImageObject","url":"https://i.dailymail.co.uk/i/sitelogos/sd-dailymail.png","width":"600","height":"60"},"address":{"@type":"PostalAddress","streetAddress":"Northcliffe House, 2 Derry Street","addressLocality":"London","addressRegion":"London","postalCode":"W8 5TT","addressCountry":{"@type":"Country","name":"GB"}}},"datePublished":"2022-10-18T07:02:26+0100","@type":"NewsArticle","description":"Shameful looters have resorted to stealing the sandbags protecting homes in Victoria as the state braces for more heavy rainfall.","headline":"Victoria floods: Echuca looters steal sandbags item as towns work to keep waters at bay"}</script></body></html>""",
+        {"author": "Sam McPhee; Tara Cosoleto", "pagetype": "newsarticle"},
+        id="dailymail",
+    ),
+]
+
+
+@pytest.mark.parametrize(("page", "expected"), PAGES)
+def test_json_extraction(page, expected):
+    "Full metadata extraction on pages with JSON-LD."
+    check_fields(extract_metadata(page), expected)
+
+
+JSON_PAGES = [
+    pytest.param(
+        """<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/#webpage","url":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/","name":"Jean S\u00e9villia : \"L'\u00c9tat fran\u00e7ais et l'\u00c9tat alg\u00e9rien doivent reconna\u00eetre les crimes commis des deux c\u00f4t\u00e9s\" - Boulevard Voltaire","datePublished":"2018-09-13T12:21:13+00:00","dateModified":"2018-09-14T12:33:14+00:00","inLanguage":"fr-FR"},{"@type":"Article","@id":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/#article","isPartOf":{"@id":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/#webpage"},"author":{"@id":"https://www.bvoltaire.fr/#/schema/person/96c0ed8f089950c46afc2044cb23e8da"},"headline":"Jean S\u00e9villia : &#8220;L&#8217;\u00c9tat fran\u00e7ais et l&#8217;\u00c9tat alg\u00e9rien doivent reconna\u00eetre les crimes commis des deux c\u00f4t\u00e9s&#8221;","datePublished":"2018-09-13T12:21:13+00:00","dateModified":"2018-09-14T12:33:14+00:00","mainEntityOfPage":{"@id":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/#webpage"},"publisher":{"@id":"https://www.bvoltaire.fr/#organization"},"image":{"@id":"https://www.bvoltaire.fr/jean-sevillia-letat-francais-et-letat-algerien-doivent-reconnaitre-les-crimes-commis-des-deux-cotes/#primaryimage"},"keywords":"Guerre d'Alg\u00e9rie","articleSection":"Audio,Editoriaux,Entretiens,Histoire","inLanguage":"fr-FR"},{"@type":"Person","@id":"https://www.bvoltaire.fr/#/schema/person/96c0ed8f089950c46afc2044cb23e8da","name":"Jean S\u00e9villia","image":{"@type":"ImageObject","@id":"https://www.bvoltaire.fr/#personlogo","inLanguage":"fr-FR","url":"https://secure.gravatar.com/avatar/1dd0ad5cb1fc3695880af1725477b22e?s=96&d=mm&r=g","caption":"Jean S\u00e9villia"},"description":"R\u00e9dacteur en chef adjoint au Figaro Magazine, membre du comit\u00e9 scientifique du Figaro Histoire, et auteur de biographies et d\u2019essais historiques.","sameAs":["https://www.bvoltaire.fr/"]}]}</script></body></html>""",
+        {"author": "Jean Sévillia", "pagetype": "webpage"},
+        id="bvoltaire-graph",
+    ),
+    pytest.param(
+        """<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@type":"Article","name":"Example Article","description":"This is an example article.","datePublished":"2023-06-14".,"dateModified":"2023-06-14","author":{"@type":"Person","name":"John Doe"},"publisher":{"@type":"Organization","name":"Example Publisher","logo":{"@type":"ImageObject","url":"https://www.example.com/logo.png"}},"image":{"@type":"ImageObject","url":"https://www.example.com/article-image.jpg","width":800,"height":600},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.example.com/article"},"url":"https://www.example.com/article"}</script></body></html>""",
+        {"author": "John Doe", "pagetype": "article", "title": "Example Article"},
+        id="broken-article",
+    ),
+    pytest.param(
+        """<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@type":"LiveBlogPosting","url":"https://example.com/liveblog/123","headline":"Example Live Blog","datePublished":"2023-06-14T09:00:00Z","dateModified":"2023-06-14T10:30:00Z","articleBody":"This is the live blog update content.","liveBlogUpdate":[{"@type":"BlogPosting","headline":"Breaking News: Example Article","articleBody":"This is the content of the example article.","datePublished":"2023-06-14T10:00:00Z","dateModified":"2023-06-14T10:15:00Z","author":{"@type":"Person","name":"John Doe"}}]}</script></body></html>""",
+        {"author": "John Doe", "pagetype": "blogposting", "title": "Breaking News: Example Article"},
+        id="liveblog-blogposting-update",
+    ),
+    pytest.param(
+        """<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@type":"WebPage","name":"Example Webpage","headline":"Example Webpage","datePublished":"2023-06-14","dateModified":"2023-06-14","description":"This is an example webpage.","author":{"@type":"Person","name":"John Doe"},"publisher":{"@type":"Organization","name":"https://www.example.com","logo":{"@type":"ImageObject","url":"https://www.example.com/logo.jpg","width":600,"height":60}},"image":{"@type":"ImageObject","url":"https://www.example.com/webpage-image.jpg","width":800,"height":600}}</script></body></html>""",
+        {"sitename": "Example Webpage"},
+        id="webpage-name",
+    ),
+    pytest.param(
+        ld_page(broken({**LIVEBLOG, "liveBlogUpdate": LIVEBLOG_UPDATE})),
+        {"title": "Apple Spring Forward Event Live Blog", "pagetype": "liveblogposting"},
+        id="liveblog-update-object",
+    ),
+    pytest.param(
+        """
 <html><body>
 <script type="application/ld+json">
 {
@@ -170,44 +158,17 @@ def test_json_extraction():
   ]
 }
 </script>
-</body></html>"""),
-        metadata,
-    )
-
-    assert metadata.title == "Apple Spring Forward Event Live Blog"
-    assert metadata.pagetype == "liveblogposting"
-
-    ### Test for potential errors - Missing content on live blog
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
-    <html><body>
-    <script type="application/ld+json">
-    {
-      "@context":"http://schema.org",
-      "@type":"LiveBlogPosting",
-      "@id":"http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
-      "about":{
-        "@type":"Event",
-        "startDate":"2015-03-09T13:00:00-07:00",
-        "name":"Apple Spring Forward Event"
-      },
-      "coverageStartTime":"2015-03-09T11:30:00-07:00",
-      "coverageEndTime":"2015-03-09T16:00:00-07:00",
-      "headline":"Apple Spring Forward Event Live Blog",
-      "description":"Welcome to live coverage of the Apple Spring Forward …"
-    }
-    </script>
-    </body></html>"""),
-        metadata,
-    )
-
-    assert metadata.title == "Apple Spring Forward Event Live Blog"
-    assert metadata.pagetype == "liveblogposting"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+</body></html>""",
+        {"title": "Apple Spring Forward Event Live Blog", "pagetype": "liveblogposting"},
+        id="liveblog-broken-update-list",
+    ),
+    pytest.param(
+        ld_page(json.dumps(LIVEBLOG)),
+        {"title": "Apple Spring Forward Event Live Blog", "pagetype": "liveblogposting"},
+        id="liveblog-no-update",
+    ),
+    pytest.param(
+        """
 <html><body>
     <script type="application/ld+json">
         {
@@ -237,15 +198,12 @@ def test_json_extraction():
         }
     </script>
 </script>
-</body></html>"""),
-        metadata,
-    )
-    assert metadata.author == "Douglas Noel Adams"
-    assert metadata.pagetype == "socialmediaposting"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+</body></html>""",
+        {"author": "Douglas Noel Adams", "pagetype": "socialmediaposting"},
+        id="socialmediaposting",
+    ),
+    pytest.param(
+        """
 <html><body>
     <script type="application/ld+json">
         {
@@ -269,15 +227,12 @@ def test_json_extraction():
         }
     </script>
 </script>
-</body></html>"""),
-        metadata,
-    )
-    assert len(metadata.categories) == 0
-    assert metadata.pagetype == "article"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+</body></html>""",
+        {"categories": [], "pagetype": "article"},
+        id="null-categories",
+    ),
+    pytest.param(
+        """
 <html><body>
     <script type="application/ld+json">
         {
@@ -383,18 +338,18 @@ def test_json_extraction():
             }
     </script>
 </script>
-</body></html>"""),
-        metadata,
-    )
-    assert metadata.title == "Mickelson comments hurt new league: Norman"
-    assert metadata.sitename == "7NEWS"
-    assert metadata.author == "Digital Staff"
-    assert "Golf" in metadata.categories
-    assert metadata.pagetype == "newsarticle"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+</body></html>""",
+        {
+            "title": "Mickelson comments hurt new league: Norman",
+            "sitename": "7NEWS",
+            "author": "Digital Staff",
+            "categories": ["Golf"],
+            "pagetype": "newsarticle",
+        },
+        id="7news",
+    ),
+    pytest.param(
+        """
 <html><body>
     <script type="application/ld+json">
         {
@@ -431,17 +386,17 @@ def test_json_extraction():
         }
     </script>
 </script>
-</body></html>"""),
-        metadata,
-    )
-    assert metadata.title == "Australians stuck in Shanghai's COVID lockdown beg consular officials to help them flee"
-    assert metadata.author == "Bill Birtles"
-    assert metadata.sitename == "ABC News"
-    assert metadata.pagetype == "newsarticle"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+</body></html>""",
+        {
+            "title": "Australians stuck in Shanghai's COVID lockdown beg consular officials to help them flee",
+            "author": "Bill Birtles",
+            "sitename": "ABC News",
+            "pagetype": "newsarticle",
+        },
+        id="abc-news",
+    ),
+    pytest.param(
+        """
 <html><body>
     <script type="application/ld+json">
     {
@@ -542,17 +497,17 @@ def test_json_extraction():
         }
     </script>
 </script>
-</body></html>"""),
-        metadata,
-    )
-    assert metadata.title == "New York City Enters Higher Coronavirus Risk Level as Case Numbers Rise"
-    assert metadata.author == "Sharon Otterman; Emma G Fitzsimmons"
-    assert metadata.sitename == "The New York Times"
-    assert metadata.pagetype == "newsarticle"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+</body></html>""",
+        {
+            "title": "New York City Enters Higher Coronavirus Risk Level as Case Numbers Rise",
+            "author": "Sharon Otterman; Emma G Fitzsimmons",
+            "sitename": "The New York Times",
+            "pagetype": "newsarticle",
+        },
+        id="nytimes-two-blocks",
+    ),
+    pytest.param(
+        """
 <html><body>
     <script type="application/ld+json">
         [
@@ -590,16 +545,16 @@ def test_json_extraction():
         ]
     </script>
 </script>
-</body></html>"""),
-        metadata,
-    )
-    assert metadata.title == "Decreto permite que consumidor cancele serviços de empresas via WhatsApp"
-    assert metadata.author == "Caio Mello"
-    assert metadata.sitename == "UOL"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+</body></html>""",
+        {
+            "title": "Decreto permite que consumidor cancele serviços de empresas via WhatsApp",
+            "author": "Caio Mello",
+            "sitename": "UOL",
+        },
+        id="uol-list",
+    ),
+    pytest.param(
+        """
 <html><body>
     <script type="application/ld+json">
         {
@@ -643,17 +598,17 @@ def test_json_extraction():
           }
     </script>
 </script>
-</body></html>"""),
-        metadata,
-    )
-    assert metadata.title == "12 words and phrases you need to survive in Hamburg"
-    assert metadata.author == "Alexander Johnstone"
-    assert metadata.sitename == "The Local"
-    assert metadata.pagetype == "newsarticle"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+</body></html>""",
+        {
+            "title": "12 words and phrases you need to survive in Hamburg",
+            "author": "Alexander Johnstone",
+            "sitename": "The Local",
+            "pagetype": "newsarticle",
+        },
+        id="thelocal",
+    ),
+    pytest.param(
+        """
 <html><body>
     <script type="application/ld+json">
         {
@@ -699,16 +654,12 @@ def test_json_extraction():
             ]
         }
 </script>
-</body></html>"""),
-        metadata,
-    )
-    assert metadata.author is None
-    assert metadata.sitename == "Andreessen Horowitz"
-    assert metadata.pagetype == "website"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+</body></html>""",
+        {"author": None, "sitename": "Andreessen Horowitz", "pagetype": "website"},
+        id="a16z-graph",
+    ),
+    pytest.param(
+        """
 <html><body>
 <script type="application/ld+json">
 {
@@ -719,83 +670,22 @@ def test_json_extraction():
   },
 }
 </script>
-</body></html>"""),
-        metadata,
-    )
-
-    assert metadata.author is None
-    assert metadata.sitename is None
-    assert metadata.pagetype is None
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
-    <html><body>
-    <script type="application/ld+json">
-    {
-      "@context":"http://google.com",
-      "@type":"LiveBlogPosting",
-      "@id":"http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
-      "about":{
-        "@type":"Event",
-        "startDate":"2015-03-09T13:00:00-07:00",
-        "name":"Apple Spring Forward Event"
-      },
-      "coverageStartTime":"2015-03-09T11:30:00-07:00",
-      "coverageEndTime":"2015-03-09T16:00:00-07:00",
-      "headline":"Apple Spring Forward Event Live Blog",
-      "description":"Welcome to live coverage of the Apple Spring Forward …",
-      "liveBlogUpdate":[{
-          "@type":"BlogPosting",
-          "headline":"Coming this April, HBO NOW will be available exclusively in the U.S. on Apple TV and the App Store.",
-          "datePublished":"2015-03-09T13:08:00-07:00",
-          "articleBody": "It's $14.99 a month.<br> And for a limited time, …"
-        }],
-    }
-    </script>
-    </body></html>"""),
-        metadata,
-    )
-
-    assert metadata.author is None
-    assert metadata.sitename is None
-    assert metadata.pagetype == "liveblogposting"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
-<html><body>
-<script type="application/ld+json">
-{
-  "@context":"http://schema.org",
-  "@type":"LiveBlogPosting",
-  "@id":"http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
-  "about":{
-    "@type":"Event",
-    "startDate":"2015-03-09T13:00:00-07:00",
-    "name":"Apple Spring Forward Event"
-  },
-  "coverageStartTime":"2015-03-09T11:30:00-07:00",
-  "coverageEndTime":"2015-03-09T16:00:00-07:00",
-  "headline":"Apple Spring Forward Event Live Blog",
-  "description":"Welcome to live coverage of the Apple Spring Forward …",
-  "liveBlogUpdate":[{
-      "@type":"BlogPosting",
-      "headline":"Coming this April, HBO NOW will be available exclusively in the U.S. on Apple TV and the App Store.",
-      "datePublished":"2015-03-09T13:08:00-07:00",
-      "articleBody": "It's $14.99 a month.<br> And for a limited time, …"
-    }],
-}
-</script>
-</body></html>"""),
-        metadata,
-    )
-    assert metadata.title == "Apple Spring Forward Event Live Blog"
-    assert metadata.pagetype == "liveblogposting"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring(r"""
+</body></html>""",
+        {"author": None, "sitename": None, "pagetype": None},
+        id="no-context-no-type",
+    ),
+    pytest.param(
+        ld_page(broken({**LIVEBLOG, "@context": "http://google.com", "liveBlogUpdate": [LIVEBLOG_UPDATE]})),
+        {"author": None, "sitename": None, "pagetype": "liveblogposting"},
+        id="liveblog-other-context",
+    ),
+    pytest.param(
+        ld_page(broken({**LIVEBLOG, "liveBlogUpdate": [LIVEBLOG_UPDATE]})),
+        {"title": "Apple Spring Forward Event Live Blog", "pagetype": "liveblogposting"},
+        id="liveblog-update-list",
+    ),
+    pytest.param(
+        r"""
 <html><body>
 <script type="application/ld+json">
 {
@@ -841,45 +731,12 @@ def test_json_extraction():
         }
     }
 </script>
-</body></html>"""),
-        metadata,
-    )
-
-    assert metadata.title == "EastEnders' June Brown leaves soap 'for good'"
-    assert metadata.sitename == "BBC News"
-    assert metadata.pagetype == "reportagenewsarticle"
-
-    metadata = Document()
-    metadata.sitename = "https://bbcnews.com"
-    metadata = extract_meta_json(
-        html.fromstring(r"""
-    <html><body>
-    <script type="application/ld+json">
-    {
-            "@context": "http:\/\/schema.org",
-            "@type": "ReportageNewsArticle",
-            "url": "https:\/\/www.bbc.com\/news\/entertainment-arts-51582573",
-            "publisher": {
-                "@type": "NewsMediaOrganization",
-                "name": "BBC News",
-                "publishingPrinciples": "http:\/\/www.bbc.co.uk\/news\/help-41670342",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "https:\/\/www.bbc.co.uk\/news\/special\/2015\/newsspec_10857\/bbc_news_logo.png?cb=1"
-                }
-            },
-        }
-    </script>
-    </body></html>"""),
-        metadata,
-    )
-
-    assert metadata.sitename == "BBC News"
-    assert metadata.pagetype == "reportagenewsarticle"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+</body></html>""",
+        {"title": "EastEnders' June Brown leaves soap 'for good'", "sitename": "BBC News", "pagetype": "reportagenewsarticle"},
+        id="bbc-reportage",
+    ),
+    pytest.param(
+        """
     <html><body>
     <script type="application/ld+json">
     {
@@ -906,17 +763,12 @@ def test_json_extraction():
       "name": "How to Tie a Reef Knot"
     }
     </script>
-    </body></html>"""),
-        metadata,
-    )
-
-    assert metadata.author == "John Doe"
-    assert metadata.title == "How to Tie a Reef Knot"
-    assert metadata.pagetype == "article"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+    </body></html>""",
+        {"author": "John Doe", "title": "How to Tie a Reef Knot", "pagetype": "article"},
+        id="article-author-string",
+    ),
+    pytest.param(
+        """
     <html><body>
         <script type="application/ld+json">
             {
@@ -931,15 +783,12 @@ def test_json_extraction():
             }
         </script>
     </script>
-    </body></html>"""),
-        metadata,
-    )
-    assert metadata.author == "Bill Birtles; John Smith"
-    assert metadata.pagetype == "newsarticle"
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+    </body></html>""",
+        {"author": "Bill Birtles; John Smith", "pagetype": "newsarticle"},
+        id="person-name-list",
+    ),
+    pytest.param(
+        """
     <html><body>
         <script type="application/ld+json">
         {
@@ -952,17 +801,12 @@ def test_json_extraction():
           },
         }
         </script>
-    </body></html>"""),
-        metadata,
-    )
-
-    assert metadata.title is None
-    assert metadata.sitename is None
-    assert metadata.pagetype is None
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring("""
+    </body></html>""",
+        {"title": None, "sitename": None, "pagetype": None},
+        id="no-type",
+    ),
+    pytest.param(
+        """
     <html><body>
         <script type="application/ld+json">
         {
@@ -1013,21 +857,17 @@ def test_json_extraction():
            ]
         }
         </script>
-    </body></html>"""),
-        metadata,
-    )
-
-    assert metadata.title == "Find perfection in these places where land meets water."
-    assert metadata.sitename == "National Geographic"
-    assert metadata.author == "Kimberley Lovato"
-    assert metadata.pagetype == "article"
-
-    # tests that "@type": [] in the JSON doesn't cause an exception
-
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring(
-            r"""
+    </body></html>""",
+        {
+            "title": "Find perfection in these places where land meets water.",
+            "sitename": "National Geographic",
+            "author": "Kimberley Lovato",
+            "pagetype": "article",
+        },
+        id="natgeo",
+    ),
+    pytest.param(
+        r"""
     <html>
     <body>
         <script type="application/ld+json">
@@ -1054,18 +894,12 @@ def test_json_extraction():
         </script>
     </body>
     </html>
-    """
-        ),
-        metadata,
-    )
-
-    assert metadata is not None
-
-    # tests if the JSON-LD with html entities is parsed correctly
-    metadata = Document()
-    metadata = extract_meta_json(
-        html.fromstring(
-            """
+    """,
+        {},
+        id="empty-type-list",
+    ),
+    pytest.param(
+        """
     <html>
     <body>
         <script type="application/ld+json">
@@ -1073,47 +907,195 @@ def test_json_extraction():
         </script>
     </body>
     </html>
-    """
-        ),
-        metadata,
+    """,
+        {"pagetype": "website"},
+        id="html-entities",
+    ),
+]
+
+
+@pytest.mark.parametrize(("page", "expected"), JSON_PAGES)
+def test_meta_json(page, expected):
+    "JSON-LD extraction alone, including malformed blocks and the regex fallback."
+    check_fields(extract_meta_json(html.fromstring(page), Document()), expected)
+
+
+def test_meta_json_replaces_url_sitename():
+    "A sitename that is only a URL is replaced by the JSON-LD publisher name."
+    page = r"""
+    <html><body>
+    <script type="application/ld+json">
+    {
+            "@context": "http:\/\/schema.org",
+            "@type": "ReportageNewsArticle",
+            "url": "https:\/\/www.bbc.com\/news\/entertainment-arts-51582573",
+            "publisher": {
+                "@type": "NewsMediaOrganization",
+                "name": "BBC News",
+                "publishingPrinciples": "http:\/\/www.bbc.co.uk\/news\/help-41670342",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/www.bbc.co.uk\/news\/special\/2015\/newsspec_10857\/bbc_news_logo.png?cb=1"
+                }
+            },
+        }
+    </script>
+    </body></html>"""
+    check_fields(
+        extract_meta_json(html.fromstring(page), Document(sitename="https://bbcnews.com")),
+        {"sitename": "BBC News", "pagetype": "reportagenewsarticle"},
     )
 
-    assert metadata.pagetype == "website"
+
+def test_json_minify():
+    "regression #854: an escaped backslash must not strip whitespace from adjacent JSON-LD fields."
+    minified = JSON_MINIFY.sub(r"\1", '{"author": "Curtis Heyen", "keywords": ["fatal stabbing\\\\", "homicide"]}')
+    assert '"Curtis Heyen"' in minified
 
 
-def test_normalize_authors():
+@pytest.mark.parametrize("suffix", ["", "<br>"])
+def test_extract_meta_json_control_char(suffix):
+    "A control character must not send the block to the regex fallback, also when markup needs stripping first."
+    payload = (
+        '{"@context": "https://schema.org", "@graph": ['
+        '{"@type": "Organization", "name": "Acme Corp"}, '
+        '{"@type": "Article", "headline": "Graph based headline", '
+        '"description": "Body text with a stray control char\x01 inside it."}]}'
+    )
+    metadata = extract_meta_json(html.fromstring(ld_page(payload + suffix)), Document())
+    check_fields(metadata, {"pagetype": "article", "title": "Graph based headline", "sitename": "Acme Corp"})
+
+
+@pytest.mark.parametrize(
+    ("fields", "expected"),
+    [
+        # escapes are decoded by the parser, not in the raw text
+        ('"headline": "A \\u0022quoted\\u0022 title"', {"title": 'A "quoted" title'}),
+        # also with a raw line break in the string
+        ('"headline": "A \\u0022quoted\\u0022\ntitle"', {"title": 'A "quoted" title'}),
+        (
+            '"headline": "Why 3 \\u003c 5", "publisher": {"@type": "Organization", "name": "<b>Acme</b> \\u003e News"}',
+            {"title": "Why 3 < 5", "sitename": "Acme > News"},
+        ),
+        # entities are decoded after the markup is stripped
+        ('"headline": "Using Vec&lt;T&gt; in Rust"', {"title": "Using Vec<T> in Rust"}),
+        ('"headline": "3 &lt; 5 and 7 &gt; 2"', {"title": "3 < 5 and 7 > 2"}),
+    ],
+)
+def test_extract_meta_json_escaped_characters(fields, expected):
+    "An escaped quote must not end the string and escaped angle brackets must not form a tag spanning fields."
+    payload = f'{{"@context": "https://schema.org", "@type": "NewsArticle", {fields}}}'
+    check_fields(extract_meta_json(html.fromstring(ld_page(payload)), Document()), expected)
+
+
+@pytest.mark.parametrize(("section", "expected"), [("Food &amp; Drink", "Food & Drink"), ("Food\\ud800", "Food")])
+def test_extract_meta_json_entities_and_surrogates(section, expected):
+    "Parsed JSON-LD strings contain no backslash, entities and lone surrogates must be removed anyway."
+    payload = f'{{"@context": "https://schema.org", "@type": "NewsArticle", "articleSection": "{section}"}}'
+    metadata = extract_meta_json(html.fromstring(ld_page(payload)), Document())
+    assert metadata.categories == [expected]
+    # the JSON output can be encoded as UTF-8
+    assert f'"categories": "{expected}"'.encode() in build_json_output(metadata).encode("utf-8")
+
+
+def test_extract_json_multiple_blocks():
+    "regression: a flat JSON-LD object must not short-circuit the loop and drop later @graph blocks."
+    schema = [
+        {"@context": "https://schema.org", "@type": "WebPage", "name": "Flat object"},
+        {"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Graph Headline"}]},
+    ]
+    metadata = extract_json(schema, Document())
+    assert metadata.title == "Graph Headline"
+
+
+def test_extract_json_null_author():
+    'regression: "author": null must not raise -- process_parent\'s author loop expects an \
+    iterable, not None.'
+    schema = {"@context": "https://schema.org", "@type": "Article", "headline": "Some Headline", "author": None}
+    metadata = extract_json(schema, Document())
+    assert metadata.title == "Some Headline"
+    assert metadata.author is None
+
+
+def test_extract_json_parse_error():
+    "Crude-regex fallback for malformed JSON-LD extracts each field; comma-publisher is rejected."
+    blob = (
+        '{"@type":"Article","author":{"name":"Jane Doe"},'
+        '"publisher":{"@type":"Organization","name":"Example Publisher"},'
+        '"articleSection":"World News","headline":"Big Story",} BROKEN'
+    )
+    m = extract_json_parse_error(blob, Document())
+    assert (m.author, m.pagetype, m.sitename, m.categories, m.title) == (
+        "Jane Doe",
+        "article",
+        "Example Publisher",
+        ["World News"],
+        "Big Story",
+    )
+    assert extract_json_parse_error('{"publisher":{"name":"Acme, Inc"}} X', Document()).sitename is None
+
+
+def test_process_parent_keeps_good_sitename():
+    "regression: a bare publisher dict must not clobber an already-plausible sitename."
+    metadata = Document()
+    metadata.sitename = "A Long Established Site Name"
+    process_parent([{"publisher": {"@type": "Organization", "name": "Pub"}}], metadata)
+    assert metadata.sitename == "A Long Established Site Name"
+
+
+@pytest.mark.parametrize(
+    ("current", "new", "expected"),
+    [
+        (None, "John Doe", "John Doe"),
+        (None, "abc", "Abc"),
+        (None, "Steve Steve 123", "Steve Steve"),
+        (None, "By Steve Steve", "Steve Steve"),
+        (None, "123", None),  # no usable name -> returns current
+        ("Alice; Bob", "John Doe", "Alice; Bob; John Doe"),
+        ("Alice; Bob", "john.doe@example.com", "Alice; Bob"),
+        ("Alice", "www.facebook.com/alice", "Alice"),
+        (None, "Jan Hvizdak, postmaster@aqua-fish.net", "Jan Hvizdak"),
+        (None, "By Frank Ready fready@centredaily.com", "Frank Ready"),
+        (None, "\\u00e9tienne", "Étienne"),
+        (None, "Jane\\uZZ Doe", "Jane\\uZZ Doe"),  # invalid \u escape must not raise
+        (None, "&#233;tienne", "Étienne"),
+        (None, "Alice &amp; Bob", "Alice; Bob"),
+        (None, "<b>John Doe</b>", "John Doe"),
+        (None, "John 😊 Doe", "John Doe"),
+        (None, "words by John Doe", "John Doe"),
+        # usernames keep their digits, dates and trailing junk after a number go
+        (None, "John Doe123", "John Doe123"),
+        (None, "Need2KnowLion", "Need2KnowLion"),
+        (None, "Ralston18 Titan Moderator Oct", "Ralston"),
+        (None, "John Doe 12 March 2020", "John Doe"),
+        (None, "John_Doe", "John Doe"),
+        (None, "John Doe* ", "John Doe"),
+        (None, "John Doe of John Doe", "John Doe"),
+        (None, "John Doe — John Doe", "John Doe"),
+        (None, 'John "The King" Doe', "John  Doe"),
+        # dedup keeps the fullest form regardless of order
+        ("Smith", "John Smith", "John Smith"),
+        ("John Smith", "Smith", "John Smith"),
+        ("John Doe", "John Doe", "John Doe"),
+    ],
+)
+def test_normalize_authors(current, new, expected):
     "Test if author names are normalized correctly."
-    assert normalize_authors(None, "John Doe") == "John Doe"
-    assert normalize_authors(None, "abc") == "Abc"
-    assert normalize_authors(None, "Steve Steve 123") == "Steve Steve"
-    assert normalize_authors(None, "By Steve Steve") == "Steve Steve"
-    assert normalize_authors(None, "123") is None  # no usable name -> returns current
-    assert normalize_authors("Alice; Bob", "John Doe") == "Alice; Bob; John Doe"
-    assert normalize_authors("Alice; Bob", "john.doe@example.com") == "Alice; Bob"
-    assert normalize_authors(None, "\\u00e9tienne") == "Étienne"
-    assert normalize_authors(None, "Jane\\uZZ Doe") == "Jane\\uZZ Doe"  # invalid \u escape must not raise
-    assert normalize_authors(None, "&#233;tienne") == "Étienne"
-    assert normalize_authors(None, "Alice &amp; Bob") == "Alice; Bob"
-    assert normalize_authors(None, "<b>John Doe</b>") == "John Doe"
-    assert normalize_authors(None, "John 😊 Doe") == "John Doe"
-    assert normalize_authors(None, "words by John Doe") == "John Doe"
-    assert normalize_authors(None, "John Doe123") == "John Doe"
-    assert normalize_authors(None, "John_Doe") == "John Doe"
-    assert normalize_authors(None, "John Doe* ") == "John Doe"
-    assert normalize_authors(None, "John Doe of John Doe") == "John Doe"
-    assert normalize_authors(None, "John Doe — John Doe") == "John Doe"
-    assert normalize_authors(None, 'John "The King" Doe') == "John  Doe"
-    # dedup keeps the fullest form regardless of order
-    assert normalize_authors("Smith", "John Smith") == "John Smith"
-    assert normalize_authors("John Smith", "Smith") == "John Smith"
+    assert normalize_authors(current, new) == expected
 
 
-def test_normalize_json():
+@pytest.mark.parametrize(
+    ("string", "expected"),
+    [
+        ("Test \\nthis", "Test this"),
+        ("\\uD800\\uDC00Hello\\uDBFF\\uDFFF", "Hello"),
+        ("Test 【ABC】", "Test 【ABC】"),
+        ("Seán Federico O'Murchú", "Seán Federico O'Murchú"),
+    ],
+)
+def test_normalize_json(string, expected):
     "Test JSON string normalization (escapes, surrogates, HTML)."
-    assert normalize_json("Test \\nthis") == "Test this"
-    assert normalize_json("\\uD800\\uDC00Hello\\uDBFF\\uDFFF") == "Hello"
-    assert normalize_json("Test 【ABC】") == "Test 【ABC】"
-    assert normalize_json("Seán Federico O'Murchú") == "Seán Federico O'Murchú"
+    assert normalize_json(string) == expected
 
 
 def test_extract_json_shapes():
@@ -1141,6 +1123,133 @@ def test_extract_json_shapes():
     )
     # Corporation is skipped: its legalName would supersede a shorter og:site_name
     assert process_parent([{"@type": "Corporation", "name": "FinCompare GmbH"}], Document()).sitename is None
+    # a WebPage name (usually the page title) is only a last resort for the sitename
+    webpage, website = {"@type": "WebPage", "name": "My Story - Example News"}, {"@type": "WebSite", "name": "Example News"}
+    assert process_parent([webpage, website], Document()).sitename == "Example News"
+    assert process_parent([webpage], Document()).sitename == "My Story - Example News"
+    assert process_parent([webpage], Document(), "Example").sitename is None
+
+
+@pytest.mark.xfail(strict=True, reason="script blocks are processed one by one, the WebPage name wins in the first")
+def test_json_webpage_name_across_blocks():
+    "A WebSite or Organization name in a later script block should replace a WebPage name."
+    webpage = {"@context": "https://schema.org", "@type": "WebPage", "name": "My Story - Example News"}
+    organization = {"@context": "https://schema.org", "@type": "Organization", "name": "Example News"}
+    assert extract_metadata(ld_page(json.dumps(webpage), json.dumps(organization))).sitename == "Example News"
+
+
+@pytest.mark.parametrize("article_type", ["TechArticle", "DiscussionForumPosting", "Report"])
+def test_json_article_subtypes(article_type):
+    "Article subtypes yield the title and author."
+    schema = {"@context": "https://schema.org", "@type": article_type, "headline": "Head Line", "author": "Jane Doe"}
+    metadata = extract_metadata(ld_page(json.dumps(schema)))
+    assert (metadata.title, metadata.author) == ("Head Line", "Jane Doe")
+
+
+@pytest.mark.parametrize(
+    ("prefix", "suffix"),
+    [
+        ("//<![CDATA[\n", "\n//]]>"),
+        ("/*<![CDATA[*/", "/*]]>*/"),
+        ("<![CDATA[", "]]>"),
+        ("<!--", "-->"),
+        (" <!-- ", " --> "),
+        ("<!--", "--!>"),
+    ],
+)
+def test_json_wrapped(prefix, suffix):
+    "CDATA or comment wrappers around JSON-LD do not hide its content."
+    schema = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Head Line", "author": "Jane Doe"}
+    metadata = extract_metadata(ld_page(prefix + json.dumps(schema) + suffix))
+    assert (metadata.title, metadata.author) == ("Head Line", "Jane Doe")
+    # malformed JSON inside the wrapper goes through the regex fallback
+    payload = broken({**schema, "author": {"@type": "Person", "name": "Jane Doe"}})
+    metadata = extract_metadata(ld_page(prefix + payload + suffix))
+    assert (metadata.title, metadata.author) == ("Head Line", "Jane Doe")
+
+
+@pytest.mark.parametrize(
+    ("schema", "expected"),
+    [
+        ({}, {"pagetype": None}),
+        ({"@type": ["Thing", "NewsArticle"]}, {"pagetype": "newsarticle"}),
+        ({"@type": ["NewsArticle", "WebPage"]}, {"pagetype": "newsarticle"}),
+        ({"@type": "NewsArticle", "articleSection": ["News", "Politics"]}, {"categories": ["News", "Politics"]}),
+        # only the first @type is read, later ones may be nested
+        ({"@type": "Thing", "mainEntityOfPage": {"@type": "WebPage"}}, {"pagetype": None}),
+    ],
+)
+def test_json_regex_fallback(schema, expected):
+    "Malformed JSON-LD is read field by field."
+    schema = {"@context": "https://schema.org", **schema, "headline": "Real Headline", "author": {"name": "Jane Doe"}}
+    check_fields(extract_metadata(ld_page(broken(schema))), {"title": "Real Headline", "author": "Jane Doe", **expected})
+
+
+def test_json_regex_fallback_keeps_earlier_values():
+    "A title and categories found before the malformed block are kept."
+    first = json.dumps({"@context": "https://schema.org", "@type": "NewsArticle", "articleSection": "News"})
+    second = broken({"@context": "https://schema.org", "@type": "NewsArticle", "headline": "JSON Title", "articleSection": []})
+    metadata = extract_meta_json(html.fromstring(ld_page(first, second)), Document(title="Meta Title"))
+    check_fields(metadata, {"title": "Meta Title", "categories": ["News"]})
+
+
+ARTICLE_LD = {"@context": "https://schema.org", "@type": "NewsArticle"}
+
+
+@pytest.mark.parametrize(
+    ("payloads", "expected"),
+    [
+        # a publisher name that is not a string is skipped
+        (
+            ({**ARTICLE_LD, "headline": "Head Line", "publisher": {"name": ["A Site", "B Site"]}},),
+            {"sitename": None, "title": "Head Line"},
+        ),
+        (({**ARTICLE_LD, "author": {"@type": "Person", "givenName": "Jane", "familyName": "Doe"}},), {"author": "Jane Doe"}),
+        # name parts that are not strings are skipped, the other fields stay
+        (
+            ({**ARTICLE_LD, "headline": "Head Line", "author": {"@type": "Person", "givenName": "Jane", "familyName": None}},),
+            {"title": "Head Line"},
+        ),
+        (
+            ({**ARTICLE_LD, "headline": "Head Line", "author": {"@type": "Person", "givenName": None, "familyName": None}},),
+            {"title": "Head Line", "author": None},
+        ),
+        (
+            (
+                {
+                    **ARTICLE_LD,
+                    "author": {"@type": "Person", "givenName": "Jane", "additionalName": ["M."], "familyName": "Doe"},
+                },
+            ),
+            {"author": "Jane Doe"},
+        ),
+        # the name wins over its parts
+        (({**ARTICLE_LD, "author": {"@type": "Person", "name": "Jane Doe", "givenName": "J."}},), {"author": "Jane Doe"}),
+        # strings in lists are normalized too
+        (({**ARTICLE_LD, "articleSection": ["Food &amp; Drink", "<b>News</b>"]},), {"categories": ["Food & Drink", "News"]}),
+        # a type that is not a string does not stop the next block
+        (({"@context": "https://schema.org", "@type": 1}, {**ARTICLE_LD, "headline": "Head Line"}), {"title": "Head Line"}),
+        (
+            ({"@context": "https://schema.org", "@type": [True]}, {**ARTICLE_LD, "headline": "Head Line"}),
+            {"title": "Head Line"},
+        ),
+        # an empty script block does not stop the next one
+        (("", {**ARTICLE_LD, "author": {"@type": "Person", "name": "Jane Doe"}}), {"author": "Jane Doe"}),
+        # a WebPage name that is not a string does not hide a later one
+        (
+            (
+                {
+                    "@context": "https://schema.org",
+                    "@graph": [{"@type": "WebPage", "name": ["x"]}, {"@type": "WebPage", "name": "Example Site Online"}],
+                },
+            ),
+            {"sitename": "Example Site Online"},
+        ),
+    ],
+)
+def test_json_values(payloads, expected):
+    "Field values in valid JSON-LD."
+    check_fields(extract_metadata(ld_page(*(p if isinstance(p, str) else json.dumps(p) for p in payloads))), expected)
 
 
 def test_json_metadata_robustness():
@@ -1151,6 +1260,10 @@ def test_json_metadata_robustness():
     assert extract_json_author('{"Person":{"names":"Jane Doe"}}', JSON_AUTHOR_2) == "Jane Doe"
     # a single-word match (no space) is skipped
     assert extract_json_author('{"author":{"name":"Cher"}}', JSON_AUTHOR_1) is None
+    assert (
+        extract_json_author('{"author":{"name":"Jane Doe"}},{"author":{"name":"John Roe"}}', JSON_AUTHOR_1)
+        == "Jane Doe; John Roe"
+    )
     # publisher as a bare string
     assert process_parent([{"publisher": "the name of co"}], Document()).sitename is None
     assert process_parent([{"publisher": {"name": "Acme"}}], Document()).sitename == "Acme"
@@ -1161,8 +1274,20 @@ def test_json_metadata_robustness():
         process_parent([{"@type": "Article", "author": ["John Doe", "Jane Smith"]}], Document()).author
         == "John Doe; Jane Smith"
     )
-    # malformed JSON-LD (non-dict items) is swallowed by extract_metadata, not raised
-    assert extract_metadata('<html><body><script type="application/ld+json">[123]</script></body></html>') is not None
+    # non-dict items are skipped
+    assert extract_metadata(ld_page("[123]")) is not None
+
+
+def test_json_metadata_error_fallback(monkeypatch, caplog):
+    "An error in JSON-LD processing is logged and the other metadata is kept."
+
+    def boom(*args):
+        raise ValueError("boom")
+
+    monkeypatch.setattr("trafilatura.metadata.extract_meta_json", boom)
+    doc = extract_metadata("<html><head><title>Test title</title></head><body></body></html>")
+    assert doc.title == "Test title"
+    assert "error in JSON metadata extraction" in caplog.text
 
 
 @pytest.mark.parametrize("as_array", [False, True])
@@ -1174,6 +1299,7 @@ def test_json_metadata_robustness():
         ({"@type": ["Person"], "name": "Jane Doe"}, "Jane Doe"),
         ({"@type": ["Thing", "Person"], "name": "Jane Doe"}, "Jane Doe"),
         ({"@type": ["Person", "Thing"], "name": "Jane Doe"}, "Jane Doe"),
+        ({"@type": "person", "name": "Jane Doe"}, "Jane Doe"),
         ({"@type": "Organization", "name": "Example News"}, None),
         ({"@type": ["Organization"], "name": "Example News"}, None),
         ({"@type": [], "name": "Jane Doe"}, None),
@@ -1187,8 +1313,7 @@ def test_json_author_type_arrays(author, expected, as_array):
         "@type": "NewsArticle",
         "author": [author] if as_array else author,
     }
-    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
-    assert metadata is not None
+    metadata = extract_metadata(ld_page(json.dumps(schema)))
     assert metadata.author == expected
 
 
@@ -1214,8 +1339,7 @@ def test_json_article_type_arrays(article_type, pagetype, author_type):
         "headline": "Example headline",
         "articleSection": "News",
     }
-    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
-    assert metadata is not None
+    metadata = extract_metadata(ld_page(json.dumps(schema)))
     assert metadata.author == "Jane Doe"
     assert metadata.pagetype == pagetype
     assert metadata.sitename == "Example News"
@@ -1236,7 +1360,8 @@ def test_json_article_type_arrays(article_type, pagetype, author_type):
         (["Article", "Person"], "Nested Author", "article", None),
         (["WebPage", "NewsArticle"], None, "webpage", "Example Name"),
         (["NewsArticle", "WebPage"], "Nested Author", "newsarticle", None),
-        (["TechArticle", "Article"], None, "techarticle", None),
+        (["TechArticle", "Article"], "Nested Author", "techarticle", None),
+        ("DiscussionForumPosting", "Nested Author", "discussionforumposting", None),
         (["NewsArticle", None], "Nested Author", "newsarticle", None),
         (["Thing", "Unknown"], None, None, None),
         (["Thing", None], None, None, None),
@@ -1253,54 +1378,99 @@ def test_json_node_type_arrays(node_type, author, pagetype, sitename):
         "name": "Example Name",
         "author": {"@type": "Person", "name": "Nested Author"},
     }
-    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
-    assert metadata is not None
+    metadata = extract_metadata(ld_page(json.dumps(schema)))
     assert (metadata.author, metadata.pagetype, metadata.sitename) == (author, pagetype, sitename)
 
 
-def test_extract_json_processes_list_once():
+def test_extract_json_processes_list_once(monkeypatch):
     "A flat list of @context objects is processed once, not once per item."
-    import trafilatura.json_metadata as jm
-
     schema = [
         {"@context": "https://schema.org", "@type": "NewsArticle", "headline": "A"},
         {"@context": "https://schema.org", "@type": "NewsArticle", "headline": "B"},
     ]
-    orig, count = jm.process_parent, []
-    jm.process_parent = lambda p, m: count.append(1) or orig(p, m)
-    try:
-        extract_json(schema, Document())
-    finally:
-        jm.process_parent = orig
+    count = []
+    monkeypatch.setattr(json_metadata, "process_parent", lambda *args: count.append(1) or process_parent(*args))
+    extract_json(schema, Document())
     assert len(count) == 1
 
 
 @pytest.mark.parametrize(
-    "context",
+    ("context", "author"),
     [
-        '"https://www.schema.org"',
-        '["https://schema.org", {"@language": "en"}]',
-        '{"@vocab": "https://schema.org/"}',
+        # valid schema.org forms other than a plain string
+        ('"https://www.schema.org"', "Jane Doe"),
+        ('["https://schema.org", {"@language": "en"}]', "Jane Doe"),
+        ('{"@vocab": "https://schema.org/"}', "Jane Doe"),
+        # another vocabulary is skipped
+        ('"https://example.org"', None),
+        ("[]", None),
+        ('{"@vocab": "https://example.org/"}', None),
+        ("1", None),
     ],
 )
-def test_json_schema_org_context_variants(context):
-    "valid JSON-LD @context forms other than a plain schema.org string"
-    html = (
-        '<html><head><script type="application/ld+json">'
-        f'{{"@context": {context}, "@type": "NewsArticle", '
-        '"author": {"@type": "Person", "name": "Jane Doe"}}'
-        "</script></head><body><p>x</p></body></html>"
-    )
-    assert extract_metadata(html).author == "Jane Doe"
+def test_json_context(context, author):
+    "Only schema.org blocks are processed, whatever the form of their @context."
+    payload = f'{{"@context": {context}, "@type": "NewsArticle", "author": {{"@type": "Person", "name": "Jane Doe"}}}}'
+    assert extract_metadata(ld_page(payload)).author == author
 
 
-@pytest.mark.parametrize("context", ['"https://example.org"', "[]", '{"@vocab": "https://example.org/"}', "1"])
-def test_json_non_schema_org_context(context):
-    "blocks with another vocabulary are still skipped"
-    html = (
-        '<html><head><script type="application/ld+json">'
-        f'{{"@context": {context}, "@type": "NewsArticle", '
-        '"author": {"@type": "Person", "name": "Jane Doe"}}'
-        "</script></head><body><p>x</p></body></html>"
+ARTICLE = '"@context":"https://schema.org","@type":"NewsArticle","author":{"@type":"Person","name":"Jane Doe"},"headline":"Real Headline"'
+AUTHOR = '{"@type":"Person","name":"Jane Doe"}'
+
+
+@pytest.mark.parametrize(
+    ("payload", "author"),
+    [
+        # one malformed item must not discard the others
+        ("{" + ARTICLE.replace(AUTHOR, "[null," + AUTHOR + "]") + "}", "Jane Doe"),
+        ("{" + ARTICLE.replace(AUTHOR, "[3," + AUTHOR + "]") + "}", "Jane Doe"),
+        ('[[{"@type":"Thing"}], {' + ARTICLE + "}]", "Jane Doe"),
+        ('{"@context":"https://schema.org","@graph":[1, {' + ARTICLE + "}]}", "Jane Doe"),
+        ("[null, {" + ARTICLE + "}]", "Jane Doe"),
+        ("{" + ARTICLE.replace(AUTHOR, '{"name":["Jane Doe", null]}') + "}", "Jane Doe"),
+        # an author string holding a JSON scalar is skipped, the rest of the block is kept
+        ("{" + ARTICLE.replace(AUTHOR, '"123"') + "}", None),
+        # an author string may hold a serialized object or a plain name list
+        ("{" + ARTICLE.replace(AUTHOR, '"{\\"name\\": \\"John Roe\\"}"') + "}", "John Roe"),
+        ("{" + ARTICLE.replace(AUTHOR, '"Jane Doe and John Roe"') + "}", "Jane Doe; John Roe"),
+    ],
+)
+def test_json_malformed_items(payload, author):
+    metadata = extract_metadata(ld_page(payload))
+    assert (metadata.title, metadata.author) == ("Real Headline", author)
+
+
+@pytest.mark.parametrize("output_format", ["txt", "xml", "xmltei", "html", "json"])
+def test_json_non_string_values(output_format):
+    "Lists and objects in string slots must not reach the output serializers."
+    payload = '{"@context":"https://schema.org","@type":"NewsArticle","headline":["a","b"],"articleSection":[{"x":1},"News"]}'
+    page = (
+        f'<html><head><script type="application/ld+json">{payload}</script>'
+        '<meta name="keywords" content="a&#1;,b"></head>'
+        f"<body><article><p>{'Some article text here. ' * 20}</p></article></body></html>"
     )
-    assert extract_metadata(html).author is None
+    assert extract(page, output_format=output_format, with_metadata=True)
+    metadata = extract_metadata(page)
+    assert metadata.title == "a"
+    assert metadata.categories == ["News"]
+    assert metadata.tags == ["a", "b"]
+
+
+@pytest.mark.parametrize(
+    ("section", "categories"),
+    [
+        (None, []),
+        (3, []),
+        (["Weather", None, 3], ["Weather"]),
+    ],
+)
+def test_json_article_section_values(section, categories):
+    "an articleSection that is not a string or a list of strings must not discard the headline"
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "headline": "Storm hits coast",
+        "articleSection": section,
+    }
+    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
+    assert (metadata.title, metadata.categories) == ("Storm hits coast", categories)

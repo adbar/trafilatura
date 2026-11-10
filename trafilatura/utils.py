@@ -439,10 +439,16 @@ def safe_relative_url(baseurl: str, url: str) -> str:
         return ""
 
 
+# zero-width non-joiner and joiner: needed for Persian, Urdu and Indic
+# spelling and emoji sequences, although str.isprintable() rejects them
+ZERO_WIDTH_JOINERS = "\u200c\u200d"
+ZERO_WIDTH_TABLE = str.maketrans("", "", ZERO_WIDTH_JOINERS)
+
+
 @lru_cache(maxsize=2**14)  # sys.maxunicode = 1114111
 def return_printables_and_spaces(char: str) -> str:
     "Return a character if it belongs to certain classes"
-    return char if char.isprintable() or char.isspace() else ""
+    return char if char.isprintable() or char.isspace() or char in ZERO_WIDTH_JOINERS else ""
 
 
 def remove_control_characters(string: str) -> str:
@@ -464,17 +470,24 @@ def line_processing(line: str, preserve_space: bool = False, trailing_space: boo
     and invalid XML characters on line level"""
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     # unique code spaces
-    new_line = remove_control_characters(line.replace("&#13;", "\r").replace("&#10;", "\n").replace("&nbsp;", "\u00a0"))
+    new_line: str | None = remove_control_characters(
+        line.replace("&#13;", "\r").replace("&#10;", "\n").replace("&nbsp;", "\u00a0")
+    )
     if not preserve_space:
         # normalize space characters (including newlines and Unicode spaces)
         new_line = trim(new_line)
         # prune empty lines
         if not new_line:
-            new_line = None  # type: ignore[assignment]
+            new_line = None
         elif trailing_space:
             space_before = " " if line[0].isspace() else ""
             space_after = " " if line[-1].isspace() else ""
             new_line = f"{space_before}{new_line}{space_after}"
+    # drop text made only of zero-width characters (invisible lines in TXT/XML)
+    # (only checked when a joiner is present, to keep the common path fast)
+    if new_line is not None and ("\u200c" in new_line or "\u200d" in new_line):
+        if not new_line.translate(ZERO_WIDTH_TABLE).strip():
+            new_line = None
     return new_line
 
 
@@ -603,12 +616,24 @@ def language_classifier(temp_text: str, temp_comments: str) -> str | None:
     return None  # pragma: no cover
 
 
+def detectable_languages() -> set[str] | None:
+    """Return the language codes the language detector can output, None if it is not installed"""
+    if LANGID_FLAG is True:
+        return {lang for lang, _ in py3langid.rank("")}
+    return None
+
+
 def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: "Document") -> tuple[bool, "Document"]:
     """Filter text based on language detection and store relevant information"""
     # todo: run and pass info along anyway?
     if target_language is not None:
         # more thorough: detection on actual text content
         docmeta.language = language_classifier(temp_text, temp_comments)
+        # the detector can never return this language, so do not filter (as documented)
+        available = detectable_languages()
+        if available is not None and target_language not in available:
+            LOGGER.warning("target language not available in the detector, skipping filter: %s", target_language)
+            return False, docmeta
         # HTML lang check? sometimes contradicted by detection above
         if docmeta.language is not None and docmeta.language != target_language:
             LOGGER.warning("wrong language: %s %s", docmeta.language, docmeta.url)
@@ -625,4 +650,7 @@ def textfilter(element: _Element) -> bool:
 
 def text_chars_test(string: str | None) -> bool:
     """Determine if a string is only composed of spaces and/or control characters"""
+    # zero-width joiners alone are invisible — treat like empty for TXT/XML pruning
+    if string and ("\u200c" in string or "\u200d" in string):
+        string = string.translate(ZERO_WIDTH_TABLE)
     return bool(string and not string.isspace())

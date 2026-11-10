@@ -4,7 +4,7 @@ Deriving link info from sitemaps.
 
 import logging
 import re
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from configparser import ConfigParser
 from itertools import islice
 from re import Pattern
@@ -54,6 +54,10 @@ GUESSES = [
     "sitemap_index.xml",
     "sitemap_news.xml",
 ]
+
+# sitemaps.org allows up to 50,000 URLs and 50 MB uncompressed per sitemap,
+# above the general 20 MB MAX_FILE_SIZE download cap
+MAX_SITEMAP_SIZE = 52428800
 
 
 class SitemapObject:
@@ -296,27 +300,43 @@ def sitemap_search(
         if len(url) > len(baseurl) + 2:
             urlfilter = url
 
-    sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external, config)
+    # Sitemaps may reach 50 MB uncompressed (sitemaps.org), above the general
+    # MAX_FILE_SIZE cap: fetch them with a raised limit, while robots.txt
+    # and pages keep the configured cap. The caller's config is not mutated.
+    sitemap_config = config
+    if config.getint("DEFAULT", "MAX_FILE_SIZE") < MAX_SITEMAP_SIZE:
+        sitemap_config = ConfigParser()
+        sitemap_config.read_dict(config)
+        sitemap_config.set("DEFAULT", "MAX_FILE_SIZE", str(MAX_SITEMAP_SIZE))
 
-    # try sitemaps in robots.txt file, additional URLs just in case
+    sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external, sitemap_config)
+
+    # A sitemap can use a different scheme or www. form of the same host.
+    prefix = SCHEME_AND_WWW.sub("", urlfilter) if urlfilter is not None else None
+    # Guesses are fallbacks, while listed and discovered sitemaps are all followed.
+    guesses: Iterator[str] = iter(())
     if not sitemap.sitemap_urls:
-        # reversed: the queue is consumed from the end, so the most likely guess is tried first
-        sitemap.sitemap_urls = find_robots_sitemaps(baseurl, config) or [f"{baseurl}/{g}" for g in reversed(GUESSES)]
+        sitemap.sitemap_urls = find_robots_sitemaps(baseurl, config)
+        if not sitemap.sitemap_urls:
+            guesses = (f"{baseurl}/{guess}" for guess in GUESSES)
 
-    # iterate through nested sitemaps and results
-    while sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
-        sitemap.current_url = sitemap.sitemap_urls.pop()
+    while len(sitemap.seen) < max_sitemaps:
+        if sitemap.sitemap_urls:
+            sitemap.current_url = sitemap.sitemap_urls.pop()
+        else:
+            next_guess = next((guess for guess in guesses if guess not in sitemap.seen), None)
+            if next_guess is None or any(prefix is None or SCHEME_AND_WWW.sub("", u).startswith(prefix) for u in sitemap.urls):
+                break
+            sitemap.current_url = next_guess
+
+        if sitemap.seen:
+            sleep(sleep_time)
         sitemap.fetch()
         sitemap.process()
         # sanity check: keep track of visited sitemaps and exclude them
         sitemap.sitemap_urls = [s for s in sitemap.sitemap_urls if s not in sitemap.seen]
 
-        if sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
-            sleep(sleep_time)
-
-    if urlfilter is not None:
-        # subpage filter: the sitemap may use another scheme or host form (www.) than the input URL
-        prefix = SCHEME_AND_WWW.sub("", urlfilter)
+    if prefix is not None:
         sitemap.urls = [u for u in sitemap.urls if SCHEME_AND_WWW.sub("", u).startswith(prefix)]
     sitemap.urls = filter_urls(sitemap.urls, None)
 

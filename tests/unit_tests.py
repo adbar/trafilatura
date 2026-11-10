@@ -198,6 +198,28 @@ def test_remove_control_characters():
         assert remove_control_characters(text) == text
     assert remove_control_characters("a\nb\x07c\u200bd") == "a\nbcd"
     assert remove_control_characters("\x00\x07") == ""
+    # zero-width non-joiner and joiner are kept (Persian, Indic scripts, emoji)
+    for text in ("نگاه\u200cها", "क्\u200dष", "\U0001f469\u200d\U0001f4bb"):
+        assert remove_control_characters(text) == text
+    assert remove_control_characters("a\u200cb\x07\u200dc") == "a\u200cb\u200dc"
+    # end to end, see issue #1056
+    page = "<html><body><article><p>" + "نگاه\u200cها " * 30 + "</p></article></body></html>"
+    for fmt in ("txt", "markdown", "xml", "json"):
+        assert "نگاه\u200cها" in extract(page, output_format=fmt)
+    # drop paragraphs / lines made only of zero-width characters (TXT and XML)
+    page = (
+        "<html><body><article>"
+        "<p>hello world this is a long enough paragraph for extraction to work properly yes</p>"
+        "<p>\u200c\u200d</p>"
+        "<p>" + "نگاه\u200cها " * 20 + "</p>"
+        "</article></body></html>"
+    )
+    txt = extract(page, output_format="txt")
+    assert "\u200c\u200d" not in txt
+    assert "نگاه\u200cها" in txt
+    xml = extract(page, output_format="xml")
+    assert "<p>\u200c\u200d</p>" not in xml
+    assert "نگاه\u200cها" in xml
 
 
 @pytest.mark.parametrize(
@@ -217,6 +239,12 @@ def test_remove_control_characters():
         ("a  b", False, True, "a b"),
         ("\ta b", False, True, " a b"),
         (" ", False, True, None),
+        # text made only of zero-width joiners is dropped (invisible lines)
+        ("\u200c\u200d", False, False, None),
+        ("\u200c \u200d", False, False, None),
+        ("نگاه\u200cها", False, False, "نگاه\u200cها"),
+        ("\u200c\u200d", True, False, None),
+        ("  \u200c\u200d  ", True, False, None),
     ],
 )
 def test_line_processing(line, preserve_space, trailing_space, expected):
@@ -1321,6 +1349,18 @@ def test_wrong_language_discarded():
     "content whose detected language differs from target_language is discarded (the filter raises, caught -> None)."
     doc = "<html><body>" + "<p>Questo testo non è affatto in lingua inglese.</p>" * 20 + "</body></html>"
     assert extract(doc, target_language="en", config=ZERO_CONFIG) is None
+
+
+@pytest.mark.skipif(not LANGID_FLAG, reason="py3langid not installed")
+def test_language_in_metadata():
+    "the detected language is passed along even without a target language."
+    doc = (
+        "<html><body>"
+        + "<p>This is a perfectly ordinary English sentence about the weather today.</p>" * 20
+        + "</body></html>"
+    )
+    assert extract_with_metadata(doc, config=ZERO_CONFIG).language == "en"
+    assert '"language": "en"' in extract(doc, output_format="json", with_metadata=True, config=ZERO_CONFIG)
 
 
 def test_sanitize_tree_absolutizes_links():
@@ -3372,21 +3412,49 @@ _ESCALATION_INTRO = (
 )
 
 
-def test_recall_escalation_justext():
+@pytest.mark.parametrize("focus", ["balanced", "recall", "precision"])
+@pytest.mark.parametrize("intro_layout", ["bare", "content"])
+def test_recall_escalation_justext(focus, intro_layout):
     "the recall escalation also tries justext, which reaches content the rule-based retry \
     cannot: 'sidebar'-classed divs are discarded by both the main extractor/recall retry \
     (OVERALL_DISCARD_XPATH) and readability (unlikelyCandidatesRe), but justext classifies \
     them on paragraph density alone and keeps them."
-    messages = "".join(
-        f"<div class='sidebar'>Message number {i} contains substantial discussion content with "
+    messages = [
+        f"Message number {i} contains substantial discussion content with "
         "plenty of genuine words and enough length to be recognized as real text by a paragraph "
-        f"density classifier, not boilerplate at all today, said the author.</div>"
+        "density classifier, not boilerplate at all today, said the author."
         for i in range(8)
+    ]
+    divs = "".join(f"<div class='sidebar'>{message}</div>" for message in messages)
+    intro_html = _ESCALATION_INTRO if intro_layout == "bare" else f"<div id='content'>{_ESCALATION_INTRO}</div>"
+    doc = f"<html><body>{intro_html}{divs}</body></html>"
+    result = extract(
+        doc,
+        favor_recall=focus == "recall",
+        favor_precision=focus == "precision",
     )
-    doc = f"<html><body>{_ESCALATION_INTRO}{messages}</body></html>"
-    result = extract(doc, output_format="txt") or ""
-    assert "Introductory paragraph" in result
-    assert result.count("Message number") == 8
+    intro = _ESCALATION_INTRO.removeprefix("<p>").removesuffix("</p>").strip()
+    expected = intro if focus == "precision" else "\n".join([intro, *messages])
+    assert result == expected
+
+
+@pytest.mark.parametrize("focus", ["balanced", "recall", "precision"])
+@pytest.mark.parametrize("fast", [False, True])
+def test_recall_escalation_rejected_justext(focus, fast):
+    "Reject short menu entries without repeating stages 1-2 in recall mode."
+    menus = "".join(f"<div class='sidebar'>Menu entry number {i} of the page.</div>" for i in range(200))
+    doc = f"<html><body><div id='content'>{_ESCALATION_INTRO}</div>{menus}</body></html>"
+    with (
+        patch.object(core, "html2txt", wraps=core.html2txt) as page_text,
+        patch.object(core, "justext_rescue", wraps=core.justext_rescue) as rescue,
+        patch.object(core, "_recall_retry", wraps=core._recall_retry) as retry,
+    ):
+        result = extract(doc, fast=fast, favor_recall=focus == "recall", favor_precision=focus == "precision")
+    assert result == _ESCALATION_INTRO.removeprefix("<p>").removesuffix("</p>").strip()
+    assert rescue.call_count == int(not fast and focus != "precision")
+    assert retry.call_count == int(focus == "balanced")
+    if fast and focus == "recall":
+        page_text.assert_not_called()
 
 
 @pytest.mark.parametrize(("jt_words", "winner"), [(1000, "justext"), (40, "retry")])
@@ -4974,13 +5042,13 @@ def test_html_conversion():
     excepted_html = """<html>
   <head>
     <meta name="title" content="Title 1"/>
-    <meta name="fingerprint" content="f6fd180b8fbe3670"/>
+    <meta name="fingerprint" content="f6fd180b8fbe3670"/>{}
   </head>
   <body>
     <h1>Title 1</h1>
     <p>Text.</p>
   </body>
-</html>"""
+</html>""".format('\n    <meta name="language" content="ext"/>' if LANGID_FLAG else "")
     result = extract(html, output_format="html", config=ZERO_CONFIG, with_metadata=True)
     assert result == excepted_html
 
@@ -5022,6 +5090,39 @@ def test_html_conversion():
     doc = "<html><body><article><p>Body text here.</p><ol><li>first</li><li>second</li></ol></article></body></html>"
     out = extract(doc, output_format="html", config=ZERO_CONFIG)
     assert "<ol>\n      <li>first</li>\n      <li>second</li>\n    </ol>" in out
+
+
+@pytest.mark.parametrize("with_metadata", [False, True])
+def test_html_output_preserves_document(with_metadata):
+    "HTML output keeps comments and leaves the extracted XML available for other formats."
+    document = Document(
+        title="Title",
+        body=etree.fromstring('<body><p>Body text.</p><p> </p><list rend="ol"><item>First</item></list></body>'),
+        commentsbody=etree.fromstring('<body><p>A <hi rend="#b">comment</hi>.</p><p> </p></body>'),
+    )
+    before = (etree.tostring(document.body), etree.tostring(document.commentsbody))
+
+    result = trafilatura.htmlprocessing.build_html_output(document, with_metadata=with_metadata)
+    tree = etree.fromstring(result)
+    assert tree.xpath("body/ol/li/text()") == ["First"]
+    assert tree.xpath("body/section[@class='comments']/p/strong/text()") == ["comment"]
+    assert not tree.xpath(".//p[not(normalize-space())]")
+    assert (etree.tostring(document.body), etree.tostring(document.commentsbody)) == before
+    assert trafilatura.htmlprocessing.build_html_output(document, with_metadata=with_metadata) == result
+    assert (tree.find("head") is not None) is with_metadata
+
+
+def test_html_output_comments_option():
+    "The public extractor includes comments only when requested."
+    source = (
+        '<html><body><article><p>Body text.</p></article><div class="comments"><p>A reader comment.</p></div></body></html>'
+    )
+    for include_comments in (False, True):
+        result = extract(source, output_format="html", config=ZERO_CONFIG, include_comments=include_comments)
+        tree = etree.fromstring(result)
+        assert bool(tree.xpath("body/section[@class='comments']")) is include_comments
+        if include_comments:
+            assert tree.xpath("body/section/p/text()") == ["A reader comment."]
 
 
 def test_deprecations():

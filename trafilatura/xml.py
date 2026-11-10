@@ -44,7 +44,7 @@ TEI_VALID_TAGS = {
     "row",
     "table",
 }
-TEI_VALID_ATTRS = {"rend", "rendition", "role", "target", "type"}
+TEI_VALID_ATTRS = {"rend", "rendition", "role", "target", "type", "url"}
 TEI_DTD = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
 TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
@@ -323,6 +323,9 @@ def check_tei(xmldoc: _Element, url: str | None) -> _Element:
         elif elem.tag == "div":
             _handle_text_content_of_div_nodes(elem)
             _wrap_unwanted_siblings_of_div(elem)
+        elif elem.tag == "graphic" and "src" in elem.attrib:
+            # TEI points to the image with url, src would be dropped below
+            elem.set("url", elem.attrib.pop("src"))
         # check attributes
         for attribute in [a for a in elem.attrib if a not in TEI_VALID_ATTRS]:
             LOGGER.warning("not a valid TEI attribute, removing: %s in %s %s", attribute, elem.tag, url)
@@ -924,7 +927,11 @@ def write_teitree(docmeta: Document) -> _Element:
 
 def _define_publisher_string(docmeta: Document) -> str:
     """Construct a publisher string to include in TEI header"""
-    if docmeta.hostname and docmeta.sitename:
+    if (
+        docmeta.hostname
+        and docmeta.sitename
+        and docmeta.sitename.strip().lower().removeprefix("www.") != docmeta.hostname.lower().removeprefix("www.")
+    ):
         publisher = f"{docmeta.sitename.strip()} ({docmeta.hostname})"
     else:
         publisher = docmeta.hostname or docmeta.sitename or "N/A"

@@ -248,6 +248,7 @@ def _send_urllib_request(url: str, no_ssl: bool, config: ConfigParser) -> Respon
             # stream() yields decoded chunks: the cap applies to decompressed bytes
             data = _capped(response.stream(2**17), config.getint("DEFAULT", "MAX_FILE_SIZE"))
         finally:
+            response.close()
             response.release_conn()
 
         # necessary for standardization

@@ -6,6 +6,7 @@ Unit tests for the spidering part of the trafilatura library.
 import logging
 import sys
 from collections import deque
+from pathlib import Path
 from unittest.mock import patch
 from urllib.robotparser import RobotFileParser
 
@@ -13,10 +14,7 @@ import pytest
 from courlan import UrlStore
 
 from trafilatura import spider  # for global variables
-from trafilatura.utils import Response
-
-# from trafilatura.utils import LANGID_FLAG
-
+from trafilatura.utils import LANGID_FLAG, Response
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -87,6 +85,59 @@ def test_meta_redirections():
                 assert htmlstring2 == htmlstring
             else:
                 assert htmlstring2 != htmlstring
+
+
+@pytest.mark.parametrize(
+    "htmlstring,homepage,expected_homepage",
+    [
+        # meta refresh inside <noscript> is ignored
+        (
+            (Path(__file__).parent / "cache" / "jolie.de.adele.html").read_text(encoding="utf-8"),
+            "https://example.org/",
+            "https://example.org/",
+        ),
+        # spaces and capital letters around "url ="
+        (
+            '<html><head><meta http-equiv="refresh" content="0; URL = /new"></head></html>',
+            "https://example.org/",
+            "https://example.org/new",
+        ),
+        # comma instead of semicolon as separator
+        (
+            '<html><head><meta http-equiv="refresh" content="0, url=/new"></head></html>',
+            "https://example.org/",
+            "https://example.org/new",
+        ),
+        # relative URL starting with "http" is not an absolute URL
+        (
+            '<html><head><meta http-equiv="refresh" content="0; url=http-info.html"></head></html>',
+            "https://example.org/",
+            "https://example.org/http-info.html",
+        ),
+        # javascript: targets are skipped
+        (
+            '<html><head><meta http-equiv="refresh" content="0; url=javascript:void(0)"></head></html>',
+            "https://example.org/",
+            "https://example.org/",
+        ),
+        # delay only, no URL to follow
+        (
+            '<html><head><meta http-equiv="refresh" content="30"></head></html>',
+            "https://example.org/",
+            "https://example.org/",
+        ),
+    ],
+    ids=["noscript", "spaces", "comma", "http-prefix", "javascript", "delay-only"],
+)
+def test_meta_refresh_content_parsing(htmlstring, homepage, expected_homepage):
+    """Test parsing of meta-refresh content values."""
+    with patch.object(spider, "fetch_url", return_value="<html></html>"):
+        htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
+    assert homepage2 == expected_homepage
+    if expected_homepage == homepage:
+        assert htmlstring2 == htmlstring
+    else:
+        assert htmlstring2 != htmlstring
 
 
 def test_process_links():
@@ -339,6 +390,16 @@ def test_crawl_resumed_directory_scope(link, expected):
     assert params.is_valid_link(link) is expected
 
 
+def test_crawl_resumed_with_known_links():
+    "Todo URLs returned as known links by a previous run are still visited."
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    todo = ["https://example.org/a", "https://example.org/b"]
+    known = ["https://example.org/", *todo]
+    params = spider.init_crawl("https://example.org", todo=todo, known=known, rules=spider.parse_robots("", ""))
+    assert spider.URL_STORE.find_unvisited_urls(params.base) == todo
+    assert spider.URL_STORE.find_known_urls(params.base) == known
+
+
 def test_crawl_page():
     "Test page-by-page processing."
     base_url = "https://httpbun.com"
@@ -391,6 +452,17 @@ def test_crawl_page():
     ## TODO: find a better page for language tests
 
 
+def test_is_target_language():
+    "Language check of the crawler, including a language the detector cannot output."
+    htmlstring = "<html><body><p>" + "Hier ist ein Text auf Deutsch. " * 20 + "</p></body></html>"
+    if LANGID_FLAG is True:
+        assert spider.is_target_language(htmlstring, "de") is True
+        assert spider.is_target_language(htmlstring, "en") is False
+        assert spider.is_target_language(htmlstring, "zz") is True
+    else:
+        assert spider.is_target_language(htmlstring, "en") is True
+
+
 def test_error_pages():
     "Links found on responses other than 200 must not reach the crawl frontier."
     spider.URL_STORE = UrlStore()
@@ -438,7 +510,7 @@ def test_scheme_upgrade():
 
 
 def test_host_redirect():
-    "A homepage redirecting to another host keeps the crawl on the start host, links resolved against the start URL."
+    "A homepage redirecting to another host must not add that page's links to the crawl."
     spider.URL_STORE = UrlStore()
     html = '<html><body><a href="/p1.html">x</a><a href="https://other-host.org/p2.html">y</a></body></html>'
 
@@ -451,7 +523,31 @@ def test_host_redirect():
     ):
         params = spider.init_crawl("http://host-redirect.org")
     assert params.base == "http://host-redirect.org"
-    assert spider.URL_STORE.find_unvisited_urls(params.base) == ["http://host-redirect.org/p1.html"]
+    assert spider.URL_STORE.find_unvisited_urls(params.base) == []
+
+
+@pytest.mark.parametrize(
+    ("start", "final_url", "should_queue"),
+    [
+        ("https://example.org", "https://other.org/landing", False),
+        ("https://example.org", "https://example.org.evil/landing", False),
+        ("https://example.org", "https://example.org:8443/landing", False),
+        ("https://example.org", "http://example.org/landing", False),
+        ("https://example.org", "https://example.org/landing", True),
+        ("https://example.org", "https://www.example.org/landing", True),
+    ],
+)
+def test_response_redirect_links(start, final_url, should_queue):
+    "Only responses from the crawl site may contribute relative links."
+    spider.URL_STORE = UrlStore()
+    params = spider.CrawlParameters(start, rules=spider.parse_robots("", ""))
+    response = Response(b'<a href="/about">About</a>', 200, final_url)
+
+    spider.process_response(response, params)
+
+    expected = [f"{start}/about"] if should_queue else []
+    assert spider.URL_STORE.find_unvisited_urls(params.base) == expected
+    assert spider.URL_STORE.has_been_visited(final_url)
 
 
 def test_is_same_site():
@@ -469,6 +565,26 @@ def test_blacklist_full_urls():
     assert not params.is_valid_link("https://example.org/a")
     assert not params.is_valid_link("http://example.org/b/")
     assert params.is_valid_link("https://example.org/c")
+
+
+def test_robots_rules_naming_trafilatura():
+    "robots.txt rules naming trafilatura are honored, wildcard rules still apply as fallback."
+    rules = spider.parse_robots("", "User-agent: trafilatura\nDisallow: /")
+    params = spider.CrawlParameters("https://example.org", rules=rules)
+    assert not params.is_valid_link("https://example.org/page")
+
+    rules = spider.parse_robots("", "User-agent: *\nDisallow: /")
+    params = spider.CrawlParameters("https://example.org", rules=rules)
+    assert not params.is_valid_link("https://example.org/page")
+
+    rules = spider.parse_robots("", "User-agent: googlebot\nDisallow: /")
+    params = spider.CrawlParameters("https://example.org", rules=rules)
+    assert params.is_valid_link("https://example.org/page")
+
+    rules = spider.parse_robots("", "User-agent: trafilatura\nDisallow: /private")
+    params = spider.CrawlParameters("https://example.org", rules=rules)
+    assert not params.is_valid_link("https://example.org/private")
+    assert params.is_valid_link("https://example.org/public")
 
 
 def test_www_redirect():

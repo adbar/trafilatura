@@ -33,13 +33,39 @@ def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -
     return SequenceMatcher(None, reference, new_string).ratio() >= threshold
 
 
+def _is_word_with_marks(token: str) -> bool:
+    """True if token is letters/digits plus combining marks (category M).
+
+    str.isalnum() rejects Thai, Tamil and Hindi matras and NFD accents.
+    Single pass (not any+all); sample_tokens also skips ASCII via isalnum()
+    and not t.isascii() so this path is rare on Latin text.
+    """
+    category = unicodedata.category
+    has_alnum = False
+    for c in token:
+        if c.isalnum():
+            has_alnum = True
+        elif category(c)[0] != "M":
+            return False
+    return has_alnum
+
+
 def sample_tokens(inputstring: str, length: int = 64) -> list[str]:
     """Split input into list of tokens and adjust length threshold to make sure
     there is enough data."""
-    tokens = [t for token in inputstring.split() if (t := token.strip(string.punctuation)).isalnum()]
+    # isalnum() first (C-fast); only non-ASCII leftovers need the marks check
+    tokens = [
+        t
+        for token in inputstring.split()
+        if (t := token.strip(string.punctuation)).isalnum() or (not t.isascii() and _is_word_with_marks(t))
+    ]
     if not tokens:
         # non-latin punctuation, e.g. mandarin 。
-        tokens = [t for t in inputstring.translate(_punct_tbl()).split() if t.isalnum()]
+        tokens = [
+            t
+            for t in inputstring.translate(_punct_tbl()).split()
+            if t.isalnum() or (not t.isascii() and _is_word_with_marks(t))
+        ]
 
     # tokens are non-empty, so a threshold of 0 would keep them all
     for i in range(4, 0, -1):
