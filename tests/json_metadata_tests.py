@@ -1503,3 +1503,29 @@ def test_json_article_image(image):
     # a meta image comes first
     page = page.replace("<head>", '<head><meta property="og:image" content="https://example.org/og.jpg"/>')
     assert extract_metadata(page, default_url="https://example.org/story").image == "https://example.org/og.jpg"
+
+
+@pytest.mark.parametrize(
+    ("byline", "expected"),
+    [
+        (
+            (
+                "Presented by Jane Doe. Produced by John Roe with sound design and mixing from Mary Major. "
+                "The executive producer is Richard Miles"
+            ),
+            "Jane Doe; John Roe; Mary Major; Richard Miles",
+        ),
+        (
+            "Written by Jane Doe and read by John Roe. Produced by Mary Major. The executive producer was Richard Miles",
+            "Jane Doe; John Roe; Mary Major; Richard Miles",
+        ),
+        ("Presented by Jane Doe. Produced by John Roe. Executive producer Mary Major", "Jane Doe; John Roe; Mary Major"),
+        ("Jane Doe with additional reporting by John Roe", "Jane Doe; John Roe"),
+        ("Photographs and text by Jane Doe", "Jane Doe"),
+        ("View all posts by Jane Doe", "Jane Doe"),
+        ("John Roe, as told to Jane Doe", "Jane Doe"),
+    ],
+)
+def test_normalize_authors_credit_lines(byline, expected):
+    "A credit line names people by their part in the work, the credit phrases separate them."
+    assert normalize_authors(None, byline) == expected

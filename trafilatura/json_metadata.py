@@ -110,6 +110,25 @@ AUTHOR_REMOVE_SPECIAL = re.compile(r"[^\w]+$|[:()?*$#!%/<>{}~¿]")
 AUTHOR_REMOVE_PREPOSITION = re.compile(r"\b\s+(am|on|for|at|in|to|from|of|via|with|—|-|–)\s+(.*)", flags=re.IGNORECASE)
 AUTHOR_EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 AUTHOR_SPLIT = re.compile(r"/|;|,|\||&|(?:^|\W)[ua]nd(?:$|\W)", flags=re.IGNORECASE)
+# A byline is often a credit line rather than a list: "Presented by Jane Doe. Produced by John Roe with
+# sound design from Mary Major. The executive producer is Richard Miles". Its credit phrases separate people.
+AUTHOR_CREDIT_ROLE = (
+    r"(?:presented|produced|written|read|edited|hosted|narrated|reported|compiled|researched|filmed|translated|"
+    r"curated|interviews?|text|words|reporting|additional\s+reporting|sound\s+design|mixing|music|exclusive|"
+    r"analysis|commentary)"
+)
+AUTHOR_CREDIT = re.compile(
+    rf"\b(?:with\s+)?(?:(?:photographs?|photos?|pictures?)\s+and\s+)?{AUTHOR_CREDIT_ROLE}"
+    rf"(?:\s+and\s+{AUTHOR_CREDIT_ROLE})*\s+(?:by|from)\b"
+    r"|\b(?:the\s+)?(?:executive\s+|senior\s+|series\s+|supervising\s+|associate\s+)?"
+    r"(?:producers?|editors?|presenters?|hosts?)\s+(?:is|was|are|were)\b"
+    r"|\b(?:the\s+)?executive\s+producers?\b"
+    # an author page link: "View all posts by Jane Doe"
+    r"|\b(?:view|see|read)\s+(?:all|more)\s+(?:posts|articles|stories)\s+by\b",
+    flags=re.IGNORECASE,
+)
+# "John Roe, as told to Jane Doe": the writer is the one told.
+AUTHOR_AS_TOLD_TO = re.compile(r"(?:^|(?<=[;|/]))[^;|/]*\bas\s+told\s+to\b", flags=re.IGNORECASE)
 AUTHOR_EMOJI_REMOVE = re.compile(
     "["
     "\U00002700-\U000027be"  # Dingbats
@@ -395,6 +414,8 @@ def normalize_authors(current_authors: str | None, author_string: str) -> str | 
         author_string = unescape(author_string)
     # remove html tags and email addresses
     author_string = AUTHOR_EMAIL.sub("", HTML_STRIP_TAGS.sub("", author_string))
+    # read a credit line as a list of people
+    author_string = AUTHOR_AS_TOLD_TO.sub("", AUTHOR_CREDIT.sub("; ", author_string))
     # examine names
     for author in AUTHOR_SPLIT.split(author_string):
         author = trim(author)
