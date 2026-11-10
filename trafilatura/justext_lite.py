@@ -132,6 +132,9 @@ def _skip(tag: str, elem: _Element) -> bool:
     if tag in ("html", "body"):
         # hidden until a script reveals the page
         return False
+    if tag == "dialog" or (elem.get("role") or "").lower() in ("dialog", "alertdialog"):
+        # an overlay (sign-up, newsletter choices, cookie notice) is interface, not the page's text
+        return True
     style = elem.get("style")
     return bool(style and HIDDEN.search(style) and not KEEP_HIDDEN.search(f"{elem.get('class', '')} {elem.get('id', '')}"))
 

@@ -178,3 +178,28 @@ def test_justext_lite_markup():
     # lazy-loaded images, as in image_src
     body, _ = justext_rescue(html.fromstring(f'<html><body><p>{long}<img data-src-large="c.jpg"></p></body></html>'), options)
     assert etree.tostring(body[0], encoding=str) == f'<p>{long.strip()}<graphic src="https://example.org/a/c.jpg"/></p>'
+
+
+@pytest.mark.parametrize(
+    "opening",
+    ["<dialog open>", '<div class="modal" role="dialog">', '<div class="consent" role="AlertDialog">'],
+    ids=["dialog", "role-dialog", "role-alertdialog"],
+)
+def test_justext_lite_leaves_dialogs_out(opening):
+    "An overlay (sign-up, newsletter choices, cookie notice) is interface, not the page's text."
+    closing = "</dialog>" if opening.startswith("<dialog") else "</div>"
+    choices = "".join(
+        f"<label><input type='checkbox'><span>{name}: the week's finest content carefully selected to bring you "
+        "the best articles directly in your inbox, once per week, every week of the year.</span></label>"
+        for name in ("Weekly", "Daily", "Politics")
+    )
+    story = "".join(
+        f"<p>Paragraph {number}: the council confirmed on Saturday that bridge number {number} will open to "
+        "traffic next month, after the repairs that closed it for most of the year were finished early.</p>"
+        for number in range(4)
+    )
+    my_html = f"<html><body>{opening}{choices}{closing}<div>{story}</div></body></html>"
+    texts = " ".join(text for text, *_ in extract_paragraphs(html.fromstring(my_html)))
+    assert "finest content" not in texts
+    assert "bridge number 3" in texts
+    assert "finest content" not in trim(" ".join(try_justext(html.fromstring(my_html), None).itertext()))
