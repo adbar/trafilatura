@@ -110,6 +110,12 @@ AUTHOR_REMOVE_SPECIAL = re.compile(r"[^\w]+$|[:()?*$#!%/<>{}~¿]")
 AUTHOR_REMOVE_PREPOSITION = re.compile(r"\b\s+(am|on|for|at|in|to|from|of|via|with|—|-|–)\s+(.*)", flags=re.IGNORECASE)
 AUTHOR_EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 AUTHOR_SPLIT = re.compile(r"/|;|,|\||&|(?:^|\W)[ua]nd(?:$|\W)", flags=re.IGNORECASE)
+# A dateline runs to the next person, commas included: "Jane Doe in Nadi, Fiji", "Jane Doe in London
+# and John Roe in Washington"; after a comma, a person with a dateline of their own is the next credit.
+AUTHOR_DATELINE = re.compile(
+    r"\s+(?:in|reporting\s+from)\s+[A-ZÀ-Þ][^;|/&]*?"
+    r"(?=\s+(?:and|with)\s+|\s*[;|/&]|\s*,[^,;|/&]+\s(?:in|reporting\s+from)\s+[A-ZÀ-Þ]|$)"
+)
 AUTHOR_EMOJI_REMOVE = re.compile(
     "["
     "\U00002700-\U000027be"  # Dingbats
@@ -395,6 +401,7 @@ def normalize_authors(current_authors: str | None, author_string: str) -> str | 
         author_string = unescape(author_string)
     # remove html tags and email addresses
     author_string = AUTHOR_EMAIL.sub("", HTML_STRIP_TAGS.sub("", author_string))
+    author_string = AUTHOR_DATELINE.sub("", author_string)
     # examine names
     for author in AUTHOR_SPLIT.split(author_string):
         author = trim(author)

@@ -1503,3 +1503,20 @@ def test_json_article_image(image):
     # a meta image comes first
     page = page.replace("<head>", '<head><meta property="og:image" content="https://example.org/og.jpg"/>')
     assert extract_metadata(page, default_url="https://example.org/story").image == "https://example.org/og.jpg"
+
+
+@pytest.mark.parametrize(
+    ("byline", "expected"),
+    [
+        ("Jane Doe in Nadi, Fiji", "Jane Doe"),
+        ("Jane Doe in Sydney, New South Wales", "Jane Doe"),
+        ("Jane Doe reporting from Kyiv", "Jane Doe"),
+        ("Jane Doe reporting from Kyiv, Ukraine", "Jane Doe"),
+        ("Jane Doe in Washington, D.C., and John Roe in Paris", "Jane Doe; John Roe"),
+        # a person with a dateline of their own after the comma is the next credit
+        ("Jane Doe in London, John Roe in Paris", "Jane Doe; John Roe"),
+    ],
+)
+def test_normalize_authors_datelines(byline, expected):
+    "A dateline in a byline runs to the next person, commas included."
+    assert normalize_authors(None, byline) == expected
