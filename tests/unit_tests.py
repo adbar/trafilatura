@@ -5719,3 +5719,28 @@ def test_tree_input_baseline(body):
     assert html2txt(tree) == html2txt(page)
     assert baseline(tree)[1] == baseline(page)[1]
     assert etree.tostring(tree) == before
+
+
+@pytest.mark.parametrize("fast", [False, True])
+@pytest.mark.parametrize(
+    ("section_class", "kept"),
+    [
+        ("story-comments", False),
+        ("entry-comments", False),
+        ("ab-comments", False),
+        # a state class names no comment section
+        ("has-comments", True),
+        ("no-comments", True),
+    ],
+)
+def test_prefixed_comment_section_excluded(section_class, kept, fast):
+    "A comment section with a prefixed class stays out of the text when comments are disabled."
+    body = "".join(f"<p>Article paragraph {i} with enough real prose to be the main text of the page.</p>" for i in range(4))
+    comments = "".join(
+        f"<div><p>Reader comment number {i} that must stay out of the body when comments are excluded.</p></div>"
+        for i in range(4)
+    )
+    doc = f"<html><body><article>{body}<section class='{section_class}'>{comments}</section></article></body></html>"
+    result = extract(doc, output_format="txt", include_comments=False, fast=fast) or ""
+    assert "Article paragraph 2" in result
+    assert ("Reader comment number" in result) is kept
