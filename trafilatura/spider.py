@@ -134,11 +134,7 @@ def refresh_detection(htmlstring: str, homepage: str, config: ConfigParser = DEF
         "",
     )
     match = REFRESH_CONTENT_REGEX.match(result)
-    if not match:
-        LOGGER.info("no redirect found: %s", homepage)
-        return htmlstring, homepage
-
-    url2 = match.group(1).strip().strip("'\"").strip()
+    url2 = match[1].strip().strip("'\"").strip() if match else ""
     if not url2 or url2.lower().startswith("javascript:"):
         LOGGER.info("no redirect found: %s", homepage)
         return htmlstring, homepage

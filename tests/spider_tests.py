@@ -127,6 +127,7 @@ def test_meta_redirections():
             "https://example.org/",
         ),
     ],
+    ids=["noscript", "spaces", "comma", "http-prefix", "javascript", "delay-only"],
 )
 def test_meta_refresh_content_parsing(htmlstring, homepage, expected_homepage):
     """Test parsing of meta-refresh content values."""
