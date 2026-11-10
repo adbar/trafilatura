@@ -89,8 +89,9 @@ JSON_AUTHOR_REMOVE = re.compile(
     r',?(?:"\w+":?[:|,\[])?{?"@type":"(?:[Ii]mageObject|[Oo]rganization|[Ww]eb[Pp]age)",[^}[]+}[\]|}]?'
 )
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
-JSON_TYPE = re.compile(r'"@type"\s*:\s*"([^"]*)"', re.DOTALL)
-JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
+JSON_TYPE = re.compile(r'"@type"\s*:\s*(?:"([^"]*)"|\[([^\]]*)\])')
+JSON_CATEGORY = re.compile(r'"articleSection"\s*:\s*(?:"([^"\\]+)|\[([^\]]*)\])')
+JSON_STRING = re.compile(r'"([^"\\]+)"')
 JSON_SCHEMA_ORG = re.compile(r"^https?://(?:www\.)?schema\.org", flags=re.IGNORECASE)
 JSON_UNICODE_REPLACE = re.compile(r"\\u([0-9a-fA-F]{4})")
 
@@ -147,7 +148,7 @@ def _json_author_name(author: Any) -> str | None:
     elif isinstance(name, dict):
         name = name.get("name")
     elif "name" not in author and "givenName" in author and "familyName" in author:
-        name = " ".join(author[x] for x in AUTHOR_ATTRS if x in author)
+        name = " ".join(author[x] for x in AUTHOR_ATTRS if isinstance(author.get(x), str))
     return name if isinstance(name, str) else None
 
 
@@ -175,7 +176,7 @@ def process_parent(parent: Any, metadata: Document, backup_sitename: str | None 
                 for schema_type in content_types
                 if isinstance(schema_type, str) and schema_type.lower() in JSON_SCHEMA_TYPES
             ),
-            content_types[0],
+            str(content_types[0]),
         ).lower()
 
         # The "pagetype" should only be returned if the page is some kind of an article, category, website...
@@ -291,13 +292,14 @@ def extract_json_parse_error(elem: str, metadata: Document) -> Document:
     if author:
         metadata.author = author
 
-    # try to extract page type as an alternative to og:type
-    if "@type" in elem:
-        mymatch = JSON_TYPE.search(elem)
-        if mymatch:
-            candidate = normalize_json(mymatch[1].lower())
+    # page type: first known value of the first @type, later ones may be nested
+    mymatch = JSON_TYPE.search(elem)
+    if mymatch:
+        for value in [mymatch[1]] if mymatch[1] is not None else JSON_STRING.findall(mymatch[2]):
+            candidate = normalize_json(value.lower())
             if candidate in JSON_OGTYPE_SCHEMA:
                 metadata.pagetype = candidate
+                break
 
     # try to extract publisher
     if '"publisher"' in elem:
@@ -307,11 +309,10 @@ def extract_json_parse_error(elem: str, metadata: Document) -> Document:
             if is_plausible_sitename(metadata, candidate):
                 metadata.sitename = candidate
 
-    # category
-    if '"articleSection"' in elem:
-        mymatch = JSON_CATEGORY.search(elem)
-        if mymatch:
-            metadata.categories = [normalize_json(mymatch[1])]
+    # category, string or list, an empty list keeps earlier values
+    mymatch = JSON_CATEGORY.search(elem)
+    if mymatch and (categories := [mymatch[1]] if mymatch[1] else JSON_STRING.findall(mymatch[2])):
+        metadata.categories = [normalize_json(c) for c in categories]
 
     # try to extract title
     for key, regex in JSON_SEQ:

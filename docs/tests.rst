@@ -95,6 +95,10 @@ other extractor and is also run in CI:
 
     $ python tests/eval_gate.py
 
+The gate also checks metadata: for title, author, date, tags and categories,
+the share of annotated values found by the metadata extraction must not fall
+below its pinned floor.
+
 Without the ``all`` extra, scores can differ slightly on non-UTF-8 pages.
 Editing the annotations or an HTML input requires a re-pin with
 ``python tests/eval_gate.py --update``. A

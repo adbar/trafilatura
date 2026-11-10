@@ -52,6 +52,8 @@ JSON_WRAPPER = re.compile(r"^\s*(?://|/\*)?\s*(?:<!\[CDATA\[|<!--)(?:\s*\*/)?|(?
 TITLE_SEPARATORS = "–•·—|⁄*⋆~‹«<›»>:-"
 TITLE_SPLIT = re.compile(rf"(?:\s+[{TITLE_SEPARATORS}])+\s+")
 NON_WORD = re.compile(r"\W+")
+# a comma outside numbers such as 1,000
+TAG_SPLIT = re.compile(r"(?<!\d),|,(?!\d)")
 # host name: dot-separated labels ending in a top-level domain of letters (or a punycode one)
 HOSTNAME_REGEX = re.compile(r"(?:[\w-]+\.)+(?:[^\W\d_]{2,}|xn--[a-z\d-]+)")
 
@@ -299,7 +301,9 @@ def examine_meta(tree: HtmlElement) -> tuple[Document, str | None]:
                 content = invert_citation_name(content)
             metadata.author = normalize_authors(metadata.author, content)
         elif field == "tags":
-            tags.append(normalize_tags(content))
+            # keyword lists hold several tags, article:tag only one
+            content = normalize_tags(content)
+            tags.extend(TAG_SPLIT.split(content) if attr == "name" else [content])
         elif field == "backup":
             backups.setdefault(key, content)
         elif field and not getattr(metadata, field) and (field != "url" or is_valid_url(content)):
@@ -559,8 +563,6 @@ def extract_metadata(
     # tags
     if not metadata.tags:
         metadata.tags = extract_catstags("tag", tree)
-    # one tag per item, keywords often come as a comma-separated string
-    metadata.tags = [t for tag in metadata.tags for t in tag.split(",")]
 
     # license
     metadata.license = extract_license(tree)
