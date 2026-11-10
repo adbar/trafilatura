@@ -22,6 +22,7 @@ from lxml import etree
 
 from .deduplication import is_similar_domain
 from .downloads import fetch_url, is_live_page
+from .feeds import FeedParameters, extract_links, has_rss_root
 from .settings import DEFAULT_CONFIG, MAX_LINKS, MAX_SITEMAPS_SEEN
 from .utils import safe_relative_url
 
@@ -37,8 +38,9 @@ WHITELISTED_PLATFORMS = re.compile(
     r"(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\."
 )
 
-# byte order mark and whitespace tolerated before the XML declaration or root element
-LEADING_SPACE = "\ufeff \t\r\n"
+# byte order mark, whitespace and comments tolerated before the XML declaration or root element
+LEADING_PROLOG = re.compile(r"^(?:[\ufeff\s]*<!--.*?-->)*[\ufeff\s]*", re.DOTALL)
+ATOM_ROOT = re.compile(r"<(?:[\w.-]+:)?feed\b")
 SITEMAP_FORMAT = re.compile(r"^.{0,5}<\?xml|<(?:[\w.-]+:)?(?:sitemapindex|sitemap|urlset)\b")
 DETECT_SITEMAP_LINK = re.compile(r"\.xml(\..{2,4})?$|\.xml[?#]")
 # links end before whitespace, "<", a double quote or a closing single quote
@@ -54,6 +56,33 @@ GUESSES = [
     "sitemap_index.xml",
     "sitemap_news.xml",
 ]
+
+
+def _strip_leading_prolog(content: str) -> str:
+    "Drop a leading byte order mark, whitespace and comments."
+    matched = LEADING_PROLOG.match(content)
+    return content[matched.end() :] if matched else content
+
+
+def _has_atom_root(content: str) -> bool:
+    "True when the root element is an Atom feed, after the XML prolog."
+    # same linear scan as feeds.has_rss_root: a nested regex can backtrack exponentially
+    pos, length = 0, len(content)
+    while True:
+        while pos < length and (content[pos].isspace() or content[pos] == "\ufeff"):
+            pos += 1
+        if not content.startswith(("<?", "<!"), pos):
+            return ATOM_ROOT.match(content, pos) is not None
+        closing = "-->" if content.startswith("<!--", pos) else ">"
+        end = content.find(closing, pos)
+        if end == -1:
+            return False
+        pos = end + len(closing)
+
+
+def _is_syndication_feed(content: str) -> bool:
+    "True for an RSS, Atom or RDF document."
+    return has_rss_root(content) or _has_atom_root(content)
 
 
 class SitemapObject:
@@ -95,7 +124,7 @@ class SitemapObject:
     def fetch(self) -> None:
         "Fetch a sitemap over the network."
         LOGGER.debug("fetching sitemap: %s", self.current_url)
-        self.content = (fetch_url(self.current_url, config=self.config) or "").lstrip(LEADING_SPACE)
+        self.content = _strip_leading_prolog(fetch_url(self.current_url, config=self.config) or "")
         self.seen.add(self.current_url)
 
     def handle_link(self, link: str, *, is_sitemap: bool | None = None) -> None:
@@ -191,9 +220,16 @@ class SitemapObject:
 
     def process(self) -> None:
         "Download a sitemap and extract the links it contains."
+        self.content = _strip_leading_prolog(self.content)
         plausible = is_plausible_sitemap(self.current_url, self.content)
         # safeguard
         if not plausible:
+            return
+        # robots.txt may list an RSS, Atom or RDF document, which has no <loc>
+        if _is_syndication_feed(self.content):
+            params = FeedParameters(self.base_url, self.domain, self.current_url, self.external, self.target_lang)
+            for link in extract_links(self.content, params):
+                self.handle_link(link, is_sitemap=False)
             return
         # try to extract links from TXT file
         if not SITEMAP_FORMAT.match(self.content):
@@ -238,7 +274,7 @@ def parse_sitemap(
         return []
     sitemap = SitemapObject(baseurl, domainname, [], target_lang, external)
     sitemap.current_url = url
-    sitemap.content = content.lstrip(LEADING_SPACE)
+    sitemap.content = _strip_leading_prolog(content)
     try:
         sitemap.process()
     except UnicodeEncodeError:
@@ -333,14 +369,17 @@ def sitemap_search(
 
 def is_plausible_sitemap(url: str, contents: str | None) -> bool:
     """Check if the sitemap corresponds to an expected format,
-    i.e. TXT or XML."""
+    i.e. TXT, XML, or a feed listed as a sitemap."""
     if contents is None:
         return False
 
     # strip query and fragments
     url = SCRUB_REGEX.sub("", url)
     if isinstance(contents, str):
-        contents = contents.lstrip(LEADING_SPACE)
+        contents = _strip_leading_prolog(contents)
+        # an RSS, Atom or RDF document is usable even when it has no <urlset>
+        if _is_syndication_feed(contents):
+            return True
 
     # check content
     if (
@@ -364,6 +403,8 @@ def extract_robots_sitemaps(robotstxt: str | None, baseurl: str, config: ConfigP
     # sanity check on length (cause: redirections)
     if robotstxt is None or len(robotstxt) > config.getint("DEFAULT", "MAX_FILE_SIZE"):
         return []
+    # a leading BOM is not whitespace, so it would hide a Sitemap line
+    robotstxt = robotstxt.lstrip("\ufeff")
 
     candidates = []
     # source: https://github.com/python/cpython/blob/3.12/Lib/urllib/robotparser.py

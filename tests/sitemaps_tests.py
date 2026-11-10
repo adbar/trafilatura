@@ -658,3 +658,114 @@ def test_sleep_time_defaults_to_config(monkeypatch):
     with patch.object(sitemaps, "sleep") as mock_sleep:
         sitemaps.sitemap_search("https://example.org", sleep_time=0.5, config=config)
     assert mock_sleep.call_args_list == [call(0.5)]
+
+
+URLSET = (
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+    "<!-- https://example.org/ignore -->"
+    "<url><loc>https://example.org/a</loc></url></urlset>"
+)
+RSS_FEED = (
+    '<rss version="2.0"><channel><title>Example</title><link>https://example.org/</link>'
+    "<item><title>Post</title><link>https://example.org/b</link>"
+    "<description>https://example.org/ignore</description></item></channel></rss>"
+)
+ATOM_FEED = (
+    '<feed xmlns="http://www.w3.org/2005/Atom"><title>Example</title>'
+    '<link href="https://example.org/feed/atom" rel="self"/>'
+    "<entry><title>Post</title>"
+    '<link href="https://example.org/b" rel="alternate"/>'
+    '<link rel="replies" href="https://example.org/b/comments"/>'
+    "</entry></feed>"
+)
+RDF_FEED = (
+    '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/">'
+    '<channel rdf:about="https://example.org/feed.rdf"><title>Example</title><link>https://example.org/</link>'
+    "<description>https://example.org/ignore</description>"
+    '<items><rdf:Seq><rdf:li rdf:resource="https://example.org/skip"/></rdf:Seq></items></channel>'
+    '<item rdf:about="https://example.org/b"><title>Post</title><link>https://example.org/b</link></item>'
+    "</rdf:RDF>"
+)
+# comments, a BOM and an XML declaration in front of a feed or a sitemap
+FEED_PREFIXES = [
+    "",
+    "<?xml version='1.0' encoding='UTF-8'?>\n",
+    "\ufeff",
+    "<!-- generator -->\n",
+    "\ufeff<!-- generator -->\n",
+    "<?xml version='1.0'?><!-- generator -->",
+]
+HTML_PAGES = [
+    "<!DOCTYPE html><html><body><a href='https://example.org/a'>x</a></body></html>",
+    "<html><body><a href='https://example.org/a'>x</a></body></html>",
+    "<!-- generator --><!DOCTYPE html><html><body><a href='https://example.org/a'>x</a></body></html>",
+    "\ufeff<!-- generator -->\n<html><body><a href='https://example.org/a'>x</a></body></html>",
+    "<!-- " + ("x" * 200) + " --><html><body><a href='https://example.org/a'>x</a></body></html>",
+]
+
+
+@pytest.mark.parametrize("prefix", FEED_PREFIXES)
+def test_leading_comment_before_sitemap(prefix):
+    "A comment or a BOM before the root element does not make an XML sitemap implausible."
+    assert sitemaps.parse_sitemap(prefix + URLSET, "https://example.org/sitemap.xml") == ["https://example.org/a"]
+    index = "<!-- idx --><sitemapindex><sitemap><loc>https://example.org/part.xml</loc></sitemap></sitemapindex>"
+    assert sitemaps.parse_sitemap(prefix + index, "https://example.org/sitemap.xml") == ["https://example.org/part.xml"]
+
+
+@pytest.mark.parametrize("page", HTML_PAGES)
+@pytest.mark.parametrize("url", ["https://example.org/sitemap.xml", "https://example.org/sitemap"])
+def test_html_page_is_not_a_sitemap(page, url):
+    "HTML pages stay rejected, including when a comment or a BOM precedes the root."
+    assert sitemaps.parse_sitemap(page, url) == []
+
+
+@pytest.mark.parametrize("body", [RSS_FEED, ATOM_FEED, RDF_FEED], ids=["rss", "atom", "rdf"])
+@pytest.mark.parametrize("prefix", FEED_PREFIXES)
+@pytest.mark.parametrize("url", ["https://example.org/feed/rss", "https://example.org/feed.xml"])
+def test_feed_listed_as_sitemap(body, prefix, url):
+    "RSS, Atom and RDF documents listed as sitemaps yield their page links."
+    assert sitemaps.parse_sitemap(prefix + body, url) == ["https://example.org/b"]
+
+
+@pytest.mark.parametrize(
+    "robots",
+    [
+        "\ufeffSitemap: https://example.org/s.xml",
+        "\ufeffsitemap: https://example.org/s.xml",
+        "\ufeff\ufeffSitemap: /s.xml",
+        "\ufeff Sitemap: https://example.org/s.xml",
+        "\ufeff# comment\nSitemap: https://example.org/s.xml\n",
+        "\ufeffSitemap: https://example.org/s.xml # note\r\n",
+        "\ufeff\nSitemap: https://example.org/s.xml",
+        "\ufeffUser-agent: *\nSitemap: https://example.org/s.xml\n",
+    ],
+)
+def test_robots_leading_bom(robots):
+    "A leading BOM does not hide a Sitemap line."
+    assert sitemaps.extract_robots_sitemaps(robots, "https://example.org") == ["https://example.org/s.xml"]
+
+
+def test_downloaded_sitemap_with_leading_comment(monkeypatch):
+    "sitemap_search keeps a sitemap whose download starts with a comment."
+    url = "https://example.org/sitemap.xml"
+    content = "<!-- generator -->" + URLSET
+
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda fetched, **kwargs: content if fetched == url else None)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda fetched, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+    assert sitemaps.sitemap_search(url) == ["https://example.org/a"]
+
+
+@pytest.mark.parametrize("body", [RSS_FEED, ATOM_FEED, RDF_FEED], ids=["rss", "atom", "rdf"])
+def test_robots_feed_is_read(monkeypatch, body):
+    "A feed URL published in robots.txt is parsed as a feed, not as an empty sitemap."
+    feed_url = "https://example.org/feed/rss"
+    pages = {
+        "https://example.org/robots.txt": f"\ufeffSitemap: {feed_url}\n",
+        feed_url: "<!-- generator -->" + body,
+    }
+
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda fetched, **kwargs: pages.get(fetched))
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda fetched, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+    assert sitemaps.sitemap_search("https://example.org/") == ["https://example.org/b"]
