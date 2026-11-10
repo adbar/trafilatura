@@ -18,7 +18,7 @@ from .settings import (
     Extractor,
 )
 from .utils import LINK_FARM_RATIO, image_src, safe_base_url, safe_relative_url, textfilter, trim
-from .xml import delete_element, meta_items, remove_empty_elements, separates_inline
+from .xml import delete_element, delete_elements, meta_items, remove_empty_elements, separates_inline
 
 LOGGER = logging.getLogger(__name__)
 
@@ -152,9 +152,8 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
 
 def prune_html(tree: HtmlElement, focus: str = "balanced") -> HtmlElement:
     "Delete selected empty elements to save space and processing time."
-    tails = focus != "precision"
-    for element in [e for e in tree.iterdescendants(CUT_EMPTY_ELEMS) if e.text is None and len(e) == 0]:
-        delete_element(element, keep_tail=tails)
+    empty = [e for e in tree.iterdescendants(CUT_EMPTY_ELEMS) if e.text is None and len(e) == 0]
+    delete_elements(empty, keep_tail=focus != "precision")
     return tree
 
 
@@ -162,8 +161,7 @@ def prune_unwanted_nodes(tree: HtmlElement, nodelist: list[XPath], with_backup: 
     "Prune the HTML tree by removing unwanted sections."
     if not with_backup:
         for expression in nodelist:
-            for subtree in expression(tree):
-                delete_element(subtree)  # the tail text is preserved
+            delete_elements(expression(tree))  # the tail text is preserved
         return tree
     # guard: prune nothing if it would remove too much text, the tree keeps its elements
     matches = dict.fromkeys(elem for expression in nodelist for elem in expression(tree))
@@ -171,8 +169,7 @@ def prune_unwanted_nodes(tree: HtmlElement, nodelist: list[XPath], with_backup: 
     old_len = len(tree.text_content())
     # todo: adjust for recall and precision settings
     if old_len - sum(len(elem.text_content()) for elem in outer) > old_len / 7:
-        for elem in outer:
-            delete_element(elem)
+        delete_elements(outer)
     return tree
 
 
@@ -457,9 +454,7 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
     # an empty sup/sub carries nothing to raise or lower, and process_node() would later
     # hand it the following text as its own, so the marker would wrap the wrong words.
     # The tail is kept in every focus mode, unlike the pruning of CUT_EMPTY_ELEMS.
-    for elem in tree.iter("sub", "sup"):
-        if not elem.text and len(elem) == 0:
-            delete_element(elem)
+    delete_elements([elem for elem in tree.iter("sub", "sup") if not elem.text and len(elem) == 0])
 
     if options.formatting:
         for elem in tree.iter(REND_TAG_MAPPING.keys()):

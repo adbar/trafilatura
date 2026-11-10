@@ -2245,6 +2245,33 @@ def test_recover_wild_text_list_after_colon():
         assert "deferred" not in result
 
 
+@pytest.mark.parametrize("focus", ["precision", "balanced"])
+def test_prune_html_long_run(focus):
+    "a long run of empty elements in one paragraph: the text between them is kept in order, except in precision mode"
+    lines = [f"line {i} " for i in range(2000)]
+    tree = html.fromstring(f"<div><p>start {''.join(f'<span></span>{line}' for line in lines)}</p></div>")
+    paragraph = trafilatura.htmlprocessing.prune_html(tree, focus).find("p")
+    assert len(paragraph) == 0
+    assert paragraph.text == "start " + ("" if focus == "precision" else "".join(lines))
+
+
+def test_prune_unwanted_nodes_long_run():
+    "matched siblings (nested ones included) are removed, their tails join the previous kept element in order"
+    rows = "".join(f"<b>{i}</b><i class='x'>a<i class='x'>b</i>c</i>{i}-1 <i class='x'>d</i>{i}-2 " for i in range(1000))
+    tree = html.fromstring(f"<div><p>start <i class='x'>e</i>first {rows}</p></div>")
+    tree = trafilatura.htmlprocessing.prune_unwanted_nodes(tree, [etree.XPath(".//i[@class='x']")])
+    expected = "".join(f"<b>{i}</b>{i}-1 {i}-2 " for i in range(1000))
+    assert etree.tostring(tree, encoding="unicode") == f"<div><p>start first {expected}</p></div>"
+
+
+def test_empty_sup_sub_long_run():
+    "a long run of empty sup/sub in one paragraph is removed, the text between them stays in order"
+    words = [f"w{i}" for i in range(2000)]
+    markers = "".join(f"<{('sup', 'sub')[i % 2]}></{('sup', 'sub')[i % 2]}>{word} " for i, word in enumerate(words))
+    doc = f"<html><body><article><p>start {markers}</p></article></body></html>"
+    assert extract(doc, output_format="markdown", config=ZERO_CONFIG) == "start " + " ".join(words)
+
+
 _MED_REF = '<ref target="/x">' + "x" * 250 + "</ref>"
 _BIG_REF = '<ref target="/x">' + "x" * 600 + "</ref>"
 # 60% link density at ~600 chars: kept by the 0.8 (medium) threshold, removed by the 0.5 (large) threshold

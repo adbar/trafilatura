@@ -6,7 +6,7 @@ All functions related to XML generation, processing and validation.
 import csv
 import logging
 import re
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator
 from copy import deepcopy
 from html import unescape
 from html.entities import html5
@@ -134,6 +134,30 @@ def delete_element(element: _Element, keep_tail: bool = True) -> None:
             previous.tail = (previous.tail or "") + element.tail
 
     parent.remove(element)
+
+
+def delete_elements(elements: Iterable[_Element], keep_tail: bool = True) -> None:
+    """Same as delete_element() on each element in turn. The tails moving to the same
+    previous element or parent are joined once at the end: one by one, a long run of
+    deleted siblings rebuilds an ever longer string (quadratic)."""
+    # (element, True): tails to add to its text, (element, False): to its tail
+    pending: dict[tuple[_Element, bool], list[str]] = {}
+    for element in elements:
+        parent = element.getparent()
+        if parent is None:
+            continue
+        if keep_tail:
+            tail = (element.tail or "") + "".join(pending.pop((element, False), []))
+            if tail:
+                previous = element.getprevious()
+                key = (parent, True) if previous is None else (previous, False)
+                pending.setdefault(key, []).append(tail)
+        parent.remove(element)
+    for (target, is_text), tails in pending.items():
+        if is_text:
+            target.text = (target.text or "") + "".join(tails)
+        else:
+            target.tail = (target.tail or "") + "".join(tails)
 
 
 def merge_with_parent(element: _Element, include_formatting: bool = False) -> None:
