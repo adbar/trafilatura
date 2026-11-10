@@ -9,7 +9,6 @@ import re
 from html import unescape
 from re import Pattern
 from typing import Any
-from urllib.parse import urljoin
 
 from .settings import Document
 from .utils import HTML_STRIP_TAGS, as_list, trim
@@ -260,7 +259,7 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Docu
             else:
                 parents.append(parent)
 
-    # the image of the page's own article, other articles (related stories) left aside
+    # the image of the first article node
     if not metadata.image:
         references = {node["@id"]: node for node in parents if isinstance(node, dict) and isinstance(node.get("@id"), str)}
         for node in parents:
@@ -268,13 +267,6 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Docu
                 continue
             kinds = {kind.lower() for kind in as_list(node.get("@type")) if isinstance(kind, str)}
             if kinds & JSON_ARTICLE_SCHEMA:
-                identity = node.get("url") or node.get("mainEntityOfPage") or node.get("@id")
-                if isinstance(identity, dict):
-                    identity = identity.get("@id") or identity.get("url")
-                if metadata.url and isinstance(identity, str):
-                    article_url = urljoin(metadata.url, identity).split("#", 1)[0].rstrip("/")
-                    if article_url != metadata.url.split("#", 1)[0].rstrip("/"):
-                        continue
                 metadata.image = extract_json_image(node.get("image"), references)
                 if metadata.image:
                     break

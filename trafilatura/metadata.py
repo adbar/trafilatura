@@ -496,9 +496,6 @@ def extract_metadata(
 
     # initialize dict and try to strip meta tags
     metadata = examine_meta(tree)
-    # url: JSON-LD tells the page's own article by it
-    if not metadata.url:
-        metadata.url = extract_url(tree, default_url)
 
     # to check: remove it and replace with author_blacklist in test case
     if metadata.author and " " not in metadata.author:
@@ -523,6 +520,10 @@ def extract_metadata(
     # recheck author in blacklist
     if metadata.author and author_blacklist:
         metadata.author = check_authors(metadata.author, author_blacklist)
+
+    # url
+    if not metadata.url:
+        metadata.url = extract_url(tree, default_url)
 
     # hostname
     if metadata.url:
