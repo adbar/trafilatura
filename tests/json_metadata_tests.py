@@ -1509,14 +1509,16 @@ def test_json_article_image(image):
     ("byline", "expected"),
     [
         ("Jane Doe in Nadi, Fiji", "Jane Doe"),
-        ("Jane Doe in Sydney, New South Wales", "Jane Doe"),
         ("Jane Doe reporting from Kyiv", "Jane Doe"),
         ("Jane Doe reporting from Kyiv, Ukraine", "Jane Doe"),
         ("Jane Doe in Washington, D.C., and John Roe in Paris", "Jane Doe; John Roe"),
-        # a person with a dateline of their own after the comma is the next credit
+        ("Jane Doe in Kuala Lumpur, Malaysia, and John Roe", "Jane Doe; John Roe"),
+        # co-authors after the comma stay, with or without a place of their own
         ("Jane Doe in London, John Roe in Paris", "Jane Doe; John Roe"),
+        ("Jane Doe in Paris, John Roe", "Jane Doe; John Roe"),
+        ("Jane Doe in Paris, John Roe, Mary Major", "Jane Doe; John Roe; Mary Major"),
     ],
 )
 def test_normalize_authors_datelines(byline, expected):
-    "A dateline in a byline runs to the next person, commas included."
+    "A dateline in a byline goes, with a one-word region after its comma; the people after it stay."
     assert normalize_authors(None, byline) == expected

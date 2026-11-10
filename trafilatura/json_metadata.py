@@ -111,8 +111,8 @@ AUTHOR_REMOVE_PREPOSITION = re.compile(r"\b\s+(am|on|for|at|in|to|from|of|via|wi
 AUTHOR_EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 AUTHOR_SPLIT = re.compile(r"/|;|,|\||&|(?:^|\W)[ua]nd(?:$|\W)", flags=re.IGNORECASE)
 AUTHOR_DATELINE = re.compile(
-    r"\s+(?:in|reporting\s+from)\s+[A-ZÀ-Þ][^;|/&]*?"
-    r"(?=\s+(?:and|with)\s+|\s*[;|/&]|\s*,[^,;|/&]+\s(?:in|reporting\s+from)\s+[A-ZÀ-Þ]|$)"
+    r"\s+(?:in|reporting\s+from)\s+[A-ZÀ-Þ][^,;|/&]*?(?:,\s*[A-ZÀ-Þ][^\s,;|/&]*)?"
+    r"(?=\s+(?:and|with)\s+|\s*[,;|/&]|$)"
 )
 AUTHOR_EMOJI_REMOVE = re.compile(
     "["
