@@ -1322,6 +1322,7 @@ JSON_IMAGE = "https://example.org/story.jpg"
 def test_json_article_image(image):
     "the image of the page's own article node, not a related article's or the publisher logo"
     graph = [
+        None,
         {"@type": "Organization", "name": "Example News", "logo": {"url": "https://example.org/logo.jpg"}},
         {"@type": "NewsArticle", "url": "https://example.org/other-story", "image": "https://example.org/other.jpg"},
         {"@type": "NewsArticle", "mainEntityOfPage": {"@id": "https://example.org/story"}, "image": image},
