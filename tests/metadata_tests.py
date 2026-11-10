@@ -458,6 +458,23 @@ def test_catstags():
         assert getattr(extract_metadata(doc), attr) == expected
 
 
+@pytest.mark.parametrize(
+    "block,attr,href",
+    [
+        ("div class='row'", "tags", "/tag/"),
+        ("div class='entry-meta'", "categories", "/category/"),
+    ],
+)
+def test_catstags_nested_blocks(block, attr, href):
+    "links under many nested matching blocks: each one once, in document order"
+    tag = block.split()[0]
+    rows = "".join(
+        f"<{block}><{block}><a href='{href}t{i}/'>T{i}</a></{tag}><a href='{href}u{i}/'>U{i}</a></{tag}>" for i in range(1000)
+    )
+    expected = [name for i in range(1000) for name in (f"T{i}", f"U{i}")]
+    assert getattr(extract_metadata(f"<html><body><{block}>{rows}</{tag}></body></html>"), attr) == expected
+
+
 def test_date_config():
     "A user date_config without 'max_date' must not raise, and must not be mutated."
     cfg = {"original_date": True, "extensive_search": False}

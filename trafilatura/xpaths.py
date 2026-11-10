@@ -435,36 +435,39 @@ AUTHOR_DISCARD_XPATHS = [
 ]
 
 
+# links under a block: /descendant::a walks each block once, whereas //a expands to
+# descendant-or-self::node()/child::a and libxml2 merges every node with a duplicate check,
+# quadratic on pages with many matching blocks (grids of div.row)
 CATEGORIES_XPATHS = [
     XPath(
         """
         //div[
         (@class and re:test(@class, '^(?:post-?info|post-?meta|meta|entry-meta|entry-info|entry-utility)')) or
-        starts-with(@id, 'postpath')]//a[@href]
+        starts-with(@id, 'postpath')]/descendant::a[@href]
         """,
         namespaces={"re": REGEXP_NS},
     ),
     XPath("""//p[starts-with(@class, 'postmeta') or starts-with(@class, 'entry-categories') or
-     @class='postinfo' or @id='filedunder']//a[@href]"""),
-    XPath("""//footer[starts-with(@class, 'entry-meta') or starts-with(@class, 'entry-footer')]//a[@href]"""),
+     @class='postinfo' or @id='filedunder']/descendant::a[@href]"""),
+    XPath("""//footer[starts-with(@class, 'entry-meta') or starts-with(@class, 'entry-footer')]/descendant::a[@href]"""),
     XPath("""//*[self::li or self::span][@class='post-category' or @class='postcategory' or
-     @class='entry-category' or contains(@class, 'cat-links')]//a[@href]"""),
-    XPath("""//header[@class='entry-header']//a[@href]"""),
-    XPath("""//div[@class='row' or @class='tags']//a[@href]"""),
+     @class='entry-category' or contains(@class, 'cat-links')]/descendant::a[@href]"""),
+    XPath("""//header[@class='entry-header']/descendant::a[@href]"""),
+    XPath("""//div[@class='row' or @class='tags']/descendant::a[@href]"""),
 ]
 # "//*[self::div or self::p][contains(@class, 'byline')]",
 
 
 TAGS_XPATHS = [
-    XPath("""//div[@class='tags']//a[@href]"""),
-    XPath("""//p[starts-with(@class, 'entry-tags')]//a[@href]"""),
+    XPath("""//div[@class='tags']/descendant::a[@href]"""),
+    XPath("""//p[starts-with(@class, 'entry-tags')]/descendant::a[@href]"""),
     XPath(
         """//div[@class='row' or @class='jp-relatedposts' or @class='entry-utility' or
-    (@class and re:test(@class, '^(?:tag|postmeta|meta)'))]//a[@href]""",
+    (@class and re:test(@class, '^(?:tag|postmeta|meta)'))]/descendant::a[@href]""",
         namespaces={"re": REGEXP_NS},
     ),
     XPath("""//*[@class='entry-meta' or contains(@class, 'topics') or
-     contains(@class, 'tags-links')]//a[@href]"""),
+     contains(@class, 'tags-links')]/descendant::a[@href]"""),
 ]
 # "related-topics"
 # https://github.com/grangier/python-goose/blob/develop/goose/extractors/tags.py
