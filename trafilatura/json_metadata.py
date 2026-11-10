@@ -9,6 +9,7 @@ import re
 from html import unescape
 from re import Pattern
 from typing import Any
+from urllib.parse import urljoin
 
 from .settings import Document
 from .utils import HTML_STRIP_TAGS, as_list, trim
@@ -218,6 +219,19 @@ def is_schema_org_context(context: Any) -> bool:
     return False
 
 
+def extract_json_image(value: Any, references: dict[str, Any]) -> str | None:
+    """Read an article image without inferring one from publisher logos."""
+    for item in as_list(value):
+        if isinstance(item, dict):
+            reference = item.get("@id")
+            if not item.get("url") and not item.get("contentUrl") and isinstance(reference, str):
+                item = references.get(reference, item)
+            item = item.get("url") or item.get("contentUrl")
+        if isinstance(item, str) and item.strip():
+            return item.strip()
+    return None
+
+
 def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Document:
     """Parse and extract metadata from JSON-LD data.
 
@@ -245,6 +259,25 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Docu
                 parents.extend(as_list(parent["liveBlogUpdate"]))
             else:
                 parents.append(parent)
+
+    # the image of the page's own article, other articles (related stories) left aside
+    if not metadata.image:
+        references = {node["@id"]: node for node in parents if isinstance(node, dict) and isinstance(node.get("@id"), str)}
+        for node in parents:
+            if not isinstance(node, dict):
+                continue
+            kinds = {kind.lower() for kind in as_list(node.get("@type")) if isinstance(kind, str)}
+            if kinds & JSON_ARTICLE_SCHEMA:
+                identity = node.get("url") or node.get("mainEntityOfPage") or node.get("@id")
+                if isinstance(identity, dict):
+                    identity = identity.get("@id") or identity.get("url")
+                if metadata.url and isinstance(identity, str):
+                    article_url = urljoin(metadata.url, identity).split("#", 1)[0].rstrip("/")
+                    if article_url != metadata.url.split("#", 1)[0].rstrip("/"):
+                        continue
+                metadata.image = extract_json_image(node.get("image"), references)
+                if metadata.image:
+                    break
 
     return process_parent(parents, metadata)
 
