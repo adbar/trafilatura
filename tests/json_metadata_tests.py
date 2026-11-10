@@ -1304,3 +1304,23 @@ def test_json_non_schema_org_context(context):
         "</script></head><body><p>x</p></body></html>"
     )
     assert extract_metadata(html).author is None
+
+
+@pytest.mark.parametrize(
+    ("section", "categories"),
+    [
+        (None, []),
+        (3, []),
+        (["Weather", None, 3], ["Weather"]),
+    ],
+)
+def test_json_article_section_values(section, categories):
+    "an articleSection that is not a string or a list of strings must not discard the headline"
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "headline": "Storm hits coast",
+        "articleSection": section,
+    }
+    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
+    assert (metadata.title, metadata.categories) == ("Storm hits coast", categories)
