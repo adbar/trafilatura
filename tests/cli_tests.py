@@ -109,6 +109,37 @@ def test_input_file_unreadable_parent(tmp_path, run):
     assert "-i/--input-file: Permission denied" in err
 
 
+@pytest.mark.parametrize(
+    "content, message",
+    [
+        ("MIN_OUTPUT_SIZE = 1\n", "File contains no section headers"),
+        ("[DEFAULT]\nMIN_EXTRACTED_SIZE = 250.5\n", "invalid literal for int()"),
+        ("[DEFAULT]\nEXTENSIVE_DATE_SEARCH = maybe\n", "Not a boolean: maybe"),
+        # download settings are read lazily, their types must be checked up front too
+        ("[DEFAULT]\nSLEEP_TIME = abc\n", "could not convert string to float: 'abc'"),
+        ("[DEFAULT]\nMAX_REDIRECTS = x\n", "invalid literal for int()"),
+        ("[DEFAULT]\nSSRF_PROTECTION = maybe\n", "Not a boolean: maybe"),
+    ],
+)
+def test_config_file_malformed_content(tmp_path, run, content, message):
+    "A config file with bad syntax or types is an argument error, not a traceback."
+    cfg = tmp_path / "bad.cfg"
+    cfg.write_text(content, encoding="utf-8")
+    code, _, err = run(["-u", "https://example.org", "--config-file", str(cfg)])
+    assert code == 2
+    assert "--config-file: " in err
+    assert message in err
+
+
+def test_config_file_non_utf8(tmp_path, run):
+    "A non-UTF-8 config file is an argument error, not a UnicodeDecodeError traceback."
+    cfg = tmp_path / "bad.cfg"
+    cfg.write_bytes(b"[DEFAULT]\nMIN_OUTPUT_SIZE = 1\n\xff\xfe")
+    code, _, err = run(["-u", "https://example.org", "--config-file", str(cfg)])
+    assert code == 2
+    assert "--config-file: " in err
+
+
 @pytest.mark.skipif(os.name == "nt" or os.geteuid() == 0, reason="needs POSIX permissions as non-root")
 @pytest.mark.parametrize(
     "option, label", [("-i", "-i/--input-file"), ("-b", "-b/--blacklist"), ("--config-file", "--config-file")]
@@ -310,6 +341,26 @@ def test_list_ignores_extraction_opts(capsys):
     cli.parse_args(["--list", "--json", "--no-comments", "--with-metadata"])
     err = capsys.readouterr().err
     assert "these options are ignored: --no-comments, --output-format, --with-metadata" in err
+
+
+def test_list_ignores_output_and_tei_opts(capsys):
+    "--list also ignores the output directory and TEI validation."
+    cli.parse_args(["--list", "-u", "https://example.org/", "-o", "out", "--validate-tei"])
+    err = capsys.readouterr().err
+    assert "these options are ignored: --output-dir, --validate-tei" in err
+
+
+def test_list_ignores_target_language(capsys):
+    "--list ignores the target language unless the navigation options filter by it."
+    cli.parse_args(["--list", "-u", "https://example.org/", "--target-language", "de"])
+    err = capsys.readouterr().err
+    assert "--target-language" in err
+    assert "ignored" in err
+
+    for nav in ("--feed", "--sitemap", "--crawl", "--explore", "--probe"):
+        capsys.readouterr()
+        cli.parse_args(["--list", nav, "https://example.org/x", "--target-language", "de"])
+        assert "ignored" not in capsys.readouterr().err
 
 
 def test_help(run):
