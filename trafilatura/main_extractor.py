@@ -261,6 +261,7 @@ def handle_quotes(element: _Element, options: Extractor) -> _Element | None:
         return handle_code_blocks(element)
 
     processed_element = Element(element.tag)
+    update_elem_rendition(element, processed_element)
     process_nested_elements(element, processed_element, options)
     if is_text_element(processed_element):
         # avoid double/nested tags

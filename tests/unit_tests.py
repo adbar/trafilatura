@@ -839,17 +839,17 @@ def test:
     </article></body></html>
     """)
     my_result = extract(my_document, output_format="markdown", include_formatting=True, config=ZERO_CONFIG)
-    assert "python code below:\n> ```\n> def test:\n>     print('hello')\n>     print('world')\n>     \n> ```" == my_result
+    assert "python code below:\n```\ndef test:\n    print('hello')\n    print('world')\n    \n```" == my_result
 
     my_result = extract(my_document, output_format="markdown", include_formatting=True, config=ZERO_CONFIG)
     assert (
         """python code below:
-> ```
-> def test:
->     print('hello')
->     print('world')
->     
-> ```"""
+```
+def test:
+    print('hello')
+    print('world')
+    
+```"""
         == my_result
     )
 
@@ -3822,6 +3822,22 @@ def test_prefer_readability_rejects_raw_json():
 )
 def test_markdown_blockquote(body, expected):
     "Every line of a quote carries the '>' marker, the text after it does not (#1111)."
+    assert _md_inline(body) == f"{_INTRO}\n\n{expected}"
+
+
+@pytest.mark.parametrize(
+    "body,expected",
+    [
+        pytest.param("<pre>col1   col2\nval1   val2</pre><p>After</p>", "col1   col2\nval1   val2\n\nAfter", id="pre-text"),
+        pytest.param(
+            "<blockquote><p>Q</p><pre>col1   col2</pre></blockquote><p>After</p>",
+            "> Q\n>\n> col1 col2\n\nAfter",
+            id="pre-in-quote",
+        ),
+    ],
+)
+def test_markdown_preformatted_not_quoted(body, expected):
+    "A <pre> that is not code is stored as a quote but gets no '>' marker of its own."
     assert _md_inline(body) == f"{_INTRO}\n\n{expected}"
 
 

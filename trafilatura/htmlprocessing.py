@@ -380,6 +380,9 @@ def convert_quotes(elem: _Element) -> None:
     is_code = elem.tag == "pre" and (
         (len(elem) == 1 and elem[0].tag == "span") or bool(hljs) or any(i in (elem.text or "") for i in CODE_INDICATORS)
     )
+    # a quote from a <pre> is preformatted text, not a quotation: keep its origin
+    if elem.tag == "pre" and not is_code:
+        elem.set("rend", "pre")
     elem.tag = "code" if is_code else "quote"
 
 

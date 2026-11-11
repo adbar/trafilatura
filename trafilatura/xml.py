@@ -756,7 +756,15 @@ def process_element(
     if list_positions is None:
         list_positions = {}
     tag = element.tag
-    if tag == "quote" and include_formatting and not in_cell and not in_item and not quote_body:
+    # only a real quotation gets the '>' marker, not preformatted text (rend="pre")
+    if (
+        tag == "quote"
+        and include_formatting
+        and not in_cell
+        and not in_item
+        and not quote_body
+        and element.get("rend") != "pre"
+    ):
         _process_quote(element, returnlist, list_positions)
         return
     # in_cell/in_item are inherited down the recursion instead of re-walking ancestors at every node
