@@ -54,20 +54,26 @@ SPECIAL_FORMATTING = {"code", "del", "head", "hi", "ref", "item", "cell"}
 WITH_ATTRIBUTES = {"cell", "row", "del", "graphic", "head", "hi", "item", "list", "ref"}
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
+# Single list of metadata fields shared by the TXT, Markdown, XML and HTML
+# outputs (see GH #1123): every format emits the same fields, in this order,
+# whenever they are set. JSON already emits all of them via Document.__slots__.
 META_ATTRIBUTES = [
-    "sitename",
     "title",
     "author",
-    "date",
     "url",
     "hostname",
     "description",
+    "sitename",
+    "date",
     "categories",
     "tags",
-    "license",
-    "id",
     "fingerprint",
+    "id",
+    "license",
     "language",
+    "image",
+    "pagetype",
+    "filedate",
 ]
 
 HI_FORMATTING = {"#b": "**", "#i": "*", "#t": "`"}
@@ -890,7 +896,8 @@ def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t",
     output = StringIO()
     outputwriter = csv.writer(output, delimiter=delim, quoting=csv.QUOTE_MINIMAL)
 
-    # organize fields
+    # organize fields: the first columns keep their historical order,
+    # the remaining metadata fields are appended at the end (see GH #1123)
     outputwriter.writerow(
         [
             d or null
@@ -906,6 +913,13 @@ def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t",
                 commentstext,
                 document.license,
                 document.pagetype,
+                document.author,
+                document.description,
+                document.sitename,
+                ";".join(document.categories or []),
+                ";".join(document.tags or []),
+                document.language,
+                document.filedate,
             )
         ]
     )
@@ -942,7 +956,6 @@ def _define_publisher_string(docmeta: Document) -> str:
 
 def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     """Write TEI header based on gathered metadata"""
-    # todo: add language info
     header = SubElement(teidoc, "teiHeader")
     filedesc = SubElement(header, "fileDesc")
     bib_titlestmt = SubElement(filedesc, "titleStmt")
@@ -965,6 +978,10 @@ def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     if docmeta.id:
         SubElement(notesstmt, "note", type="id").text = docmeta.id
     SubElement(notesstmt, "note", type="fingerprint").text = docmeta.fingerprint
+    if docmeta.image:
+        SubElement(notesstmt, "note", type="image").text = docmeta.image
+    if docmeta.pagetype:
+        SubElement(notesstmt, "note", type="pagetype").text = docmeta.pagetype
 
     sourcedesc = SubElement(filedesc, "sourceDesc")
     source_bibl = SubElement(sourcedesc, "bibl")
@@ -990,6 +1007,10 @@ def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     profiledesc = SubElement(header, "profileDesc")
     abstract = SubElement(profiledesc, "abstract")
     SubElement(abstract, "p").text = docmeta.description
+
+    if docmeta.language:
+        langusage = SubElement(profiledesc, "langUsage")
+        SubElement(langusage, "language", ident=docmeta.language).text = docmeta.language
 
     if docmeta.categories or docmeta.tags:
         textclass = SubElement(profiledesc, "textClass")

@@ -565,7 +565,7 @@ def test_csv_stdout_has_no_blank_records(tmp_path, output_args):
         check=True,
     )
     rows = list(csv.reader(io.StringIO(result.stdout.decode("utf-8"), newline=""), delimiter="\t"))
-    assert [len(row) for row in rows] == [11, 11]
+    assert [len(row) for row in rows] == [18, 18]
     assert {row[7] for row in rows} == {
         "Document 1 with some long enough text, here and there.",
         "Document 2 with some long enough text, here and there.",
