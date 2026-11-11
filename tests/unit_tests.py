@@ -3845,6 +3845,11 @@ def test_markdown_blockquote_nested():
     assert _md("<doc><quote><p>outer</p><quote><p>inner</p></quote></quote></doc>") == "> outer\n>\n> > inner"
 
 
+def test_markdown_blockquote_after_spaces():
+    "A quote after a run of spaces starts its own line, so it is not read as a code block."
+    assert _md("<doc><p>Lead   <quote>q</quote></p></doc>") == "Lead   \n> q"
+
+
 def test_txt_blockquote_unmarked():
     body = "<blockquote><p>One</p><p>Two</p></blockquote><p>After</p>"
     assert _extract_doc(body, output_format="txt") == f"{_INTRO}\nOne\nTwo\nAfter"

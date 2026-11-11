@@ -853,7 +853,7 @@ def process_element(
 
 def _process_quote(element: _Element, returnlist: list[str], list_positions: dict[_Element, int]) -> None:
     "Render a quote on its own and mark each of its lines with '>', its tail stays outside."
-    if _last_char(returnlist) not in SEPARATORS:
+    if _last_char(returnlist) not in ("\n", ""):
         returnlist.append("\n")
     tail, element.tail = element.tail, None
     quoted: list[str] = []
