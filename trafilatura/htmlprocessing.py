@@ -4,7 +4,9 @@ Functions to process nodes in HTML code.
 """
 
 import logging
+from collections.abc import Callable, Sequence
 from copy import deepcopy
+from typing import Any
 
 from lxml.etree import Element, SubElement, XPath, _Element, strip_elements, strip_tags, tostring
 from lxml.html import HtmlElement
@@ -158,7 +160,9 @@ def prune_html(tree: HtmlElement, focus: str = "balanced") -> HtmlElement:
     return tree
 
 
-def prune_unwanted_nodes(tree: HtmlElement, nodelist: list[XPath], with_backup: bool = False) -> HtmlElement:
+def prune_unwanted_nodes(
+    tree: HtmlElement, nodelist: Sequence[Callable[[HtmlElement], Any]], with_backup: bool = False
+) -> HtmlElement:
     "Prune the HTML tree by removing unwanted sections."
     if not with_backup:
         for expression in nodelist:
@@ -383,6 +387,17 @@ def convert_quotes(elem: _Element) -> None:
     elem.tag = "code" if is_code else "quote"
 
 
+PERMALINK_CLASSES = frozenset({"headerlink", "doc-anchor"})
+
+
+def _is_permalink_anchor(element: _Element) -> bool:
+    "Whether an <a> inside a heading is a documentation permalink (Sphinx ¶, rustdoc §)."
+    target = element.get("href") or ""
+    return (
+        target.startswith("#") and len(target) > 1 and not PERMALINK_CLASSES.isdisjoint((element.get("class") or "").split())
+    )
+
+
 def convert_headings(elem: _Element) -> None:
     "Add head tags and delete attributes."
     elem.attrib.clear()
@@ -432,6 +447,21 @@ def convert_link(elem: HtmlElement, base_url: str | None) -> None:
 
 def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) -> HtmlElement:
     "Simplify markup and convert relevant HTML tags to an XML standard."
+    # Documentation permalinks (Sphinx headerlink ¶, rustdoc doc-anchor §) are decoration,
+    # not content: drop them before the <a> pass, while their classes still exist. Only
+    # same-page fragments qualify, so anchors with an empty or cross-page target stay in
+    # place and keep behaving like the empty-anchor case (#1024).
+    for elem in tree.iter("h1", "h2", "h3", "h4", "h5", "h6"):
+        for subelem in list(elem.iter("a")):
+            if _is_permalink_anchor(subelem):
+                parent = subelem.getparent()
+                delete_element(subelem)
+                # an emptied formatting wrapper must not survive and swallow its tail
+                while parent is not None and parent is not elem and not parent.text and len(parent) == 0:
+                    wrapper = parent
+                    parent = wrapper.getparent()
+                    delete_element(wrapper)
+
     # delete links for faster processing
     if not options.links:
         containers = ("div", "li", "p", "table") if options.tables else ("div", "li", "p")

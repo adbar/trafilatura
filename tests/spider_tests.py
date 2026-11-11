@@ -6,6 +6,7 @@ Unit tests for the spidering part of the trafilatura library.
 import logging
 import sys
 from collections import deque
+from pathlib import Path
 from unittest.mock import patch
 from urllib.robotparser import RobotFileParser
 
@@ -84,6 +85,59 @@ def test_meta_redirections():
                 assert htmlstring2 == htmlstring
             else:
                 assert htmlstring2 != htmlstring
+
+
+@pytest.mark.parametrize(
+    "htmlstring,homepage,expected_homepage",
+    [
+        # meta refresh inside <noscript> is ignored
+        (
+            (Path(__file__).parent / "cache" / "jolie.de.adele.html").read_text(encoding="utf-8"),
+            "https://example.org/",
+            "https://example.org/",
+        ),
+        # spaces and capital letters around "url ="
+        (
+            '<html><head><meta http-equiv="refresh" content="0; URL = /new"></head></html>',
+            "https://example.org/",
+            "https://example.org/new",
+        ),
+        # comma instead of semicolon as separator
+        (
+            '<html><head><meta http-equiv="refresh" content="0, url=/new"></head></html>',
+            "https://example.org/",
+            "https://example.org/new",
+        ),
+        # relative URL starting with "http" is not an absolute URL
+        (
+            '<html><head><meta http-equiv="refresh" content="0; url=http-info.html"></head></html>',
+            "https://example.org/",
+            "https://example.org/http-info.html",
+        ),
+        # javascript: targets are skipped
+        (
+            '<html><head><meta http-equiv="refresh" content="0; url=javascript:void(0)"></head></html>',
+            "https://example.org/",
+            "https://example.org/",
+        ),
+        # delay only, no URL to follow
+        (
+            '<html><head><meta http-equiv="refresh" content="30"></head></html>',
+            "https://example.org/",
+            "https://example.org/",
+        ),
+    ],
+    ids=["noscript", "spaces", "comma", "http-prefix", "javascript", "delay-only"],
+)
+def test_meta_refresh_content_parsing(htmlstring, homepage, expected_homepage):
+    """Test parsing of meta-refresh content values."""
+    with patch.object(spider, "fetch_url", return_value="<html></html>"):
+        htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
+    assert homepage2 == expected_homepage
+    if expected_homepage == homepage:
+        assert htmlstring2 == htmlstring
+    else:
+        assert htmlstring2 != htmlstring
 
 
 def test_process_links():

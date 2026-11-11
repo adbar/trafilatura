@@ -6,6 +6,7 @@ from copy import copy
 
 from lxml.etree import Element, SubElement, XMLParser, fromstring, tostring
 
+from trafilatura import extract
 from trafilatura.metadata import Document
 from trafilatura.xml import (
     _handle_unwanted_tails,
@@ -13,6 +14,7 @@ from trafilatura.xml import (
     _wrap_unwanted_siblings_of_div,
     check_tei,
     replace_element_text,
+    validate_tei,
     write_fullheader,
 )
 
@@ -531,3 +533,14 @@ def test_no_markdown_marker_in_merged_item_content():
     doc = fromstring("<TEI><text><body><div><list><item><foo>bar</foo></item></list></div></body></text></TEI>")
     check_tei(doc, None)
     assert tostring(doc, encoding="unicode").endswith("<list><item>bar</item></list></div></body></text></TEI>")
+
+
+def test_graphic_src_converted_to_url():
+    "TEI requires a url attribute on graphic: the image source must not be dropped."
+    htmlstring = """<html><body><article>
+    <p>A first paragraph that is long enough to be kept as the main text of the article.</p>
+    <p>See the chart <img src="https://example.org/chart.png" alt="A chart"> for details.</p>
+    </article></body></html>"""
+    result = extract(htmlstring, output_format="xmltei", include_images=True)
+    assert '<graphic url="https://example.org/chart.png"/>' in result
+    assert validate_tei(fromstring(result.encode()))

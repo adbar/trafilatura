@@ -55,6 +55,10 @@ GUESSES = [
     "sitemap_news.xml",
 ]
 
+# sitemaps.org allows up to 50,000 URLs and 50 MB uncompressed per sitemap,
+# above the general 20 MB MAX_FILE_SIZE download cap
+MAX_SITEMAP_SIZE = 52428800
+
 
 class SitemapObject:
     "Store all necessary information on sitemap download and processing."
@@ -296,7 +300,16 @@ def sitemap_search(
         if len(url) > len(baseurl) + 2:
             urlfilter = url
 
-    sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external, config)
+    # Sitemaps may reach 50 MB uncompressed (sitemaps.org), above the general
+    # MAX_FILE_SIZE cap: fetch them with a raised limit, while robots.txt
+    # and pages keep the configured cap. The caller's config is not mutated.
+    sitemap_config = config
+    if config.getint("DEFAULT", "MAX_FILE_SIZE") < MAX_SITEMAP_SIZE:
+        sitemap_config = ConfigParser()
+        sitemap_config.read_dict(config)
+        sitemap_config.set("DEFAULT", "MAX_FILE_SIZE", str(MAX_SITEMAP_SIZE))
+
+    sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external, sitemap_config)
 
     # A sitemap can use a different scheme or www. form of the same host.
     prefix = SCHEME_AND_WWW.sub("", urlfilter) if urlfilter is not None else None

@@ -49,8 +49,8 @@ PARAGRAPH_TAGS = frozenset(
     }
 )  # fmt: skip
 
-# page title, hidden data blobs, scrolling link farms, raw-text fallbacks holding markup as text
-SKIP = frozenset({"head", "marquee", "textarea", "iframe", "noembed", "noframes"})
+# page title, hidden data blobs, scrolling link farms, raw-text fallbacks holding markup as text, overlays
+SKIP = frozenset({"head", "marquee", "textarea", "iframe", "noembed", "noframes", "dialog"})
 # hidden blocks (menus, modals, lightboxes), click-to-open panels are kept
 HIDDEN = re.compile(r"display\s*:\s*none", re.IGNORECASE)
 KEEP_HIDDEN = re.compile("faq|accordion|collaps", re.IGNORECASE)
@@ -132,6 +132,9 @@ def _skip(tag: str, elem: _Element) -> bool:
     if tag in ("html", "body"):
         # hidden until a script reveals the page
         return False
+    if (elem.get("role") or "").lower() in ("dialog", "alertdialog"):
+        # an overlay (sign-up, newsletter choices, cookie notice) is interface, not the page's text
+        return True
     style = elem.get("style")
     return bool(style and HIDDEN.search(style) and not KEEP_HIDDEN.search(f"{elem.get('class', '')} {elem.get('id', '')}"))
 
