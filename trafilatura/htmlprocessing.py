@@ -390,9 +390,7 @@ def _is_permalink_anchor(element: _Element) -> bool:
     "Whether an <a> inside a heading is a documentation permalink (Sphinx ¶, rustdoc §)."
     target = element.get("href") or ""
     return (
-        target.startswith("#")
-        and len(target) > 1
-        and not PERMALINK_CLASSES.isdisjoint((element.get("class") or "").split())
+        target.startswith("#") and len(target) > 1 and not PERMALINK_CLASSES.isdisjoint((element.get("class") or "").split())
     )
 
 
