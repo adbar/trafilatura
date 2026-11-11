@@ -95,6 +95,9 @@ _BULLET_START_RE = re.compile(r"^( {0,3})([-+])(?=[ \t]|$)")
 _ORDERED_START_RE = re.compile(r"^( {0,3})(\d{1,9})([.)])(?=[ \t]|$)")
 _BLOCK_START_RES = (_HEADING_START_RE, _QUOTE_START_RE, _BULLET_START_RE, _ORDERED_START_RE)
 
+# spaces around a source newline outside code: HTML indentation, not content
+_SPACES_AROUND_NEWLINE_RE = re.compile(r"[ \t]*\n[ \t]*")
+
 # an unescaped '[' or ']', used as a safety net for text that never went through the tree-wide pass;
 # code spans are matched first and kept as-is, since backslash escapes are literal inside them
 _UNESCAPED_BRACKET_RE = re.compile(r"((?<![\\`])(`+)(?!`).+?(?<!`)\2(?!`))|(?<!\\)([\[\]])", re.DOTALL)
@@ -588,7 +591,7 @@ def _image_markup(element: _Element, include_formatting: bool = True) -> str:
     return _md_link(alt, element.get("src", ""), image=True)
 
 
-def _collect_inline_text(element: _Element, include_formatting: bool) -> str:
+def _collect_inline_text(element: _Element, include_formatting: bool, in_cell: bool = False) -> str:
     "Collect text from an element's direct text and inline children (carried INLINE_CARRIED tags)."
     parts: list[str] = [element.text] if element.text else []
     for child in element:
@@ -597,9 +600,26 @@ def _collect_inline_text(element: _Element, include_formatting: bool) -> str:
         elif child.tag == "lb":
             parts.append("\n")
         elif child.tag in INLINE_FORMATTABLE:
-            parts.append(replace_element_text(child, include_formatting))
+            parts.append(replace_element_text(child, include_formatting, in_cell))
         elif child.text:  # fallback: e.g. structural tag nested inside inline (malformed input)
             parts.append(child.text)
+        if child.tail:
+            parts.append(child.tail)
+    return "".join(parts)
+
+
+def _code_text(element: _Element, include_formatting: bool, in_cell: bool = False) -> str:
+    "Verbatim text of a code element: every descendant's text in document order, \
+line breaks as newlines (spaces in a table cell). Inline children only carry text \
+here, so their formatting is never rendered: a <hi> inside <code> is code, not bold."
+    parts: list[str] = [element.text] if element.text else []
+    for child in element:
+        if child.tag == "graphic":
+            parts.append(_image_markup(child, include_formatting))
+        elif child.tag == "lb":
+            parts.append(" " if in_cell else "\n")
+        else:
+            parts.append(_code_text(child, include_formatting, in_cell))
         if child.tail:
             parts.append(child.tail)
     return "".join(parts)
@@ -646,7 +666,14 @@ def _escape_cell(text: str, in_cell: bool = True) -> str:
 def replace_element_text(element: _Element, include_formatting: bool, in_cell: bool = False) -> str:
     """Determine element text based on just the text of the element. One must deal with the tail separately."""
     if _consumes_inline_children(element):
-        elem_text = _collect_inline_text(element, include_formatting)
+        elem_text = _collect_inline_text(element, include_formatting, in_cell)
+    elif element.tag == "code":
+        # a code element keeps all its text verbatim, including inline children and
+        # line breaks; the children are consumed here so the recursion in
+        # process_element does not render them again outside the code span/block
+        elem_text = _code_text(element, include_formatting, in_cell)
+        for child in list(element):
+            element.remove(child)
     else:
         elem_text = element.text or ""
     # a fresh paragraph/list-item/quote line must not start with a marker that reads as block
@@ -673,12 +700,9 @@ def replace_element_text(element: _Element, include_formatting: bool, in_cell: b
                 tag = HI_HTML_TAGS[rend]
                 elem_text = _md_wrap(elem_text, f"<{tag}>", f"</{tag}>")
         elif element.tag == "code":
-            lbs = element.xpath(".//lb")
-            if "\n" in elem_text or lbs:  # Handle <br> inside <code>
-                # Convert <br> to \n within code blocks
-                for lb in lbs:
-                    elem_text = f"{elem_text}\n{lb.tail or ''}"
-                    lb.getparent().remove(lb)
+            # line breaks are already newlines in elem_text (spaces in a table cell),
+            # so a code block is fenced exactly when the text spans several lines
+            if "\n" in elem_text:
                 fence = _code_fence(elem_text, min_len=3)
                 language = element.get("rend") or ""
                 elem_text = f"{fence}{language}\n{elem_text}\n{fence}\n"
@@ -861,10 +885,19 @@ def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
     # Decode double-encoded prose before Markdown escaping, preserving URL attributes and the caller's tree.
     xmloutput = deepcopy(xmloutput)
     for element in xmloutput.iter():
+        # text inside <code> is verbatim, including its indentation; a code element's
+        # own tail is prose again, so only its text is exempt from the normalization
+        in_code = any(ancestor.tag == "code" for ancestor in element.iterancestors())
         if element.text:
             element.text = _unescape_text(element.text)
+            if element.tag != "code" and not in_code and "\n" in element.text:
+                # spaces around a source newline are HTML indentation, not content:
+                # keeping them turns an indented heading into a markdown code block
+                element.text = _SPACES_AROUND_NEWLINE_RE.sub("\n", element.text)
         if element.tail:
             element.tail = _unescape_text(element.tail)
+            if not in_code and "\n" in element.tail:
+                element.tail = _SPACES_AROUND_NEWLINE_RE.sub("\n", element.tail)
         if element.tag == "graphic":
             for attribute in ("title", "alt"):
                 if value := element.get(attribute):
