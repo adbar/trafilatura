@@ -523,8 +523,24 @@ def test_xmltocsv():
     assert csv_result.split("\t")[8] == "null"
 
 
-def test_metadata_fields_same_across_formats():
+@pytest.mark.parametrize("output_format", ["markdown", "txt", "xml", "html", "xmltei", "csv", "json", "xmltocsv"])
+def test_metadata_fields_same_across_formats(output_format):
     """The same metadata fields appear in every output format (issue #1123)."""
+    if output_format == "xmltocsv":
+        # appended CSV columns carry the metadata values, lists joined with ';'
+        doc = Document()
+        doc.body = etree.fromstring("<p>Test text</p>")
+        doc.commentsbody = etree.fromstring("<xml/>")
+        doc.author = "Jane Doe"
+        doc.description = "A description"
+        doc.sitename = "Example"
+        doc.categories = ["news", "tech"]
+        doc.tags = ["a", "b"]
+        doc.language = "en"
+        doc.filedate = "2026-11-11"
+        fields = xml.xmltocsv(doc, False).rstrip("\r\n").split("\t")
+        assert fields[11:] == ["Jane Doe", "A description", "Example", "news;tech", "a;b", "en", "2026-11-11"]
+        return
     html = (
         '<html><head><meta property="og:image" content="https://example.org/a.jpg">'
         '<meta property="og:type" content="article"></head><body><article><p>'
@@ -532,64 +548,46 @@ def test_metadata_fields_same_across_formats():
         + "</p></article></body></html>"
     )
     today = datetime.now().astimezone().strftime("%Y-%m-%d")
-    for output_format in ("markdown", "txt"):
-        result = extract(html, output_format=output_format, with_metadata=True)
+    result = extract(html, output_format=output_format, with_metadata=True)
+    if output_format in ("markdown", "txt"):
         assert "image: https://example.org/a.jpg" in result
         assert "pagetype: article" in result
         assert f'filedate: "{today}"' in result
         if LANGID_FLAG:
             assert "language: en" in result
-    result = extract(html, output_format="xml", with_metadata=True)
-    assert 'image="https://example.org/a.jpg"' in result
-    assert 'pagetype="article"' in result
-    assert f'filedate="{today}"' in result
-    if LANGID_FLAG:
-        assert 'language="en"' in result
-    result = extract(html, output_format="html", with_metadata=True)
-    assert '<meta name="image" content="https://example.org/a.jpg"/>' in result
-    assert '<meta name="pagetype" content="article"/>' in result
-    assert f'<meta name="filedate" content="{today}"/>' in result
-    if LANGID_FLAG:
-        assert '<meta name="language" content="en"/>' in result
-    # CSV: the extra metadata columns are appended at the end, in the same order
-    result = extract(html, output_format="csv", with_metadata=True)
-    fields = result.rstrip("\r\n").split("\t")
-    assert len(fields) == 18
-    assert fields[5] == "https://example.org/a.jpg"
-    assert fields[10] == "article"
-    assert fields[16] == ("en" if LANGID_FLAG else "null")
-    assert fields[17] == today
-
-
-def test_xmltocsv_all_metadata_columns():
-    "CSV columns appended for #1123 carry the metadata values, lists joined with ';'."
-    doc = Document()
-    doc.body = etree.fromstring("<p>Test text</p>")
-    doc.commentsbody = etree.fromstring("<xml/>")
-    doc.author = "Jane Doe"
-    doc.description = "A description"
-    doc.sitename = "Example"
-    doc.categories = ["news", "tech"]
-    doc.tags = ["a", "b"]
-    doc.language = "en"
-    doc.filedate = "2026-11-11"
-    fields = xml.xmltocsv(doc, False).rstrip("\r\n").split("\t")
-    assert fields[11:] == ["Jane Doe", "A description", "Example", "news;tech", "a;b", "en", "2026-11-11"]
-
-
-def test_tei_header_language_image_pagetype():
-    """TEI header carries the language, image and pagetype (issue #1123)."""
-    html = (
-        '<html><head><meta property="og:image" content="https://example.org/a.jpg">'
-        '<meta property="og:type" content="article"></head><body><article><p>'
-        + "This is a perfectly ordinary English sentence about the weather today. " * 20
-        + "</p></article></body></html>"
-    )
-    result = extract(html, output_format="xmltei", with_metadata=True)
-    assert '<note type="image">https://example.org/a.jpg</note>' in result
-    assert '<note type="pagetype">article</note>' in result
-    if LANGID_FLAG:
-        assert '<language ident="en">en</language>' in result
+    elif output_format == "xml":
+        assert 'image="https://example.org/a.jpg"' in result
+        assert 'pagetype="article"' in result
+        assert f'filedate="{today}"' in result
+        if LANGID_FLAG:
+            assert 'language="en"' in result
+    elif output_format == "html":
+        assert '<meta name="image" content="https://example.org/a.jpg"/>' in result
+        assert '<meta name="pagetype" content="article"/>' in result
+        assert f'<meta name="filedate" content="{today}"/>' in result
+        if LANGID_FLAG:
+            assert '<meta name="language" content="en"/>' in result
+    elif output_format == "xmltei":
+        assert '<note type="image">https://example.org/a.jpg</note>' in result
+        assert '<note type="pagetype">article</note>' in result
+        if LANGID_FLAG:
+            assert '<language ident="en">en</language>' in result
+    elif output_format == "csv":
+        # the extra metadata columns are appended at the end, in the same order
+        fields = result.rstrip("\r\n").split("\t")
+        assert len(fields) == 18
+        assert fields[5] == "https://example.org/a.jpg"
+        assert fields[10] == "article"
+        assert fields[16] == ("en" if LANGID_FLAG else "null")
+        assert fields[17] == today
+    else:  # json
+        fields = json.loads(result)
+        assert "raw_text" not in fields
+        assert fields["image"] == "https://example.org/a.jpg"
+        assert fields["pagetype"] == "article"
+        assert fields["filedate"] == today
+        if LANGID_FLAG:
+            assert fields["language"] == "en"
 
 
 def test_tojson():

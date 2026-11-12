@@ -105,9 +105,7 @@ def determine_returnstring(document: Document, options: Extractor) -> str:
     else:
         header = ""
         if options.with_metadata:
-            # the header lists the same metadata fields as the XML and HTML
-            # outputs (META_ATTRIBUTES); categories/tags are lists, their repr
-            # is a valid flow sequence
+            # categories/tags are lists, their repr is a valid flow sequence
             fields = "".join(
                 f"{attr}: {_yaml_scalar(value) if isinstance(value, str) else value}\n"
                 for attr in META_ATTRIBUTES

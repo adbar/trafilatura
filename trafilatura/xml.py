@@ -54,9 +54,6 @@ SPECIAL_FORMATTING = {"code", "del", "head", "hi", "ref", "item", "cell"}
 WITH_ATTRIBUTES = {"cell", "row", "del", "graphic", "head", "hi", "item", "list", "ref"}
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
-# Single list of metadata fields shared by the TXT, Markdown, XML and HTML
-# outputs (see GH #1123): every format emits the same fields, in this order,
-# whenever they are set. JSON already emits all of them via Document.__slots__.
 META_ATTRIBUTES = [
     "title",
     "author",
@@ -225,6 +222,7 @@ def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
             }
         )
         commentsbody = outputdict.pop("commentsbody")
+        del outputdict["raw_text"]
     else:
         outputdict = {"text": xmltotxt(docmeta.body, include_formatting=False)}
         commentsbody = docmeta.commentsbody
@@ -896,8 +894,7 @@ def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t",
     output = StringIO()
     outputwriter = csv.writer(output, delimiter=delim, quoting=csv.QUOTE_MINIMAL)
 
-    # organize fields: the first columns keep their historical order,
-    # the remaining metadata fields are appended at the end (see GH #1123)
+    # organize fields
     outputwriter.writerow(
         [
             d or null
