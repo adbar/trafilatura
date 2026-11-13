@@ -4010,6 +4010,12 @@ def test_txt_blockquote_unmarked():
         pytest.param("<ul><li>a<ol><li>b</li></ol></li></ul>", "- a\n  1. b", id="A5-nested-ordered"),
         pytest.param("<ol><li>a<ol><li>b</li></ol></li><li>c</li></ol>", "1. a\n   1. b\n2. c", id="nested-in-ordered"),
         pytest.param("<ol><li>a<ul><li>b</li></ul></li></ol>", "1. a\n   - b", id="bullets-in-ordered"),
+        pytest.param('<ol start="3"><li>c</li><li>d</li></ol>', "3. c\n4. d", id="ordered-start"),
+        pytest.param('<ol start="0"><li>z</li></ol>', "0. z", id="ordered-start-zero"),
+        pytest.param('<ol start="9"><li>a<ul><li>b</li></ul></li></ol>', "9. a\n   - b", id="ordered-start-nested"),
+        pytest.param('<ol start="x"><li>a</li></ol>', "1. a", id="ordered-start-invalid"),
+        pytest.param('<ol start="-2"><li>a</li></ol>', "1. a", id="ordered-start-negative"),
+        pytest.param('<ul start="3"><li>a</li></ul>', "- a", id="unordered-start-ignored"),
         pytest.param(
             "<ol>" + "<li>x</li>" * 9 + "<li>ten<ul><li>b</li></ul></li></ol>",
             "\n".join(f"{i}. x" for i in range(1, 10)) + "\n10. ten\n    - b",
@@ -5286,6 +5292,29 @@ def test_html_conversion():
     doc = "<html><body><article><p>Body text here.</p><ol><li>first</li><li>second</li></ol></article></body></html>"
     out = extract(doc, output_format="html", config=ZERO_CONFIG)
     assert "<ol>\n      <li>first</li>\n      <li>second</li>\n    </ol>" in out
+
+    # the start number of an ordered list is kept in XML and HTML, not in TEI
+    doc = '<html><body><article><p>Body text here.</p><ol start="3"><li>third</li><li>fourth</li></ol></article></body></html>'
+    assert '<list rend="ol" start="3">' in extract(doc, output_format="xml", config=ZERO_CONFIG)
+    assert '<ol start="3">' in extract(doc, output_format="html", config=ZERO_CONFIG)
+    assert "3. third\n4. fourth" in extract(doc, output_format="markdown", config=ZERO_CONFIG)
+    tei = extract(doc, output_format="xmltei", config=ZERO_CONFIG)
+    assert '<list rend="ol">' in tei
+    assert "start=" not in tei
+
+
+def test_ordered_list_start_from_fallback(monkeypatch):
+    "The start number is validated for lists coming from the fallback extractors too."
+    # an empty main extraction lets the fallback output win
+    monkeypatch.setattr(core, "extract_content", lambda tree, options: (etree.Element("body"), ""))
+    items = "".join(f"<li>Item number {i} with enough words to count as real text.</li>" for i in range(4))
+    for start, marker in (("3", "3. "), ("\u00b2", "1. "), ("x", "1. "), ("-2", "1. ")):
+        doc = f'<html><body><article><ol start="{start}">{items}</ol></article></body></html>'
+        markdown = extract(doc, output_format="markdown", config=ZERO_CONFIG)
+        assert markdown.startswith(marker)
+        html = extract(doc, output_format="html", config=ZERO_CONFIG)
+        assert ('<ol start="3">' in html) == (start == "3")
+        assert f'start="{start}"' not in html or start == "3"
 
 
 @pytest.mark.parametrize("with_metadata", [False, True])
