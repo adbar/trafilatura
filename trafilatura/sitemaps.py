@@ -28,6 +28,7 @@ from .utils import safe_relative_url
 LOGGER = logging.getLogger(__name__)
 
 SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
+XHTML_NAMESPACE = "http://www.w3.org/1999/xhtml"
 # sitemaps.org (http or https, with or without a trailing slash) and the legacy Google namespaces
 SITEMAP_NAMESPACE_REGEX = re.compile(r"https?://(?:www\.)?(?:sitemaps\.org|google\.com)/schemas/sitemap/[\d.]+/?$")
 XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
@@ -161,6 +162,27 @@ class SitemapObject:
 
         self.extract_links(XHTML_REGEX, 0, handle_lang_link)
 
+    def select_lang_link(self, entry: etree._Element, location: str) -> str:
+        if self.target_lang is None:
+            return location
+        lang = self.target_lang.lower()
+        candidates: dict[int, str] = {}
+        for link in entry.iterchildren(f"{{{XHTML_NAMESPACE}}}link"):
+            hreflang = (link.get("hreflang") or "").strip().lower().replace("_", "-")
+            href = (link.get("href") or "").strip()
+            if not href:
+                continue
+            if hreflang == lang:
+                rank = 0
+            elif hreflang.startswith(f"{lang}-"):
+                rank = 1
+            elif hreflang == "x-default":
+                rank = 2
+            else:
+                continue
+            candidates.setdefault(rank, href)
+        return candidates[min(candidates)] if candidates else location
+
     def extract_sitemap_links(self) -> None:
         "Extract locations in the sitemap namespace (or legacy unnamespaced XML)."
         parser = etree.XMLParser(encoding="utf-8", resolve_entities=False, no_network=True, recover=True)
@@ -191,6 +213,8 @@ class SitemapObject:
                     is_sitemap = True
                 elif parent_tag in url_tags:
                     is_sitemap = False
+                if parent is not None and is_sitemap is not None:
+                    location = self.select_lang_link(parent, location)
                 self.handle_link(location, is_sitemap=is_sitemap)
 
     def process(self) -> None:
@@ -204,12 +228,6 @@ class SitemapObject:
             self.extract_links(DETECT_LINKS, 0, self.handle_link)
             return
         # process XML sitemap
-        if self.target_lang is not None:
-            # only skip the generic extraction if hreflang links were found here
-            found_before = len(self.sitemap_urls) + len(self.urls)
-            self.extract_sitemap_langlinks()
-            if len(self.sitemap_urls) + len(self.urls) > found_before:
-                return
         self.extract_sitemap_links()
 
 
