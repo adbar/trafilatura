@@ -10,6 +10,7 @@ import random
 import re
 import string
 import sys
+import tempfile
 import traceback
 from base64 import urlsafe_b64encode
 from collections.abc import Callable, Generator, Iterable, Iterator
@@ -77,6 +78,7 @@ EXTENSION_MAPPING = {
     "csv": ".csv",
     "html": ".html",
     "json": ".json",
+    "markdown": ".md",
     "xml": ".xml",
     "xmltei": ".xml",
 }
@@ -130,8 +132,11 @@ def check_outputdir_status(directory: str) -> bool:
     # no is_dir precheck: unlike os.path.isdir, Path.is_dir raises on an unreadable parent
     try:
         Path(directory).mkdir(parents=True, exist_ok=True)
+        # mkdir succeeds on an existing read-only directory: probe with a write
+        with tempfile.NamedTemporaryFile(dir=directory):
+            pass
     except OSError:
-        sys.stderr.write("ERROR: Destination directory cannot be created: " + directory + "\n")
+        sys.stderr.write("ERROR: Destination directory cannot be created or is not writable: " + directory + "\n")
         return False
     return True
 
@@ -162,6 +167,10 @@ def generate_hash_filename(content: str) -> str:
 
 def generate_url_filename(url: str) -> str:
     "Create a readable file name from a URL, with a hash suffix to distinguish URLs."
+    # A Wayback Machine URL names the archived page, not the archive itself.
+    wayback = re.match(r"^https?://web\.archive\.org/web/\d+/?(https?://.+)$", url)
+    if wayback:
+        url = wayback.group(1)
     parts = urlsplit(url)
     prefix = re.sub(r"[^\w.-]+", "_", f"{parts.hostname}{unquote(parts.path)}", flags=re.ASCII)[:120].strip("._-")
     return f"{prefix}-{blake2b(url.encode(), digest_size=8).hexdigest()}"
