@@ -1503,3 +1503,25 @@ def test_json_article_image(image):
     # a meta image comes first
     page = page.replace("<head>", '<head><meta property="og:image" content="https://example.org/og.jpg"/>')
     assert extract_metadata(page, default_url="https://example.org/story").image == "https://example.org/og.jpg"
+
+
+@pytest.mark.parametrize(
+    ("byline", "expected"),
+    [
+        ("Article written by Surname Name", "Surname Name"),
+        ("Reviewed by Surname Name", "Surname Name"),
+        ("Photos by Surname Name", "Surname Name"),
+        ("This article was written by Jane Doe", "Jane Doe"),
+        ("View all posts by Jane Doe", "Jane Doe"),
+        ("WRITTEN BY Jane Doe", "Jane Doe"),
+        ("By Jane Doe", "Jane Doe"),
+        ("words Jane Doe", "Jane Doe"),
+        ("von Jane Doe", "Jane Doe"),
+        ("From Jane Doe", "Jane Doe"),
+        ("Jane Doe and Photos by John Roe", "Jane Doe; John Roe"),
+        ("By", None),
+    ],
+)
+def test_normalize_authors_credit_prefixes(byline, expected):
+    "Credit prefixes are removed without turning their words into extra authors."
+    assert normalize_authors(None, byline) == expected
