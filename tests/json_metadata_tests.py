@@ -1474,3 +1474,32 @@ def test_json_article_section_values(section, categories):
     }
     metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
     assert (metadata.title, metadata.categories) == ("Storm hits coast", categories)
+
+
+JSON_IMAGE = "https://example.org/story.jpg"
+
+
+@pytest.mark.parametrize(
+    "image",
+    [
+        JSON_IMAGE,
+        {"@type": "ImageObject", "url": JSON_IMAGE},
+        {"@type": "ImageObject", "contentUrl": JSON_IMAGE},
+        [None, {"url": JSON_IMAGE}],
+        {"@id": "#photo"},
+    ],
+)
+def test_json_article_image(image):
+    "the image of the first article node, not the publisher logo"
+    graph = [
+        None,
+        {"@type": "Organization", "name": "Example News", "logo": {"url": "https://example.org/logo.jpg"}},
+        {"@type": "NewsArticle", "mainEntityOfPage": {"@id": "https://example.org/story"}, "image": image},
+        {"@type": "ImageObject", "@id": "#photo", "url": JSON_IMAGE},
+    ]
+    schema = json.dumps({"@context": "https://schema.org", "@graph": graph})
+    page = f'<html><head><script type="application/ld+json">{schema}</script></head><body/></html>'
+    assert extract_metadata(page, default_url="https://example.org/story").image == JSON_IMAGE
+    # a meta image comes first
+    page = page.replace("<head>", '<head><meta property="og:image" content="https://example.org/og.jpg"/>')
+    assert extract_metadata(page, default_url="https://example.org/story").image == "https://example.org/og.jpg"
