@@ -255,6 +255,7 @@ _UI_META_CLASS_TOKENS = (
     "viewport",
     "overlay",
 )
+_MEDIA_PLAYER_CLASS_TOKENS = ("[Aa]udio-?[Pp]layer",)
 _MISC_CLASS_TOKENS = ("options", "expand", "obfuscated", "blurred")
 _LEGACY_SITE_CLASS_TOKENS = ("mol-factbox", "yin", "zlylin", "nfoline")
 
@@ -289,6 +290,7 @@ _OVERALL_DISCARD_CLASS_TOKENS = (
     + _CONSENT_CLASS_TOKENS
     + _RELATED_CLASS_TOKENS
     + _UI_META_CLASS_TOKENS
+    + _MEDIA_PLAYER_CLASS_TOKENS
     + _MISC_CLASS_TOKENS
     + _LEGACY_SITE_CLASS_TOKENS
 )
@@ -384,6 +386,17 @@ COMMENTS_DISCARD_XPATH = [
         namespaces={"re": REGEXP_NS},
     ),
 ]
+
+
+# comment text held directly in divs: innermost divs with text, minus user/date/title lines
+COMMENTS_DIV_TEXT_XPATH = XPath(
+    r"""
+    .//div[text()[normalize-space()]][
+    not(.//div or .//p or .//list or .//head or .//quote or .//table or .//code)][
+    not(re:test(@class, '(?:^|[-_])(?:[Uu]ser(?:[Nn]ame)?|[Aa]uthor|[Dd]ate|[Mm]eta|[Tt]itle)(?:\s|$)'))]
+    """,
+    namespaces={"re": REGEXP_NS},
+)
 
 
 ### 2. METADATA

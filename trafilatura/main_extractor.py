@@ -33,6 +33,7 @@ from .xml import _strip_block_whitespace, delete_element, separates_inline
 from .xpaths import (
     BODY_XPATH,
     COMMENTS_DISCARD_XPATH,
+    COMMENTS_DIV_TEXT_XPATH,
     COMMENTS_XPATH,
     DISCARD_IMAGE_ELEMENTS,
     OVERALL_DISCARD_XPATH,
@@ -839,6 +840,12 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
             if processed is not None:
                 processed.attrib.clear()
                 comments_body.append(processed)
+        if len(comments_body) == 0:
+            for elem in COMMENTS_DIV_TEXT_XPATH(subtree):
+                elem.tag = "p"
+                if (processed := handle_textnode(elem, options, comments_fix=True)) is not None:
+                    processed.attrib.clear()
+                    comments_body.append(processed)
         # control
         if len(comments_body) > 0:  # if it has children
             LOGGER.debug(expr)
