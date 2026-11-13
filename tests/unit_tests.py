@@ -4398,7 +4398,7 @@ print(os.getcwd())</code></code></pre></div>"""
         (
             "<table><caption>Caption</caption><tr><th>H</th></tr><tr><td>a</td></tr></table>",
             "markdown",
-            "| Caption | \n|---|\n| H | \n|---|\n| a |",
+            "| Caption | \n|---|\n| H | \n| a |",
         ),
     ],
 )
@@ -4411,6 +4411,13 @@ outside code, and a table caption adds a single separator line."
         include_links=True,
     )
     assert result == expected
+
+
+def test_xmltotxt_code_image_child():
+    "GH#1136: an image inside a code element keeps its markup inside the code span."
+    tree = etree.fromstring('<doc><main><p>Text <code>x<graphic src="/i.png" alt="pic"/>y</code> end</p></main></doc>')
+    assert xml.xmltotxt(tree, include_formatting=True).strip() == "Text `x![pic](/i.png)y` end"
+    assert xml.xmltotxt(tree, include_formatting=False).strip() == "Text x![pic](/i.png)y end"
 
 
 def test_markdown_escaping():

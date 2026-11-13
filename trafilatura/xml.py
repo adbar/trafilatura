@@ -832,7 +832,14 @@ def process_element(
             if tag == "row":
                 cells = element.findall("cell")
                 # rows are materialized to full width upstream; draw the head separator below
-                if any(cell.get("role") == "head" for cell in cells):
+                # the first row with head cells only: a caption row already counts as one,
+                # so a head row after it must not draw a second separator
+                head_seen = any(
+                    prev_cell.get("role") == "head"
+                    for prev_row in element.itersiblings(preceding=True)
+                    for prev_cell in prev_row.findall("cell")
+                )
+                if not head_seen and any(cell.get("role") == "head" for cell in cells):
                     returnlist.append(f"\n|{'---|' * len(cells)}\n")
             # block elements inside a cell must not inject a row-breaking newline,
             # a leading line break in an item must not split the marker from the text
