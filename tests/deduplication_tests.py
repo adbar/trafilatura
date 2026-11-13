@@ -147,6 +147,21 @@ def test_dedup_reset_caches():
         reset_caches()
 
 
+@pytest.mark.parametrize(
+    "body",
+    [
+        "<div>\n<p>{p}</p>\n</div>",
+        "<div><div><div>\n<p>{p}</p>\n</div></div></div>",
+        "<div><p>{p}</p></div>",
+    ],
+)
+def test_dedup_wrapper_div(body):
+    "A short page in a wrapper div still extracts with deduplicate=True (#1146)."
+    p = "<p>" + "A paragraph which only occurs once in the document. " * 4 + "</p>"
+    doc = f"<html><body><article>{body.format(p=p)}</article></body></html>"
+    assert extract(doc, deduplicate=True) == extract(doc)
+
+
 def test_lrucache_api():
     "Direct coverage of the LRUCache public API."
     with pytest.raises(ValueError):
