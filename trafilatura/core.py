@@ -36,7 +36,7 @@ from .utils import (
     load_html,
     normalize_unicode,
 )
-from .xml import build_json_output, control_xml_output, delete_element, keeps_empty, xmltocsv, xmltotxt
+from .xml import META_ATTRIBUTES, build_json_output, control_xml_output, delete_element, keeps_empty, xmltocsv, xmltotxt
 from .xpaths import (
     RAW_TREE_PRUNE_XPATH,
     REMOVE_COMMENTS_AND_LISTS_XPATH,
@@ -58,7 +58,6 @@ ESCALATION_ACCEPT_RATIO = 1.5  # accept the retry if it is this much longer
 ESCALATION_JUSTEXT_RATIO = 2.0
 
 TXT_FORMATS = {"markdown", "txt"}
-_YAML_FIELDS = "title author url hostname description sitename date categories tags fingerprint id license".split()
 
 # Metadata is emitted as a YAML-style Markdown header; values such as a title
 # containing ": " (or a leading indicator, or a reserved word) otherwise produce
@@ -109,7 +108,7 @@ def determine_returnstring(document: Document, options: Extractor) -> str:
             # categories/tags are lists, their repr is a valid flow sequence
             fields = "".join(
                 f"{attr}: {_yaml_scalar(value) if isinstance(value, str) else value}\n"
-                for attr in _YAML_FIELDS
+                for attr in META_ATTRIBUTES
                 if (value := getattr(document, attr))
             )
             header = f"---\n{fields}---\n"
