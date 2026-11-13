@@ -6,6 +6,7 @@ import json
 import logging
 import re
 from configparser import ConfigParser
+from html import unescape
 from itertools import islice
 from time import sleep
 
@@ -49,6 +50,7 @@ FEED_TYPES = {
 }
 
 FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
+CHAR_REF = re.compile(r"&#?\w+;")
 RSS_ROOT = re.compile(r"<(?:rss|(?:\w+:)?RDF)\b")
 
 LINK_ATTRS = re.compile(r"""<link\s+(?:[^>"']|"[^"]*"|'[^']*')*["']?/?>""")
@@ -160,7 +162,10 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
 
     # RSS first when the root says so: the HTML of its items can contain <link .../> tags
     if "<link>" in feed_string and has_rss_root(feed_string):
-        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)]
+        return [
+            CHAR_REF.sub(lambda ref: unescape(ref[0]), m[1].strip())
+            for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)
+        ]
 
     # Atom
     if LINK_ATTRS.search(feed_string):
@@ -172,12 +177,15 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
             # link blogs put the external link in rel="alternate" and the post itself in rel="related"
             rel = attributes.get("rel", "").strip().lower()
             if attributes.get("href") and rel in ("", "alternate", "related") and "atom+xml" not in attributes.get("type", ""):
-                links.append(attributes["href"])
+                links.append(CHAR_REF.sub(lambda ref: unescape(ref[0]), attributes["href"]))
         return links
 
     # RSS
     if "<link>" in feed_string:
-        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)]
+        return [
+            CHAR_REF.sub(lambda ref: unescape(ref[0]), m[1].strip())
+            for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)
+        ]
 
     return []
 
