@@ -147,6 +147,7 @@ MOCK_PAGES = {
     "https://www.ndr.de/nachrichten/info/16-Coronavirus-Update-Wir-brauchen-Abkuerzungen-bei-der-Impfstoffzulassung,podcastcoronavirus140.html": "ndr.de.podcastcoronavirus140.html",
     "https://www.mercurynews.com/2023/01/16/letters-1119/": "mercurynews.com.2023.01.16.letters-1119.html",
     "http://www.pcgamer.com/2012/08/09/skyrim-part-1/": "pcgamer.com.skyrim.html",
+    "https://www.mirror.co.uk/news/world-news/mum-toddler-2-migrant-camp-35001555": "mirror.co.uk.migrant-camp.html",
 }
 # '': '', \
 
@@ -1221,3 +1222,10 @@ def test_pages():
     # regression #299: an empty-list JSON-LD "@type" must not crash extract_metadata
     metadata = extract_metadata(load_mock_page(url, xml_flag=True))
     assert metadata is not None
+
+
+def test_author_dateline():
+    "The place a story was filed from is no co-author"
+    url = "https://www.mirror.co.uk/news/world-news/mum-toddler-2-migrant-camp-35001555"
+    # meta and JSON-LD author: "Matthew Young in Loon-Plage, France"
+    assert extract_metadata(load_mock_page_meta(url)).author == "Matthew Young"
