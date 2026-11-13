@@ -4502,6 +4502,53 @@ print(os.getcwd())</code></code></pre></div>"""
     assert '<code rend="python">import os\nprint(os.getcwd())</code>' in testresult
 
 
+@pytest.mark.parametrize(
+    "body, output_format, expected",
+    [
+        # code with child elements keeps all its text inside the code span
+        (
+            "<p>Start <a href='/x'><code>foo<b>bar</b>baz</code></a> end.</p>",
+            "markdown",
+            "Start [`foobarbaz`](/x) end.",
+        ),
+        # line breaks and inline children stay inside the fenced code block
+        ("<pre><code>a<br><b>b</b> = 2<br>c</code></pre>", "markdown", "```\na\nb = 2\nc\n```"),
+        # line breaks in code keep their indentation in txt output
+        ("<pre><code>def f():<br>    return 1</code></pre>", "txt", "def f():\n    return 1"),
+        # spaces around a newline are dropped outside code
+        ("<p>One\n    two<br>\n    three</p>", "txt", "One\ntwo\nthree"),
+        # source indentation after a newline must not turn a heading into a code block
+        (
+            "<p>Lead.</p><details>\n    <summary>Title</summary>\n    Text</details>",
+            "markdown",
+            "Lead.\n\n## Title\n\nText",
+        ),
+        # a table caption adds only one separator line
+        (
+            "<table><caption>Caption</caption><tr><th>H</th></tr><tr><td>a</td></tr></table>",
+            "markdown",
+            "| Caption | \n|---|\n| H | \n| a |",
+        ),
+    ],
+)
+def test_xmltotxt_code_children_indentation_table_caption(body, output_format, expected):
+    "GH#1136: code keeps its children and indentation, spaces around newlines are dropped \
+outside code, and a table caption adds a single separator line."
+    result = extract(
+        f"<html><body><article>{body}</article></body></html>",
+        output_format=output_format,
+        include_links=True,
+    )
+    assert result == expected
+
+
+def test_xmltotxt_code_image_child():
+    "GH#1136: an image inside a code element keeps its markup inside the code span."
+    tree = etree.fromstring('<doc><main><p>Text <code>x<graphic src="/i.png" alt="pic"/>y</code> end</p></main></doc>')
+    assert xml.xmltotxt(tree, include_formatting=True).strip() == "Text `x![pic](/i.png)y` end"
+    assert xml.xmltotxt(tree, include_formatting=False).strip() == "Text x![pic](/i.png)y end"
+
+
 def test_markdown_escaping():
     "Markdown-mode output escapes metacharacters that would corrupt GFM structure."
     # pipe in table cell text must be escaped so it doesn't split the column
