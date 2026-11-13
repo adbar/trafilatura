@@ -1,0 +1,931 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+  	<meta charset="UTF-8">
+<script type="text/javascript">
+/* <![CDATA[ */
+var gform;gform||(document.addEventListener("gform_main_scripts_loaded",function(){gform.scriptsLoaded=!0}),document.addEventListener("gform/theme/scripts_loaded",function(){gform.themeScriptsLoaded=!0}),window.addEventListener("DOMContentLoaded",function(){gform.domLoaded=!0}),gform={domLoaded:!1,scriptsLoaded:!1,themeScriptsLoaded:!1,isFormEditor:()=>"function"==typeof InitializeEditor,callIfLoaded:function(o){return!(!gform.domLoaded||!gform.scriptsLoaded||!gform.themeScriptsLoaded&&!gform.isFormEditor()||(gform.isFormEditor()&&console.warn("The use of gform.initializeOnLoaded() is deprecated in the form editor context and will be removed in Gravity Forms 3.1."),o(),0))},initializeOnLoaded:function(o){gform.callIfLoaded(o)||(document.addEventListener("gform_main_scripts_loaded",()=>{gform.scriptsLoaded=!0,gform.callIfLoaded(o)}),document.addEventListener("gform/theme/scripts_loaded",()=>{gform.themeScriptsLoaded=!0,gform.callIfLoaded(o)}),window.addEventListener("DOMContentLoaded",()=>{gform.domLoaded=!0,gform.callIfLoaded(o)}))},hooks:{action:{},filter:{}},addAction:function(o,r,e,t){gform.addHook("action",o,r,e,t)},addFilter:function(o,r,e,t){gform.addHook("filter",o,r,e,t)},doAction:function(o){gform.doHook("action",o,arguments)},applyFilters:function(o){return gform.doHook("filter",o,arguments)},removeAction:function(o,r){gform.removeHook("action",o,r)},removeFilter:function(o,r,e){gform.removeHook("filter",o,r,e)},addHook:function(o,r,e,t,n){null==gform.hooks[o][r]&&(gform.hooks[o][r]=[]);var d=gform.hooks[o][r];null==n&&(n=r+"_"+d.length),gform.hooks[o][r].push({tag:n,callable:e,priority:t=null==t?10:t})},doHook:function(r,o,e){var t;if(e=Array.prototype.slice.call(e,1),null!=gform.hooks[r][o]&&((o=gform.hooks[r][o]).sort(function(o,r){return o.priority-r.priority}),o.forEach(function(o){"function"!=typeof(t=o.callable)&&(t=window[t]),"action"==r?t.apply(null,e):e[0]=t.apply(null,e)})),"filter"==r)return e[0]},removeHook:function(o,r,t,n){var e;null!=gform.hooks[o][r]&&(e=(e=gform.hooks[o][r]).filter(function(o,r,e){return!!(null!=n&&n!=o.tag||null!=t&&t!=o.priority)}),gform.hooks[o][r]=e)}});
+/* ]]> */
+</script>
+
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="profile" href="https://gmpg.org/xfn/11">
+  	<!-- Data Layer -->
+  	<script>
+        window.onload = function() {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                "site_section": "Post",
+                "site_category": "What to plant",
+                "site_subcategory": "Vegetables",
+                "site_subcategory_2": null,
+                "keywords": []
+            });
+        };
+    </script>
+	<!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MC3TJW8');</script>
+	
+	<!-- Favicons --> 
+	<link rel="apple-touch-icon" sizes="180x180" href="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/favicon/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/favicon/favicon-16x16.png">
+	<link rel="manifest" href="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/favicon/site.webmanifest">
+	<link rel="mask-icon" href="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/favicon/safari-pinned-tab.svg" color="#000000">
+	<link rel="shortcut icon" href="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/favicon/favicon.ico">
+	<meta name="msapplication-TileColor" content="#fff0d1">
+	<meta name="msapplication-config" content="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/favicon/browserconfig.xml">
+	<meta name="theme-color" content="#fff0d1">
+
+	<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<!-- This site is optimized with the Yoast SEO plugin v23.8 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Grow your own pepitas - ABC Organic Gardener Magazine</title>
+	<meta name="description" content="Learn how to grow and harvest your own pepitas from hull-less pumpkin varieties like &#039;Styrian Hulless,&#039; &#039;Kakai,&#039; and &#039;Lady Godiva." />
+	<link rel="canonical" href="https://www.organicgardener.com.au/grow-your-own-pepitas/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Grow your own pepitas - ABC Organic Gardener Magazine" />
+	<meta property="og:description" content="Learn how to grow and harvest your own pepitas from hull-less pumpkin varieties like &#039;Styrian Hulless,&#039; &#039;Kakai,&#039; and &#039;Lady Godiva." />
+	<meta property="og:url" content="https://www.organicgardener.com.au/grow-your-own-pepitas/" />
+	<meta property="og:site_name" content="ABC Organic Gardener Magazine" />
+	<meta property="article:published_time" content="2024-06-13T18:59:00+00:00" />
+	<meta property="article:modified_time" content="2024-08-28T04:50:52+00:00" />
+	<meta property="og:image" content="https://www.organicgardener.com.au/wp-content/uploads/2023/09/OG%20144%20Lady%20Godiva%20pumpkins_Linda%20Cockburn-scaled.jpg" />
+	<meta property="og:image:width" content="2560" />
+	<meta property="og:image:height" content="1445" />
+	<meta property="og:image:type" content="image/jpeg" />
+	<meta name="author" content="organicadmin" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:label1" content="Written by" />
+	<meta name="twitter:data1" content="organicadmin" />
+	<meta name="twitter:label2" content="Est. reading time" />
+	<meta name="twitter:data2" content="3 minutes" />
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='dns-prefetch' href='//securepubads.g.doubleclick.net' />
+<link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+<link rel='dns-prefetch' href='//www.google.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//use.typekit.net' />
+<link rel="alternate" type="application/rss+xml" title="ABC Organic Gardener Magazine &raquo; Feed" href="https://www.organicgardener.com.au/feed/" />
+<link rel="alternate" type="application/rss+xml" title="ABC Organic Gardener Magazine &raquo; Comments Feed" href="https://www.organicgardener.com.au/comments/feed/" />
+<script type="text/javascript">
+/* <![CDATA[ */
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.organicgardener.com.au\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.6.2"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83d\udc26\u200d\u2b1b","\ud83d\udc26\u200b\u2b1b")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+/* ]]> */
+</script>
+<style id='wp-emoji-styles-inline-css' type='text/css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link rel='stylesheet' id='wp-bootstrap-blocks-styles-css' href='https://www.organicgardener.com.au/wp-content/plugins/wp-bootstrap-blocks/build/style-index.css?ver=5.2.0' type='text/css' media='all' />
+<link rel='stylesheet' id='main-css' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css?ver=5.3.1' type='text/css' media='all' />
+<link rel='stylesheet' id='wps-theme-styles-css' href='https://www.organicgardener.com.au/wp-content/plugins/garden-planner/assets/scss/main/theme-styles.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wps-garden-planner-styles-css' href='https://www.organicgardener.com.au/wp-content/plugins/garden-planner/assets/scss/main/garden-planner-styles.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wps-plant-index-styles-css' href='https://www.organicgardener.com.au/wp-content/plugins/garden-planner/assets/scss/main/plant-index-styles.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wps-print-styles-css' href='https://www.organicgardener.com.au/wp-content/plugins/garden-planner/assets/scss/main/print-styles.css' type='text/css' media='print' />
+<link rel='stylesheet' id='open-sans-font-css' href='https://fonts.googleapis.com/css2?family=Open+Sans%3Aital%2Cwght%400%2C300..800%3B1%2C300..800&#038;display=swap&#038;ver=6.6.2' type='text/css' media='all' />
+<link rel='stylesheet' id='bagatela-font-css' href='https://use.typekit.net/kqz5rfv.css?ver=6.6.2' type='text/css' media='all' />
+<link rel='stylesheet' id='adobe-fonts-css' href='https://use.typekit.net/olz0dcj.css?ver=6.6.2' type='text/css' media='all' />
+<link rel='stylesheet' id='slickmin-css' href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css?ver=1.8.1' type='text/css' media='all' />
+<link rel='stylesheet' id='slicktheme-css' href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css?ver=1.8.1' type='text/css' media='all' />
+<link rel='stylesheet' id='themecss-css' href='https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/scss/styles.css?ver=202608200002' type='text/css' media='all' />
+<link rel='stylesheet' id='print-style-css' href='https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/print.css?ver=202410232320' type='text/css' media='print' />
+<script type="text/javascript" src="https://www.organicgardener.com.au/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
+<script type="text/javascript" src="https://www.organicgardener.com.au/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="https://www.organicgardener.com.au/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://www.organicgardener.com.au/wp-json/wp/v2/posts/14474" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.organicgardener.com.au/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 6.6.2" />
+<link rel='shortlink' href='https://www.organicgardener.com.au/?p=14474' />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://www.organicgardener.com.au/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.organicgardener.com.au%2Fgrow-your-own-pepitas%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://www.organicgardener.com.au/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.organicgardener.com.au%2Fgrow-your-own-pepitas%2F&#038;format=xml" />
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+	
+</head>
+
+
+<body class="post-template-default single single-post postid-14474 single-format-standard organic-gardener">
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MC3TJW8" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	
+	<div id="page" class="site">
+
+		<!-- Header Section -->
+		<header class="header">
+			<div class="container">
+				<!-- Logo -->
+				<a href="https://www.organicgardener.com.au">
+					<div class="logo-wrapper">
+						<img src="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/logo/organic-gardener-logo.svg" alt="ABC Organic Gardener Magazine Logo" width="380" height="112" class="header-logo">
+					</div>
+				</a>
+
+				<div class="magazine-cover">
+					<a href="https://www.mymagazines.com.au/magazine/organic-gardener" target="_blank">
+						<img src="https://www.mymagazines.com.au/covers/300x0/organic-gardener" width="100%" alt="ABC Organic Gardener Magazine latest issue magazine cover.">
+					</a>
+					<div class="badge">new issue <span>on sale</span><strong>now!</strong></div>
+				</div>
+			</div>
+		</header>
+	
+		<!-- Menu Section -->
+		<nav class="navbar navbar-expand-lg main-nav">
+
+			<div class="container">
+				<button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
+
+				<a href="https://www.organicgardener.com.au">
+					<div class="logo-wrapper">
+						<img src="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/logo/organic-gardener-logo.svg" alt="ABC Organic Gardener Magazine Logo" width="160" height="47" class="header-logo">
+					</div>
+				</a>
+
+				<div class="collapse navbar-collapse" id="navbarNav">
+					
+        <div class="search-bar">
+            <form class="search-form  d-flex justify-content-center" method="get" action="https://www.organicgardener.com.au" role="search">
+                <input class="search-field" type="search" placeholder="Search for organic gardening tips!" value="" name="s" title="Search for:">
+                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </form>
+        </div><ul id="menu-main-menu" class="navbar-nav"><li id="menu-item-20" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-20 nav-item"><a href="https://www.organicgardener.com.au/build-your-garden/" class=" nav-link">Build your garden<span class="dropdown-toggle"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-26" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-26 nav-item"><a href="https://www.organicgardener.com.au/category/build-your-garden/basics/" class=" nav-link">Basics</a></li>
+	<li id="menu-item-28" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-28 nav-item"><a href="https://www.organicgardener.com.au/category/build-your-garden/soil/" class=" nav-link">Soil</a></li>
+	<li id="menu-item-22" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-22 nav-item"><a href="https://www.organicgardener.com.au/category/build-your-garden/compost-mulch/" class=" nav-link">Compost &amp; mulch</a></li>
+	<li id="menu-item-27" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-27 nav-item"><a href="https://www.organicgardener.com.au/category/build-your-garden/propagating/" class=" nav-link">Propagating</a></li>
+	<li id="menu-item-23" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23 nav-item"><a href="https://www.organicgardener.com.au/category/build-your-garden/growing-in-pots/" class=" nav-link">Growing in pots</a></li>
+	<li id="menu-item-24" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-24 nav-item"><a href="https://www.organicgardener.com.au/category/build-your-garden/maintenance/" class=" nav-link">Maintenance</a></li>
+	<li id="menu-item-25" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-25 nav-item"><a href="https://www.organicgardener.com.au/category/build-your-garden/permaculture/" class=" nav-link">Permaculture</a></li>
+	<li id="menu-item-21" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-21 nav-item"><a href="https://www.organicgardener.com.au/category/build-your-garden/bees-poultry-livestock/" class=" nav-link">Bees, poultry &amp; livestock</a></li>
+</ul>
+</li>
+<li id="menu-item-53" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-53 nav-item"><a href="https://www.organicgardener.com.au/what-to-plant/" class=" nav-link">What to plant<span class="dropdown-toggle"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-55" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-55 nav-item"><a href="https://www.organicgardener.com.au/category/what-to-plant/vegetables/" class=" nav-link">Vegetables</a></li>
+	<li id="menu-item-56" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-56 nav-item"><a href="https://www.organicgardener.com.au/category/what-to-plant/fruit-nuts/" class=" nav-link">Fruit &amp; nuts</a></li>
+	<li id="menu-item-57" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-57 nav-item"><a href="https://www.organicgardener.com.au/category/what-to-plant/herbs-spices/" class=" nav-link">Herbs &amp; spices</a></li>
+	<li id="menu-item-58" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-58 nav-item"><a href="https://www.organicgardener.com.au/category/what-to-plant/natives/" class=" nav-link">Natives</a></li>
+	<li id="menu-item-59" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-59 nav-item"><a href="https://www.organicgardener.com.au/category/what-to-plant/flowers-shrubs-trees/" class=" nav-link">Flowers, shrubs &amp; trees</a></li>
+	<li id="menu-item-60" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-60 nav-item"><a href="https://www.organicgardener.com.au/category/what-to-plant/pests-diseases/" class=" nav-link">Pests &amp; diseases</a></li>
+	<li id="menu-item-61" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-61 nav-item"><a href="https://www.organicgardener.com.au/category/what-to-plant/troubleshooting/" class=" nav-link">Troubleshooting</a></li>
+</ul>
+</li>
+<li id="menu-item-15267" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-15267 nav-item"><a href="https://www.organicgardener.com.au/planting-guide/" class=" nav-link">Planting Guide<span class="dropdown-toggle"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-15270" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15270 nav-item"><a href="https://www.organicgardener.com.au/planting-guide/" class=" nav-link">Garden planner</a></li>
+	<li id="menu-item-15266" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15266 nav-item"><a href="https://www.organicgardener.com.au/plants/" class=" nav-link">Plant index</a></li>
+	<li id="menu-item-15268" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15268 nav-item"><a href="https://www.organicgardener.com.au/understanding-climate-zones/" class=" nav-link">Understanding climate zones</a></li>
+	<li id="menu-item-15269" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15269 nav-item"><a href="https://www.organicgardener.com.au/what-to-plant/seed-sowing-guide/" class=" nav-link">Seed sowing guide</a></li>
+</ul>
+</li>
+<li id="menu-item-52" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-52 nav-item"><a href="https://www.organicgardener.com.au/your-garden-harvest/" class=" nav-link">Your Garden Harvest<span class="dropdown-toggle"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-62" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-62 nav-item"><a href="https://www.organicgardener.com.au/category/your-garden-harvest/preserving-fermented/" class=" nav-link">Preserving &amp; fermented</a></li>
+	<li id="menu-item-63" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-63 nav-item"><a href="https://www.organicgardener.com.au/category/your-garden-harvest/recipes/" class=" nav-link">Recipes</a></li>
+</ul>
+</li>
+<li id="menu-item-51" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-51 nav-item"><a href="https://www.organicgardener.com.au/greener-living/" class=" nav-link">Greener living<span class="dropdown-toggle"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-65" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-65 nav-item"><a href="https://www.organicgardener.com.au/category/greener-living/whats-happening/" class=" nav-link">What&#8217;s happening</a></li>
+	<li id="menu-item-66" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-66 nav-item"><a href="https://www.organicgardener.com.au/category/greener-living/organic-homes/" class=" nav-link">Organic homes</a></li>
+	<li id="menu-item-67" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-67 nav-item"><a href="https://www.organicgardener.com.au/category/greener-living/organic-life/" class=" nav-link">Organic life</a></li>
+	<li id="menu-item-68" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-68 nav-item"><a href="https://www.organicgardener.com.au/category/greener-living/inspirational-gardeners/" class=" nav-link">Inspirational gardeners</a></li>
+	<li id="menu-item-69" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-69 nav-item"><a href="https://www.organicgardener.com.au/category/greener-living/our-planet/" class=" nav-link">Our planet</a></li>
+	<li id="menu-item-70" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-70 nav-item"><a href="https://www.organicgardener.com.au/category/greener-living/book-reviews/" class=" nav-link">Book reviews</a></li>
+	<li id="menu-item-71" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-71 nav-item"><a href="https://www.organicgardener.com.au/category/greener-living/community/" class=" nav-link">Community</a></li>
+</ul>
+</li>
+<li id="menu-item-8618" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-8618 nav-item"><a href="#" class=" nav-link">Shop<span class="dropdown-toggle"></span></a>
+<ul class="sub-menu">
+	<li id="menu-item-15129" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15129 nav-item"><a href="https://www.organicgardener.com.au/in-this-issue/" class=" nav-link">In this issue</a></li>
+	<li id="menu-item-8619" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8619 nav-item"><a target="_blank" rel="noopener" href="https://www.mymagazines.com.au/magazine/organic-gardener" class=" nav-link">Subscribe</a></li>
+	<li id="menu-item-8620" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8620 nav-item"><a target="_blank" rel="noopener" href="https://www.mymagazines.com.au/backissues/organic-gardener" class=" nav-link">Back issues</a></li>
+</ul>
+</li>
+</ul>
+					<!-- Social Media Icons -->
+					<div class="social-icons">
+						<a href="https://www.facebook.com/organicgardenermagazine" target="_blank">
+							<i class="fab fa-facebook-f"></i>
+						</a>
+						<a href="https://pinterest.com/abcorganicmag/" target="_blank">
+							<i class="fab fa-pinterest-p"></i>
+						</a>
+						<a href="https://instagram.com/organicgardenermag" target="_blank">
+							<i class="fab fa-instagram"></i>
+						</a>
+					</div>
+				</div>
+				
+				<div class="btn-wrapper search-btn">
+					<div class="btn" type="submit"><i class="fas fa-search"></i> <span>Search</span></div>
+				</div>
+
+				<!-- CTA Button -->
+				<div class="btn-wrapper subscribe-btn">
+					<a href="https://www.mymagazines.com.au/magazine/organic-gardener" class="btn btn-primary" target="_blank">Subscribe</a>
+				</div>
+			</div>
+			
+			<div class="search-bar-wrapper">
+				
+        <div class="search-bar">
+            <form class="search-form  d-flex justify-content-center" method="get" action="https://www.organicgardener.com.au" role="search">
+                <input class="search-field" type="search" placeholder="Search for organic gardening tips!" value="" name="s" title="Search for:">
+                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </form>
+        </div>			</div>
+			
+			<div class="search-bar-header">
+				<div class="container">
+					
+        <div class="search-bar">
+            <form class="search-form  d-flex justify-content-center" method="get" action="https://www.organicgardener.com.au" role="search">
+                <input class="search-field" type="search" placeholder="Search for organic gardening tips!" value="" name="s" title="Search for:">
+                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </form>
+        </div>				</div>
+			</div>
+		</nav>
+<div class="col-12">
+    <div class="leader-container">
+        <div id="div-gpt-ad-leaderboard-1" class="ad-leader"></div>
+    </div>
+</div>
+
+<div class="container article-page px-lg-3" itemscope itemtype="http://schema.org/NewsArticle">
+    <!-- Main Content -->
+    <div class="row">
+        <!-- Main content goes here -->
+        <div class="main-content ">
+            <!-- Row with Three Columns -->
+            <div class="articles-row">
+                <div class="col-sm-12 article-box-wrapper">
+                    <div class="article-box">
+                        <!-- Article featured image section -->
+                        <div class="article-box__img-wrapper" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                            <img title="Grow your own pepitas" src="https://www.organicgardener.com.au/wp-content/uploads/2023/09/OG 144 Lady Godiva pumpkins_Linda Cockburn-scaled.jpg" alt="&#039;Lady Godiva&#039; is one variety of hull-less pumpkins." class="landscape thumbnail full img-fluid" width="2560" height="1445" itemprop="image" />
+                            <meta itemprop="url" content="https://www.organicgardener.com.au/wp-content/uploads/2023/09/OG 144 Lady Godiva pumpkins_Linda Cockburn-scaled.jpg">
+                            <meta itemprop="width" content="2560">
+                            <meta itemprop="height" content="1445">
+
+                                                        <div id="article-image-caption" class="caption-overlay has-caption-or-credit">
+                                <p class="cap">&#039;Lady Godiva&#039; is one variety of hull-less pumpkins.</p><p class="photo-credit">Picture: Linda Cockburn</p>                            </div>
+                        </div>
+
+                        <!-- Article breadcrumb section start -->
+                        <ul class="breadcrumb-nav">
+<li class="level-1 top item-home"><a href="https://www.organicgardener.com.au/">Home</a></li>
+<li class="level-2 sub item-term_ancestor"><a href="https://www.organicgardener.com.au/category/what-to-plant/">What to plant</a></li>
+<li class="level-3 sub item-post_term"><a href="https://www.organicgardener.com.au/category/what-to-plant/vegetables/">Vegetables</a></li>
+<li class="level-4 sub item-current tail current"><span>Grow your own pepitas</span></li>
+</ul>
+                        <script type="application/ld+json">
+			{
+				"@context": "http://schema.org",
+				"@type": "BreadcrumbList",
+				"itemListElement":
+				[
+					{
+						"@type": "ListItem",
+						"position": 1,
+						"item":
+							{
+							"@id": "https://www.organicgardener.com.au",
+							"name": "Home"
+							}
+					},{
+						"@type": "ListItem",
+						"position": 2,
+						"item":
+						{
+							"@id": "https://www.organicgardener.com.au/category/what-to-plant/",
+							"name": "What to plant"
+						}
+					},{
+						"@type": "ListItem",
+						"position": 3,
+						"item":
+						{
+							"@id": "https://www.organicgardener.com.au/category/what-to-plant/vegetables/",
+							"name": "Vegetables"
+						}
+					},{
+					"@type": "ListItem",
+					"position": 4,
+					"item":
+					{
+						"@id": "https://www.organicgardener.com.au/grow-your-own-pepitas/",
+						"name": "Grow your own pepitas"
+					}
+				}]}
+		</script>                        <!-- Article breadcrumb section end -->
+
+                        <div class="article-body p-3 pb-lg-5">
+
+                            <!-- Article title block -->
+                            <h1 class="article-heading" itemprop="headline">Grow your own pepitas</h1>
+                            <p class="visually-hidden" itemprop="datePublished" content="2024-06-14T04:59:00+10:00">2024-06-14T04:59:00+10:00</p>
+            
+                            <!-- Article author block -->
+                                        
+                            <div class="author">
+                                                                <div class="author__body">
+                                    <span class="author__text"><strong class="by-text">Story by</strong></span>
+
+                                                                    <span class="author__name" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                        <a itemprop="url" href="https://www.organicgardener.com.au/author/linda-cockburn/"><span itemprop="name">Linda Cockburn</span></a>
+                                    </span>
+                                </div>
+                                
+                                                            </div>
+
+                            <!-- Article excerpt block -->
+                            <div class="article-intro" itemprop="description">
+                                <p>It’s easy to turn edible pumpkin seeds into a tasty snack – you just need the right varieties and these tips from Linda Cockburn.</p>
+                            </div>
+
+                            <!-- Article Content block -->
+                            <div class="article-body-content">
+                                <!-- Social share code block-->
+                                <div class="nav-social-share mobile">
+                                    
+			<ul class="navbar-nav">
+				<li class="nav-item">SHARE</li>
+				<li class="nav-item"><a class="nav-link" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.organicgardener.com.au%2Fgrow-your-own-pepitas%2F%3Futm_source%3Dmobile%26utm_medium%3Dfacebook%26utm_campaign%3Dshare"><i class="fab fa-facebook-f"></i></a></li>
+				<li class="nav-item"><a class="nav-link" target="_blank" href="https://www.pinterest.com/pin/create/button?url=https%3A%2F%2Fwww.organicgardener.com.au%2Fgrow-your-own-pepitas%2F%3Futm_source%3Dmobile%26utm_medium%3Dpinterest%26utm_campaign%3Dshare&media=&description=Grow your own pepitas"><i class="fab fa-pinterest-p"></i></a></li>
+				<li class="nav-item email"><a class="nav-link" href="mailto:?subject=ABC Organic Gardener Magazine: Grow your own pepitas&body=Check out this great article I read on ABC Organic Gardener Magazine:%0D%0A%0D%0AGrow your own pepitas%0D%0A%0D%0Ahttps%3A%2F%2Fwww.organicgardener.com.au%2Fgrow-your-own-pepitas%2F%3Futm_source%3Dmobile%26utm_medium%3Demail%26utm_campaign%3Dshare"><i class="fa fa-envelope"></i></a></li>
+			<li class="nav-item whatsapp"><a class="nav-link" href="whatsapp://send?text=https%3A%2F%2Fwww.organicgardener.com.au%2Fgrow-your-own-pepitas%2F%3Futm_source%3Dmobile%26utm_medium%3Dwhatsapp%26utm_campaign%3Dshare"><i class="fab fa-whatsapp"></i></a></li>
+			<li class="nav-item messenger"><a class="nav-link" href="fb-messenger://share/?link=https%3A%2F%2Fwww.organicgardener.com.au%2Fgrow-your-own-pepitas%2F%3Futm_source%3Dmobile%26utm_medium%3Dmessenger%26utm_campaign%3Dshare"><i class="fab fa-facebook-messenger"></i></a></li></ul>                                </div>
+                                <div class="nav-social-share desktop">
+                                    
+			<ul class="navbar-nav">
+				<li class="nav-item">SHARE</li>
+				<li class="nav-item"><a class="nav-link" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.organicgardener.com.au%2Fgrow-your-own-pepitas%2F%3Futm_source%3Ddesktop%26utm_medium%3Dfacebook%26utm_campaign%3Dshare"><i class="fab fa-facebook-f"></i></a></li>
+				<li class="nav-item"><a class="nav-link" target="_blank" href="https://www.pinterest.com/pin/create/button?url=https%3A%2F%2Fwww.organicgardener.com.au%2Fgrow-your-own-pepitas%2F%3Futm_source%3Ddesktop%26utm_medium%3Dpinterest%26utm_campaign%3Dshare&media=&description=Grow your own pepitas"><i class="fab fa-pinterest-p"></i></a></li>
+				<li class="nav-item email"><a class="nav-link" href="mailto:?subject=ABC Organic Gardener Magazine: Grow your own pepitas&body=Check out this great article I read on ABC Organic Gardener Magazine:%0D%0A%0D%0AGrow your own pepitas%0D%0A%0D%0Ahttps%3A%2F%2Fwww.organicgardener.com.au%2Fgrow-your-own-pepitas%2F%3Futm_source%3Ddesktop%26utm_medium%3Demail%26utm_campaign%3Dshare"><i class="fa fa-envelope"></i></a></li><li class="nav-item"><a rel="nofollow" id="print-link" class="nav-link" target="_blank" href="#"><i class="fas fa-print"></i></a></li></ul>                                </div>
+
+                                <!-- Article main content block -->
+                                <div class="article-body-inner" itemprop="articleBody">
+                                    <p class="p1">Pepitas are a staple in our house. Lightly toast and salt them for a delicious sprinkle on salads, or throw them raw into homemade muesli, trail mixes, cakes, and biscuits. These seeds come from varieties of pumpkins with hull-less seeds, where only the inner green seed develops without the outer protective coat. Growing them is easy and it’s not difficult to harvest enough to last a year. When grown up the side of a fence or trellis to reduce the space they take up in smaller gardens, these pumpkins become a great addition to the food grower’s garden.</p>
+<h4 class="p1">How to grow</h4>
+<p class="p1">As with any <a title="Pumpkins: the all-season survival food" href="https://www.organicgardener.com.au/articles/pumpkins-all-season-survival-food">other pumpkin</a>, the hull-less variety are best grown about a metre apart on mounds of deep, rich compost and kept moist. Since pumpkins dislike having their roots disturbed, it&#8217;s best to direct sow them in the garden. Plant in spring but wait until the soil is warm and the risk of frost has passed.</p>
+<p class="p2">Sow three seeds in each mound. When the first true leaves appear, choose the strongest to grow and cut the remaining ones off at the base.</p><div id="div-gpt-ad-inread" class="ad-inread"></div>
+<p class="p2">Drip irrigation is a good choice for pumpkins, it conserves water and avoids wetting the leaves, which are prone to fungal diseases such as powdery mildew.</p>
+<p class="p2">This year we trained the vines over an <a title="Climbing frames" href="https://www.organicgardener.com.au/articles/grow-more-climbing-frames">arched pathway trellis </a>so they’d take up minimal space and have good air flow. If growing them up a trellis, tie the developing fruits into cloth slings to support the stem, reducing the possibility they’ll break off.</p>
+<p class="p2">We experimented with planting three in 50cm diameter pots, but despite constant watering they produced less than a third of the crop grown in the ground. It was a good lesson in how much water pumpkin leaves transpire a day.</p>
+<h4 class="p1">What to grow</h4>
+<p class="p1">There are three varieties of pepita pumpkins available in Australia: all round, with orange-yellow green stripes:</p>
+<ul>
+<li>‘Styrian Hulless’: This is the most common and the largest. It’s an Austrian heirloom that dates back to 1870 and weighs in at 3.5–5kg.</li>
+<li>‘Kakai’: Developed from ‘Styrian Hulless,’ this pumpkin weighs around 3.5kg.</li>
+<li>&#8216;Lady Godiva&#8217;: Bred in the US, produces more small, ball-shaped fruits per plant, yet yields a similar amount of seed to &#8216;Kakai&#8217;.</li>
+</ul>
+<p><img fetchpriority="high" decoding="async" title="You can grow your own pepita pumpkins and make your own snacks! (Linda Cockburn)" src="/wp-content/uploads/OG%20144%20pepita%20seeds_Linda%20Cockburn.jpg" alt="OG 144 pepita pumpkins_Linda Cockburn" width="1200" height="677" /></p>
+<p><em>Linda&#8217;s full article on growing and processing seeds for pepitas first appeared in our Spring 2023 issue (OG 144). For more organic growing ideas, get the latest issue of the magazine <a href="https://www.mymagazines.com.au/magazine/organic-gardener" target="_blank" rel="noopener">here</a>.</em></p>
+<p><em><img decoding="async" title="OG 144 cover" src="/wp-content/uploads/Cover270x360px_80.jpg" alt="OG 144 cover" width="270" height="360" /></em></p>
+
+                                                                    </div>
+
+                                <!-- Tags -->
+                                
+								<!-- Google "preferred source" link -->
+                                <div class="article-google-container">
+                                    <div class="google-container">
+                                        <div class="google-wrapper">
+                                            <h3 class="google-title">Add ABC <em>Organic Gardener</em> magazine as your trusted source</h3> 
+                                            <div class="badgeWrapper">
+                                                <a href="https://www.google.com/preferences/source?q=organicgardener.com.au" target="_blank" rel="noopener noreferrer">
+                                                <img class="badge-light" src="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/google_preferred_source_badge.png" alt="Add ABC Organic Gardener As Your Trusted Source" width="130" height="40" loading="lazy" decoding="async">
+                                                </a>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar start-->
+        <aside class="sidebar">
+    <div class="sidebar-inner sticky-top">
+        <div class="sidebar__mrecs">
+            <div class="sidebar__subs-mrec">
+                <div id="div-gpt-ad-mrec-1" class="ad-mrec"></div>
+            </div>
+
+            
+			<div class="nl-signup__wrapper">
+				<div class="nl-signup">
+					<div class="row justify-content-md-center m-0">
+						<div class="col-12 nl-signup__text-wrapper">
+							<h3 class="nl-signup__heading">Join our newsletter</h3>
+							<p class="nl-signup__text">
+								Grow your gardening knowledge with expert tips delivered to your inbox
+							</p>
+						</div>
+						<div class="col-12 nl-signup__form">
+							<div class="nl-signup__form-inner">
+							
+                <div class='gf_browser_chrome gform_wrapper gravity-theme gform-theme--no-framework' data-form-theme='gravity-theme' data-form-index='0' id='gform_wrapper_2' ><div id='gf_2' class='gform_anchor' tabindex='-1'></div><form method='post' enctype='multipart/form-data' target='gform_ajax_frame_2' id='gform_2'  action='/grow-your-own-pepitas/#gf_2' data-formid='2' novalidate><div class='gf_invisible ginput_recaptchav3' data-sitekey='6LfLgGcsAAAAAGw2pvF1OklI0aQ0NYpCAYOQNQni' data-tabindex='1'><input id="input_82373f5ac5e09977bfd4a6856a47209b" class="gfield_recaptcha_response" type="hidden" name="input_82373f5ac5e09977bfd4a6856a47209b" value=""/></div>
+                        <div class='gform-body gform_body'><div id='gform_fields_2' class='gform_fields top_label form_sublabel_below description_below validation_below'><div id="field_2_1" class="gfield gfield--type-email gfield--input-type-email field_sublabel_below gfield--no-description field_description_below hidden_label field_validation_below gfield_visibility_visible"  ><label class='gfield_label gform-field-label' for='input_2_1'>Email</label><div class='ginput_container ginput_container_email'>
+                            <input name='input_1' id='input_2_1' type='email' value='' class='large' tabindex='2'  placeholder='Email address'  aria-invalid="false"  />
+                        </div></div></div></div>
+        <div class='gform-footer gform_footer top_label'> <input type='submit' id='gform_submit_button_2' class='gform_button button' onclick='gform.submission.handleButtonClick(this);' data-submission-type='submit' value='Join Now' tabindex='3' /> <input type='hidden' name='gform_ajax' value='form_id=2&amp;title=&amp;description=&amp;tabindex=1&amp;theme=gravity-theme&amp;hash=3dfc9434bd26148ce2de7bf8a4771cb0' />
+            <input type='hidden' class='gform_hidden' name='gform_submission_method' data-js='gform_submission_method_2' value='iframe' />
+            <input type='hidden' class='gform_hidden' name='gform_theme' data-js='gform_theme_2' id='gform_theme_2' value='gravity-theme' />
+            <input type='hidden' class='gform_hidden' name='gform_style_settings' data-js='gform_style_settings_2' id='gform_style_settings_2' value='' />
+            <input type='hidden' class='gform_hidden' name='is_submit_2' value='1' />
+            <input type='hidden' class='gform_hidden' name='gform_submit' value='2' />
+            
+            <input type='hidden' class='gform_hidden' name='gform_currency' data-currency='AUD' value='kci3oPVudYwXShHmA0ENb0GaaYU1dagQTpcRIkHPu+ciH+3vkGAD6/mDKrjqzry7qzKPtSCYKVBFf3FeDZAWt39h6vS7ED8ZVbS4n5muASdSV7M=' />
+            <input type='hidden' class='gform_hidden' name='gform_unique_id' value='' />
+            <input type='hidden' class='gform_hidden' name='state_2' value='WyJbXSIsIjc3OGE1ZWQ0NWQ5NjBkNmNlZDRjNTZhMjI5MTk3YjRmIl0=' />
+            <input type='hidden' autocomplete='off' class='gform_hidden' name='gform_target_page_number_2' id='gform_target_page_number_2' value='0' />
+            <input type='hidden' autocomplete='off' class='gform_hidden' name='gform_source_page_number_2' id='gform_source_page_number_2' value='1' />
+            <input type='hidden' name='gform_field_values' value='' />
+            
+        </div>
+                        </form>
+                        </div>
+		                <iframe style='display:none;width:0px;height:0px;' src='about:blank' name='gform_ajax_frame_2' id='gform_ajax_frame_2' title='This iframe contains the logic required to handle Ajax powered Gravity Forms.'></iframe>
+		                <script type="text/javascript">
+/* <![CDATA[ */
+ gform.initializeOnLoaded( function() {gformInitSpinner( 2, 'https://www.organicgardener.com.au/wp-content/plugins/gravityforms/images/spinner.svg', true );jQuery('#gform_ajax_frame_2').on('load',function(){var contents = jQuery(this).contents().find('*').html();var is_postback = contents.indexOf('GF_AJAX_POSTBACK') >= 0;if(!is_postback){return;}var form_content = jQuery(this).contents().find('#gform_wrapper_2');var is_confirmation = jQuery(this).contents().find('#gform_confirmation_wrapper_2').length > 0;var is_redirect = contents.indexOf('gformRedirect(){') >= 0;var is_form = form_content.length > 0 && ! is_redirect && ! is_confirmation;var mt = parseInt(jQuery('html').css('margin-top'), 10) + parseInt(jQuery('body').css('margin-top'), 10) + 100;if(is_form){jQuery('#gform_wrapper_2').html(form_content.html());if(form_content.hasClass('gform_validation_error')){jQuery('#gform_wrapper_2').addClass('gform_validation_error');} else {jQuery('#gform_wrapper_2').removeClass('gform_validation_error');}setTimeout( function() { /* delay the scroll by 50 milliseconds to fix a bug in chrome */ jQuery(document).scrollTop(jQuery('#gform_wrapper_2').offset().top - mt); }, 50 );if(window['gformInitDatepicker']) {gformInitDatepicker();}if(window['gformInitPriceFields']) {gformInitPriceFields();}var current_page = jQuery('#gform_source_page_number_2').val();gformInitSpinner( 2, 'https://www.organicgardener.com.au/wp-content/plugins/gravityforms/images/spinner.svg', true );jQuery(document).trigger('gform_page_loaded', [2, current_page]);window['gf_submitting_2'] = false;}else if(!is_redirect){var confirmation_content = jQuery(this).contents().find('.GF_AJAX_POSTBACK').html();if(!confirmation_content){confirmation_content = contents;}jQuery('#gform_wrapper_2').replaceWith(confirmation_content);jQuery(document).scrollTop(jQuery('#gf_2').offset().top - mt);jQuery(document).trigger('gform_confirmation_loaded', [2]);window['gf_submitting_2'] = false;wp.a11y.speak(jQuery('#gform_confirmation_message_2').text());}else{jQuery('#gform_2').append(contents);if(window['gformRedirect']) {gformRedirect();}}jQuery(document).trigger("gform_pre_post_render", [{ formId: "2", currentPage: "current_page", abort: function() { this.preventDefault(); } }]);        if (event && event.defaultPrevented) {                return;        }        const gformWrapperDiv = document.getElementById( "gform_wrapper_2" );        if ( gformWrapperDiv ) {            const visibilitySpan = document.createElement( "span" );            visibilitySpan.id = "gform_visibility_test_2";            gformWrapperDiv.insertAdjacentElement( "afterend", visibilitySpan );        }        const visibilityTestDiv = document.getElementById( "gform_visibility_test_2" );        let postRenderFired = false;        function triggerPostRender() {            if ( postRenderFired ) {                return;            }            postRenderFired = true;            gform.core.triggerPostRenderEvents( 2, current_page );            if ( visibilityTestDiv ) {                visibilityTestDiv.parentNode.removeChild( visibilityTestDiv );            }        }        function debounce( func, wait, immediate ) {            var timeout;            return function() {                var context = this, args = arguments;                var later = function() {                    timeout = null;                    if ( !immediate ) func.apply( context, args );                };                var callNow = immediate && !timeout;                clearTimeout( timeout );                timeout = setTimeout( later, wait );                if ( callNow ) func.apply( context, args );            };        }        const debouncedTriggerPostRender = debounce( function() {            triggerPostRender();        }, 200 );        if ( visibilityTestDiv && visibilityTestDiv.offsetParent === null ) {            const observer = new MutationObserver( ( mutations ) => {                mutations.forEach( ( mutation ) => {                    if ( mutation.type === 'attributes' && visibilityTestDiv.offsetParent !== null ) {                        debouncedTriggerPostRender();                        observer.disconnect();                    }                });            });            observer.observe( document.body, {                attributes: true,                childList: false,                subtree: true,                attributeFilter: [ 'style', 'class' ],            });        } else {            triggerPostRender();        }    } );} ); 
+/* ]]> */
+</script>
+
+							</div>
+							<div class="nl-signup__tcs">
+								ABC Organic Gardener Magazine respects your <a href="https://www.nextmedia.com.au/privacy-policy/" target="_blank">privacy</a>. By signing up, you’re also agreeing to nextmedia’s <a href="https://www.nextmedia.com.au/terms-conditions/" target="_blank">terms &amp; conditions</a>.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="sidebar__subs-mrec">
+                <a href="https://iview.abc.net.au/show/gardening-australia" target="_blank"><img src="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/MREC_300X250_iview.png" alt="ABC Gardening Australia on iView" title="ABC Gardening Australia on iView" width="300" height="250" /></a>
+            </div>
+
+            
+			<a href="/planting-guide" class="planting-guide-promo" title="View Planting Guide">
+				<div>
+					<div class="planting-guide-promo-top">
+						<div class="planting-guide-promo-heading"><h3>Wondering what to plant when?</h3></div>
+						<div id="map-container">
+                    <svg class="australia-map" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 816.82 782.02">
+                        <g>
+                            <path data-climate="tropical" class="climate-tropical" d="M765.62,284.24l-10.99-18.32-2.44-8.55-12.21-4.88-14.65-21.98-4.88-9.77v-10.99s-3.66-8.55-6.1-8.55-29.3-15.87-29.3-15.87l-13.43-9.77-12.21-46.4-6.1-12.21v-18.32c0-3.66-3.66-10.99-3.66-10.99l-8.55-9.77-10.99-1.22h-7.33s-7.33-36.63-7.33-39.07-8.55-17.09-8.55-17.09l-7.33-15.87h-6.1l-3.66,9.77-4.88,20.76-10.99,58.61-8.55,43.96-15.87,8.55-17.09-6.11-23.2-15.87s-21.98-10.99-28.08-17.09c-6.1-6.11-28.08-23.2-28.08-23.2l3.66-10.99,7.33-9.77v-8.55c0-2.44,7.33-7.33,7.33-7.33,0,0,12.21-8.55,12.21-10.99s-4.88-15.87-4.88-15.87l-8.55,9.77-14.65-9.77-13.43,3.66-29.3-6.1-24.42-12.21-4.88,1.22,2.44,8.55,1.22,12.21h-15.87c-2.44,0-21.98,4.88-21.98,4.88,0,0-4.88,3.66-4.88,6.1s-1.22,6.11-1.22,8.55-1.22,2.44-2.44,4.88c-1.22,2.44-7.33,12.21-7.33,12.21,0,0-6.1-1.22-3.66,4.88,2.44,6.11,4.88,7.33,4.88,10.99s-12.21-2.44-12.21-2.44l-7.33-1.22s-2.44,4.88-6.11,4.88h-10.99l-10.99-15.87-9.77-6.11-9.77,1.22-20.76,13.43-18.32,14.65-1.22,9.77-1.22,4.88-7.33,3.66-12.21,4.88-2.44,6.1-10.99-8.55-10.99,9.77-2.44,17.09s-1.22,7.33-3.66,9.77c-2.44,2.44-8.55,8.55-9.77,10.99-1.22,2.44-17.09,20.76-17.09,20.76l-37.85,7.33,206.35,70.82,448.11,28.08Z"></path>
+                            <path data-climate="arid" class="climate-arid" d="M796.79,342.94s-13.37-30.69-15.8-34.37c-2.43-3.68-23.1-23.33-26.75-27.01-3.65-3.68-19.45-14.73-23.1-22.1-3.65-7.37-75.38-83.48-75.38-83.48l-25.53-1.23s-12.16,30.69-35.26,33.15c-23.1,2.46-31.61,2.46-40.12-7.37-8.51-9.82-10.94-11.05-26.75-17.19-15.81-6.14-12.16-2.46-23.1-9.82-10.94-7.37-8.51-9.82-21.88-12.28-13.37-2.46-26.75-4.91-36.47-4.91s-55.93-8.59-64.44-8.59-31.61,1.23-38.9-3.68c-7.29-4.91-18.24-11.05-20.67-9.82-2.43,1.23-2.43,4.91-9.73,9.82-7.29,4.91-4.86,7.37-9.73,7.37s-7.29-3.68-12.16-11.05c-4.86-7.37-10.94-15.96-14.59-15.96s-79.03,41.74-79.03,41.74l-59.57,11.05-17.02,1.23s-6.08,2.46-8.51,4.91c-2.43,2.46-6.08,2.46-9.73,4.91-3.65,2.46-10.94,2.46-10.94,2.46l-13.37,4.91h-14.59l-21.88,7.37-19.45,20.87-10.94-1.23-6.08,24.55-2.43,31.92,6.08,25.78,1.21,11.05H1.68l10.94,54.02,20.67,54.02,4.86,40.51-3.65,22.1,38.9,39.28,13.37-4.91,15.81-8.59,10.94,2.46,8.51-11.05,71.73,2.46,10.94-15.96,14.59-8.59s10.94-3.68,13.37-4.91c2.43-1.23,12.16-7.37,12.16-7.37l21.88-2.46h15.81l13.37-7.37,21.88-3.68h18.24l18.24-7.37s10.44,13.89,20.67,15.96c10.23,2.07,18.24,3.68,18.24,3.68,0,0,6.08,1.23,9.73,3.68,3.65,2.46,8.51,7.37,8.51,7.37,0,0,3.65,2.46,3.65,6.14s-1.22,7.37,2.43,9.82q3.65,2.46,3.65,6.14c0,3.68,10.94,17.19,10.94,17.19l14.59,18.42,12.16-22.1,9.73-8.59,9.73-9.82,3.65-6.14,10.94,6.14s-1.22,0-2.43,4.91c-1.22,4.91-3.65,7.37-6.08,9.82s-4.86,8.59-4.86,8.59l-4.86,17.19-2.43,8.59,4.33.55c1.57-2.7,3.26-5.3,5.32-7.71.96-1.13,2.45-1.54,3.9-1.4,1.62-1.99,3.9-3.53,7.12-3.72,7.88-.44,3.76,4.7,1.93,6.64.47.68.81,1.46.91,2.35.47,4.28.25,8.56,1.26,12.72,0,.03.01.05.02.08,4.58,1.19,10.47,2.77,10.47,2.77l12.16,9.82v19.64l8.51,18.41,15.8,18.42s13.37,3.68,15.81,3.68,18.24,8.59,18.24,8.59c0,0,3.65,6.14,8.51,6.14,1.61,0,4.57-.81,7.79-1.9.34-.46.77-.89,1.32-1.27,9.62-6.57,19.72-12.35,29.93-17.96,3.71-2.04,7.16.99,7.48,4.19.91,2.18,1.41,4.53,1.24,6.86l14.24,8.85,7.3,7.37,13.37-14.73,17.02-9.82,26.75-6.14h8.14c.98-6.64,3.84-12.39,6.51-18.59,3.13-7.27,4.64-15.03,7.05-22.54.3-.92.77-1.64,1.35-2.18.59-1.75,1.35-3.45,2.29-5.1l1.4-6.82s55.93-158.37,57.14-160.82c1.22-2.46,0-58.93,0-58.93Z"></path>
+                            <path data-climate="warm" class="climate-warm" d="M15.21,378.57s20.63,29.93,23.06,47.39c2.43,17.46,7.28,22.45,8.49,31.18,1.21,8.73,0,23.7,4.85,32.43,4.85,8.73,43.69,9.98,63.11,6.24,19.42-3.74,81.31-12.47,81.31-12.47l9.71,1.25,6.07,1.25,7.28-4.99,13.35-4.99,8.35-6.52s55.97-23.41,72.96-23.41,38.83-1.25,38.83-1.25c0,0,10.92,14.97,13.35,16.21,2.43,1.25,14.56,4.99,14.56,4.99l24.27-3.74,24.27,18.71,13.35,21.2s12.14,0,14.56-1.25c2.43-1.25,9.71-11.23,12.14-12.47,2.43-1.25,16.99-6.23,16.99-6.23l8.49,6.23,1.21,9.98,2.43,12.47,8.49,7.48,18.2,29.93,36.41,26.19,46.12,4.99,32.77,9.98,16.99-13.72,20.63-21.2,6.07-23.7,14.56-17.46s37.62-7.49,37.62-9.98,6.07-4.99,2.43-7.49c-3.64-2.49-8.5-6.24-10.92-7.48-2.43-1.25-9.71-4.99-6.07-4.99s18.2-2.49,18.2-2.49c0,0,4.85-29.93,12.14-47.4,7.28-17.46,12.14-14.97,13.35-19.96,1.21-4.99,4.85-29.93,6.07-32.43,1.21-2.49,7.28-19.96,7.28-19.96l19.42-22.45,1.21,39.91,2.43,22.45-6.07,27.44-12.14,42.4-27.91,53.63-23.06,68.6-6.07,26.19-9.71,4.99-19.42,1.25-26.7,9.98-14.56,17.46-12.14-3.74-19.42-18.71-1.21-6.24-18.2,16.21-14.56,7.48-13.35-4.99-18.2-9.98h-10.92c-2.43,0-14.56-4.99-14.56-4.99l-14.57-29.93-2.43-8.73s-2.43-12.47-2.43-14.97-6.07-12.47-6.07-12.47h-16.99l3.64-11.22-1.21-8.73-1.21-6.23-14.56,12.47-9.71-1.25s-.71,1.53,7.28-18.71c3.28-20.3,10.43-21.15,12.14-28.69,1.71-7.54-2.43-4.99-2.43-4.99,0,0-4.85-2.49-6.07,0-1.21,2.49-3.64,9.98-3.64,9.98,0,0-8.49,4.99-10.92,7.48-2.43,2.49-3.64,1.25-6.07,4.99-2.43,3.74-1.21,3.74-3.64,11.23-2.43,7.48-9.71,18.71-9.71,18.71l-8.5-18.71-12.14-13.72-4.85-13.72-9.71-9.98-2.43-11.23-7.28-8.73-13.35-1.25-33.98-16.21-10.92,7.48-23.06-1.25s-14.56-1.25-18.2,0c-3.64,1.25-16.99,7.48-16.99,7.48l-13.35,2.49h-13.35l-29.13,12.47-21.84,8.73s-6.07,14.96-8.49,14.96-10.92,1.25-15.78,1.25-58.25-1.25-58.25-1.25l-10.92,13.72s-10.92-3.74-13.35-1.25c-2.43,2.5-19.42,13.72-19.42,13.72l-16.99,3.74s-25.49-8.73-26.7-11.23c-1.21-2.49-16.99-14.97-16.99-14.97l3.64-16.21,7.28-8.73s6.07-33.68,6.07-36.17-7.28-31.18-7.28-31.18l-13.35-38.66Z"></path>
+                            <path data-climate="cold" class="climate-cold" d="M611,700.21l1.22,21.98,10.99,18.31-1.22,12.21,13.43,23.2,17.09,6.11,20.76-14.65,12.21-30.53s2.44-18.32,2.44-21.98-4.88-17.09-4.88-17.09l-20.76,7.33-18.31,2.44-23.2-7.33h-9.77Z"></path>
+                            <path data-climate="cold" class="climate-cold" d="M596.96,614.74c2.44-1.83,15.26-11.6,15.26-11.6l-16.48-2.44-11.6-4.27s-22.59,4.27-22.59,5.49-.61,9.77-.61,9.77c0,0,15.26,4.27,17.7,4.27s15.87.61,18.32-1.22M619.55,603.14l6.11-1.83-2.44-2.44c-1.22,0-6.11,2.44-6.11,2.44l2.44,1.83ZM722.12,529.27c.61-3.66.61-5.49.61-5.49l-7.33-5.5s1.83,6.72-4.88,7.33c-6.72.61-10.99-6.1-10.99-6.1,0,0-4.27,6.1-1.22,12.21s13.43,11.6,10.99,12.21-9.77-1.22-9.77-1.22c0,0,1.22,4.27,0,6.11-1.22,1.83-5.49,2.44-5.49,2.44l-.61,3.05s2.44,1.22,1.83,3.05c-.61,1.83-3.66,3.66-3.66,3.66h-9.77s-1.22,3.05-3.05,4.88c-1.83,1.83-17.71,12.82-17.71,12.82l.61,6.11-2.44,3.05-7.94-1.22s-4.88,8.55-6.71,9.16c-1.83.61-12.82.61-12.82.61l-1.22,10.38-9.77,6.72s3.66,1.83,9.77,3.66c6.1,1.83,28.69-1.83,33.58-1.83s33.58,2.44,35.41-10.99c1.83-13.43,5.5-23.81,7.33-27.47,1.83-3.66,3.05-20.76,6.11-28.08,3.05-7.33,8.55-15.87,9.16-19.54M750.2,496.91c-1.22,0-2.44-1.22-3.66.61-1.22,1.83-2.44,1.83-1.22,3.66,1.22,1.83-.61,2.44,1.83,2.44s3.66-.61,3.66-.61l-.61-6.1ZM756.91,485.92c0-1.83-.61-4.88-.61-4.88l-3.66-3.05-3.05,6.72,4.88,5.49s2.44-2.44,2.44-4.27"></path>
+                            <path data-climate="warm" class="climate-warm" d="M619.01,724.91s-6.96-18.33,5.49-17.7c12.46.62,30.01-.11,30.01-.11,0,0,19.39-.12,21.88,11.09,2.49,11.21.61,15.87.61,15.87l11.14-22.61-3.74-13.08-6.85-1.25-23.04,6.85-23.67-4.36-12.46-4.98-6.85,2.49-.62,18.06,8.09,9.71Z"></path>
+                            <path data-climate="subtropical" class="climate-subtropical" d="M658.14,127.24s-14.65,17.09-14.65,19.54-1.22,13.43-1.22,13.43l12.21,17.09,17.1,2.44-2.44-12.21-4.89-24.42-6.1-15.87Z"></path>
+                            <path data-climate="subtropical" class="climate-subtropical" d="M725.29,227.36l-.89,1.14-7.66,9.85s4.88,14.65,4.88,17.09,4.88,14.65,4.88,14.65c0,0,7.33,2.44,9.77,2.44s6.1-2.44,6.1-6.11,1.22-13.43,1.22-13.43l-8.55-7.33,20.76,20.76s-9.77,10.99-10.99,14.65c-1.22,3.66-4.88,9.77-6.1,12.21-1.22,2.44-1.22,4.88-1.22,4.88l34.19,18.32s9.77,24.42,9.77,26.86,2.44,13.43,2.44,13.43l13.43,30.52v13.43s-1.22,10.99,0,13.43c1.22,2.44-4.88,2.44-4.88,4.88s-3.66,2.44-4.88,8.55c-1.22,6.1-2.44,6.1-2.44,10.99s1.22,12.21,1.22,12.21l2.44,2.44s7.33-1.22,7.33-3.66,6.11-14.65,7.33-19.54c1.22-4.88,7.33-37.85,7.33-37.85l-2.44-17.09s-3.66-6.11-3.66-9.77-1.22-15.87,0-19.54c1.22-3.66,0-6.11,0-10.99s-3.66-9.77-3.66-12.21-13.43-18.31-13.43-18.31l-25.64-25.64-9.77-24.42-4.88-4.88-14.65-14.65-7.33-7.33Z"></path>
+                        </g>
+                    </svg>
+                </div>
+					</div>
+					<div class="planting-guide-promo-text">Use our planner to create a planting calendar for your climate zone</div>
+				</div>
+
+				<div class="btn-wrapper">
+					<div class="btn btn-primary">View Planting Guide</div>
+				</div>
+			</a>
+
+		        </div>
+
+        <div class="editors-pick">
+        <h3 class="editors-pick__heading">Top picks</h3>
+        <div class="editors-pick-inner">
+                <div class="article-box">
+                    <a href="https://www.organicgardener.com.au/native-edibles-lemon-myrtle/">
+                        <div class="article-box__img-wrapper">
+                            <img src="https://www.organicgardener.com.au/wp-content/uploads/2025/09/Lemon-myrtle_istock-scaled-80x80.jpg" alt="Native edibles: Lemon myrtle and Geraldton wax" class="img-fluid">
+                        </div>
+                    </a>
+                    <div class="article-box__body"><div class="article-box__category category what-to-plant">
+                            <a class="category__name" href="https://www.organicgardener.com.au/category/what-to-plant/natives/">Natives
+                            </a>
+                        </div>
+                        <a class="article-box__text-link" href="https://www.organicgardener.com.au/native-edibles-lemon-myrtle/">
+                            <p class="article-box__text">Native edibles: Lemon myrtle and Geraldton wax</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="article-box">
+                    <a href="https://www.organicgardener.com.au/why-quails-are-a-winner/">
+                        <div class="article-box__img-wrapper">
+                            <img src="https://www.organicgardener.com.au/wp-content/uploads/2025/07/OG-159-quails_Jessamy-Miller-scaled-80x80.jpg" alt="Why quails are a winning choice" class="img-fluid">
+                        </div>
+                    </a>
+                    <div class="article-box__body"><div class="article-box__category category build-your-garden">
+                            <a class="category__name" href="https://www.organicgardener.com.au/category/build-your-garden/bees-poultry-livestock/">Bees, poultry &amp; livestock
+                            </a>
+                        </div>
+                        <a class="article-box__text-link" href="https://www.organicgardener.com.au/why-quails-are-a-winner/">
+                            <p class="article-box__text">Why quails are a winning choice</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="article-box">
+                    <a href="https://www.organicgardener.com.au/how-to-grow-everlasting-daisies/">
+                        <div class="article-box__img-wrapper">
+                            <img src="https://www.organicgardener.com.au/wp-content/uploads/2026/08/OG-167-Everlastings-scaled-80x80.jpg" alt="How to grow everlasting daisies: tips from experts" class="img-fluid">
+                        </div>
+                    </a>
+                    <div class="article-box__body"><div class="article-box__category category greener-living">
+                            <a class="category__name" href="https://www.organicgardener.com.au/category/greener-living/inspirational-gardeners/">Inspirational gardeners
+                            </a>
+                        </div>
+                        <a class="article-box__text-link" href="https://www.organicgardener.com.au/how-to-grow-everlasting-daisies/">
+                            <p class="article-box__text">How to grow everlasting daisies: tips from experts</p>
+                        </a>
+                    </div>
+                </div></div></div>
+        <div class="sidebar__mrecs">
+            <div class="sidebar__mrec">
+                <div id="div-gpt-ad-mrec-3" class="ad-mrec"></div>
+            </div>
+        </div>
+    </div>
+</aside>        <!-- Sidebar end-->
+    </div>
+
+    <!-- Newsletter -->
+    <section>
+        
+			<div class="nl-signup__wrapper">
+				<div class="nl-signup">
+					<div class="row justify-content-md-center m-0">
+						<div class="col-md-5 col-lg-4 nl-signup__text-wrapper">
+							<h3 class="nl-signup__heading">Join our newsletter</h3>
+							<p class="nl-signup__text">
+								Grow your gardening knowledge with expert tips delivered to your inbox
+							</p>
+						</div>
+						<div class="col-md-7 col-lg-6 nl-signup__form">
+							<div class="nl-signup__form-inner">
+							
+                <div class='gf_browser_chrome gform_wrapper gravity-theme gform-theme--no-framework' data-form-theme='gravity-theme' data-form-index='0' id='gform_wrapper_1' ><div id='gf_1' class='gform_anchor' tabindex='-1'></div><form method='post' enctype='multipart/form-data' target='gform_ajax_frame_1' id='gform_1'  action='/grow-your-own-pepitas/#gf_1' data-formid='1' novalidate><div class='gf_invisible ginput_recaptchav3' data-sitekey='6LfLgGcsAAAAAGw2pvF1OklI0aQ0NYpCAYOQNQni' data-tabindex='1'><input id="input_d6940e429b33b630150a5335bca4b629" class="gfield_recaptcha_response" type="hidden" name="input_d6940e429b33b630150a5335bca4b629" value=""/></div>
+                        <div class='gform-body gform_body'><div id='gform_fields_1' class='gform_fields top_label form_sublabel_below description_below validation_below'><div id="field_1_1" class="gfield gfield--type-email gfield--input-type-email field_sublabel_below gfield--no-description field_description_below hidden_label field_validation_below gfield_visibility_visible"  ><label class='gfield_label gform-field-label' for='input_1_1'>Email</label><div class='ginput_container ginput_container_email'>
+                            <input name='input_1' id='input_1_1' type='email' value='' class='large' tabindex='2'  placeholder='Email address'  aria-invalid="false"  />
+                        </div></div></div></div>
+        <div class='gform-footer gform_footer top_label'> <input type='submit' id='gform_submit_button_1' class='gform_button button' onclick='gform.submission.handleButtonClick(this);' data-submission-type='submit' value='Join Now' tabindex='3' /> <input type='hidden' name='gform_ajax' value='form_id=1&amp;title=&amp;description=&amp;tabindex=1&amp;theme=gravity-theme&amp;hash=3438d7b15d39d66943c41d2c0f4600f6' />
+            <input type='hidden' class='gform_hidden' name='gform_submission_method' data-js='gform_submission_method_1' value='iframe' />
+            <input type='hidden' class='gform_hidden' name='gform_theme' data-js='gform_theme_1' id='gform_theme_1' value='gravity-theme' />
+            <input type='hidden' class='gform_hidden' name='gform_style_settings' data-js='gform_style_settings_1' id='gform_style_settings_1' value='' />
+            <input type='hidden' class='gform_hidden' name='is_submit_1' value='1' />
+            <input type='hidden' class='gform_hidden' name='gform_submit' value='1' />
+            
+            <input type='hidden' class='gform_hidden' name='gform_currency' data-currency='AUD' value='bOfRYCAYoO0RScouDuUWjlWM2b8kIiE/4Cn5h+ZU/8pXB4rDY9RuEX3RRVjUwDgWUrRuuarG8YI9U2pSE8IzaI64QBgpMiytsI5IJNrHIuM9v6k=' />
+            <input type='hidden' class='gform_hidden' name='gform_unique_id' value='' />
+            <input type='hidden' class='gform_hidden' name='state_1' value='WyJbXSIsIjc3OGE1ZWQ0NWQ5NjBkNmNlZDRjNTZhMjI5MTk3YjRmIl0=' />
+            <input type='hidden' autocomplete='off' class='gform_hidden' name='gform_target_page_number_1' id='gform_target_page_number_1' value='0' />
+            <input type='hidden' autocomplete='off' class='gform_hidden' name='gform_source_page_number_1' id='gform_source_page_number_1' value='1' />
+            <input type='hidden' name='gform_field_values' value='' />
+            
+        </div>
+                        </form>
+                        </div>
+		                <iframe style='display:none;width:0px;height:0px;' src='about:blank' name='gform_ajax_frame_1' id='gform_ajax_frame_1' title='This iframe contains the logic required to handle Ajax powered Gravity Forms.'></iframe>
+		                <script type="text/javascript">
+/* <![CDATA[ */
+ gform.initializeOnLoaded( function() {gformInitSpinner( 1, 'https://www.organicgardener.com.au/wp-content/plugins/gravityforms/images/spinner.svg', true );jQuery('#gform_ajax_frame_1').on('load',function(){var contents = jQuery(this).contents().find('*').html();var is_postback = contents.indexOf('GF_AJAX_POSTBACK') >= 0;if(!is_postback){return;}var form_content = jQuery(this).contents().find('#gform_wrapper_1');var is_confirmation = jQuery(this).contents().find('#gform_confirmation_wrapper_1').length > 0;var is_redirect = contents.indexOf('gformRedirect(){') >= 0;var is_form = form_content.length > 0 && ! is_redirect && ! is_confirmation;var mt = parseInt(jQuery('html').css('margin-top'), 10) + parseInt(jQuery('body').css('margin-top'), 10) + 100;if(is_form){jQuery('#gform_wrapper_1').html(form_content.html());if(form_content.hasClass('gform_validation_error')){jQuery('#gform_wrapper_1').addClass('gform_validation_error');} else {jQuery('#gform_wrapper_1').removeClass('gform_validation_error');}setTimeout( function() { /* delay the scroll by 50 milliseconds to fix a bug in chrome */ jQuery(document).scrollTop(jQuery('#gform_wrapper_1').offset().top - mt); }, 50 );if(window['gformInitDatepicker']) {gformInitDatepicker();}if(window['gformInitPriceFields']) {gformInitPriceFields();}var current_page = jQuery('#gform_source_page_number_1').val();gformInitSpinner( 1, 'https://www.organicgardener.com.au/wp-content/plugins/gravityforms/images/spinner.svg', true );jQuery(document).trigger('gform_page_loaded', [1, current_page]);window['gf_submitting_1'] = false;}else if(!is_redirect){var confirmation_content = jQuery(this).contents().find('.GF_AJAX_POSTBACK').html();if(!confirmation_content){confirmation_content = contents;}jQuery('#gform_wrapper_1').replaceWith(confirmation_content);jQuery(document).scrollTop(jQuery('#gf_1').offset().top - mt);jQuery(document).trigger('gform_confirmation_loaded', [1]);window['gf_submitting_1'] = false;wp.a11y.speak(jQuery('#gform_confirmation_message_1').text());}else{jQuery('#gform_1').append(contents);if(window['gformRedirect']) {gformRedirect();}}jQuery(document).trigger("gform_pre_post_render", [{ formId: "1", currentPage: "current_page", abort: function() { this.preventDefault(); } }]);        if (event && event.defaultPrevented) {                return;        }        const gformWrapperDiv = document.getElementById( "gform_wrapper_1" );        if ( gformWrapperDiv ) {            const visibilitySpan = document.createElement( "span" );            visibilitySpan.id = "gform_visibility_test_1";            gformWrapperDiv.insertAdjacentElement( "afterend", visibilitySpan );        }        const visibilityTestDiv = document.getElementById( "gform_visibility_test_1" );        let postRenderFired = false;        function triggerPostRender() {            if ( postRenderFired ) {                return;            }            postRenderFired = true;            gform.core.triggerPostRenderEvents( 1, current_page );            if ( visibilityTestDiv ) {                visibilityTestDiv.parentNode.removeChild( visibilityTestDiv );            }        }        function debounce( func, wait, immediate ) {            var timeout;            return function() {                var context = this, args = arguments;                var later = function() {                    timeout = null;                    if ( !immediate ) func.apply( context, args );                };                var callNow = immediate && !timeout;                clearTimeout( timeout );                timeout = setTimeout( later, wait );                if ( callNow ) func.apply( context, args );            };        }        const debouncedTriggerPostRender = debounce( function() {            triggerPostRender();        }, 200 );        if ( visibilityTestDiv && visibilityTestDiv.offsetParent === null ) {            const observer = new MutationObserver( ( mutations ) => {                mutations.forEach( ( mutation ) => {                    if ( mutation.type === 'attributes' && visibilityTestDiv.offsetParent !== null ) {                        debouncedTriggerPostRender();                        observer.disconnect();                    }                });            });            observer.observe( document.body, {                attributes: true,                childList: false,                subtree: true,                attributeFilter: [ 'style', 'class' ],            });        } else {            triggerPostRender();        }    } );} ); 
+/* ]]> */
+</script>
+
+							</div>
+							<div class="nl-signup__tcs">
+								ABC Organic Gardener Magazine respects your <a href="https://www.nextmedia.com.au/privacy-policy/" target="_blank">privacy</a>. By signing up, you’re also agreeing to nextmedia’s <a href="https://www.nextmedia.com.au/terms-conditions/" target="_blank">terms &amp; conditions</a>.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>    </section>
+
+    <!-- Leaderboard -->
+    <div class="col-12">
+        <div class="leader-container">
+            <div id="div-gpt-ad-leaderboard-2" class="ad-leader"></div>
+        </div>
+    </div>
+
+    <!-- Related Articles -->
+    <section class="related-articles">
+        <div class="heading-wrapper">
+                                    <h2 class="related-heading">Other articles from &lsquo;What to plant&rsquo;</h2>
+            <div class="btn-wrapper">
+                <a href="https://www.organicgardener.com.au/category/what-to-plant/vegetables/" class="btn btn-primary"><span>View all articles</span> <i class="fas fa-chevron-right"></i></a>
+            </div>
+        </div>
+  
+        <div class="related-content-wrapper">    
+            <div class="row">
+                <div class="related-content">
+                    <div class="row articles-row">
+                        <div class="col-sm-6 col-lg-3">
+
+    <div class="article-box">
+        <a href="https://www.organicgardener.com.au/grow-sweet-potato/" class="article-box__img-link">
+            <img title="Grow: sweet potato" src="https://www.organicgardener.com.au/wp-content/uploads/2026/10/og168-seasonal-trio-sweet-potato-currants-scabiosa-500x500.jpg" alt="Gardener crouching beside a raised bed of sweet potato vines, snipping leaves with red secateurs" class="landscape thumbnail article-box__img img-fluid" width="500" height="500" itemprop="image" />        </a>
+
+        <div class="article-box__body">
+
+            <div class="article-box__category category what-to-plant">
+
+                <a class="category__name" href="https://www.organicgardener.com.au/category/what-to-plant/">
+                    What to plant                </a>
+            </div>
+
+            <a class="article-box__heading-link" href="https://www.organicgardener.com.au/grow-sweet-potato/">
+                <h3 class="article-box__heading">Grow: sweet potato</h3>
+                <div class="article-box__divider">
+                    <img src="/wp-content/themes/organicgardener-2024/img/divider.png" class="" alt="" width="192">
+                </div>
+                            </a>
+            <p>The best garden plants work harder – offering colour, texture, habitat and a harvest to enjoy. </p>
+
+        </div>
+
+    </div>
+
+</div><div class="col-sm-6 col-lg-3">
+
+    <div class="article-box">
+        <a href="https://www.organicgardener.com.au/top-tasks-for-spring-vegies/" class="article-box__img-link">
+            <img title="Top tasks for spring vegies" src="https://www.organicgardener.com.au/wp-content/uploads/2026/09/OG-168-leafy-greens_istock-500x500.jpg" alt="Leafy greens growing in the ground." class="landscape thumbnail article-box__img img-fluid" width="500" height="500" itemprop="image" />        </a>
+
+        <div class="article-box__body">
+
+            <div class="article-box__category category what-to-plant">
+
+                <a class="category__name" href="https://www.organicgardener.com.au/category/what-to-plant/">
+                    What to plant                </a>
+            </div>
+
+            <a class="article-box__heading-link" href="https://www.organicgardener.com.au/top-tasks-for-spring-vegies/">
+                <h3 class="article-box__heading">Top tasks for spring vegies</h3>
+                <div class="article-box__divider">
+                    <img src="/wp-content/themes/organicgardener-2024/img/divider.png" class="" alt="" width="192">
+                </div>
+                            </a>
+            <p>Warming weather means it’s time to prep and plant for bumper vegie harvests.</p>
+
+        </div>
+
+    </div>
+
+</div><div class="col-sm-6 col-lg-3">
+
+    <div class="article-box">
+        <a href="https://www.organicgardener.com.au/grow-radicchio-and-rocket/" class="article-box__img-link">
+            <img title="Grow: radicchio and rocket" src="https://www.organicgardener.com.au/wp-content/uploads/2026/09/Plant-now-radicchio_istock_web-500x500.jpg" alt="The red and green leaves of a radicchio plant still growing in the ground" class="landscape thumbnail article-box__img img-fluid" width="500" height="500" itemprop="image" />        </a>
+
+        <div class="article-box__body">
+
+            <div class="article-box__category category what-to-plant">
+
+                <a class="category__name" href="https://www.organicgardener.com.au/category/what-to-plant/">
+                    What to plant                </a>
+            </div>
+
+            <a class="article-box__heading-link" href="https://www.organicgardener.com.au/grow-radicchio-and-rocket/">
+                <h3 class="article-box__heading">Grow: radicchio and rocket</h3>
+                <div class="article-box__divider">
+                    <img src="/wp-content/themes/organicgardener-2024/img/divider.png" class="" alt="" width="192">
+                </div>
+                            </a>
+            <p>It's easy to add a bit of spicy flavour to a meal with fresh radicchio and rocket straight from your garden.</p>
+
+        </div>
+
+    </div>
+
+</div><div class="col-sm-6 col-lg-3">
+
+    <div class="article-box">
+        <a href="https://www.organicgardener.com.au/bang-for-your-buck-summer-vegies/" class="article-box__img-link">
+            <img title="Budget-friendly summer vegies" src="https://www.organicgardener.com.au/wp-content/uploads/2026/08/OG160-bang-for-your-buck-summer-vegies-500x500.jpg" alt="A leafy head of lettuce." class="landscape thumbnail article-box__img img-fluid" width="500" height="500" itemprop="image" />        </a>
+
+        <div class="article-box__body">
+
+            <div class="article-box__category category what-to-plant">
+
+                <a class="category__name" href="https://www.organicgardener.com.au/category/what-to-plant/">
+                    What to plant                </a>
+            </div>
+
+            <a class="article-box__heading-link" href="https://www.organicgardener.com.au/bang-for-your-buck-summer-vegies/">
+                <h3 class="article-box__heading">Budget-friendly summer vegies</h3>
+                <div class="article-box__divider">
+                    <img src="/wp-content/themes/organicgardener-2024/img/divider.png" class="" alt="" width="192">
+                </div>
+                            </a>
+            <p>Grow these top money-saving summer vegies for a prolific harvest: leafy greens, beans, cucumbers, zucchini and budget herbs, with growing tips for each.</p>
+
+        </div>
+
+    </div>
+
+</div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+            <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                <meta itemprop="url" content="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/logo/organic-gardener-logo.svg">
+                <meta itemprop="width" content="2302">
+                <meta itemprop="height" content="674">
+            </div>
+            <meta itemprop="name" content="ABC Organic Gardener Magazine">
+        </div>
+    </section>
+</div>
+
+<!-- Footer Section -->
+<div class="col-12">
+    <div class="leader-container">
+        <div id="div-gpt-ad-footerboard" class="ad-leader"></div>
+    </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5 col-lg-7 pl-lg-1">
+        <div class="logo">
+          <a href="/">
+            <img src="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/logo/organic-gardener-logo.svg" width="200" height="59" alt="ABC Organic Gardener Magazine logo" class="logo__image"></a>
+        </div>
+      </div>
+
+      <div class="col-md-7 col-lg-5 px-lg-0">
+        <div class="nav-social">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="https://www.facebook.com/organicgardenermagazine" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+            <li class="nav-item"><a class="nav-link" href="https://pinterest.com/abcorganicmag/" target="_blank"><i class="fab fa-pinterest-p"></i></a></li>
+            <li class="nav-item"><a class="nav-link" href="https://instagram.com/organicgardenermag" target="_blank"><i class="fab fa-instagram"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row m-0">
+      <div class="col-lg-7 about p-0">
+        <h2 class="about-heading">About us</h2>
+        <div class="about-text"><p>ABC <em>Organic Gardener</em> magazine is published eight times per year, delivering expert advice to gardeners of all skill levels for more than 25 years. Established by the late Peter Cundall OAM, the magazine aims to empower and inspire readers, giving them the knowledge to create productive gardens and live a greener life.</p>
+<p>This website is published by nextmedia Pty Ltd under licence from the Australian Broadcasting Corporation.</p>
+<p>For the latest from the <em>Gardening Australia</em> television program, watch on ABC <a href="https://iview.abc.net.au/" target="_blank">iview</a> or visit the <a href="https://www.abc.net.au/gardening" target="_blank">program website</a>. </p>
+</div>
+        <div class="acknowledgement"><p>We acknowledge Aboriginal and Torres Strait Islander peoples as the traditional custodians of the lands on which we live and work, and recognise their practices of care and cultivation that pass through generations.</p>
+</div>
+      </div>
+
+      <div class="col-lg-5 secondary-nav-wrapper p-0">
+        <div class="secondary-nav">
+          <ul id="menu-footer-category" class="navbar-nav"><li id="menu-item-8635" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8635 nav-item"><a href="https://www.organicgardener.com.au/build-your-garden/" class=" nav-link">Build your garden</a></li>
+<li id="menu-item-8634" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8634 nav-item"><a href="https://www.organicgardener.com.au/what-to-plant/" class=" nav-link">What to plant</a></li>
+<li id="menu-item-8631" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8631 nav-item"><a href="https://www.organicgardener.com.au/planting-guide/" class=" nav-link">Planting guide</a></li>
+<li id="menu-item-8633" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8633 nav-item"><a href="https://www.organicgardener.com.au/your-garden-harvest/" class=" nav-link">Your garden harvest</a></li>
+<li id="menu-item-8632" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8632 nav-item"><a href="https://www.organicgardener.com.au/greener-living/" class=" nav-link">Greener living</a></li>
+</ul>
+          <ul id="menu-footer-page" class="navbar-nav"><li id="menu-item-14998" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14998 nav-item"><a href="https://www.organicgardener.com.au/about-us/" class=" nav-link">About us</a></li>
+<li id="menu-item-8638" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8638 nav-item"><a href="https://www.organicgardener.com.au/our-team/" class=" nav-link">Our team</a></li>
+<li id="menu-item-15003" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15003 nav-item"><a href="https://www.organicgardener.com.au/frequently-asked-questions/" class=" nav-link">FAQs</a></li>
+<li id="menu-item-8639" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8639 nav-item"><a href="https://www.mymagazines.com.au/magazine/organic-gardener" class=" nav-link">Subscribe</a></li>
+<li id="menu-item-8640" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8640 nav-item"><a href="https://www.mymagazines.com.au/backissues/organic-gardener" class=" nav-link">Back Issues</a></li>
+</ul>
+          <ul id="menu-footer-other-pages" class="navbar-nav"><li id="menu-item-8641" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8641 nav-item"><a target="_blank" rel="noopener" href="https://www.nextmedia.com.au/brand/organic-gardener" class=" nav-link">Advertise</a></li>
+<li id="menu-item-8642" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8642 nav-item"><a target="_blank" rel="noopener" href="https://www.nextmedia.com.au/brand/organic-gardener#contact" class=" nav-link">Contact us</a></li>
+<li id="menu-item-8643" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8643 nav-item"><a target="_blank" rel="noopener" href="https://www.nextmedia.com.au/terms-conditions/" class=" nav-link">Terms and conditions</a></li>
+<li id="menu-item-8644" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8644 nav-item"><a target="_blank" rel="noopener" href="https://www.nextmedia.com.au/privacy-policy/" class=" nav-link">Privacy policy</a></li>
+<li id="menu-item-18129" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18129 nav-item"><a href="https://www.organicgardener.com.au/editorial-guidelines/" class=" nav-link">Editorial guidelines</a></li>
+<li id="menu-item-8645" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8645 nav-item"><a target="_blank" rel="noopener" href="https://www.gardeningaustraliamag.com.au" class=" nav-link">ABC Gardening Australia Magazine</a></li>
+</ul>        </div>
+
+      </div>
+    </div>
+
+    <div>
+      <img src="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/img/logo/nextmedia-logo.png" alt="nextmedia logo" width="93" height="21" class="logo__image next">
+      <p class="copyright">Copyright © 2026 nextmedia Pty Ltd. All rights reserved</p>
+    </div>
+  </div>
+</footer>
+
+</div><!-- #page -->
+
+
+        <div id="next-data-store"
+            data-articleid="14474"
+            data-adcategories="[&quot;what to plant&quot;,&quot;vegetables&quot;]"
+            data-adkeywords="[]"
+            data-adsection="post"
+        >
+        </div>
+        <link rel='stylesheet' id='gform_basic-css' href='https://www.organicgardener.com.au/wp-content/plugins/gravityforms/assets/css/dist/basic.min.css?ver=2.10.5' type='text/css' media='all' />
+<link rel='stylesheet' id='gform_theme_components-css' href='https://www.organicgardener.com.au/wp-content/plugins/gravityforms/assets/css/dist/theme-components.min.css?ver=2.10.5' type='text/css' media='all' />
+<link rel='stylesheet' id='gform_theme-css' href='https://www.organicgardener.com.au/wp-content/plugins/gravityforms/assets/css/dist/theme.min.css?ver=2.10.5' type='text/css' media='all' />
+<script type="text/javascript" async="async" src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" id="gpt-js"></script>
+<script type="text/javascript" src="https://www.organicgardener.com.au/wp-content/plugins/next-advertising//assets/js/ad.js?ver=1.1" id="ad-script-js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" id="popper-js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js?ver=5.3.1" id="bootstrap-js"></script>
+<script type="text/javascript" src="https://www.organicgardener.com.au/wp-content/plugins/garden-planner/assets/js/garden-planner-script.js?ver=1755667361" id="wps-garden-planner-script-js"></script>
+<script type="text/javascript" src="https://www.organicgardener.com.au/wp-content/plugins/garden-planner/assets/js/single-plant-script.js" id="wps-single-plant-script-js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js?ver=1.8.1" id="slickminjs-js"></script>
+<script type="text/javascript" src="https://www.organicgardener.com.au/scripts/gdpr.js?ver=6.6.2" id="gdpr-js"></script>
+<script type="text/javascript" src="https://www.organicgardener.com.au/wp-content/themes/organicgardener-2024/js/theme.js?ver=202410232320" id="theme-script-js"></script>
+<script type="text/javascript" id="gforms_recaptcha_recaptcha-js-extra">
+/* <![CDATA[ */
+var gforms_recaptcha_recaptcha_strings = {"nonce":"c7e12002ac","disconnect":"Disconnecting","change_connection_type":"Resetting","spinner":"https:\/\/www.organicgardener.com.au\/wp-content\/plugins\/gravityforms\/images\/spinner.svg","connection_type":"classic","disable_badge":"","change_connection_type_title":"Change Connection Type","change_connection_type_message":"Changing the connection type will delete your current settings.  Do you want to proceed?","disconnect_title":"Disconnect","disconnect_message":"Disconnecting from reCAPTCHA will delete your current settings.  Do you want to proceed?","site_key":"6LfLgGcsAAAAAGw2pvF1OklI0aQ0NYpCAYOQNQni"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?render=6LfLgGcsAAAAAGw2pvF1OklI0aQ0NYpCAYOQNQni&amp;ver=2.2.2" id="gforms_recaptcha_recaptcha-js" defer="defer" data-wp-strategy="defer"></script>
+<script type="text/javascript" src="https://www.organicgardener.com.au/wp-content/plugins/gravityformsrecaptcha/js/frontend.min.js?ver=2.2.2" id="gforms_recaptcha_frontend-js" defer="defer" data-wp-strategy="defer"></script>
+<script type="text/javascript" src="https://www.organicgardener.com.au/wp-includes/js/dist/dom-ready.min.js?ver=f77871ff7694fffea381" id="wp-dom-ready-js"></script>
+<script type="text/javascript" src="https://www.organicgardener.com.au/wp-includes/js/dist/hooks.min.js?ver=2810c76e705dd1a53b18" id="wp-hooks-js"></script>
+<script type="text/javascript" src="https://www.organicgardener.com.au/wp-includes/js/dist/i18n.min.js?ver=5e580eb46a90c2b997e6" id="wp-i18n-js"></script>
+<script type="text/javascript" id="wp-i18n-js-after">
+/* <![CDATA[ */
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.organicgardener.com.au/wp-includes/js/dist/a11y.min.js?ver=d90eebea464f6c09bfd5" id="wp-a11y-js"></script>
+<script type="text/javascript" defer='defer' src="https://www.organicgardener.com.au/wp-content/plugins/gravityforms/js/jquery.json.min.js?ver=2.10.5" id="gform_json-js"></script>
+<script type="text/javascript" id="gform_gravityforms-js-extra">
+/* <![CDATA[ */
+var gform_i18n = {"datepicker":{"days":{"monday":"Mo","tuesday":"Tu","wednesday":"We","thursday":"Th","friday":"Fr","saturday":"Sa","sunday":"Su"},"months":{"january":"January","february":"February","march":"March","april":"April","may":"May","june":"June","july":"July","august":"August","september":"September","october":"October","november":"November","december":"December"},"firstDay":1,"iconText":"Select date"}};
+var gf_legacy_multi = [];
+var gform_gravityforms = {"strings":{"invalid_file_extension":"This type of file is not allowed. Must be one of the following:","file_uploaded":"File uploaded","delete_file":"Delete this file","in_progress":"in progress","file_exceeds_limit":"File exceeds size limit","illegal_extension":"This type of file is not allowed.","max_reached":"Maximum number of files reached","unknown_error":"There was a problem while saving the file on the server","currently_uploading":"Please wait for the uploading to complete","cancel":"Cancel","cancel_upload":"Cancel this upload","cancelled":"Cancelled","error":"Error","message":"Message"},"vars":{"images_url":"https:\/\/www.organicgardener.com.au\/wp-content\/plugins\/gravityforms\/images"}};
+var gf_global = {"gf_currency_config":{"name":"Australian Dollar","symbol_left":"$","symbol_right":"","symbol_padding":" ","thousand_separator":",","decimal_separator":".","decimals":2,"code":"AUD"},"base_url":"https:\/\/www.organicgardener.com.au\/wp-content\/plugins\/gravityforms","number_formats":[],"spinnerUrl":"https:\/\/www.organicgardener.com.au\/wp-content\/plugins\/gravityforms\/images\/spinner.svg","version_hash":"9e4f5ff4373aede928dc6f68dbbb33c9","strings":{"newRowAdded":"New row added.","rowRemoved":"Row removed","formSaved":"The form has been saved.  The content contains the link to return and complete the form."}};
+var gf_global = {"gf_currency_config":{"name":"Australian Dollar","symbol_left":"$","symbol_right":"","symbol_padding":" ","thousand_separator":",","decimal_separator":".","decimals":2,"code":"AUD"},"base_url":"https:\/\/www.organicgardener.com.au\/wp-content\/plugins\/gravityforms","number_formats":[],"spinnerUrl":"https:\/\/www.organicgardener.com.au\/wp-content\/plugins\/gravityforms\/images\/spinner.svg","version_hash":"9e4f5ff4373aede928dc6f68dbbb33c9","strings":{"newRowAdded":"New row added.","rowRemoved":"Row removed","formSaved":"The form has been saved.  The content contains the link to return and complete the form."}};
+/* ]]> */
+</script>
+<script type="text/javascript" defer='defer' src="https://www.organicgardener.com.au/wp-content/plugins/gravityforms/js/gravityforms.min.js?ver=2.10.5" id="gform_gravityforms-js"></script>
+<script type="text/javascript" defer='defer' src="https://www.organicgardener.com.au/wp-content/plugins/gravityforms/js/placeholders.jquery.min.js?ver=2.10.5" id="gform_placeholder-js"></script>
+<script type="text/javascript" defer='defer' src="https://www.organicgardener.com.au/wp-content/plugins/gravityforms/assets/js/dist/utils.min.js?ver=3f278756f0a3032bed328ff6a9f6c01d" id="gform_gravityforms_utils-js"></script>
+<script type="text/javascript" defer='defer' src="https://www.organicgardener.com.au/wp-content/plugins/gravityforms/assets/js/dist/vendor-theme.min.js?ver=7c651d0ba638ce98b9c65141edddd567" id="gform_gravityforms_theme_vendors-js"></script>
+<script type="text/javascript" id="gform_gravityforms_theme-js-extra">
+/* <![CDATA[ */
+var gform_theme_config = {"common":{"form":{"honeypot":{"version_hash":"9e4f5ff4373aede928dc6f68dbbb33c9"},"ajax":{"ajaxurl":"https:\/\/www.organicgardener.com.au\/wp-admin\/admin-ajax.php","ajax_submission_nonce":"42c830b5d6","i18n":{"step_announcement":"Step %1$s of %2$s, %3$s","unknown_error":"There was an unknown error processing your request. Please try again.","error_403":"The request was blocked (403 error) for unknown security reasons. Remove any code-like text (scripts or DB queries) and try again."}}}},"hmr_dev":"","public_path":"https:\/\/www.organicgardener.com.au\/wp-content\/plugins\/gravityforms\/assets\/js\/dist\/","config_nonce":"6b7494b1a9"};
+/* ]]> */
+</script>
+<script type="text/javascript" defer='defer' src="https://www.organicgardener.com.au/wp-content/plugins/gravityforms/assets/js/dist/scripts-theme.min.js?ver=301fdc9aa6144168f3b854c4c2c8f6d3" id="gform_gravityforms_theme-js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+ gform.initializeOnLoaded( function() { jQuery(document).on('gform_post_render', function(event, formId, currentPage){if(formId == 2) {if(typeof Placeholders != 'undefined'){
+                        Placeholders.enable();
+                    }} } );jQuery(document).on('gform_post_conditional_logic', function(event, formId, fields, isInit){} ) } ); 
+/* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+ gform.initializeOnLoaded( function() {jQuery(document).trigger("gform_pre_post_render", [{ formId: "2", currentPage: "1", abort: function() { this.preventDefault(); } }]);        if (event && event.defaultPrevented) {                return;        }        const gformWrapperDiv = document.getElementById( "gform_wrapper_2" );        if ( gformWrapperDiv ) {            const visibilitySpan = document.createElement( "span" );            visibilitySpan.id = "gform_visibility_test_2";            gformWrapperDiv.insertAdjacentElement( "afterend", visibilitySpan );        }        const visibilityTestDiv = document.getElementById( "gform_visibility_test_2" );        let postRenderFired = false;        function triggerPostRender() {            if ( postRenderFired ) {                return;            }            postRenderFired = true;            gform.core.triggerPostRenderEvents( 2, 1 );            if ( visibilityTestDiv ) {                visibilityTestDiv.parentNode.removeChild( visibilityTestDiv );            }        }        function debounce( func, wait, immediate ) {            var timeout;            return function() {                var context = this, args = arguments;                var later = function() {                    timeout = null;                    if ( !immediate ) func.apply( context, args );                };                var callNow = immediate && !timeout;                clearTimeout( timeout );                timeout = setTimeout( later, wait );                if ( callNow ) func.apply( context, args );            };        }        const debouncedTriggerPostRender = debounce( function() {            triggerPostRender();        }, 200 );        if ( visibilityTestDiv && visibilityTestDiv.offsetParent === null ) {            const observer = new MutationObserver( ( mutations ) => {                mutations.forEach( ( mutation ) => {                    if ( mutation.type === 'attributes' && visibilityTestDiv.offsetParent !== null ) {                        debouncedTriggerPostRender();                        observer.disconnect();                    }                });            });            observer.observe( document.body, {                attributes: true,                childList: false,                subtree: true,                attributeFilter: [ 'style', 'class' ],            });        } else {            triggerPostRender();        }    } ); 
+/* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+ gform.initializeOnLoaded( function() { jQuery(document).on('gform_post_render', function(event, formId, currentPage){if(formId == 1) {if(typeof Placeholders != 'undefined'){
+                        Placeholders.enable();
+                    }} } );jQuery(document).on('gform_post_conditional_logic', function(event, formId, fields, isInit){} ) } ); 
+/* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+ gform.initializeOnLoaded( function() {jQuery(document).trigger("gform_pre_post_render", [{ formId: "1", currentPage: "1", abort: function() { this.preventDefault(); } }]);        if (event && event.defaultPrevented) {                return;        }        const gformWrapperDiv = document.getElementById( "gform_wrapper_1" );        if ( gformWrapperDiv ) {            const visibilitySpan = document.createElement( "span" );            visibilitySpan.id = "gform_visibility_test_1";            gformWrapperDiv.insertAdjacentElement( "afterend", visibilitySpan );        }        const visibilityTestDiv = document.getElementById( "gform_visibility_test_1" );        let postRenderFired = false;        function triggerPostRender() {            if ( postRenderFired ) {                return;            }            postRenderFired = true;            gform.core.triggerPostRenderEvents( 1, 1 );            if ( visibilityTestDiv ) {                visibilityTestDiv.parentNode.removeChild( visibilityTestDiv );            }        }        function debounce( func, wait, immediate ) {            var timeout;            return function() {                var context = this, args = arguments;                var later = function() {                    timeout = null;                    if ( !immediate ) func.apply( context, args );                };                var callNow = immediate && !timeout;                clearTimeout( timeout );                timeout = setTimeout( later, wait );                if ( callNow ) func.apply( context, args );            };        }        const debouncedTriggerPostRender = debounce( function() {            triggerPostRender();        }, 200 );        if ( visibilityTestDiv && visibilityTestDiv.offsetParent === null ) {            const observer = new MutationObserver( ( mutations ) => {                mutations.forEach( ( mutation ) => {                    if ( mutation.type === 'attributes' && visibilityTestDiv.offsetParent !== null ) {                        debouncedTriggerPostRender();                        observer.disconnect();                    }                });            });            observer.observe( document.body, {                attributes: true,                childList: false,                subtree: true,                attributeFilter: [ 'style', 'class' ],            });        } else {            triggerPostRender();        }    } ); 
+/* ]]> */
+</script>
+
+</body>
+
+</html>
