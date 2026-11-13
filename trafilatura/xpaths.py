@@ -386,6 +386,10 @@ COMMENTS_DISCARD_XPATH = [
 ]
 
 
+# comment text held directly in divs
+COMMENTS_DIV_TEXT_XPATH = XPath(".//div[not(.//div or .//p or .//list)][string-length(normalize-space()) >= 80]")
+
+
 ### 2. METADATA
 
 

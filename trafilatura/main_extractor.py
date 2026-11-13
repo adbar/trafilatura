@@ -33,6 +33,7 @@ from .xml import _strip_block_whitespace, delete_element, separates_inline
 from .xpaths import (
     BODY_XPATH,
     COMMENTS_DISCARD_XPATH,
+    COMMENTS_DIV_TEXT_XPATH,
     COMMENTS_XPATH,
     DISCARD_IMAGE_ELEMENTS,
     OVERALL_DISCARD_XPATH,
@@ -826,6 +827,8 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
         subtree = prune_unwanted_nodes(subtree, COMMENTS_DISCARD_XPATH)
         # todo: unified stripping function, taking include_links into account
         strip_tags(subtree, "ref", "span")
+        for elem in COMMENTS_DIV_TEXT_XPATH(subtree):
+            elem.tag = "p"
         for elem in subtree.xpath(".//*"):
             # Descendants of an appended block already belong to the output.
             if elem.tag not in potential_tags or comments_body in elem.iterancestors():
