@@ -62,29 +62,11 @@ EMPTY = {
     ("nested_li", "a", True, "bare", "precision"),
     ("nested_li", "a", True, "nested", "precision"),
 }
-MOVED = "moved block re-emitted by recall recovery"
-NESTED_CODE = "code nested in an inline re-emitted by recovery"
 KNOWN_DUPLICATES = {
     **{
-        (block, inline, True, "nested", "recall"): MOVED
+        (block, inline, True, "nested", "recall"): "recovery container re-emits consumed fragments"
         for block in ("span_p_holds_p", "span_p_then_p")
-        for inline in INLINE
-        if inline not in ("a", "a_code")
-    },
-    **{("figure_then_p", inline, True, "nested", "recall"): MOVED for inline in ("b", "em", "img", "span", "sup")},
-    **{
-        (block, inline, True, wrapper, "markdown"): NESTED_CODE
-        for block, inline, wrapper in (
-            ("div", "b_code", "nested"),
-            ("div", "b_code", "article"),
-            ("span_p", "a_code", "article"),
-            ("span_p", "b_code", "nested"),
-            ("span_p", "b_code", "article"),
-            ("span_p_holds_p", "a_code", "article"),
-            ("span_p_holds_p", "b_code", "article"),
-            ("span_p_then_p", "a_code", "article"),
-            ("span_p_then_p", "b_code", "article"),
-        )
+        for inline in ("br", "code", "b_code")
     },
     ("blockquote", "a_code", True, "article", "precision"): "dropped blockquote, its tail emitted twice",
 }
@@ -128,6 +110,33 @@ def test_no_repeated_words(block, inline, short, wrapper, config, request):
     else:
         assert result
         _assert_unique(result)
+
+
+@pytest.mark.parametrize("fast", [False, True])
+@pytest.mark.parametrize(
+    "run,expected",
+    [
+        (
+            "Mira builds <b><code>sampleAlpha</code></b> inside <b><code>sampleBeta</code></b> today.",
+            "Mira builds **`sampleAlpha`** inside **`sampleBeta`** today.",
+        ),
+        (
+            "Useful <a href='/guide'><code>guideMarker</code></a> inside prose remains linked.",
+            "Useful [`guideMarker`](/guide) inside prose remains linked.",
+        ),
+        (
+            "Mira builds <b><code>sampleAlpha</code></b> inside <b><code>sampleAlpha</code></b> today.",
+            "Mira builds **`sampleAlpha`** inside **`sampleAlpha`** today.",
+        ),
+    ],
+    ids=["bold-code", "linked-code", "genuine-repeat"],
+)
+def test_recovered_inline_content_kept_once(run, expected, fast):
+    "Recovery keeps formatting, missing outside text and distinct source occurrences."
+    page = (
+        f"<html><body><main id='content'><article><div>{run}</div></article><p>Outside marker stays.</p></main></body></html>"
+    )
+    assert extract(page, fast=fast, **CONFIGS["markdown"]) == expected + "\n\nOutside marker stays."
 
 
 @pytest.mark.parametrize("config", ["markdown", "precision"])
