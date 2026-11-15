@@ -5483,3 +5483,49 @@ def test_invalid_charref_pattern():
         INVALID_XML_CHARREFS.sub("", "&#9;&#10;&#13;&#32;&#039;&#x1F600;&#123;&#x10000;&#xFFFF0;&#1x")
         == "&#9;&#10;&#13;&#32;&#039;&#x1F600;&#123;&#x10000;&#xFFFF0;x"
     )
+
+
+_TREE_FILLER = "Filler text. " * 30
+
+
+def _tree_page(body):
+    return f"<html><body><article><p>{_TREE_FILLER}</p>{body}</article></body></html>"
+
+
+@pytest.mark.parametrize(
+    "body",
+    [
+        "<p>Start of the text. End of the text.</p>",
+        "<p>Start of the text. <!-- note --> End of the text.</p>",
+        "<p>Start of the text. <?php echo 1; ?> End of the text.</p>",
+        "<h2>Title <!-- draft --> here</h2><p>Text.</p>",
+        "<ul><li>Item <!-- note --> one</li><li>Item two</li></ul>",
+        "<blockquote>Quoted <!-- note --> words.</blockquote>",
+        "<p>Some text.\x0b</p>",
+        "<p>Some\x0b text.</p><p>More￾ text.</p>",
+        "<pre><code>a = 1\x0b</code></pre>",
+    ],
+)
+def test_tree_input_matches_string_input(body):
+    "A parsed tree gives the result of the same document as a string, and is left untouched (#1144)."
+    page = _tree_page(body)
+    tree = html.fromstring(page)
+    before = etree.tostring(tree)
+    expected = extract(page)
+    assert expected is not None
+    assert extract(tree) == expected
+    assert bare_extraction(tree).text == bare_extraction(page).text
+    assert etree.tostring(tree) == before
+
+
+@pytest.mark.parametrize(
+    "body", ["<p>Some text.\x0b</p>", "<p>Some <!-- note --> text.</p>", "<p>Some <?php echo 1; ?>text.</p>"]
+)
+def test_tree_input_baseline(body):
+    "html2txt() and baseline() accept the tree of a document with comments and control characters (#1144)."
+    page = _tree_page(body)
+    tree = html.fromstring(page)
+    before = etree.tostring(tree)
+    assert html2txt(tree) == html2txt(page)
+    assert baseline(tree)[1] == baseline(page)[1]
+    assert etree.tostring(tree) == before

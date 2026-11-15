@@ -31,6 +31,7 @@ from .utils import (
     LANGID_FLAG,
     HtmlInput,
     check_html_lang,
+    copy_clean_tree,
     language_classifier,
     language_filter,
     load_html,
@@ -398,7 +399,7 @@ def bare_extraction(
             LOGGER.error("empty HTML tree: %s", url)
             raise ValueError
         if tree is filecontent:
-            tree = copy(tree)
+            tree = copy_clean_tree(tree)
 
         # quick and dirty HTML lang check
         if options.lang and (options.fast or not LANGID_FLAG):
