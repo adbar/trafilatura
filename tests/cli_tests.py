@@ -1314,3 +1314,27 @@ def test_explore_crawls_seeds_without_links(tmp_path, list_mode):
         args.blacklist = cli_utils.load_blacklist(args.blacklist)
         assert cli_utils.cli_discovery(args) == 0
     assert sorted(crawled) == ["https://blocked.org/", "https://nolinks.org/"]
+
+
+@pytest.mark.parametrize(
+    "seeds, expected",
+    [
+        (
+            ["https://example.org/en/", "https://example.org/de/"],
+            ["https://example.org/en/", "sleep", "https://example.org/de/"],
+        ),
+        (["https://example.org/en/", "https://example.com/de/"], ["https://example.org/en/", "https://example.com/de/"]),
+    ],
+)
+def test_discovery_waits_between_urls_of_a_website(tmp_path, seeds, expected):
+    "Input URLs of the same website are processed one after the other with a wait in between."
+    (tmp_path / "seeds.txt").write_text("\n".join(seeds), encoding="utf-8")
+    log = []
+    with (
+        patch.object(cli_utils, "sitemap_search", lambda url, **kwargs: log.append(url) or []),
+        patch.object(cli_utils, "sleep", lambda _: log.append("sleep")),
+        patch.object(cli_utils, "url_processing_pipeline", lambda args, store: 0),
+    ):
+        cli_utils.cli_discovery(cli.parse_args(["--sitemap", "-i", str(tmp_path / "seeds.txt"), "--parallel", "2"]))
+    # websites are processed in parallel, so only the order within a website is fixed
+    assert log == expected if "sleep" in expected else sorted(log) == sorted(expected)
