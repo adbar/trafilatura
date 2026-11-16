@@ -102,7 +102,7 @@ JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 JSON_SEQ = [('"name"', JSON_NAME), ('"headline"', JSON_HEADLINE)]
 
 AUTHOR_PREFIX = re.compile(
-    r"^(?:(?:[\wäöüß]+\s+){0,4}?by(?:\s+|$)|([a-zäöüß]+(ed|t))? ?(written by|words by|words|by|von|from) )",
+    r"^(?:(?:[\wäöüß]+\s+){0,4}?by(?:\s+|$)|([a-zäöüß]+(ed|t))? ?(written by|words by|words|by|von|from|por|par|door) )",
     flags=re.IGNORECASE,
 )
 AUTHOR_REMOVE_NUMBERS = re.compile(r"(?:\b\d.|\d+\s).*$")
