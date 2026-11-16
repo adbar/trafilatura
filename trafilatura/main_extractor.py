@@ -33,6 +33,7 @@ from .xml import _strip_block_whitespace, delete_element, separates_inline
 from .xpaths import (
     BODY_XPATH,
     COMMENTS_DISCARD_XPATH,
+    COMMENTS_DIV_TEXT_XPATH,
     COMMENTS_XPATH,
     DISCARD_IMAGE_ELEMENTS,
     OVERALL_DISCARD_XPATH,
@@ -261,6 +262,7 @@ def handle_quotes(element: _Element, options: Extractor) -> _Element | None:
         return handle_code_blocks(element)
 
     processed_element = Element(element.tag)
+    update_elem_rendition(element, processed_element)
     process_nested_elements(element, processed_element, options)
     if is_text_element(processed_element):
         # avoid double/nested tags
@@ -278,6 +280,12 @@ def handle_other_elements(element: _Element, potential_tags: set[str], options: 
     if element.tag != "div" or "div" not in potential_tags:
         if element.tag != "done":
             _log_event("discarding element", element.tag, element.text)
+        return None
+
+    # a wrapper div with children and no text of its own is discarded right
+    # after anyway; letting it reach handle_textnode() would let the dedup
+    # check count its children's text as a duplicate of the paragraph (#1146)
+    if len(element) > 0 and not text_chars_test(element.text):
         return None
 
     processed_element = handle_textnode(element, options, comments_fix=False, preserve_spaces=True)
@@ -825,6 +833,8 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
         subtree = prune_unwanted_nodes(subtree, COMMENTS_DISCARD_XPATH)
         # todo: unified stripping function, taking include_links into account
         strip_tags(subtree, "ref", "span")
+        for elem in COMMENTS_DIV_TEXT_XPATH(subtree):
+            elem.tag = "p"
         for elem in subtree.xpath(".//*"):
             # Descendants of an appended block already belong to the output.
             if elem.tag not in potential_tags or comments_body in elem.iterancestors():

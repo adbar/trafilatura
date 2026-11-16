@@ -400,6 +400,35 @@ def test_crawl_resumed_with_known_links():
     assert spider.URL_STORE.find_known_urls(params.base) == known
 
 
+@pytest.mark.parametrize(
+    "start, todo",
+    [
+        ("http://example.org", ["https://example.org/a", "https://example.org/b"]),
+        ("https://example.org", ["https://www.example.org/a"]),
+        ("http://www.example.org", ["https://example.org/a"]),
+    ],
+)
+def test_resume_after_same_site_redirect(start, todo):
+    "Resuming a crawl after a same-site redirect keeps the saved todo URLs."
+    spider.URL_STORE = UrlStore()
+    with patch.object(spider, "get_rules", return_value=None):
+        resumed, _known = spider.focused_crawler(start, max_seen_urls=0, todo=todo, rules=spider.parse_robots("", ""))
+    assert resumed == todo
+
+
+def test_resume_after_cross_site_redirect():
+    "Todo URLs from another site are still dropped when resuming a crawl."
+    spider.URL_STORE = UrlStore()
+    with patch.object(spider, "get_rules", return_value=None):
+        resumed, _known = spider.focused_crawler(
+            "http://example.org",
+            max_seen_urls=0,
+            todo=["https://other.org/a"],
+            rules=spider.parse_robots("", ""),
+        )
+    assert resumed == []
+
+
 def test_crawl_page():
     "Test page-by-page processing."
     base_url = "https://httpbun.com"
@@ -682,3 +711,34 @@ def test_robots():
     # rules = spider.parse_robots(robots_url, "User-agent: *\nAllow: /public")
     # assert rules is not None and rules.can_fetch("*", "https://example.org/public")
     # assert not rules.can_fetch("*", "https://example.org/private")
+
+
+@pytest.mark.parametrize(
+    "robots, todo, expected",
+    [
+        ("User-agent: *\nDisallow: /", None, ["/robots.txt"]),
+        ("User-agent: *\nDisallow: /b", ["https://example.org/b"], ["/robots.txt"]),
+        ("", None, ["/robots.txt", "/", "/a"]),
+    ],
+)
+def test_focused_crawler_politeness(robots, todo, expected):
+    "The crawler honors robots.txt for the start page and todo URLs, and waits between all requests."
+    log = []
+
+    def fake_fetch(url, **_kwargs):
+        log.append(url.removeprefix("https://example.org") or "/")
+        if url.endswith("robots.txt"):
+            return robots
+        return Response(b'<html><body><a href="/a">a</a></body></html>', 200, url)
+
+    with (
+        patch.object(spider, "URL_STORE", UrlStore()),
+        patch.object(spider, "fetch_url", side_effect=fake_fetch),
+        patch.object(spider, "fetch_response", side_effect=fake_fetch),
+        patch.object(spider, "sleep", side_effect=lambda _: log.append("sleep")),
+    ):
+        spider.focused_crawler("https://example.org", max_seen_urls=2, todo=todo)
+
+    assert [entry for entry in log if entry != "sleep"] == expected
+    requests = "".join("s" if entry == "sleep" else "r" for entry in log)
+    assert "rr" not in requests

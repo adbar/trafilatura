@@ -14,7 +14,7 @@ from lxml.etree import Element, SubElement, _Element
 from lxml.html import HtmlElement, fragment_fromstring
 
 from .settings import BASIC_CLEAN_XPATH, DEDUPE_SCAN_CAP, MIN_DUPLICATE_LENGTH
-from .utils import HtmlInput, as_list, load_html, remove_control_characters, trim
+from .utils import HtmlInput, as_list, copy_clean_tree, load_html, remove_control_characters, trim
 from .xml import delete_element
 
 # detection (not removal, unlike HTML_STRIP_TAGS): must not fire on comparison-operator prose
@@ -187,7 +187,7 @@ def baseline(filecontent: HtmlInput) -> tuple[_Element, str, int]:
     if tree is None:
         return Element("body"), "", 0
     if isinstance(filecontent, HtmlElement):
-        tree = copy(tree)  # basic_cleaning below mutates the tree
+        tree = copy_clean_tree(tree)  # basic_cleaning below mutates the tree
 
     # scrape from embedded JSON: full-text properties first, teaser descriptions kept for
     # later. dedupe: pages often embed the same JSON-LD block twice (theme + SEO plugin)
@@ -293,7 +293,7 @@ def html2txt(content: HtmlInput, clean: bool = True) -> str:
     if tree is None:
         return ""
     if isinstance(content, HtmlElement):
-        tree = copy(tree)  # the steps below modify the tree
+        tree = copy_clean_tree(tree)  # the steps below modify the tree
     body = tree.find(".//body")
     if body is None:
         # a caller-supplied element without <body> is itself the content; a parsed

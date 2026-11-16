@@ -20,6 +20,7 @@ from functools import partial
 from hashlib import blake2b
 from io import TextIOWrapper
 from pathlib import Path
+from time import sleep
 from typing import Any
 from urllib.parse import unquote, urlsplit
 
@@ -326,6 +327,16 @@ def download_queue_processing(
     return errors, counter
 
 
+def process_website_urls(func: Callable[[str], list[str]], urls: list[str], sleep_time: float) -> list[tuple[str, list[str]]]:
+    "Process the URLs of a website one after the other, waiting in between."
+    results = []
+    for i, url in enumerate(urls):
+        if i:
+            sleep(sleep_time)
+        results.append((url, func(url)))
+    return results
+
+
 def cli_discovery(args: argparse.Namespace) -> int:
     "Group CLI functions dedicated to URL discovery."
     url_store = load_input_dict(args)
@@ -336,32 +347,39 @@ def cli_discovery(args: argparse.Namespace) -> int:
     url_store.reset()
 
     options = args_to_extractor(args)
+    sleep_time = options.config.getfloat("DEFAULT", "SLEEP_TIME")
     func = partial(
         find_feed_urls if args.feed else sitemap_search,
         target_lang=args.target_language,
         external=options.config.getboolean("DEFAULT", "EXTERNAL_URLS"),
-        sleep_time=options.config.getfloat("DEFAULT", "SLEEP_TIME"),
+        sleep_time=sleep_time,
         config=options.config,
     )
     no_links = []
 
+    # the URLs of a website are processed in the same thread
+    websites: dict[str, list[str]] = {}
+    for url in input_urls:
+        websites.setdefault(get_base_url(url), []).append(url)
+
     # link discovery and storage
     with ThreadPoolExecutor(max_workers=args.parallel) as executor:
-        futures = {executor.submit(func, url): url for url in input_urls}
+        futures = [executor.submit(process_website_urls, func, urls, sleep_time) for urls in websites.values()]
         # process results from the parallel threads and add them
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
-            # all links blacklisted = no links
-            links = filter_blacklist(future.result() or [], args.blacklist)
-            if not links:
-                no_links.append(futures[future])
-                continue
-            add_to_compressed_dict(links, url_store=url_store)
-            # empty buffer in order to spare memory
-            if args.list and len(url_store.get_known_domains()) >= args.parallel:
-                url_store.print_unvisited_urls()
-                url_store.reset()
-                reset_caches()
+            for url, result in future.result():
+                # all links blacklisted = no links
+                links = filter_blacklist(result or [], args.blacklist)
+                if not links:
+                    no_links.append(url)
+                    continue
+                add_to_compressed_dict(links, url_store=url_store)
+                # empty buffer in order to spare memory
+                if args.list and len(url_store.get_known_domains()) >= args.parallel:
+                    url_store.print_unvisited_urls()
+                    url_store.reset()
+                    reset_caches()
 
     # process the (rest of the) links found
     exit_code = url_processing_pipeline(args, url_store)

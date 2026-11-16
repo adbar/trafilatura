@@ -55,19 +55,22 @@ WITH_ATTRIBUTES = {"cell", "row", "del", "graphic", "head", "hi", "item", "list"
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
 META_ATTRIBUTES = [
-    "sitename",
     "title",
     "author",
-    "date",
     "url",
     "hostname",
     "description",
+    "sitename",
+    "date",
     "categories",
     "tags",
-    "license",
-    "id",
     "fingerprint",
+    "id",
+    "license",
     "language",
+    "image",
+    "pagetype",
+    "filedate",
 ]
 
 HI_FORMATTING = {"#b": "**", "#i": "*", "#t": "`"}
@@ -219,6 +222,7 @@ def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
             }
         )
         commentsbody = outputdict.pop("commentsbody")
+        del outputdict["raw_text"]
     else:
         outputdict = {"text": xmltotxt(docmeta.body, include_formatting=False)}
         commentsbody = docmeta.commentsbody
@@ -753,11 +757,23 @@ def process_element(
     in_cell: bool = False,
     in_item: bool = False,
     list_positions: dict[_Element, int] | None = None,
+    quote_body: bool = False,
 ) -> None:
     "Recursively convert a LXML element and its children to a flattened string representation."
     if list_positions is None:
         list_positions = {}
     tag = element.tag
+    # only a real quotation gets the '>' marker, not preformatted text (rend="pre")
+    if (
+        tag == "quote"
+        and include_formatting
+        and not in_cell
+        and not in_item
+        and not quote_body
+        and element.get("rend") != "pre"
+    ):
+        _process_quote(element, returnlist, list_positions)
+        return
     # in_cell/in_item are inherited down the recursion instead of re-walking ancestors at every node
     in_cell = in_cell or tag == "cell"
     in_item = in_item or tag == "item"
@@ -842,6 +858,28 @@ def process_element(
         returnlist.append("\n")
 
 
+def _process_quote(element: _Element, returnlist: list[str], list_positions: dict[_Element, int]) -> None:
+    "Render a quote on its own and mark each of its lines with '>', its tail stays outside."
+    if _last_char(returnlist) not in ("\n", ""):
+        returnlist.append("\n")
+    tail, element.tail = element.tail, None
+    quoted: list[str] = []
+    process_element(element, quoted, True, list_positions=list_positions, quote_body=True)
+    element.tail = tail
+    # same line rules as sanitize(): empty lines go, a paragraph break becomes a bare '>'
+    lines: list[str] = []
+    for line in filter(None, "".join(quoted).splitlines()):
+        if line.strip("\u2424"):
+            lines.append(f"> {line}")
+        elif lines and lines[-1] != ">":
+            lines.append(">")
+    while lines and lines[-1] == ">":
+        lines.pop()
+    returnlist.append("\n".join(lines))
+    returnlist.append("\n\u2424\n")
+    _append_tail(element, returnlist, False, False, True, list_positions)
+
+
 def _unescape_text(text: str) -> str:
     "Decode complete entities without interpreting unknown names as entity prefixes."
     if "&" not in text:
@@ -906,6 +944,13 @@ def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t",
                 commentstext,
                 document.license,
                 document.pagetype,
+                document.author,
+                document.description,
+                document.sitename,
+                ";".join(document.categories or []),
+                ";".join(document.tags or []),
+                document.language,
+                document.filedate,
             )
         ]
     )
@@ -942,7 +987,6 @@ def _define_publisher_string(docmeta: Document) -> str:
 
 def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     """Write TEI header based on gathered metadata"""
-    # todo: add language info
     header = SubElement(teidoc, "teiHeader")
     filedesc = SubElement(header, "fileDesc")
     bib_titlestmt = SubElement(filedesc, "titleStmt")
@@ -965,6 +1009,10 @@ def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     if docmeta.id:
         SubElement(notesstmt, "note", type="id").text = docmeta.id
     SubElement(notesstmt, "note", type="fingerprint").text = docmeta.fingerprint
+    if docmeta.image:
+        SubElement(notesstmt, "note", type="image").text = docmeta.image
+    if docmeta.pagetype:
+        SubElement(notesstmt, "note", type="pagetype").text = docmeta.pagetype
 
     sourcedesc = SubElement(filedesc, "sourceDesc")
     source_bibl = SubElement(sourcedesc, "bibl")
@@ -990,6 +1038,10 @@ def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     profiledesc = SubElement(header, "profileDesc")
     abstract = SubElement(profiledesc, "abstract")
     SubElement(abstract, "p").text = docmeta.description
+
+    if docmeta.language:
+        langusage = SubElement(profiledesc, "langUsage")
+        SubElement(langusage, "language", ident=docmeta.language).text = docmeta.language
 
     if docmeta.categories or docmeta.tags:
         textclass = SubElement(profiledesc, "textClass")

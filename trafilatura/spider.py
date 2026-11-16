@@ -284,6 +284,11 @@ def process_response(
     process_links(decode_file(response.data), params, url)
 
 
+def get_crawl_delay(params: CrawlParameters) -> float:
+    "Return the delay between requests set by robots.txt or the configuration."
+    return URL_STORE.get_crawl_delay(params.base, default=params.config.getfloat("DEFAULT", "SLEEP_TIME"))
+
+
 def init_crawl(
     start: str,
     lang: str | None = None,
@@ -296,6 +301,14 @@ def init_crawl(
 ) -> CrawlParameters:
     """Initialize crawl by setting variables, copying values to the
     URL store and retrieving the initial page if the crawl starts."""
+    # resume after a same-site redirect (e.g. http -> https): the saved
+    # todo URLs use the redirected base, switch the start URL to match
+    # so that filter_list() does not drop them
+    if todo:
+        base, todo_base = get_base_url(start), get_base_url(todo[0])
+        if todo_base and todo_base != base and is_same_site(base, todo_base):
+            start = start.replace(base, todo_base, 1)
+
     params = CrawlParameters(start, lang, rules, prune_xpath, config, blacklist)
 
     # known links count as visited, except the ones still waiting in the todo list
@@ -303,6 +316,9 @@ def init_crawl(
     URL_STORE.add_urls(urls=[u for u in known or [] if u not in pending], visited=True)
     URL_STORE.add_urls(urls=params.filter_list(todo))
     URL_STORE.store_rules(params.base, params.rules)
+    # robots.txt has just been requested
+    if rules is None:
+        sleep(get_crawl_delay(params))
 
     # visiting the start page if necessary
     if not todo:
@@ -320,7 +336,7 @@ def crawl_page(
 ) -> CrawlParameters:
     """Examine a webpage, extract navigation links and links."""
     url = URL_STORE.get_url(params.base)
-    if not url:
+    if not url or (params.rules and not params.rules.can_fetch(USER_AGENT, url)):
         params.update_metadata(URL_STORE)
         return params
 
@@ -377,13 +393,15 @@ def focused_crawler(
     """
     params = init_crawl(homepage, lang, rules, todo, known_links, prune_xpath, config)
 
-    sleep_time = URL_STORE.get_crawl_delay(params.base, default=params.config.getfloat("DEFAULT", "SLEEP_TIME"))
+    sleep_time = get_crawl_delay(params)
+    fetched = 0
 
-    # visit pages until a limit is reached
+    # visit pages until a limit is reached, waiting after each fetched page
     while params.is_on and params.i < max_seen_urls and params.known_num < max_known_urls:
-        params = crawl_page(params)
-        if params.is_on:
+        if params.i > fetched:
             sleep(sleep_time)
+            fetched = params.i
+        params = crawl_page(params)
 
     # refocus todo-list on URLs without navigation?
     todo = list(dict.fromkeys(URL_STORE.find_unvisited_urls(params.base)))

@@ -1474,3 +1474,76 @@ def test_json_article_section_values(section, categories):
     }
     metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
     assert (metadata.title, metadata.categories) == ("Storm hits coast", categories)
+
+
+JSON_IMAGE = "https://example.org/story.jpg"
+
+
+@pytest.mark.parametrize(
+    "image",
+    [
+        JSON_IMAGE,
+        {"@type": "ImageObject", "url": JSON_IMAGE},
+        {"@type": "ImageObject", "contentUrl": JSON_IMAGE},
+        [None, {"url": JSON_IMAGE}],
+        {"@id": "#photo"},
+    ],
+)
+def test_json_article_image(image):
+    "the image of the first article node, not the publisher logo"
+    graph = [
+        None,
+        {"@type": "Organization", "name": "Example News", "logo": {"url": "https://example.org/logo.jpg"}},
+        {"@type": "NewsArticle", "mainEntityOfPage": {"@id": "https://example.org/story"}, "image": image},
+        {"@type": "ImageObject", "@id": "#photo", "url": JSON_IMAGE},
+    ]
+    schema = json.dumps({"@context": "https://schema.org", "@graph": graph})
+    page = f'<html><head><script type="application/ld+json">{schema}</script></head><body/></html>'
+    assert extract_metadata(page, default_url="https://example.org/story").image == JSON_IMAGE
+    # a meta image comes first
+    page = page.replace("<head>", '<head><meta property="og:image" content="https://example.org/og.jpg"/>')
+    assert extract_metadata(page, default_url="https://example.org/story").image == "https://example.org/og.jpg"
+
+
+@pytest.mark.parametrize(
+    ("byline", "expected"),
+    [
+        ("Jane Doe in Nadi, Fiji", "Jane Doe"),
+        ("Jane Doe reporting from Kyiv", "Jane Doe"),
+        ("Jane Doe reporting from Kyiv, Ukraine", "Jane Doe"),
+        ("Jane Doe in Washington, D.C., and John Roe in Paris", "Jane Doe; John Roe"),
+        ("Jane Doe in Kuala Lumpur, Malaysia, and John Roe", "Jane Doe; John Roe"),
+        # co-authors after the comma stay, with or without a place of their own
+        ("Jane Doe in London, John Roe in Paris", "Jane Doe; John Roe"),
+        ("Jane Doe in Paris, John Roe", "Jane Doe; John Roe"),
+        ("Jane Doe in Paris, John Roe, Mary Major", "Jane Doe; John Roe; Mary Major"),
+    ],
+)
+def test_normalize_authors_datelines(byline, expected):
+    "A dateline in a byline goes, with a one-word region after its comma; the people after it stay."
+    assert normalize_authors(None, byline) == expected
+
+
+@pytest.mark.parametrize(
+    ("byline", "expected"),
+    [
+        ("Article written by Surname Name", "Surname Name"),
+        ("Reviewed by Surname Name", "Surname Name"),
+        ("Photos by Surname Name", "Surname Name"),
+        ("This article was written by Jane Doe", "Jane Doe"),
+        ("View all posts by Jane Doe", "Jane Doe"),
+        ("WRITTEN BY Jane Doe", "Jane Doe"),
+        ("By Jane Doe", "Jane Doe"),
+        ("words Jane Doe", "Jane Doe"),
+        ("von Jane Doe", "Jane Doe"),
+        ("From Jane Doe", "Jane Doe"),
+        ("Por Jane Doe", "Jane Doe"),
+        ("par Jean Dupont", "Jean Dupont"),
+        ("Door Jan Jansen", "Jan Jansen"),
+        ("Jane Doe and Photos by John Roe", "Jane Doe; John Roe"),
+        ("By", None),
+    ],
+)
+def test_normalize_authors_credit_prefixes(byline, expected):
+    "Credit prefixes are removed without turning their words into extra authors."
+    assert normalize_authors(None, byline) == expected

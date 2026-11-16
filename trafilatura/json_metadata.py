@@ -101,7 +101,10 @@ JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 JSON_SEQ = [('"name"', JSON_NAME), ('"headline"', JSON_HEADLINE)]
 
-AUTHOR_PREFIX = re.compile(r"^([a-zäöüß]+(ed|t))? ?(written by|words by|words|by|von|from) ", flags=re.IGNORECASE)
+AUTHOR_PREFIX = re.compile(
+    r"^(?:(?:[\wäöüß]+\s+){0,4}?by(?:\s+|$)|([a-zäöüß]+(ed|t))? ?(written by|words by|words|by|von|from|por|par|door) )",
+    flags=re.IGNORECASE,
+)
 AUTHOR_REMOVE_NUMBERS = re.compile(r"(?:\b\d.|\d+\s).*$")
 AUTHOR_TWITTER = re.compile(r"@[\w]+")
 AUTHOR_REPLACE_JOIN = re.compile(r"[._+]")
@@ -110,6 +113,10 @@ AUTHOR_REMOVE_SPECIAL = re.compile(r"[^\w]+$|[:()?*$#!%/<>{}~¿]")
 AUTHOR_REMOVE_PREPOSITION = re.compile(r"\b\s+(am|on|for|at|in|to|from|of|via|with|—|-|–)\s+(.*)", flags=re.IGNORECASE)
 AUTHOR_EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 AUTHOR_SPLIT = re.compile(r"/|;|,|\||&|(?:^|\W)[ua]nd(?:$|\W)", flags=re.IGNORECASE)
+AUTHOR_DATELINE = re.compile(
+    r"\s+(?:in|reporting\s+from)\s+[A-ZÀ-Þ][^,;|/&]*?(?:,\s*[A-ZÀ-Þ][^\s,;|/&]*)?"
+    r"(?=\s+(?:and|with)\s+|\s*[,;|/&]|$)"
+)
 AUTHOR_EMOJI_REMOVE = re.compile(
     "["
     "\U00002700-\U000027be"  # Dingbats
@@ -235,6 +242,19 @@ def is_schema_org_context(context: Any) -> bool:
     return False
 
 
+def extract_json_image(value: Any, references: dict[str, Any]) -> str | None:
+    """Read an article image without inferring one from publisher logos."""
+    for item in as_list(value):
+        if isinstance(item, dict):
+            reference = item.get("@id")
+            if not item.get("url") and not item.get("contentUrl") and isinstance(reference, str):
+                item = references.get(reference, item)
+            item = item.get("url") or item.get("contentUrl")
+        if isinstance(item, str) and item.strip():
+            return item.strip()
+    return None
+
+
 def extract_json(schema: list[Any] | dict[str, str], metadata: Document, backup_sitename: str | None = None) -> Document:
     """Parse and extract metadata from JSON-LD data.
 
@@ -264,6 +284,18 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document, backup_
                 parents.extend(as_list(parent["liveBlogUpdate"]))
             else:
                 parents.append(parent)
+
+    # the image of the first article node
+    if not metadata.image:
+        references = {node["@id"]: node for node in parents if isinstance(node, dict) and isinstance(node.get("@id"), str)}
+        for node in parents:
+            if not isinstance(node, dict):
+                continue
+            kinds = {kind.lower() for kind in as_list(node.get("@type")) if isinstance(kind, str)}
+            if kinds & JSON_ARTICLE_SCHEMA:
+                metadata.image = extract_json_image(node.get("image"), references)
+                if metadata.image:
+                    break
 
     return process_parent(parents, metadata, backup_sitename)
 
@@ -370,6 +402,7 @@ def normalize_authors(current_authors: str | None, author_string: str) -> str | 
         author_string = unescape(author_string)
     # remove html tags and email addresses
     author_string = AUTHOR_EMAIL.sub("", HTML_STRIP_TAGS.sub("", author_string))
+    author_string = AUTHOR_DATELINE.sub("", author_string)
     # examine names
     for author in AUTHOR_SPLIT.split(author_string):
         author = trim(author)
