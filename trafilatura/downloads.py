@@ -173,9 +173,14 @@ def _load_cookie_file(filename: str) -> MozillaCookieJar:
     "Load a Netscape-format cookie file once, keeping session cookies."
     jar = MozillaCookieJar()
     try:
-        jar.load(filename, ignore_discard=True)
+        # expired cookies are left out when requests are sent
+        jar.load(filename, ignore_discard=True, ignore_expires=True)
     except (OSError, LoadError) as err:
         LOGGER.error("cannot load cookie file: %s %s", filename, err)
+    # an expiry of 0 marks a session cookie, Python < 3.13 reads it as expired
+    for cookie in jar:
+        if cookie.expires == 0:
+            cookie.expires, cookie.discard = None, True
     return jar
 
 
