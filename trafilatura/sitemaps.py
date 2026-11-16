@@ -31,9 +31,7 @@ SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
 XHTML_NAMESPACE = "http://www.w3.org/1999/xhtml"
 # sitemaps.org (http or https, with or without a trailing slash) and the legacy Google namespaces
 SITEMAP_NAMESPACE_REGEX = re.compile(r"https?://(?:www\.)?(?:sitemaps\.org|google\.com)/schemas/sitemap/[\d.]+/?$")
-XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
 SCHEME_AND_WWW = re.compile(r"^https?://(?:www\.)?", re.IGNORECASE)
-HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(
     r"(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\."
 )
@@ -103,30 +101,30 @@ class SitemapObject:
         self.content = (fetch_url(self.current_url, config=self.config) or "").lstrip(LEADING_SPACE)
         self.seen.add(self.current_url)
 
-    def handle_link(self, link: str, *, is_sitemap: bool | None = None) -> None:
+    def handle_link(self, link: str, *, is_sitemap: bool | None = None) -> bool:
         """Examine a link and determine if it's valid and if it leads to
         a sitemap or a web page."""
         if link == self.current_url:  # safety check
-            return
+            return False
         # fix, check, clean and normalize
         link = safe_relative_url(self.base_url, link)
         # filter before cleaning: slash-stripping can hide language markers
         if not lang_filter(link, self.target_lang):
-            return
+            return False
         link = clean_url(link, self.target_lang) or ""
         if not link:
-            return
+            return False
 
         newdomain = extract_domain(link, fast=True)
         if newdomain is None:
             LOGGER.error("couldn't extract domain: %s", link)
-            return
+            return False
 
         # don't take links from another domain and make an exception for main platforms
         # also bypass: subdomains vs. domains
         if not self.external and not WHITELISTED_PLATFORMS.search(newdomain) and not is_similar_domain(self.domain, newdomain):
             LOGGER.warning("link discarded, diverging domain names: %s %s", self.domain, newdomain)
-            return
+            return False
 
         if is_sitemap is None:
             is_sitemap = bool(DETECT_SITEMAP_LINK.search(link))
@@ -134,8 +132,9 @@ class SitemapObject:
             self.sitemap_urls.append(link)
         else:
             self.urls.append(link)
+        return True
 
-    def extract_links(self, regex: Pattern[str], index: int, handler: Callable[[str], None]) -> None:
+    def extract_links(self, regex: Pattern[str], index: int, handler: Callable[[str], object]) -> None:
         "Extract links from the content using pre-defined regex, index and handler."
         for match in (m[index] for m in islice(regex.finditer(self.content), MAX_LINKS)):
             handler(match)
@@ -146,42 +145,23 @@ class SitemapObject:
             self.current_url,
         )
 
-    def extract_sitemap_langlinks(self) -> None:
-        "Extract links corresponding to a given target language."
-        if "hreflang=" not in self.content:
-            return
-
-        lang_regex = re.compile(rf"hreflang=[\"']({re.escape(self.target_lang or '')}.*?|x-default)[\"']", re.DOTALL)
-
-        def handle_lang_link(attrs: str) -> None:
-            "Examine language code attributes."
-            if lang_regex.search(attrs):
-                lang_match = HREFLANG_REGEX.search(attrs)
-                if lang_match:
-                    self.handle_link(lang_match[1])
-
-        self.extract_links(XHTML_REGEX, 0, handle_lang_link)
-
-    def select_lang_link(self, entry: etree._Element, location: str) -> str:
+    def lang_candidates(self, entry: etree._Element, location: str) -> list[str]:
         if self.target_lang is None:
-            return location
+            return [location]
         lang = self.target_lang.lower()
-        candidates: dict[int, str] = {}
+        ranked: list[list[str]] = [[], [], []]
         for link in entry.iterchildren(f"{{{XHTML_NAMESPACE}}}link"):
             hreflang = (link.get("hreflang") or "").strip().lower().replace("_", "-")
             href = (link.get("href") or "").strip()
             if not href:
                 continue
             if hreflang == lang:
-                rank = 0
+                ranked[0].append(href)
             elif hreflang.startswith(f"{lang}-"):
-                rank = 1
+                ranked[1].append(href)
             elif hreflang == "x-default":
-                rank = 2
-            else:
-                continue
-            candidates.setdefault(rank, href)
-        return candidates[min(candidates)] if candidates else location
+                ranked[2].append(href)
+        return list(dict.fromkeys([*ranked[0], *ranked[1], *ranked[2], location]))
 
     def extract_sitemap_links(self) -> None:
         "Extract locations in the sitemap namespace (or legacy unnamespaced XML)."
@@ -213,9 +193,12 @@ class SitemapObject:
                     is_sitemap = True
                 elif parent_tag in url_tags:
                     is_sitemap = False
-                if parent is not None and is_sitemap is not None:
-                    location = self.select_lang_link(parent, location)
-                self.handle_link(location, is_sitemap=is_sitemap)
+                if parent is None or is_sitemap is None:
+                    self.handle_link(location, is_sitemap=is_sitemap)
+                    continue
+                for candidate in self.lang_candidates(parent, location):
+                    if self.handle_link(candidate, is_sitemap=is_sitemap):
+                        break
 
     def process(self) -> None:
         "Download a sitemap and extract the links it contains."
