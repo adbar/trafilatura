@@ -179,7 +179,7 @@ def _load_cookie_file(filename: str) -> MozillaCookieJar:
         LOGGER.error("cannot load cookie file: %s %s", filename, err)
     # an expiry of 0 marks a session cookie, Python < 3.13 reads it as expired
     for cookie in jar:
-        if cookie.expires == 0:
+        if cookie.expires == 0:  # pragma: no cover
             cookie.expires, cookie.discard = None, True
     return jar
 
