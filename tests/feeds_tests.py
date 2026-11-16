@@ -159,6 +159,35 @@ def test_atom_related_link():
     assert find_links(feed, params) == ["https://news.example.net/story", "https://example.org/linked/2026/10/29/story"]
 
 
+@pytest.mark.parametrize("prefix", ["a", "atom", "news-feed", "a.b"])
+@pytest.mark.parametrize("declaration", ["", XMLDECL])
+def test_atom_namespace_prefixes(prefix, declaration):
+    "Namespace prefixes must not hide Atom entry URLs or bypass link filtering."
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = (
+        f'{declaration}<{prefix}:feed xmlns:{prefix}="http://www.w3.org/2005/Atom">'
+        f'<{prefix}:link rel="self" href="https://example.org/updates"/>'
+        f'<{prefix}:entry><{prefix}:link rel="alternate" href="https://example.org/article"/>'
+        f"<{prefix}:link rel='related' href='https://example.org/related'/>"
+        f'<{prefix}:link rel="replies" href="https://example.org/comments"/>'
+        f'<{prefix}:link rel="enclosure" href="https://example.org/audio.mp3"/>'
+        f'<{prefix}:link type="application/atom+xml" href="https://example.org/other-feed"/>'
+        f"</{prefix}:entry></{prefix}:feed>"
+    )
+    assert extract_links(feed, params) == ["https://example.org/article", "https://example.org/related"]
+
+
+@pytest.mark.parametrize("suffix", ["</a:entry></a:feed>", ""])
+def test_atom_prefixed_tolerant_feed(suffix):
+    "Keep prefix matching for undefined HTML entities and truncated downloads."
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = (
+        '<a:feed xmlns:a="http://www.w3.org/2005/Atom"><a:title>News&nbsp;</a:title>'
+        '<a:entry><a:link href="https://example.org/article"/>' + suffix
+    )
+    assert extract_links(feed, params) == ["https://example.org/article"]
+
+
 def test_rss_extraction():
     """Test link extraction from a RSS feed"""
     params = FeedParameters("http://example.org/", "example.org", "")
