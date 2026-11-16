@@ -255,6 +255,7 @@ _UI_META_CLASS_TOKENS = (
     "viewport",
     "overlay",
 )
+_MEDIA_PLAYER_CLASS_TOKENS = ("[Aa]udio-?[Pp]layer",)
 _MISC_CLASS_TOKENS = ("options", "expand", "obfuscated", "blurred")
 _LEGACY_SITE_CLASS_TOKENS = ("mol-factbox", "yin", "zlylin", "nfoline")
 
@@ -289,6 +290,7 @@ _OVERALL_DISCARD_CLASS_TOKENS = (
     + _CONSENT_CLASS_TOKENS
     + _RELATED_CLASS_TOKENS
     + _UI_META_CLASS_TOKENS
+    + _MEDIA_PLAYER_CLASS_TOKENS
     + _MISC_CLASS_TOKENS
     + _LEGACY_SITE_CLASS_TOKENS
 )
