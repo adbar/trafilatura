@@ -281,6 +281,12 @@ def handle_other_elements(element: _Element, potential_tags: set[str], options: 
             _log_event("discarding element", element.tag, element.text)
         return None
 
+    # a wrapper div with children and no text of its own is discarded right
+    # after anyway; letting it reach handle_textnode() would let the dedup
+    # check count its children's text as a duplicate of the paragraph (#1146)
+    if len(element) > 0 and not text_chars_test(element.text):
+        return None
+
     processed_element = handle_textnode(element, options, comments_fix=False, preserve_spaces=True)
     if processed_element is None or not text_chars_test(processed_element.text):
         return None
