@@ -162,10 +162,7 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
 
     # RSS first when the root says so: the HTML of its items can contain <link .../> tags
     if "<link>" in feed_string and has_rss_root(feed_string):
-        return [
-            CHAR_REF.sub(lambda ref: unescape(ref[0]), m[1].strip())
-            for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)
-        ]
+        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)]
 
     # Atom
     if LINK_ATTRS.search(feed_string):
@@ -177,15 +174,12 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
             # link blogs put the external link in rel="alternate" and the post itself in rel="related"
             rel = attributes.get("rel", "").strip().lower()
             if attributes.get("href") and rel in ("", "alternate", "related") and "atom+xml" not in attributes.get("type", ""):
-                links.append(CHAR_REF.sub(lambda ref: unescape(ref[0]), attributes["href"]))
+                links.append(attributes["href"])
         return links
 
     # RSS
     if "<link>" in feed_string:
-        return [
-            CHAR_REF.sub(lambda ref: unescape(ref[0]), m[1].strip())
-            for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)
-        ]
+        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)]
 
     return []
 
@@ -196,7 +190,7 @@ def extract_links(feed_string: str, params: FeedParameters) -> list[str]:
         LOGGER.debug("Empty feed: %s", params.domain)
         return []
 
-    feed_links = find_links(feed_string.strip(), params)
+    feed_links = [CHAR_REF.sub(lambda m: unescape(m[0]), link) for link in find_links(feed_string.strip(), params)]
 
     output_links = [link for link in handle_link_list(feed_links, params) if link != params.ref and link.count("/") > 2]
 
