@@ -711,3 +711,34 @@ def test_robots():
     # rules = spider.parse_robots(robots_url, "User-agent: *\nAllow: /public")
     # assert rules is not None and rules.can_fetch("*", "https://example.org/public")
     # assert not rules.can_fetch("*", "https://example.org/private")
+
+
+@pytest.mark.parametrize(
+    "robots, todo, expected",
+    [
+        ("User-agent: *\nDisallow: /", None, ["/robots.txt"]),
+        ("User-agent: *\nDisallow: /b", ["https://example.org/b"], ["/robots.txt"]),
+        ("", None, ["/robots.txt", "/", "/a"]),
+    ],
+)
+def test_focused_crawler_politeness(robots, todo, expected):
+    "The crawler honors robots.txt for the start page and todo URLs, and waits between all requests."
+    log = []
+
+    def fake_fetch(url, **_kwargs):
+        log.append(url.removeprefix("https://example.org") or "/")
+        if url.endswith("robots.txt"):
+            return robots
+        return Response(b'<html><body><a href="/a">a</a></body></html>', 200, url)
+
+    with (
+        patch.object(spider, "URL_STORE", UrlStore()),
+        patch.object(spider, "fetch_url", side_effect=fake_fetch),
+        patch.object(spider, "fetch_response", side_effect=fake_fetch),
+        patch.object(spider, "sleep", side_effect=lambda _: log.append("sleep")),
+    ):
+        spider.focused_crawler("https://example.org", max_seen_urls=2, todo=todo)
+
+    assert [entry for entry in log if entry != "sleep"] == expected
+    requests = "".join("s" if entry == "sleep" else "r" for entry in log)
+    assert "rr" not in requests
