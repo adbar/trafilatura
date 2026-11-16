@@ -9,6 +9,7 @@ import re
 import sys
 import zlib
 from collections.abc import Callable, Iterable, Iterator, Mapping
+from copy import copy
 from functools import lru_cache
 from itertools import islice
 from typing import TYPE_CHECKING, Any, Literal, TypeAlias, cast
@@ -55,7 +56,7 @@ except ImportError:
 
 from charset_normalizer import from_bytes
 from courlan import fix_relative_urls, get_base_url
-from lxml.etree import ElementDefaultClassLookup, _Element
+from lxml.etree import Comment, ElementDefaultClassLookup, ProcessingInstruction, _Element, strip_tags
 from lxml.html import HtmlComment, HtmlElement, HtmlEntity, HTMLParser, HtmlProcessingInstruction, fromstring
 
 # response types
@@ -420,6 +421,21 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
     # repair a mis-nested implied head (flow content parsed into <head>)
     if tree is not None:
         _relocate_head_content(tree)
+    return tree
+
+
+def copy_clean_tree(tree: HtmlElement) -> HtmlElement:
+    """Copy a tree given by the caller and clean it like load_html() does for a string:
+    comments, processing instructions and invalid XML characters are removed (#1144)."""
+    tree = copy(tree)
+    strip_tags(tree, Comment, ProcessingInstruction)  # tails are kept
+    # one check on the whole text, the characters are rare
+    if INVALID_XML_CHARS.search("".join(tree.itertext())):
+        for elem in tree.iter():
+            if elem.text:
+                elem.text = INVALID_XML_CHARS.sub("", elem.text)
+            if elem.tail:
+                elem.tail = INVALID_XML_CHARS.sub("", elem.tail)
     return tree
 
 
