@@ -5502,6 +5502,7 @@ def _tree_page(body):
         "<ul><li>Item <!-- note --> one</li><li>Item two</li></ul>",
         "<blockquote>Quoted <!-- note --> words.</blockquote>",
         "<p>Some text.\x0b</p>",
+        "<p><b>Some</b> te\x0bxt.</p>",
         "<p>Some\x0b text.</p><p>More￾ text.</p>",
         "<pre><code>a = 1\x0b</code></pre>",
     ],
