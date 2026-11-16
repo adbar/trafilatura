@@ -13,7 +13,7 @@ from urllib.robotparser import RobotFileParser
 import pytest
 from courlan import UrlStore
 
-from trafilatura import spider  # for global variables
+from trafilatura import downloads, spider  # for global variables
 from trafilatura.utils import LANGID_FLAG, Response
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -131,13 +131,60 @@ def test_meta_redirections():
 )
 def test_meta_refresh_content_parsing(htmlstring, homepage, expected_homepage):
     """Test parsing of meta-refresh content values."""
-    with patch.object(spider, "fetch_url", return_value="<html></html>"):
+    with patch.object(
+        spider,
+        "fetch_response",
+        side_effect=lambda url, **kwargs: Response(b"<html></html>", 200, url),
+    ):
         htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
     assert homepage2 == expected_homepage
     if expected_homepage == homepage:
         assert htmlstring2 == htmlstring
     else:
         assert htmlstring2 != htmlstring
+
+
+@pytest.mark.parametrize(
+    "refresh,expected_log,expected_todo",
+    [
+        # refresh target disallowed by robots.txt is not fetched
+        ("0; url=/private/", ["/robots.txt", "wait", "/"], ["https://example.org/a"]),
+        # the crawl delay is respected before fetching the refresh target
+        ("0; url=/en/", ["/robots.txt", "wait", "/", "wait", "/en/"], ["https://example.org/a"]),
+        # a refresh to the page itself does not fetch it again
+        ("300; url=/", ["/robots.txt", "wait", "/"], ["https://example.org/a"]),
+        # a refresh target redirected to another site: waited for, its links not queued
+        ("0; url=/go", ["/robots.txt", "wait", "/", "wait", "/go"], []),
+    ],
+    ids=["robots-disallowed", "crawl-delay", "self-refresh", "cross-site-redirect"],
+)
+def test_meta_refresh_on_start_page(refresh, expected_log, expected_todo):
+    """A meta refresh on the start page must respect robots.txt and the wait."""
+
+    def crawl(refresh):
+        log = []
+
+        def fetch(url, decode=False, **_):
+            log.append(url[19:])
+            page = (
+                "User-agent: *\nDisallow: /private/"
+                if "robots" in url
+                else f'<meta http-equiv="refresh" content="{refresh}"><a href="/a">a</a>'
+            )
+            response = Response(page.encode(), 200, "https://other.org/x" if url.endswith("/go") else url)
+            response.decode_data(decode)
+            return response
+
+        with (
+            patch.object(spider, "URL_STORE", UrlStore()),
+            patch.object(spider, "fetch_response", side_effect=fetch),
+            patch.object(downloads, "fetch_response", side_effect=fetch),
+            patch.object(spider, "sleep", side_effect=lambda _: log.append("wait")),
+        ):
+            todo, _ = spider.focused_crawler("https://example.org", max_seen_urls=1)
+        return log, todo
+
+    assert crawl(refresh) == (expected_log, expected_todo)
 
 
 def test_process_links():
