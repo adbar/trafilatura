@@ -10,7 +10,6 @@ import sys
 import zlib
 from collections.abc import Callable, Iterable, Iterator, Mapping
 from copy import copy
-from functools import lru_cache
 from itertools import islice
 from typing import TYPE_CHECKING, Any, Literal, TypeAlias, cast
 from unicodedata import normalize
@@ -63,7 +62,25 @@ from lxml.html import HtmlComment, HtmlElement, HtmlEntity, HTMLParser, HtmlProc
 from urllib3.response import HTTPResponse
 
 if TYPE_CHECKING:  # pragma: no cover
+    from typing import ParamSpec, Protocol, TypeVar
+
     from .settings import Document, Extractor
+
+    _P = ParamSpec("_P")
+    _R = TypeVar("_R")
+    _R_co = TypeVar("_R_co", covariant=True)
+
+    class _CachedFunction(Protocol[_P, _R_co]):
+        "Function wrapped by lru_cache, keeping its signature for type checkers."
+
+        def __call__(self, *args: _P.args, **kwargs: _P.kwargs) -> _R_co: ...
+
+        def cache_clear(self) -> None: ...
+
+    # functools.lru_cache hides the signature of the decorated function
+    def lru_cache(maxsize: int | None = 128, typed: bool = False) -> Callable[[Callable[_P, _R]], _CachedFunction[_P, _R]]: ...
+else:
+    from functools import lru_cache
 
 
 class Response:
@@ -486,12 +503,11 @@ def line_processing(line: str, preserve_space: bool = False, trailing_space: boo
     and invalid XML characters on line level"""
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     # unique code spaces
-    new_line: str | None = remove_control_characters(
-        line.replace("&#13;", "\r").replace("&#10;", "\n").replace("&nbsp;", "\u00a0")
-    )
+    cleaned = remove_control_characters(line.replace("&#13;", "\r").replace("&#10;", "\n").replace("&nbsp;", "\u00a0"))
+    new_line: str | None = cleaned
     if not preserve_space:
         # normalize space characters (including newlines and Unicode spaces)
-        new_line = trim(new_line)
+        new_line = trim(cleaned)
         # prune empty lines
         if not new_line:
             new_line = None

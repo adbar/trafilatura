@@ -313,7 +313,7 @@ def handle_textnode(
     # lb bypass
     if not comments_fix and elem.tag == "lb":
         if not preserve_spaces:
-            elem.tail = trim(elem.tail) or None
+            elem.tail = trim(elem.tail or "") or None
         # no textfilter/dedup for lb, unlike process_node: the two probes are not interchangeable
         return elem
 
@@ -326,7 +326,7 @@ def handle_textnode(
 
     # trim
     if not preserve_spaces:
-        elem.text = trim(elem.text) or None
+        elem.text = trim(elem.text or "") or None
         if elem.tail:
             elem.tail = trim(elem.tail) or None
 
@@ -342,7 +342,7 @@ def process_node(elem: _Element, options: Extractor) -> _Element | None:
         return None
 
     # trim
-    elem.text, elem.tail = trim(elem.text) or None, trim(elem.tail) or None
+    elem.text, elem.tail = trim(elem.text or "") or None, trim(elem.tail or "") or None
 
     # adapt content string
     if elem.tag != "lb" and not elem.text and elem.tail and len(elem) == 0:
