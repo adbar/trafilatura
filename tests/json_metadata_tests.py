@@ -1522,3 +1522,28 @@ def test_json_article_image(image):
 def test_normalize_authors_datelines(byline, expected):
     "A dateline in a byline goes, with a one-word region after its comma; the people after it stay."
     assert normalize_authors(None, byline) == expected
+
+
+@pytest.mark.parametrize(
+    ("byline", "expected"),
+    [
+        ("Article written by Surname Name", "Surname Name"),
+        ("Reviewed by Surname Name", "Surname Name"),
+        ("Photos by Surname Name", "Surname Name"),
+        ("This article was written by Jane Doe", "Jane Doe"),
+        ("View all posts by Jane Doe", "Jane Doe"),
+        ("WRITTEN BY Jane Doe", "Jane Doe"),
+        ("By Jane Doe", "Jane Doe"),
+        ("words Jane Doe", "Jane Doe"),
+        ("von Jane Doe", "Jane Doe"),
+        ("From Jane Doe", "Jane Doe"),
+        ("Por Jane Doe", "Jane Doe"),
+        ("par Jean Dupont", "Jean Dupont"),
+        ("Door Jan Jansen", "Jan Jansen"),
+        ("Jane Doe and Photos by John Roe", "Jane Doe; John Roe"),
+        ("By", None),
+    ],
+)
+def test_normalize_authors_credit_prefixes(byline, expected):
+    "Credit prefixes are removed without turning their words into extra authors."
+    assert normalize_authors(None, byline) == expected

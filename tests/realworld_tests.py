@@ -148,6 +148,8 @@ MOCK_PAGES = {
     "https://www.mercurynews.com/2023/01/16/letters-1119/": "mercurynews.com.2023.01.16.letters-1119.html",
     "http://www.pcgamer.com/2012/08/09/skyrim-part-1/": "pcgamer.com.skyrim.html",
     "https://www.mirror.co.uk/news/world-news/mum-toddler-2-migrant-camp-35001555": "mirror.co.uk.migrant-camp.html",
+    "https://www.organicgardener.com.au/grow-your-own-pepitas/": "organicgardener.com.au.pepitas.html",
+    "https://www.aol.com/lifestyle/pamela-anderson-finally-found-freedom-160000320.html": "aol.com.pamela-anderson.html",
 }
 # '': '', \
 
@@ -1229,3 +1231,13 @@ def test_author_dateline():
     url = "https://www.mirror.co.uk/news/world-news/mum-toddler-2-migrant-camp-35001555"
     # meta and JSON-LD author: "Matthew Young in Loon-Plage, France"
     assert extract_metadata(load_mock_page_meta(url)).author == "Matthew Young"
+
+
+def test_author_credit_prefixes():
+    "A few words before 'by' credit the person, they are not part of the name"
+    url = "https://www.organicgardener.com.au/grow-your-own-pepitas/"
+    # byline block: "Story by" followed by the author's name
+    assert extract_metadata(load_mock_page_meta(url)).author == "Linda Cockburn"
+    url = "https://www.aol.com/lifestyle/pamela-anderson-finally-found-freedom-160000320.html"
+    # byline and JSON-LD author: "Story By Lydia Slater, Photographs by Pamela Hanson"
+    assert extract_metadata(load_mock_page_meta(url)).author == "Lydia Slater; Pamela Hanson"
