@@ -21,7 +21,6 @@ import logging
 import re
 from collections import Counter
 from dataclasses import dataclass
-from functools import lru_cache
 from math import sqrt
 from operator import attrgetter
 from typing import Any
@@ -29,7 +28,7 @@ from typing import Any
 from lxml.etree import tostring
 from lxml.html import HtmlElement, fragment_fromstring
 
-from .utils import load_html, trim
+from .utils import load_html, lru_cache, trim
 
 LOGGER = logging.getLogger(__name__)
 

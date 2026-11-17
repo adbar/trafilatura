@@ -75,7 +75,7 @@ def _wraps_inline(element: _Element) -> bool:
     return len(element) > 0 and (element.tag == "ref" or any(c.tag in INLINE_CARRIED for c in element))
 
 
-def _log_event(msg: str, tag: object, text: bytes | str | None) -> None:
+def _log_event(msg: str, tag: object, text: str | None) -> None:
     "Format extraction event for debugging purposes."
     LOGGER.debug("%s: %s %s", msg, tag, trim(text or "") or "None")
 
@@ -354,7 +354,7 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
     # and, sitting between two copies of a paragraph, also defeated the adjacent dedup
     if text_chars_test(processed_element.text):
         return processed_element
-    _log_event("discarding element:", "p", tostring(processed_element))
+    _log_event("discarding element:", "p", tostring(processed_element, encoding="unicode"))
     return None
 
 

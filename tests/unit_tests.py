@@ -162,6 +162,8 @@ def test_trim():
     """test string trimming"""
     assert trim("	Test  ") == "Test"
     assert trim("\t\tTest  Test\r\n") == "Test Test"
+    # input that is not a string gives an empty string
+    assert trim(None) == ""  # type: ignore[arg-type]
     my_elem = etree.Element("body")
     my_elem.text = "Test Text"
     assert textfilter(my_elem) is False
