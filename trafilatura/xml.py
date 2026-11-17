@@ -52,6 +52,10 @@ TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 NEWLINE_ELEMS = {"graphic", "head", "lb", "list", "p", "quote", "row", "table"}
 SPECIAL_FORMATTING = {"code", "del", "head", "hi", "ref", "item", "cell"}
 WITH_ATTRIBUTES = {"cell", "row", "del", "graphic", "head", "hi", "item", "list", "ref"}
+# attributes Trafilatura sets itself, kept on the elements above; source
+# attributes (class, id, onclick, ...) are dropped, a malformed one would
+# otherwise break XML serialization, see #1158
+XML_VALID_ATTRS = {"alt", "rend", "role", "src", "target", "title"}
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
 META_ATTRIBUTES = [
@@ -236,6 +240,9 @@ def clean_attributes(tree: _Element) -> _Element:
     """Remove unnecessary attributes."""
     for elem in tree.iter("*"):
         if elem.tag in WITH_ATTRIBUTES:
+            # keep only the attributes Trafilatura sets itself
+            for attribute in [a for a in elem.attrib if a not in XML_VALID_ATTRS]:
+                elem.attrib.pop(attribute)
             continue
         # keep the language hint of code blocks
         language = elem.get("rend") if elem.tag == "code" else None
