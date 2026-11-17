@@ -736,6 +736,75 @@ def test_partial_config_headers():
     assert _determine_headers(ConfigParser()) == DEFAULT_HEADERS
 
 
+@pytest.mark.parametrize("use_pycurl", [False, True] if dl.HAS_PYCURL else [False])
+@pytest.mark.parametrize(
+    "lines, path, cookie, expected",
+    [
+        # only the cookies matching the domain and the path are sent
+        (
+            ["127.0.0.1\tFALSE\t/\tFALSE\t0\tsession\tabc", ".example.org\tTRUE\t/\tFALSE\t0\tother\tno"],
+            "/page",
+            "",
+            "session=abc",
+        ),
+        (["127.0.0.1\tFALSE\t/private\tFALSE\t0\tsession\tabc"], "/page", "", ""),
+        (["127.0.0.1\tFALSE\t/private\tFALSE\t0\tsession\tabc"], "/private/page", "", "session=abc"),
+        # expired cookies and secure cookies over HTTP are left out
+        (["127.0.0.1\tFALSE\t/\tFALSE\t1\tsession\tabc"], "/page", "", ""),
+        (["127.0.0.1\tFALSE\t/\tTRUE\t0\tsession\tabc"], "/page", "", ""),
+        # the cookie file takes precedence over COOKIE
+        (["127.0.0.1\tFALSE\t/\tFALSE\t0\tsession\tabc"], "/page", "lang=en", "session=abc"),
+        # a missing cookie file sends no cookie
+        (None, "/page", "lang=en", ""),
+    ],
+)
+def test_cookie_file(lines, path, cookie, expected, use_pycurl, monkeypatch, tmp_path):
+    "Cookies from a Netscape cookie file are sent with matching requests."
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    class _Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            body = ("received cookies: " + (self.headers.get("Cookie") or "")).encode()
+            self.send_response(200)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *_args):
+            pass
+
+    cookiefile = tmp_path / "cookies.txt"
+    if lines is not None:
+        cookiefile.write_text("# Netscape HTTP Cookie File\n" + "\n".join(lines) + "\n", encoding="utf-8")
+    config = use_config()
+    config.set("DEFAULT", "SSRF_PROTECTION", "off")
+    config.set("DEFAULT", "COOKIE", cookie)
+    config.set("DEFAULT", "COOKIE_FILE", str(cookiefile))
+    monkeypatch.setattr(dl, "HAS_PYCURL", use_pycurl)
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        result = fetch_url(f"http://127.0.0.1:{server.server_port}{path}", config=config)
+    finally:
+        server.shutdown()
+        server.server_close()
+    assert result == f"received cookies: {expected}"
+
+
+@pytest.mark.parametrize("use_pycurl", [False, True] if dl.HAS_PYCURL else [False])
+def test_cookie_file_malformed_url(use_pycurl, monkeypatch, tmp_path):
+    "A malformed URL is handled as without a cookie file."
+    cookiefile = tmp_path / "cookies.txt"
+    cookiefile.write_text("# Netscape HTTP Cookie File\n", encoding="utf-8")
+    config = use_config()
+    config.set("DEFAULT", "COOKIE_FILE", str(cookiefile))
+    monkeypatch.setattr(dl, "HAS_PYCURL", use_pycurl)
+    assert fetch_url("http://[::1/page", config=config) is None
+
+
 def test_parse_curl_headers():
     "Only the last response of a redirect chain should be kept."
     raw = (
