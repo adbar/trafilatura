@@ -6,6 +6,7 @@ import json
 import logging
 import re
 from configparser import ConfigParser
+from html import unescape
 from itertools import islice
 from time import sleep
 
@@ -49,6 +50,7 @@ FEED_TYPES = {
 }
 
 FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
+CHAR_REF = re.compile(r"&#?\w+;")
 RSS_ROOT = re.compile(r"<(?:rss|(?:\w+:)?RDF)\b")
 
 LINK_ATTRS = re.compile(r"""<link\s+(?:[^>"']|"[^"]*"|'[^']*')*["']?/?>""")
@@ -188,7 +190,7 @@ def extract_links(feed_string: str, params: FeedParameters) -> list[str]:
         LOGGER.debug("Empty feed: %s", params.domain)
         return []
 
-    feed_links = find_links(feed_string.strip(), params)
+    feed_links = [CHAR_REF.sub(lambda m: unescape(m[0]), link) for link in find_links(feed_string.strip(), params)]
 
     output_links = [link for link in handle_link_list(feed_links, params) if link != params.ref and link.count("/") > 2]
 
