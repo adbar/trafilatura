@@ -114,7 +114,13 @@ class CrawlParameters:
         )
 
 
-def refresh_detection(htmlstring: str, homepage: str, config: ConfigParser = DEFAULT_CONFIG) -> tuple[str | None, str | None]:
+def refresh_detection(
+    htmlstring: str,
+    homepage: str,
+    config: ConfigParser = DEFAULT_CONFIG,
+    rules: RobotFileParser | None = None,
+    crawl_delay: float = 0,
+) -> tuple[str | None, str | None]:
     "Check if there could be a redirection by meta-refresh tag."
     if "refresh" not in htmlstring.lower():
         return htmlstring, homepage
@@ -140,18 +146,31 @@ def refresh_detection(htmlstring: str, homepage: str, config: ConfigParser = DEF
         return htmlstring, homepage
     # relative URL, adapt using the page being processed
     url2 = urljoin(homepage, url2)
-    # second fetch
-    newhtmlstring = fetch_url(url2, config=config)
-    if newhtmlstring is None:
+    # a refresh to the page itself would fetch it a second time
+    if url2.rstrip("/") == homepage.rstrip("/"):
+        LOGGER.info("refresh to the same page, skipping: %s", url2)
+        return htmlstring, homepage
+    # robots.txt rules only apply to URLs on the same site, as
+    # can_fetch() ignores the host
+    if rules and is_same_site(get_base_url(homepage), get_base_url(url2)) and not rules.can_fetch(USER_AGENT, url2):
+        LOGGER.info("refresh target disallowed by robots.txt: %s", url2)
+        return htmlstring, homepage
+    # wait like between two regular requests, then fetch the target
+    # and return its final URL, after HTTP redirects
+    sleep(crawl_delay)
+    response = fetch_response(url2, decode=False, config=config)
+    if not response or not response.data or response.status != 200:
         LOGGER.warning("failed redirect: %s", url2)
         return None, None
-    LOGGER.info("successful redirect: %s", url2)
-    return newhtmlstring, url2
+    LOGGER.info("successful redirect: %s", response.url)
+    return decode_file(response.data), response.url
 
 
 def probe_alternative_homepage(
     homepage: str,
     config: ConfigParser = DEFAULT_CONFIG,
+    rules: RobotFileParser | None = None,
+    crawl_delay: float = 0,
 ) -> tuple[str | None, str | None, str | None]:
     "Check if the homepage is redirected and return appropriate values."
     response = fetch_response(homepage, decode=False, config=config)
@@ -166,7 +185,7 @@ def probe_alternative_homepage(
     htmlstring = decode_file(response.data)
 
     # is there a meta-refresh on the page?
-    new_htmlstring, new_homepage = refresh_detection(htmlstring, homepage, config)
+    new_htmlstring, new_homepage = refresh_detection(htmlstring, homepage, config, rules, crawl_delay)
     if new_homepage is None:  # malformed or malicious content
         return None, None, None
 
@@ -342,7 +361,9 @@ def crawl_page(
 
     if initial:
         # probe and process homepage, only count it if it could be fetched
-        htmlstring, homepage, new_base_url = probe_alternative_homepage(url, params.config)
+        htmlstring, homepage, new_base_url = probe_alternative_homepage(
+            url, params.config, params.rules, get_crawl_delay(params)
+        )
         if htmlstring and homepage and new_base_url:
             params.i += 1
             URL_STORE.add_urls([homepage], visited=True)

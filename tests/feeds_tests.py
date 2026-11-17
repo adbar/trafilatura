@@ -534,3 +534,16 @@ def test_cli_behavior(capsys):
         with pytest.raises(SystemExit) as exc:
             main()
     assert exc.value.code == 1
+
+
+@pytest.mark.parametrize("entity", ["&#38;", "&#038;", "&#x26;", "&amp;", "&"])
+def test_feed_links_decode_terminated_references(entity):
+    params = FeedParameters("https://example.org", "example.org", "")
+    encoded = f"https://example.org/article?p=1{entity}section=fr"
+    feeds = [
+        f'<feed><entry><link href="{encoded}"/></entry></feed>',
+        f"<rss><channel><item><link>{encoded}</link></item></channel></rss>",
+        f"{XMLDECL}<link>{encoded}</link>",
+    ]
+    for feed in feeds:
+        assert extract_links(feed, params) == ["https://example.org/article?p=1&section=fr"]

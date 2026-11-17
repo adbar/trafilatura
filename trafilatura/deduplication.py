@@ -5,7 +5,7 @@ import string
 import unicodedata
 from collections import OrderedDict
 from difflib import SequenceMatcher
-from functools import cache, lru_cache
+from functools import cache
 from hashlib import blake2b
 from operator import add
 from threading import RLock
@@ -14,7 +14,7 @@ from typing import Any
 from lxml.etree import _Element
 
 from .settings import LRU_SIZE, Extractor
-from .utils import trim
+from .utils import lru_cache, trim
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
