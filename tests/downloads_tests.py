@@ -794,6 +794,17 @@ def test_cookie_file(lines, path, cookie, expected, use_pycurl, monkeypatch, tmp
     assert result == f"received cookies: {expected}"
 
 
+@pytest.mark.parametrize("use_pycurl", [False, True] if dl.HAS_PYCURL else [False])
+def test_cookie_file_malformed_url(use_pycurl, monkeypatch, tmp_path):
+    "A malformed URL is handled as without a cookie file."
+    cookiefile = tmp_path / "cookies.txt"
+    cookiefile.write_text("# Netscape HTTP Cookie File\n", encoding="utf-8")
+    config = use_config()
+    config.set("DEFAULT", "COOKIE_FILE", str(cookiefile))
+    monkeypatch.setattr(dl, "HAS_PYCURL", use_pycurl)
+    assert fetch_url("http://[::1/page", config=config) is None
+
+
 def test_parse_curl_headers():
     "Only the last response of a redirect chain should be kept."
     raw = (

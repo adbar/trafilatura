@@ -11,7 +11,7 @@ import socket
 from collections.abc import Callable, Generator
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from configparser import ConfigParser
-from functools import lru_cache, partial
+from functools import partial
 from http.cookiejar import LoadError, MozillaCookieJar
 from importlib.metadata import version
 from io import BytesIO
@@ -30,6 +30,7 @@ from .utils import (
     Response,
     _capped,
     is_acceptable_length,
+    lru_cache,
     make_chunks,
 )
 
@@ -194,10 +195,14 @@ def _determine_headers(config: ConfigParser, url: str | None = None) -> dict[str
     # a cookie file takes precedence, only cookies matching the URL are sent
     if cookiefile := config.get("DEFAULT", "COOKIE_FILE", fallback="").strip():
         if url:
-            request = Request(url)
-            _load_cookie_file(cookiefile).add_cookie_header(request)
-            if mycookie := request.get_header("Cookie"):
-                headers["Cookie"] = mycookie
+            try:
+                request = Request(url)
+                _load_cookie_file(cookiefile).add_cookie_header(request)
+            except ValueError:  # malformed URL, the request is sent without cookies
+                pass
+            else:
+                if mycookie := request.get_header("Cookie"):
+                    headers["Cookie"] = mycookie
     elif mycookie := config.get("DEFAULT", "COOKIE", fallback=None):
         headers["Cookie"] = mycookie
     return headers
