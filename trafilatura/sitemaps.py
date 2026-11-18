@@ -23,7 +23,7 @@ from lxml import etree
 from .deduplication import is_similar_domain
 from .downloads import fetch_url, is_live_page
 from .settings import DEFAULT_CONFIG, MAX_LINKS, MAX_SITEMAPS_SEEN
-from .utils import safe_relative_url
+from .utils import SCHEME_AND_WWW, normalize_url_key, safe_relative_url  # noqa: F401  (SCHEME_AND_WWW re-exported)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -31,7 +31,6 @@ SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
 # sitemaps.org (http or https, with or without a trailing slash) and the legacy Google namespaces
 SITEMAP_NAMESPACE_REGEX = re.compile(r"https?://(?:www\.)?(?:sitemaps\.org|google\.com)/schemas/sitemap/[\d.]+/?$")
 XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
-SCHEME_AND_WWW = re.compile(r"^https?://(?:www\.)?", re.IGNORECASE)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(
     r"(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\."
@@ -312,7 +311,7 @@ def sitemap_search(
     sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external, sitemap_config)
 
     # A sitemap can use a different scheme or www. form of the same host.
-    prefix = SCHEME_AND_WWW.sub("", urlfilter) if urlfilter is not None else None
+    prefix = normalize_url_key(urlfilter) if urlfilter is not None else None
     # Guesses are fallbacks, while listed and discovered sitemaps are all followed.
     guesses: Iterator[str] = iter(())
     if not sitemap.sitemap_urls:
@@ -325,7 +324,7 @@ def sitemap_search(
             sitemap.current_url = sitemap.sitemap_urls.pop()
         else:
             next_guess = next((guess for guess in guesses if guess not in sitemap.seen), None)
-            if next_guess is None or any(prefix is None or SCHEME_AND_WWW.sub("", u).startswith(prefix) for u in sitemap.urls):
+            if next_guess is None or any(prefix is None or normalize_url_key(u).startswith(prefix) for u in sitemap.urls):
                 break
             sitemap.current_url = next_guess
 
@@ -337,7 +336,7 @@ def sitemap_search(
         sitemap.sitemap_urls = [s for s in sitemap.sitemap_urls if s not in sitemap.seen]
 
     if prefix is not None:
-        sitemap.urls = [u for u in sitemap.urls if SCHEME_AND_WWW.sub("", u).startswith(prefix)]
+        sitemap.urls = [u for u in sitemap.urls if normalize_url_key(u).startswith(prefix)]
     sitemap.urls = filter_urls(sitemap.urls, None)
 
     LOGGER.debug("%s sitemap links found for %s", len(sitemap.urls), domainname)

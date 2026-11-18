@@ -469,6 +469,18 @@ def test_subpage_filter_ignores_scheme_and_www(monkeypatch, search_url, sitemap_
     assert sitemaps.sitemap_search(search_url) == wanted
 
 
+@pytest.mark.parametrize("search_url", ["https://EXAMPLE.ORG/blog", "http://www.EXAMPLE.org/blog"])
+def test_subpage_filter_ignores_host_case(monkeypatch, search_url):
+    "regression #1161: the subpage filter must not depend on host case either"
+    wanted = ["https://example.org/blog/a", "https://example.org/blog/sub/b"]
+    body = "<urlset>" + "".join(f"<url><loc>{u}</loc></url>" for u in [*wanted, "https://example.org/news/c"]) + "</urlset>"
+    # no robots.txt, the standard sitemap location is tried
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: body if url.endswith("/sitemap.xml") else None)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+    assert sitemaps.sitemap_search(search_url) == wanted
+
+
 def test_subpage_filter_keeps_other_hosts_out(monkeypatch):
     "With external links allowed, only the requested host and path are kept."
     urls = [

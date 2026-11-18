@@ -59,6 +59,31 @@ def test_rdf_feed_admission(prefix):
 
 
 @pytest.mark.parametrize(
+    "url",
+    [
+        "https://example.org/blog/",
+        "http://example.org/blog/",
+        "https://www.example.org/blog/",
+        "https://EXAMPLE.ORG/blog/",
+    ],
+)
+def test_find_feed_urls_ignores_url_form(url):
+    "regression #1161: the subpage filter must not depend on how the input URL spells scheme, www. or host case"
+    page = '<html><head><link rel="alternate" type="application/rss+xml" href="/blog/rss"></head></html>'
+    rss = "<rss><channel><item><link>https://example.org/blog/post</link></item></channel></rss>"
+
+    def fetch(url, **_):
+        if url.endswith("/blog/"):
+            return page
+        if url.endswith("/rss"):
+            return rss
+        return ""
+
+    with patch("trafilatura.feeds.fetch_url", side_effect=fetch):
+        assert find_feed_urls(url, sleep_time=0) == ["https://example.org/blog/post"]
+
+
+@pytest.mark.parametrize(
     "source",
     ["<html></html>", "<RDFnotfeed><link>https://example.org/article1</link></RDFnotfeed>", "<!-- unclosed <rdf:RDF>"],
 )

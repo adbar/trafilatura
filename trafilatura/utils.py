@@ -53,8 +53,10 @@ try:
 except ImportError:
     cchardet_detect = None  # type: ignore[assignment]
 
+from urllib.parse import unquote
+
 from charset_normalizer import from_bytes
-from courlan import fix_relative_urls, get_base_url
+from courlan import clean_url, fix_relative_urls, get_base_url
 from lxml.etree import Comment, ElementDefaultClassLookup, ProcessingInstruction, _Element, strip_tags
 from lxml.html import HtmlComment, HtmlElement, HtmlEntity, HTMLParser, HtmlProcessingInstruction, fromstring
 
@@ -470,6 +472,25 @@ def safe_relative_url(baseurl: str, url: str) -> str:
         return fix_relative_urls(baseurl, url)
     except ValueError:
         return ""
+
+
+SCHEME_AND_WWW = re.compile(r"^https?://(?:www\.)?", re.IGNORECASE)
+
+
+def normalize_url_key(url: str) -> str:
+    """Return a comparison key for a URL, ignoring differences in scheme,
+    www. prefix, host case and percent-encoding in the authority (e.g. @
+    vs %40 in userinfo), so that different forms of the same website
+    compare equal. Used for the feed and sitemap subpage filters and to
+    group CLI input URLs per website."""
+    cleaned = clean_url(url)
+    if not cleaned:
+        return ""
+    key = SCHEME_AND_WWW.sub("", cleaned)
+    # percent-encoded characters in the authority must not distinguish
+    # two forms of the same URL, e.g. user@example.org vs user%40example.org
+    authority, sep, rest = key.partition("/")
+    return unquote(authority) + sep + rest
 
 
 # zero-width non-joiner and joiner: needed for Persian, Urdu and Indic

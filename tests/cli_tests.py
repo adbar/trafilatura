@@ -1338,3 +1338,16 @@ def test_discovery_waits_between_urls_of_a_website(tmp_path, seeds, expected):
         cli_utils.cli_discovery(cli.parse_args(["--sitemap", "-i", str(tmp_path / "seeds.txt"), "--parallel", "2"]))
     # websites are processed in parallel, so only the order within a website is fixed
     assert log == expected if "sleep" in expected else sorted(log) == sorted(expected)
+
+
+def test_discovery_groups_url_forms_of_a_website(tmp_path):
+    "regression #1161: example.org and www.example.org are one website, processed one after the other"
+    (tmp_path / "seeds.txt").write_text("https://example.org/en/\nhttps://www.example.org/de/\n", encoding="utf-8")
+    log = []
+    with (
+        patch.object(cli_utils, "sitemap_search", lambda url, **kwargs: log.append(url) or []),
+        patch.object(cli_utils, "sleep", lambda _: log.append("sleep")),
+        patch.object(cli_utils, "url_processing_pipeline", lambda args, store: 0),
+    ):
+        cli_utils.cli_discovery(cli.parse_args(["--sitemap", "-i", str(tmp_path / "seeds.txt"), "--parallel", "2"]))
+    assert log == ["https://example.org/en/", "sleep", "https://www.example.org/de/"]
