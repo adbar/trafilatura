@@ -392,6 +392,11 @@ def bare_extraction(
         options.url = url
     url = options.url
 
+    # count each text only once per extraction, on a copy to leave the caller's options untouched
+    if options.dedup:
+        options = copy(options)
+        options.dedup_seen = set()
+
     try:
         # load the HTML tree
         tree = load_html(filecontent, options.max_file_size)

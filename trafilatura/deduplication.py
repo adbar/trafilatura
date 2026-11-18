@@ -204,8 +204,16 @@ LRU_TEST = LRUCache(maxsize=LRU_SIZE)
 
 
 def duplicate_test(element: _Element, options: Extractor) -> bool:
-    "Check for duplicate text with LRU cache."
+    "Check for duplicate text with LRU cache, each text is counted once per extraction."
     teststring = trim(" ".join(element.itertext()))
     lru = options.dedup if isinstance(options.dedup, LRUCache) else LRU_TEST
-    previous = lru.increment(teststring)
+    seen = options.dedup_seen
+    if seen is None:
+        previous = lru.increment(teststring)
+    elif teststring in seen:
+        # already counted in this extraction: repeat the verdict without counting again
+        previous = lru.get(teststring) - 1
+    else:
+        seen.add(teststring)
+        previous = lru.increment(teststring)
     return len(teststring) > options.min_duplcheck_size and previous > options.max_repetitions
