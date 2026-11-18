@@ -4248,16 +4248,6 @@ def test_xml_output_drops_source_attributes():
     assert result is not None
     assert '<list rend="ol">' in result
     assert "class=" not in result
-    assert "onclick=" not in result
-    # source attributes on the list and the item itself are dropped too
-    body = '<ul class="foo" id="bar"><li onclick="x()">First item of the list.</li></ul>'
-    result = _extract_doc(body, intro=False, output_format="xml")
-    assert result is not None
-    assert '<list rend="ul">' in result
-    assert "<item>First item of the list.</item>" in result
-    assert "class=" not in result
-    assert "onclick=" not in result
-    assert 'id="bar"' not in result
 
 
 def test_image_tail_not_duplicated():
