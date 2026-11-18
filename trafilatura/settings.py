@@ -80,6 +80,7 @@ class Extractor:
         "images",
         "tables",
         "dedup",
+        "dedup_seen",
         "lang",
         # extraction size
         "min_extracted_size",
@@ -156,6 +157,8 @@ class Extractor:
         self.images: bool = images
         self.tables: bool = tables
         self.dedup: bool | LRUCache = dedup
+        # texts already counted in the running extraction, set by bare_extraction()
+        self.dedup_seen: set[str] | None = None
         self.lang: str | None = lang
         self.url: str | None = url
         self.only_with_metadata: bool = only_with_metadata

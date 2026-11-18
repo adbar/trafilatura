@@ -303,3 +303,21 @@ def test_dedup_cache_option():
 
     # the global cache is untouched by scoped runs
     assert extract(doc, deduplicate=True) is not None
+
+
+@pytest.mark.parametrize(
+    "body",
+    [
+        "<p>{a}</p>",  # one paragraph: checked in several places per extraction (#1160)
+        "<p>{a}</p><p>{b}</p><p>{a}</p>",  # a text genuinely repeated within one document
+    ],
+)
+def test_dedup_counted_once_per_extraction(body):
+    "A page seen again is kept MAX_REPETITIONS + 1 times, however often its texts are checked."
+    a = "A paragraph which is long enough to be checked for duplicates and appears on every page. " * 2
+    b = "Another distinct paragraph that is unique to this page and is also quite long enough for checks."
+    doc = f"<html><body><article>{body.format(a=a, b=b)}</article></body></html>"
+    lru = LRUCache()
+    assert [extract(doc, deduplicate=lru) is not None for _ in range(4)] == [True, True, True, False]
+    # the repeated text counts once per extraction
+    assert lru.get(" ".join(a.split())) == 4
