@@ -547,3 +547,33 @@ def test_feed_links_decode_terminated_references(entity):
     ]
     for feed in feeds:
         assert extract_links(feed, params) == ["https://example.org/article?p=1&section=fr"]
+
+
+@pytest.mark.parametrize(
+    "url,head,feed_url,expected",
+    [
+        # links in a feed are relative to the feed
+        ("https://example.org/blog/feed.xml", "", "https://example.org/blog/feed.xml", "https://example.org/blog/post-1"),
+        # feed links on a subpage are relative to the page or to <base href>
+        (
+            "https://example.org/blog/",
+            '<link rel="alternate" type="application/rss+xml" href="feed.xml"/>',
+            "https://example.org/blog/feed.xml",
+            "https://example.org/blog/post-1",
+        ),
+        (
+            "https://example.org/blog/",
+            '<base href="/blog/news/"><link rel="alternate" type="application/rss+xml" href="feed.xml"/>',
+            "https://example.org/blog/news/feed.xml",
+            "https://example.org/blog/news/post-1",
+        ),
+    ],
+)
+def test_find_feed_urls_relative_links(url, head, feed_url, expected):
+    "Relative links are resolved against the page or feed URL, not the host (#382)."
+    pages = {
+        "https://example.org/blog/": f"<html><head>{head}</head><body><p>posts</p></body></html>",
+        feed_url: f'{XMLDECL}<feed xmlns="http://www.w3.org/2005/Atom"><entry><link href="post-1"/></entry></feed>',
+    }
+    with patch("trafilatura.feeds.fetch_url", side_effect=lambda link, config=None: pages.get(link)):
+        assert find_feed_urls(url) == [expected]

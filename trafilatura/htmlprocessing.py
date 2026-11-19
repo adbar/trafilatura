@@ -19,7 +19,7 @@ from .settings import (
     Document,
     Extractor,
 )
-from .utils import LINK_FARM_RATIO, image_src, safe_base_url, safe_relative_url, textfilter, trim
+from .utils import LINK_FARM_RATIO, image_src, safe_relative_url, textfilter, trim
 from .xml import delete_element, meta_items, remove_empty_elements, separates_inline
 
 LOGGER = logging.getLogger(__name__)
@@ -475,10 +475,8 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
         # strip the rest
         strip_tags(tree, "a")
     else:
-        # get base URL for converting relative URLs
-        base_url = url and safe_base_url(url)
         for elem in tree.iter("a", "ref"):
-            convert_link(elem, base_url)
+            convert_link(elem, url)
 
     # Yoast FAQ blocks: question headers are bold but act as titles (#471)
     for elem in tree.iter("strong"):

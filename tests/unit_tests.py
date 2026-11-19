@@ -1599,6 +1599,51 @@ def test_links():
     assert extract(mydoc, fast=True, config=ZERO_CONFIG, favor_precision=True) == ""
 
 
+@pytest.mark.parametrize(
+    "head,href,expected",
+    [
+        # relative to the page, not to the host
+        ("", "sibling.html", "https://example.org/a/b/sibling.html"),
+        ("", "../up.html", "https://example.org/a/up.html"),
+        ("", "#part", "https://example.org/a/b/page.html#part"),
+        ("", "/root.html", "https://example.org/root.html"),
+        ('<base target="_blank">', "sibling.html", "https://example.org/a/b/sibling.html"),
+        # <base href>, absolute or relative to the page
+        ('<base href="https://cdn.example.net/docs/">', "file.html", "https://cdn.example.net/docs/file.html"),
+        ('<base href="/docs/">', "file.html", "https://example.org/docs/file.html"),
+        ('<base href="../">', "file.html", "https://example.org/a/file.html"),
+    ],
+)
+def test_links_relative_to_page(head, href, expected):
+    "Relative links are resolved against <base href> joined with the page URL, else the page URL (#382)."
+    htmlstring = (
+        f'<html><head>{head}</head><body><p><a href="{href}">Test link text.</a> '
+        "This part of the text has to be long enough.</p></body></html>"
+    )
+    result = extract(htmlstring, url="https://example.org/a/b/page.html", include_links=True, fast=True, config=ZERO_CONFIG)
+    assert f"[Test link text.]({expected}) This part of the text has to be long enough." in result
+
+
+@pytest.mark.parametrize(
+    "head,body,expected",
+    [
+        ('<base href="https://cdn.example.net/docs/">', '<p><img src="pic.jpg"/></p>', "https://cdn.example.net/docs/pic.jpg"),
+        ('<base href="/docs/">', '<p><img src="pic.jpg"/></p>', "https://example.org/docs/pic.jpg"),
+        # images in headings
+        ("", '<h2><img src="icon.png"/>Heading</h2>', "https://example.org/a/b/icon.png"),
+        ('<base href="/docs/">', '<h2><img src="icon.png"/>Heading</h2>', "https://example.org/docs/icon.png"),
+    ],
+)
+def test_images_relative_to_page(head, body, expected):
+    "Relative image sources are resolved against <base href> joined with the page URL, else the page URL (#382)."
+    htmlstring = (
+        f"<html><head>{head}</head><body><article>{body}"
+        "<p>This part of the text has to be long enough.</p></article></body></html>"
+    )
+    result = extract(htmlstring, url="https://example.org/a/b/page.html", include_images=True, fast=True, config=ZERO_CONFIG)
+    assert f"![]({expected})" in result
+
+
 def test_empty_anchor_keeps_heading_text():
     """An empty permalink anchor must not drop the heading text after it (#1024)."""
     paragraph = "Lorem ipsum dolor sit amet consectetur adipiscing elit. " * 5

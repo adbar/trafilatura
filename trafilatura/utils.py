@@ -472,6 +472,16 @@ def safe_relative_url(baseurl: str, url: str) -> str:
         return ""
 
 
+def document_base_url(tree: HtmlElement, url: str | None) -> str | None:
+    "URL to resolve relative links against: the first <base href> joined with the page URL, else the page URL."
+    if url:
+        for elem in tree.iter("base"):
+            href = elem.get("href")
+            if href is not None:
+                return safe_relative_url(url, href.strip()) or url
+    return url
+
+
 # zero-width non-joiner and joiner: needed for Persian, Urdu and Indic
 # spelling and emoji sequences, although str.isprintable() rejects them
 ZERO_WIDTH_JOINERS = "\u200c\u200d"

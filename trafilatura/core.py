@@ -32,6 +32,7 @@ from .utils import (
     HtmlInput,
     check_html_lang,
     copy_clean_tree,
+    document_base_url,
     language_classifier,
     language_filter,
     load_html,
@@ -435,6 +436,12 @@ def bare_extraction(
         else:
             document = Document()
 
+        # resolve links and images against <base href> joined with the page URL, else the page URL (#382)
+        base_url = document_base_url(tree, url or document.url)
+        if base_url != options.url:
+            options = copy(options)
+            options.url = base_url
+
         # prune all xpath expressions that user specified
         # no backup as this is unetre full control of the user
         if prune_xpath is not None:
@@ -442,7 +449,7 @@ def bare_extraction(
                 prune_xpath = [prune_xpath]
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
-        postbody, temp_text, commentsbody, temp_comments = trafilatura_sequence(tree, options, url or document.url)
+        postbody, temp_text, commentsbody, temp_comments = trafilatura_sequence(tree, options, base_url)
         len_text, len_comments = len(temp_text), len(temp_comments)
 
         # tree size sanity check

@@ -21,7 +21,7 @@ from courlan import (
 from .deduplication import is_similar_domain
 from .downloads import fetch_url
 from .settings import DEFAULT_CONFIG, MAX_FEEDS_CHECKED, MAX_LINKS
-from .utils import load_html, safe_relative_url
+from .utils import document_base_url, load_html, safe_relative_url
 
 LOGGER = logging.getLogger(__name__)
 
@@ -229,9 +229,10 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> list[str]:
         ]
 
     # refine
+    base_url = document_base_url(tree, params.base) or params.base
     output_urls = []
     for link in dict.fromkeys(feed_urls):
-        link = safe_relative_url(params.base, link)
+        link = safe_relative_url(base_url, link)
         link = clean_url(link)
         if link and link != params.ref and is_valid_url(link) and not BLACKLIST.search(link):
             output_urls.append(link)
@@ -288,7 +289,8 @@ def find_feed_urls(
     if sleep_time is None:
         sleep_time = config.getfloat("DEFAULT", "SLEEP_TIME")
 
-    params = FeedParameters(baseurl, domain, url, external, target_lang)
+    # relative links are resolved against the page or feed URL
+    params = FeedParameters(url, domain, url, external, target_lang)
     urlfilter = None
     downloaded = fetch_url(url, config=config)
 
@@ -302,7 +304,8 @@ def find_feed_urls(
                     sleep(sleep_time)
                 feed_string = fetch_url(feed, config=config)
                 if feed_string:
-                    feed_links.extend(extract_links(feed_string, params))
+                    feed_params = FeedParameters(feed, domain, url, external, target_lang)
+                    feed_links.extend(extract_links(feed_string, feed_params))
             # filter triggered, prepare it
             if len(url) > len(baseurl) + 2:
                 urlfilter = url
