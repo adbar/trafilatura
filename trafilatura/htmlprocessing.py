@@ -356,8 +356,25 @@ def process_node(elem: _Element, options: Extractor) -> _Element | None:
     return elem
 
 
+def _list_start(elem: _Element) -> str | None:
+    "Return the start number of an ordered list if it is a usable one other than 1."
+    if elem.tag != "ol":
+        return None
+    try:
+        start = int(elem.get("start", "").strip())
+    except ValueError:
+        return None
+    # CommonMark takes 0 to 999999999 as list start
+    return str(start) if start != 1 and 0 <= start < 10**9 else None
+
+
 def convert_lists(elem: _Element) -> None:
     "Convert <ul> and <ol> to <list> and underlying <li> elements to <item>."
+    # validate the start number once here, so both extraction paths can rely on it
+    start = _list_start(elem)
+    elem.attrib.pop("start", None)
+    if start:
+        elem.set("start", start)
     elem.set("rend", elem.tag)
     elem.tag = "list"
     i = 1
@@ -558,8 +575,11 @@ def convert_to_html(tree: _Element) -> _Element:
         # handle attributes
         if elem.tag == "a":
             elem.set("href", elem.attrib.pop("target", ""))
-        elif elem.tag != "img":  # keep <img> src/alt/title; drop everything else
+        elif elem.tag != "img":  # keep <img> src/alt/title and <ol> start; drop everything else
+            start = elem.get("start") if elem.tag == "ol" else None
             elem.attrib.clear()
+            if start:
+                elem.set("start", start)
     tree.tag = "body"
     root = Element("html")
     root.append(tree)
