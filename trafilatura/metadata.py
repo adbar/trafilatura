@@ -18,6 +18,7 @@ from courlan import (
     validate_url,
 )
 from htmldate import find_date
+from lxml.etree import XPath
 from lxml.html import HtmlElement, tostring
 
 from .baseline import block_text
@@ -247,6 +248,55 @@ def names_site(name: str, segment: str, max_extra: int) -> bool:
         len(name) > 3
         and ((len(segment) > 3 and segment in name) or (name in segment and len(segment) - len(name) <= max_extra))
     )
+
+
+# after the page's headline: a separator (a colon only with a space before it, else it opens a
+# subtitle) followed by more or ending the title
+TITLE_AFTER_HEADLINE = re.compile(r"\s*(?:[|–—•·~»›«‹-]|\s:)(?:\s+|$)")
+# a kicker or rubric before the headline ends with a separator or a colon ("Chronik: Headline")
+TITLE_BEFORE_HEADLINE = re.compile(r"(?:\s[|–—•·~:»›/-]|:)\s*$")
+# typographic and plain quotes and dashes, and soft hyphens, read alike
+TITLE_TYPOGRAPHY = str.maketrans(
+    {"„": '"', "“": '"', "”": '"', "«": '"', "»": '"', "‘": "'", "’": "'", "‚": "'", "–": "-", "—": "-", "\u00ad": None}
+)
+
+
+# itemprop="headline" content, found on the attribute axis: an element predicate tests every node
+HEADLINE_CONTENT = XPath('//@itemprop[.="headline"]/../@content')
+
+
+def title_from_headline(title: str, tree: HtmlElement, sitename: str | None = None) -> str:
+    """The page's own headline, when the title holds it whole with more around it.
+
+    The h1 or itemprop="headline" of the page is the headline. A title that starts with it and
+    goes on after a separator ("Headline | Section | Site", "Headline : 31.10.2023"), that ends
+    with it after a shorter kicker ("Chronik: Headline"), or that differs from it only in quotes
+    and dashes, is the headline. Headlines under ten characters and a heading that is the site
+    name (a logo) are not used, the longest headline is tried first, and a title that is one of
+    the headlines stays. Words that follow the headline without a separator may be the rest of a
+    longer headline: they are not cut.
+    """
+    normalized = " ".join(unescape(title).split())
+    site = NON_WORD.sub("", (sitename or "").lower())
+    candidates = [block_text(h1) for h1 in tree.iter("h1")]
+    candidates += HEADLINE_CONTENT(tree)
+    headlines = sorted(
+        {h for h in (" ".join((c or "").split()) for c in candidates) if len(h) >= 10 and NON_WORD.sub("", h.lower()) != site},
+        key=len,
+        reverse=True,
+    )
+    if not headlines or normalized in headlines:
+        return title
+    folded = normalized.translate(TITLE_TYPOGRAPHY)
+    for headline in headlines:
+        rest = normalized.removesuffix(headline)
+        if (
+            (normalized.startswith(headline) and TITLE_AFTER_HEADLINE.match(normalized, len(headline)))
+            or (rest != normalized and TITLE_BEFORE_HEADLINE.search(rest) and len(rest.strip()) < len(headline))
+            or headline.translate(TITLE_TYPOGRAPHY) == folded
+        ):
+            return headline
+    return title
 
 
 def strip_site_suffix(title: str, sitename: str | None, hostname: str | None) -> str:
@@ -596,7 +646,12 @@ def extract_metadata(
     metadata.clean_and_trim()
 
     if metadata.title:
-        metadata.title = strip_site_suffix(metadata.title, metadata.sitename, metadata.hostname)
+        # the page's own headline is the whole title: no site name is left to strip from it
+        headline = title_from_headline(metadata.title, tree, metadata.sitename)
+        if headline != metadata.title:
+            metadata.title = headline
+        else:
+            metadata.title = strip_site_suffix(metadata.title, metadata.sitename, metadata.hostname)
     # a dot in the first segment means a host or junk, e.g. 'cdn.org/i.jpg'
     image = metadata.image
     if image and metadata.url and not image.startswith(("http://", "https://")):
