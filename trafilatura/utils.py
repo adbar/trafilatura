@@ -10,7 +10,7 @@ import sys
 import zlib
 from collections.abc import Callable, Iterable, Iterator, Mapping
 from copy import copy
-from itertools import islice
+from itertools import chain, islice
 from typing import TYPE_CHECKING, Any, Literal, TypeAlias, cast
 from unicodedata import normalize
 
@@ -579,12 +579,16 @@ def as_list(value: Any) -> list[Any]:
 
 
 def image_src(element: _Element) -> str | None:
-    "Image source of an element: src, data-src, or the first data-src* attribute pointing to an image file."
-    for attr in ("data-src", "src"):
-        src = element.get(attr, "")
+    """Image source of an element: lazy-loading attributes, src, the first data-src* attribute
+    pointing to an image file, then the first image URL of data-srcset or srcset."""
+    for attr in ("data-src", "data-lazy-src", "data-original", "src"):
+        src = element.get(attr, "").strip()
         if is_image_file(src):
             return src
-    return next((v for a, v in element.attrib.items() if a.startswith("data-src") and is_image_file(v)), None)
+    data_srcs = (v for a, v in element.attrib.items() if a.startswith("data-src") and a != "data-srcset")
+    # srcset URLs can contain commas (e.g. CDN paths), candidates are separated by whitespace
+    srcsets = (url.rstrip(",") for attr in ("data-srcset", "srcset") for url in element.get(attr, "").split())
+    return next((v for v in chain(data_srcs, srcsets) if is_image_file(v)), None)
 
 
 def is_image_file(imagesrc: str | None) -> bool:
