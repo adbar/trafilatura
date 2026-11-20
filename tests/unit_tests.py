@@ -1538,6 +1538,26 @@ def test_images(options):
     assert myimage.get("src").startswith("http")
 
 
+@pytest.mark.parametrize(
+    "img,expected",
+    [
+        ('<img src="/blank.gif" data-lazy-src="/pic.jpg">', "https://a.b/pic.jpg"),
+        ('<img src="/blank.gif" data-original="/pic.jpg">', "https://a.b/pic.jpg"),
+        ('<img src="/blank.gif" data-lazy-src=" /pic.jpg ">', "https://a.b/pic.jpg"),
+        ('<img data-srcset="/pic.jpg 800w, /pic-2x.jpg 1600w">', "https://a.b/pic.jpg"),
+        ('<img srcset="/pic.jpg 800w, /pic-2x.jpg 1600w">', "https://a.b/pic.jpg"),
+        ('<img srcset="/pic.jpg, /pic-2x.jpg 2x">', "https://a.b/pic.jpg"),
+        ('<img srcset="/w_115,h_115/pic.jpg 115w, /w_230,h_230/pic.jpg 230w">', "https://a.b/w_115,h_115/pic.jpg"),
+        # a real src wins over srcset candidates
+        ('<img src="/main.jpg" srcset="/pic.jpg 800w, /pic-2x.jpg 1600w">', "https://a.b/main.jpg"),
+    ],
+)
+def test_images_lazy_loading(img, expected):
+    "Lazy-loading attributes and srcsets give the image URL instead of the placeholder or nothing (#1167)."
+    result = _extract_doc(f"<p>{img}</p>", intro=False, include_images=True, fast=True, url="https://a.b/c.html")
+    assert result == f"![]({expected})"
+
+
 def test_links():
     """Test link extraction function"""
     options = core.Extractor(config=ZERO_CONFIG)
