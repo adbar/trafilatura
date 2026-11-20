@@ -10,6 +10,7 @@ import pkgutil
 import sys
 import time
 from copy import copy, deepcopy
+from datetime import datetime
 from functools import _lru_cache_wrapper, partial
 from os import path
 from unittest.mock import patch
@@ -54,6 +55,7 @@ from trafilatura.utils import (
     INVALID_XML_CHARS,
     LANGID_FLAG,
     detect_encoding,
+    get_html_parser,
     is_dubious_html,
     is_image_file,
     language_classifier,
@@ -160,6 +162,8 @@ def test_trim():
     """test string trimming"""
     assert trim("	Test  ") == "Test"
     assert trim("\t\tTest  Test\r\n") == "Test Test"
+    # input that is not a string gives an empty string
+    assert trim(None) == ""  # type: ignore[arg-type]
     my_elem = etree.Element("body")
     my_elem.text = "Test Text"
     assert textfilter(my_elem) is False
@@ -197,6 +201,28 @@ def test_remove_control_characters():
         assert remove_control_characters(text) == text
     assert remove_control_characters("a\nb\x07c\u200bd") == "a\nbcd"
     assert remove_control_characters("\x00\x07") == ""
+    # zero-width non-joiner and joiner are kept (Persian, Indic scripts, emoji)
+    for text in ("نگاه\u200cها", "क्\u200dष", "\U0001f469\u200d\U0001f4bb"):
+        assert remove_control_characters(text) == text
+    assert remove_control_characters("a\u200cb\x07\u200dc") == "a\u200cb\u200dc"
+    # end to end, see issue #1056
+    page = "<html><body><article><p>" + "نگاه\u200cها " * 30 + "</p></article></body></html>"
+    for fmt in ("txt", "markdown", "xml", "json"):
+        assert "نگاه\u200cها" in extract(page, output_format=fmt)
+    # drop paragraphs / lines made only of zero-width characters (TXT and XML)
+    page = (
+        "<html><body><article>"
+        "<p>hello world this is a long enough paragraph for extraction to work properly yes</p>"
+        "<p>\u200c\u200d</p>"
+        "<p>" + "نگاه\u200cها " * 20 + "</p>"
+        "</article></body></html>"
+    )
+    txt = extract(page, output_format="txt")
+    assert "\u200c\u200d" not in txt
+    assert "نگاه\u200cها" in txt
+    xml = extract(page, output_format="xml")
+    assert "<p>\u200c\u200d</p>" not in xml
+    assert "نگاه\u200cها" in xml
 
 
 @pytest.mark.parametrize(
@@ -216,6 +242,12 @@ def test_remove_control_characters():
         ("a  b", False, True, "a b"),
         ("\ta b", False, True, " a b"),
         (" ", False, True, None),
+        # text made only of zero-width joiners is dropped (invisible lines)
+        ("\u200c\u200d", False, False, None),
+        ("\u200c \u200d", False, False, None),
+        ("نگاه\u200cها", False, False, "نگاه\u200cها"),
+        ("\u200c\u200d", True, False, None),
+        ("  \u200c\u200d  ", True, False, None),
     ],
 )
 def test_line_processing(line, preserve_space, trailing_space, expected):
@@ -449,11 +481,24 @@ def test_document_isolation():
     assert len(d1.body) == 0
 
 
+def test_html_parser_per_call():
+    "Each call gets its own lxml parser: a shared one crashes concurrent extractions (#925)."
+    assert get_html_parser() is not get_html_parser()
+    # same configuration as before
+    tree = load_html("<html><body><!-- comment --><p id='x'>Text</p></body></html>")
+    assert tree is not None
+    assert isinstance(tree, html.HtmlElement)
+    assert tree.xpath("//comment()") == []
+
+
 def test_xmltocsv():
     doc = Document()
     doc.body = etree.fromstring("<xml/>")
     doc.commentsbody = etree.fromstring("<xml/>")
-    assert xml.xmltocsv(doc, False) == "null\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\r\n"
+    assert (
+        xml.xmltocsv(doc, False)
+        == "null\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\r\n"
+    )
 
     doc.title = "Test title"
     doc.url = "https://example.org"
@@ -467,13 +512,84 @@ def test_xmltocsv():
     doc.body = etree.fromstring(f"<p>{text}</p>")
     doc.commentsbody = etree.fromstring(f"<p>{comments}</p>")
 
-    target = "https://example.org\t1\tnull\texample.org\tTest title\thttps://example.org/image.jpg\tnull\tTest text\tTest comment\tCC BY-SA\tarticle\r\n"
+    target = "https://example.org\t1\tnull\texample.org\tTest title\thttps://example.org/image.jpg\tnull\tTest text\tTest comment\tCC BY-SA\tarticle\tnull\tnull\tnull\tnull\tnull\tnull\tnull\r\n"
 
     assert xml.xmltocsv(doc, False) == target
 
     mystring = "<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>"
     assert extract(mystring, output_format="csv", config=ZERO_CONFIG) is not None
-    assert extract(mystring, output_format="csv", include_comments=False, config=ZERO_CONFIG).endswith("\tnull\r\n")
+    csv_result = extract(mystring, output_format="csv", include_comments=False, config=ZERO_CONFIG)
+    # columns: url, id, fingerprint, hostname, title, image, date, text,
+    # comments, license, pagetype, author, description, sitename,
+    # categories, tags, language, filedate
+    assert csv_result.split("\t")[8] == "null"
+
+
+@pytest.mark.parametrize("output_format", ["markdown", "txt", "xml", "html", "xmltei", "csv", "json", "xmltocsv"])
+def test_metadata_fields_same_across_formats(output_format):
+    """The same metadata fields appear in every output format (issue #1123)."""
+    if output_format == "xmltocsv":
+        # appended CSV columns carry the metadata values, lists joined with ';'
+        doc = Document()
+        doc.body = etree.fromstring("<p>Test text</p>")
+        doc.commentsbody = etree.fromstring("<xml/>")
+        doc.author = "Jane Doe"
+        doc.description = "A description"
+        doc.sitename = "Example"
+        doc.categories = ["news", "tech"]
+        doc.tags = ["a", "b"]
+        doc.language = "en"
+        doc.filedate = "2026-11-11"
+        fields = xml.xmltocsv(doc, False).rstrip("\r\n").split("\t")
+        assert fields[11:] == ["Jane Doe", "A description", "Example", "news;tech", "a;b", "en", "2026-11-11"]
+        return
+    html = (
+        '<html><head><meta property="og:image" content="https://example.org/a.jpg">'
+        '<meta property="og:type" content="article"></head><body><article><p>'
+        + "This is a perfectly ordinary English sentence about the weather today. " * 20
+        + "</p></article></body></html>"
+    )
+    today = datetime.now().astimezone().strftime("%Y-%m-%d")
+    result = extract(html, output_format=output_format, with_metadata=True)
+    if output_format in ("markdown", "txt"):
+        assert "image: https://example.org/a.jpg" in result
+        assert "pagetype: article" in result
+        assert f'filedate: "{today}"' in result
+        if LANGID_FLAG:
+            assert "language: en" in result
+    elif output_format == "xml":
+        assert 'image="https://example.org/a.jpg"' in result
+        assert 'pagetype="article"' in result
+        assert f'filedate="{today}"' in result
+        if LANGID_FLAG:
+            assert 'language="en"' in result
+    elif output_format == "html":
+        assert '<meta name="image" content="https://example.org/a.jpg"/>' in result
+        assert '<meta name="pagetype" content="article"/>' in result
+        assert f'<meta name="filedate" content="{today}"/>' in result
+        if LANGID_FLAG:
+            assert '<meta name="language" content="en"/>' in result
+    elif output_format == "xmltei":
+        assert '<note type="image">https://example.org/a.jpg</note>' in result
+        assert '<note type="pagetype">article</note>' in result
+        if LANGID_FLAG:
+            assert '<language ident="en">en</language>' in result
+    elif output_format == "csv":
+        # the extra metadata columns are appended at the end, in the same order
+        fields = result.rstrip("\r\n").split("\t")
+        assert len(fields) == 18
+        assert fields[5] == "https://example.org/a.jpg"
+        assert fields[10] == "article"
+        assert fields[16] == ("en" if LANGID_FLAG else "null")
+        assert fields[17] == today
+    else:  # json
+        fields = json.loads(result)
+        assert "raw_text" not in fields
+        assert fields["image"] == "https://example.org/a.jpg"
+        assert fields["pagetype"] == "article"
+        assert fields["filedate"] == today
+        if LANGID_FLAG:
+            assert fields["language"] == "en"
 
 
 def test_tojson():
@@ -1312,6 +1428,18 @@ def test_wrong_language_discarded():
     assert extract(doc, target_language="en", config=ZERO_CONFIG) is None
 
 
+@pytest.mark.skipif(not LANGID_FLAG, reason="py3langid not installed")
+def test_language_in_metadata():
+    "the detected language is passed along even without a target language."
+    doc = (
+        "<html><body>"
+        + "<p>This is a perfectly ordinary English sentence about the weather today.</p>" * 20
+        + "</body></html>"
+    )
+    assert extract_with_metadata(doc, config=ZERO_CONFIG).language == "en"
+    assert '"language": "en"' in extract(doc, output_format="json", with_metadata=True, config=ZERO_CONFIG)
+
+
 def test_sanitize_tree_absolutizes_links():
     "Regression: sanitize_tree must absolutize relative links when url is set (convert_tags fix)."
     doc = html.fromstring('<html><body><p><a href="/path/page">link</a> ' + "padding " * 10 + "</p></body></html>")
@@ -1410,6 +1538,26 @@ def test_images(options):
     assert myimage.get("src").startswith("http")
 
 
+@pytest.mark.parametrize(
+    "img,expected",
+    [
+        ('<img src="/blank.gif" data-lazy-src="/pic.jpg">', "https://a.b/pic.jpg"),
+        ('<img src="/blank.gif" data-original="/pic.jpg">', "https://a.b/pic.jpg"),
+        ('<img src="/blank.gif" data-lazy-src=" /pic.jpg ">', "https://a.b/pic.jpg"),
+        ('<img data-srcset="/pic.jpg 800w, /pic-2x.jpg 1600w">', "https://a.b/pic.jpg"),
+        ('<img srcset="/pic.jpg 800w, /pic-2x.jpg 1600w">', "https://a.b/pic.jpg"),
+        ('<img srcset="/pic.jpg, /pic-2x.jpg 2x">', "https://a.b/pic.jpg"),
+        ('<img srcset="/w_115,h_115/pic.jpg 115w, /w_230,h_230/pic.jpg 230w">', "https://a.b/w_115,h_115/pic.jpg"),
+        # a real src wins over srcset candidates
+        ('<img src="/main.jpg" srcset="/pic.jpg 800w, /pic-2x.jpg 1600w">', "https://a.b/main.jpg"),
+    ],
+)
+def test_images_lazy_loading(img, expected):
+    "Lazy-loading attributes and srcsets give the image URL instead of the placeholder or nothing (#1167)."
+    result = _extract_doc(f"<p>{img}</p>", intro=False, include_images=True, fast=True, url="https://a.b/c.html")
+    assert result == f"![]({expected})"
+
+
 def test_links():
     """Test link extraction function"""
     options = core.Extractor(config=ZERO_CONFIG)
@@ -1478,6 +1626,69 @@ def test_empty_anchor_keeps_heading_text():
     assert extract(htmlstring, output_format="markdown", include_links=True).startswith("## Installation")
     assert extract(htmlstring, output_format="txt", include_links=True).startswith("Installation")
     assert '"text": "Installation' in extract(htmlstring, output_format="json", include_links=True)
+
+
+@pytest.mark.parametrize("links", [False, True])
+@pytest.mark.parametrize(
+    "heading",
+    [
+        'Install<a class="headerlink" href="#install">¶</a>ation',
+        '<a class="doc-anchor" href="#installation">§</a>Installation',
+        'Install<a class="extra headerlink extra" href="#install"> ¶ </a>ation',
+        'Install<span><a class="headerlink" href="#install">¶</a></span>ation',
+        '<span><a class="doc-anchor" href="#installation">§</a>Install</span>ation',
+        'Install<em><a class="extra headerlink" href="#install"> ¶ </a></em>ation',
+        'Install<em><span><a class="headerlink" href="#install">¶</a></span></em>ation',
+    ],
+)
+def test_heading_permalink_symbols(links, heading):
+    "Decorative documentation permalinks carry no heading content, but their tails do."
+    paragraph = "Some text. " * 30
+    document = f"<html><body><article><h2>{heading}</h2><p>{paragraph}</p></article></body></html>"
+    for output_format in ("markdown", "txt", "xml"):
+        result = extract(document, output_format=output_format, include_links=links)
+        if output_format == "markdown":
+            assert result.startswith("## Installation\n")
+        elif output_format == "txt":
+            assert result.startswith("Installation\n")
+        else:
+            assert '<head rend="h2">Installation</head>' in result
+
+
+@pytest.mark.parametrize("links", [False, True])
+@pytest.mark.parametrize(
+    "content",
+    [
+        '<h2>Read<a class="headerlink" href="https://example.org/#section">§</a></h2>',
+        '<h2>Read<a class="not-headerlink" href="#section">¶</a></h2>',
+        '<h2>Read<a href="#section">§</a></h2>',
+        '<h2>Read<a class="headerlink" href="">¶</a></h2>',
+        '<h2>Read<a class="headerlink" href="#">§</a></h2>',
+        "<h2>Literal ¶ and §</h2>",
+        '<p>Prose<a class="headerlink" href="#section">¶</a> and §</p>',
+        '<h2>Read<span><a class="headerlink" href="https://example.org/#section">§</a></span></h2>',
+        '<h2>Read<span><a class="not-headerlink" href="#section">¶</a></span></h2>',
+        '<p>Prose<span><a class="headerlink" href="#section">¶</a></span> and §</p>',
+    ],
+)
+def test_heading_permalink_symbols_preserve_content(links, content):
+    "Meaningful links, ordinary symbols and non-heading links must survive."
+    paragraph = "Some text. " * 30
+    document = f"<html><body><article>{content}<p>{paragraph}</p></article></body></html>"
+    result = extract(document, output_format="xml", include_links=links)
+    assert html.fromstring(content).text_content() in "".join(etree.fromstring(result.encode()).itertext())
+
+
+@pytest.mark.parametrize("links", [False, True])
+def test_heading_permalink_symbols_preserve_wrapper_whitespace(links):
+    "Removing an empty wrapper must preserve its whitespace and following text."
+    paragraph = "Some text. " * 30
+    document = (
+        '<html><body><article><h2>Install<em> <a class="headerlink" href="#install">¶</a></em>ation</h2>'
+        f"<p>{paragraph}</p></article></body></html>"
+    )
+    result = extract(document, output_format="markdown", include_links=links)
+    assert result.startswith("## Install ation\n")
 
 
 def test_empty_element_whitespace_tail():
@@ -3384,21 +3595,49 @@ _ESCALATION_INTRO = (
 )
 
 
-def test_recall_escalation_justext():
+@pytest.mark.parametrize("focus", ["balanced", "recall", "precision"])
+@pytest.mark.parametrize("intro_layout", ["bare", "content"])
+def test_recall_escalation_justext(focus, intro_layout):
     "the recall escalation also tries justext, which reaches content the rule-based retry \
     cannot: 'sidebar'-classed divs are discarded by both the main extractor/recall retry \
     (OVERALL_DISCARD_XPATH) and readability (unlikelyCandidatesRe), but justext classifies \
     them on paragraph density alone and keeps them."
-    messages = "".join(
-        f"<div class='sidebar'>Message number {i} contains substantial discussion content with "
+    messages = [
+        f"Message number {i} contains substantial discussion content with "
         "plenty of genuine words and enough length to be recognized as real text by a paragraph "
-        f"density classifier, not boilerplate at all today, said the author.</div>"
+        "density classifier, not boilerplate at all today, said the author."
         for i in range(8)
+    ]
+    divs = "".join(f"<div class='sidebar'>{message}</div>" for message in messages)
+    intro_html = _ESCALATION_INTRO if intro_layout == "bare" else f"<div id='content'>{_ESCALATION_INTRO}</div>"
+    doc = f"<html><body>{intro_html}{divs}</body></html>"
+    result = extract(
+        doc,
+        favor_recall=focus == "recall",
+        favor_precision=focus == "precision",
     )
-    doc = f"<html><body>{_ESCALATION_INTRO}{messages}</body></html>"
-    result = extract(doc, output_format="txt") or ""
-    assert "Introductory paragraph" in result
-    assert result.count("Message number") == 8
+    intro = _ESCALATION_INTRO.removeprefix("<p>").removesuffix("</p>").strip()
+    expected = intro if focus == "precision" else "\n".join([intro, *messages])
+    assert result == expected
+
+
+@pytest.mark.parametrize("focus", ["balanced", "recall", "precision"])
+@pytest.mark.parametrize("fast", [False, True])
+def test_recall_escalation_rejected_justext(focus, fast):
+    "Reject short menu entries without repeating stages 1-2 in recall mode."
+    menus = "".join(f"<div class='sidebar'>Menu entry number {i} of the page.</div>" for i in range(200))
+    doc = f"<html><body><div id='content'>{_ESCALATION_INTRO}</div>{menus}</body></html>"
+    with (
+        patch.object(core, "html2txt", wraps=core.html2txt) as page_text,
+        patch.object(core, "justext_rescue", wraps=core.justext_rescue) as rescue,
+        patch.object(core, "_recall_retry", wraps=core._recall_retry) as retry,
+    ):
+        result = extract(doc, fast=fast, favor_recall=focus == "recall", favor_precision=focus == "precision")
+    assert result == _ESCALATION_INTRO.removeprefix("<p>").removesuffix("</p>").strip()
+    assert rescue.call_count == int(not fast and focus != "precision")
+    assert retry.call_count == int(focus == "balanced")
+    if fast and focus == "recall":
+        page_text.assert_not_called()
 
 
 @pytest.mark.parametrize(("jt_words", "winner"), [(1000, "justext"), (40, "retry")])
@@ -3543,11 +3782,14 @@ _LONG_OP = "".join(
 def test_thread_page_reply_count(page, options, replies):
     """Thread page with 8 replies in a comments container. Blogs: the containers are stripped
     before justext and the recall retry (AEB), also without an article wrapper. Forums
-    (DiscussionForumPosting): they hold the posts (WCXB), each appears once with include_comments."""
+    (DiscussionForumPosting): they hold the posts (WCXB), each appears once with include_comments.
+    `replies` counts the body; blog replies, p or bare div, go to the comments when included."""
     page = {"jsonld": "", **page}
-    result = extract(_thread_doc(**page), output_format="txt", **options) or ""
-    assert ("Opening post paragraph" if "intro" in page else "Introductory paragraph") in result
-    assert result.count("Reply number") == replies
+    result = extract(_thread_doc(**page), output_format="xml", **options) or ""
+    body, _, comments = result.partition("<comments")
+    assert ("Opening post paragraph" if "intro" in page else "Introductory paragraph") in body
+    assert body.count("Reply number") == replies
+    assert comments.count("Reply number") == (8 - replies if options.get("include_comments", True) else 0)
 
 
 @pytest.mark.parametrize("fast", [False, True], ids=["full", "fast"])
@@ -3656,6 +3898,43 @@ def test_comment_container_with_h1_kept():
             assert "Article paragraph 2" in result
 
 
+_ARTICLE_PARAGRAPHS = "".join(
+    f"<p>Article paragraph {i} carries the actual story with enough words to be kept as main text.</p>" for i in range(6)
+)
+
+
+@pytest.mark.parametrize("fast", [False, True], ids=["full", "fast"])
+def test_div_text_comments_captured(fast):
+    "comments written straight into divs (no p/list markup inside the comment) went to the main \
+    text: extract_comments found no candidate and left the whole thread in the body. User, date \
+    and title lines are left out, as with other comment layouts."
+    replies = "".join(
+        "<li class='Comments-Comment'><div class='Comments-CommentCore'>"
+        f"<div class='Comments-User'><span class='Comments-Username'>reader{i}</span>"
+        "<span class='Comments-Date'>2 hours ago</span></div>"
+        f"<div>Reader reply {i} with an opinion about the story above, long enough to count as a comment.</div>"
+        "</div></li>"
+        for i in range(3)
+    )
+    doc = (
+        f"<html><body><article><div class='entry-content'>{_ARTICLE_PARAGRAPHS}</div>"
+        "<div id='comments' class='Comments'><div class='Comments-Title'>Comments</div>"
+        f"<ul class='Comments-List'>{replies}</ul></div></article></body></html>"
+    )
+    result = extract(doc, output_format="xml", include_comments=True, fast=fast) or ""
+    body, comments = result.split("<comments")
+    assert body.count("Article paragraph") == 6
+    assert "Reader reply" not in body
+    assert comments.count("Reader reply") == 3
+    assert "reader0" not in result
+    assert "2 hours ago" not in result
+    assert ">Comments<" not in comments
+
+    without = extract(doc, output_format="txt", include_comments=False, fast=fast) or ""
+    assert "Article paragraph 5" in without
+    assert "Reader reply" not in without
+
+
 def test_infinite_scroll_container_with_h1_kept():
     "regression: the #911 prune deleted the real article when the scroll container holds the h1 (BGR)."
     real = "<p>Real article paragraph with enough content to be extracted normally here.</p>" * 4
@@ -3750,6 +4029,58 @@ def test_prefer_readability_rejects_raw_json():
 @pytest.mark.parametrize(
     "body,expected",
     [
+        pytest.param("<blockquote><p>One</p><p>Two</p></blockquote><p>After</p>", "> One\n>\n> Two\n\nAfter", id="paragraphs"),
+        pytest.param("<blockquote>quoted</blockquote>tail", "> quoted\n\ntail", id="tail-outside"),
+        pytest.param(
+            "<blockquote><p>Lead</p><ul><li>one</li><li>two</li></ul></blockquote><p>After</p>",
+            "> Lead\n>\n> - one\n> - two\n\nAfter",
+            id="list",
+        ),
+        pytest.param(
+            "<blockquote><p>Run</p><pre><code>a = 1\nb = 2</code></pre></blockquote><p>After</p>",
+            "> Run\n>\n> ```\n> a = 1\n> b = 2\n> ```\n\nAfter",
+            id="code-block",
+        ),
+    ],
+)
+def test_markdown_blockquote(body, expected):
+    "Every line of a quote carries the '>' marker, the text after it does not (#1111)."
+    assert _md_inline(body) == f"{_INTRO}\n\n{expected}"
+
+
+@pytest.mark.parametrize(
+    "body,expected",
+    [
+        pytest.param("<pre>col1   col2\nval1   val2</pre><p>After</p>", "col1   col2\nval1   val2\n\nAfter", id="pre-text"),
+        pytest.param(
+            "<blockquote><p>Q</p><pre>col1   col2</pre></blockquote><p>After</p>",
+            "> Q\n>\n> col1 col2\n\nAfter",
+            id="pre-in-quote",
+        ),
+    ],
+)
+def test_markdown_preformatted_not_quoted(body, expected):
+    "A <pre> that is not code is stored as a quote but gets no '>' marker of its own."
+    assert _md_inline(body) == f"{_INTRO}\n\n{expected}"
+
+
+def test_markdown_blockquote_nested():
+    assert _md("<doc><quote><p>outer</p><quote><p>inner</p></quote></quote></doc>") == "> outer\n>\n> > inner"
+
+
+def test_markdown_blockquote_after_spaces():
+    "A quote after a run of spaces starts its own line, so it is not read as a code block."
+    assert _md("<doc><p>Lead   <quote>q</quote></p></doc>") == "Lead   \n> q"
+
+
+def test_txt_blockquote_unmarked():
+    body = "<blockquote><p>One</p><p>Two</p></blockquote><p>After</p>"
+    assert _extract_doc(body, output_format="txt") == f"{_INTRO}\nOne\nTwo\nAfter"
+
+
+@pytest.mark.parametrize(
+    "body,expected",
+    [
         pytest.param("<ul><li><p>x <b>bold</b> y</p></li></ul>", "- x **bold** y", id="item-block-child-single-bullet"),
         pytest.param("<p>a <b> x </b> b</p>", "a  **x**  b", id="843-flanking-b"),
         pytest.param("<p>a <i> x </i> b</p>", "a  *x*  b", id="843-flanking-i"),
@@ -3791,21 +4122,23 @@ def test_prefer_readability_rejects_raw_json():
         pytest.param("<p>text <b><i>nested</i></b> end</p>", "text ***nested*** end", id="nested-bold-italic"),
         pytest.param("<p><b>prefix <i>italic</i></b></p>", "**prefix *italic***", id="nested-italic-in-bold"),
         pytest.param("<ul><li>text <b><i>nested</i></b> end</li></ul>", "- text ***nested*** end", id="nested-in-item"),
-        pytest.param("<blockquote><b>bold</b> text here</blockquote>", "**bold** text here", id="blockquote-bare-inline"),
+        pytest.param("<blockquote><b>bold</b> text here</blockquote>", "> **bold** text here", id="blockquote-bare-inline"),
         pytest.param("<del>gone</del>", "~~gone~~", id="del-top-level"),
         pytest.param("<ul><li>text <del>struck</del> more</li></ul>", "- text ~~struck~~ more", id="del-in-item"),
-        pytest.param("<blockquote>text <del>struck</del> more</blockquote>", "text ~~struck~~ more", id="del-in-blockquote"),
+        pytest.param("<blockquote>text <del>struck</del> more</blockquote>", "> text ~~struck~~ more", id="del-in-blockquote"),
         pytest.param("<ul><li>use <code>func()</code> here</li></ul>", "- use `func()` here", id="code-in-item"),
         pytest.param("<p>before <b>bold <del>struck</del></b></p>", "before **bold ~~struck~~**", id="del-in-bold-with-text"),
         pytest.param("<ol><li>Foo <em>bar</em> baz.</li></ol>", "1. Foo *bar* baz.", id="845-item-tail-space"),
-        pytest.param("<blockquote><p>A <b>bold</b> word</p></blockquote>", "A **bold** word", id="blockquote-bold"),
+        pytest.param("<blockquote><p>A <b>bold</b> word</p></blockquote>", "> A **bold** word", id="blockquote-bold"),
         pytest.param(
             "<blockquote><p>see <a href='http://x.com'>link</a></p></blockquote>",
-            "see [link](http://x.com)",
+            "> see [link](http://x.com)",
             id="blockquote-link",
         ),
         pytest.param(
-            "<blockquote><p>text</p><img src='x.jpg' alt='img'/></blockquote>", "text\n\n![img](x.jpg)", id="blockquote-image"
+            "<blockquote><p>text</p><img src='x.jpg' alt='img'/></blockquote>",
+            "> text\n>\n> ![img](x.jpg)",
+            id="blockquote-image",
         ),
         pytest.param(
             "<ul><li><img src='/i.jpg' alt='a'></li><li>plain</li></ul>", "- ![a](/i.jpg)\n- plain", id="item-image-bullet"
@@ -3948,6 +4281,16 @@ def test_list_item_attr_whitelist():
     assert "class=" not in out
     assert "width=" not in out
     assert '<ref target="http://x.io">' in out  # target kept
+
+
+def test_xml_output_drops_source_attributes():
+    "regression #1158: source attributes on list/item elements are dropped, a malformed one must not crash extract()."
+    p = "<p>" + "word " * 50 + "</p>"
+    html = f'<html><body><div>{p}<ol class="a type="1"><li>First item of the list.</li></ol>{p}</div></body></html>'
+    result = extract(html, output_format="xml", config=ZERO_CONFIG)
+    assert result is not None
+    assert '<list rend="ol">' in result
+    assert "class=" not in result
 
 
 def test_image_tail_not_duplicated():
@@ -4107,7 +4450,7 @@ def test_code_blocks():
 </code></pre>
 </div>"""
     testresult = extract(highlightjs, config=ZERO_CONFIG, output_format="xml")
-    assert "<code>code\n\nhighlighted more code\n</code>" in testresult
+    assert '<code rend="sql">code\n\nhighlighted more code\n</code>' in testresult
     assert "quote" not in testresult
     github = """<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>$ pip install PyGithub</pre><div class="zeroclipboard-container position-absolute right-0 top-0">
     <clipboard-copy aria-label="Copy" class="ClipboardButton btn js-clipboard-copy m-2 p-0 tooltipped-no-delay" data-copy-feedback="Copied!" data-tooltip-direction="w" value="$ pip install PyGithub" tabindex="0" role="button" style="display: inherit;">
@@ -4147,7 +4490,7 @@ for name and age:</p>
     pip = """<div><p>Code:</p>
 <pre lang="python3"><span class="kn">import</span> <span class="nn">openai</span>
 <span class="kn">from</span> <span class="nn">openai_function_call</span> <span class="kn">import</span> <span class="n">openai_function</span></pre></div>"""
-    expected = """<code>import openai
+    expected = """<code rend="python3">import openai
 from openai_function_call import openai_function</code>"""
     testresult = extract(pip, config=ZERO_CONFIG, output_format="xml")
     assert expected in testresult
@@ -4185,6 +4528,73 @@ base_dir = os.getcwd()</code>"""
     assert "<quote>" in extract(bq_text, output_format="xml", config=ZERO_CONFIG)
     bq_tail = "<html><body><article><blockquote><code>x</code> tail</blockquote></article></body></html>"
     assert "<quote>" in extract(bq_tail, output_format="xml", config=ZERO_CONFIG)
+    # explicit language hints are kept and become the markdown fence info string
+    labeled = """<div><p>Code:</p>
+<pre><code class="language-python">import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(labeled, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    testresult = extract(labeled, config=ZERO_CONFIG, output_format="xml")
+    assert '<code rend="python">import os\nprint(os.getcwd())</code>' in testresult
+    testresult = extract(labeled, config=ZERO_CONFIG, output_format="xmltei")
+    assert '<code rend="python">import os\nprint(os.getcwd())</code>' in testresult
+    # the hint can also sit on the pre element
+    labeled_pre = """<div><p>Code:</p>
+<pre class="language-python"><code>import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(labeled_pre, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    # a payload with backtick runs keeps the widened fence and gains the info string
+    nested = '<div><p>Code:</p>\n<pre><code class="language-python">a = 1\n```\nb = 2\n</code></pre></div>'
+    testresult = extract(nested, config=ZERO_CONFIG, output_format="markdown")
+    assert "````python\na = 1\n```\nb = 2\n````" in testresult
+    # no hint: bare fence, no language is invented
+    unlabeled = """<div><p>Code:</p>
+<pre><code>import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(unlabeled, config=ZERO_CONFIG, output_format="markdown")
+    assert "```\nimport os\nprint(os.getcwd())\n```" in testresult
+    testresult = extract(unlabeled, config=ZERO_CONFIG, output_format="xml")
+    assert "<code>import os\nprint(os.getcwd())</code>" in testresult
+    # a language-* class comes first, lang usually names a natural language
+    hinted = """<div><p>Code:</p>
+<pre lang="en"><code class="language-python">import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(hinted, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    # lang on a blockquote is a natural language: an embedded tweet stays a quote
+    tweet = """<div><p>Before the tweet.</p>
+<blockquote class="twitter-tweet" lang="en">Hello world, this is a tweet.<br>&mdash; Someone (@someone)</blockquote>
+<p>After the tweet.</p></div>"""
+    testresult = extract(tweet, config=ZERO_CONFIG, output_format="xml")
+    assert "<quote>" in testresult
+    assert "<code" not in testresult
+    assert "`" not in extract(tweet, config=ZERO_CONFIG, output_format="markdown")
+    # both sources are checked with one pattern before a value reaches the fence line
+    for markup in (
+        '<pre lang="py\nthon"><code>',
+        '<pre class="language-*"><code class="language-*">',
+        '<pre><code rend="a\nb">',
+    ):
+        unusable = f"<div><p>Code:</p>\n{markup}import os\nprint(os.getcwd())</code></pre></div>"
+        testresult = extract(unusable, config=ZERO_CONFIG, output_format="markdown")
+        assert "```\nimport os\nprint(os.getcwd())\n```" in testresult
+        testresult = extract(unusable, config=ZERO_CONFIG, output_format="xml")
+        assert "<code>import os\nprint(os.getcwd())</code>" in testresult
+    # lang stays the fallback when the class names no usable language
+    fallback = """<div><p>Code:</p>
+<pre lang="python"><code class="language-*">import os
+print(os.getcwd())</code></pre></div>"""
+    testresult = extract(fallback, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    # every code element of the block carries the hint: a doubly nested block gets a labeled fence
+    doubly_nested = """<div><p>Code:</p>
+<pre><code class="language-python"><code class="font-mono">import os
+print(os.getcwd())</code></code></pre></div>"""
+    testresult = extract(doubly_nested, config=ZERO_CONFIG, output_format="markdown")
+    assert "```python\nimport os\nprint(os.getcwd())\n```" in testresult
+    testresult = extract(doubly_nested, config=ZERO_CONFIG, output_format="xml")
+    assert '<code rend="python">import os\nprint(os.getcwd())</code>' in testresult
 
 
 def test_markdown_escaping():
@@ -4221,6 +4631,10 @@ def test_markdown_escaping():
     result = _md(b"<body><code>a\x60\x60\x60b</code></body>")
     assert "````" in result
     assert "a```b" in result
+
+    # a language hint on a block code element becomes the fence info string
+    result = _md(b'<body><code rend="python">a\nb</code></body>')
+    assert "```python\na\nb\n```" in result
 
     # ~~ inside del content must not close the strikethrough early
     assert "~~a\\~\\~b~~" in _md(b"<body><p><del>a~~b</del></p></body>")
@@ -4377,7 +4791,7 @@ def test_markdown_special_char_escaping():
     )
 
     # a blockquote element's own leading '>' must also be escaped
-    assert _md(b"<body><quote>&gt; quoted text with - marker</quote></body>") == "\\> quoted text with - marker"
+    assert _md(b"<body><quote>&gt; quoted text with - marker</quote></body>") == "> \\> quoted text with - marker"
 
     # a heading's own '#' prefix already claims the line, so an inner leading '#' is inert
     assert _md(b'<body><head rend="h2"># nested hash in heading</head></body>') == "## # nested hash in heading"
@@ -4915,13 +5329,17 @@ def test_html_conversion():
     excepted_html = """<html>
   <head>
     <meta name="title" content="Title 1"/>
-    <meta name="fingerprint" content="f6fd180b8fbe3670"/>
+    <meta name="fingerprint" content="f6fd180b8fbe3670"/>{lang}
+    <meta name="filedate" content="{filedate}"/>
   </head>
   <body>
     <h1>Title 1</h1>
     <p>Text.</p>
   </body>
-</html>"""
+</html>""".format(
+        lang='\n    <meta name="language" content="ext"/>' if LANGID_FLAG else "",
+        filedate=datetime.now().astimezone().strftime("%Y-%m-%d"),
+    )
     result = extract(html, output_format="html", config=ZERO_CONFIG, with_metadata=True)
     assert result == excepted_html
 
@@ -4963,6 +5381,39 @@ def test_html_conversion():
     doc = "<html><body><article><p>Body text here.</p><ol><li>first</li><li>second</li></ol></article></body></html>"
     out = extract(doc, output_format="html", config=ZERO_CONFIG)
     assert "<ol>\n      <li>first</li>\n      <li>second</li>\n    </ol>" in out
+
+
+@pytest.mark.parametrize("with_metadata", [False, True])
+def test_html_output_preserves_document(with_metadata):
+    "HTML output keeps comments and leaves the extracted XML available for other formats."
+    document = Document(
+        title="Title",
+        body=etree.fromstring('<body><p>Body text.</p><p> </p><list rend="ol"><item>First</item></list></body>'),
+        commentsbody=etree.fromstring('<body><p>A <hi rend="#b">comment</hi>.</p><p> </p></body>'),
+    )
+    before = (etree.tostring(document.body), etree.tostring(document.commentsbody))
+
+    result = trafilatura.htmlprocessing.build_html_output(document, with_metadata=with_metadata)
+    tree = etree.fromstring(result)
+    assert tree.xpath("body/ol/li/text()") == ["First"]
+    assert tree.xpath("body/section[@class='comments']/p/strong/text()") == ["comment"]
+    assert not tree.xpath(".//p[not(normalize-space())]")
+    assert (etree.tostring(document.body), etree.tostring(document.commentsbody)) == before
+    assert trafilatura.htmlprocessing.build_html_output(document, with_metadata=with_metadata) == result
+    assert (tree.find("head") is not None) is with_metadata
+
+
+def test_html_output_comments_option():
+    "The public extractor includes comments only when requested."
+    source = (
+        '<html><body><article><p>Body text.</p></article><div class="comments"><p>A reader comment.</p></div></body></html>'
+    )
+    for include_comments in (False, True):
+        result = extract(source, output_format="html", config=ZERO_CONFIG, include_comments=include_comments)
+        tree = etree.fromstring(result)
+        assert bool(tree.xpath("body/section[@class='comments']")) is include_comments
+        if include_comments:
+            assert tree.xpath("body/section/p/text()") == ["A reader comment."]
 
 
 def test_deprecations():
@@ -5127,3 +5578,50 @@ def test_invalid_charref_pattern():
         INVALID_XML_CHARREFS.sub("", "&#9;&#10;&#13;&#32;&#039;&#x1F600;&#123;&#x10000;&#xFFFF0;&#1x")
         == "&#9;&#10;&#13;&#32;&#039;&#x1F600;&#123;&#x10000;&#xFFFF0;x"
     )
+
+
+_TREE_FILLER = "Filler text. " * 30
+
+
+def _tree_page(body):
+    return f"<html><body><article><p>{_TREE_FILLER}</p>{body}</article></body></html>"
+
+
+@pytest.mark.parametrize(
+    "body",
+    [
+        "<p>Start of the text. End of the text.</p>",
+        "<p>Start of the text. <!-- note --> End of the text.</p>",
+        "<p>Start of the text. <?php echo 1; ?> End of the text.</p>",
+        "<h2>Title <!-- draft --> here</h2><p>Text.</p>",
+        "<ul><li>Item <!-- note --> one</li><li>Item two</li></ul>",
+        "<blockquote>Quoted <!-- note --> words.</blockquote>",
+        "<p>Some text.\x0b</p>",
+        "<p><b>Some</b> te\x0bxt.</p>",
+        "<p>Some\x0b text.</p><p>More￾ text.</p>",
+        "<pre><code>a = 1\x0b</code></pre>",
+    ],
+)
+def test_tree_input_matches_string_input(body):
+    "A parsed tree gives the result of the same document as a string, and is left untouched (#1144)."
+    page = _tree_page(body)
+    tree = html.fromstring(page)
+    before = etree.tostring(tree)
+    expected = extract(page)
+    assert expected is not None
+    assert extract(tree) == expected
+    assert bare_extraction(tree).text == bare_extraction(page).text
+    assert etree.tostring(tree) == before
+
+
+@pytest.mark.parametrize(
+    "body", ["<p>Some text.\x0b</p>", "<p>Some <!-- note --> text.</p>", "<p>Some <?php echo 1; ?>text.</p>"]
+)
+def test_tree_input_baseline(body):
+    "html2txt() and baseline() accept the tree of a document with comments and control characters (#1144)."
+    page = _tree_page(body)
+    tree = html.fromstring(page)
+    before = etree.tostring(tree)
+    assert html2txt(tree) == html2txt(page)
+    assert baseline(tree)[1] == baseline(page)[1]
+    assert etree.tostring(tree) == before

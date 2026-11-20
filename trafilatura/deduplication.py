@@ -5,7 +5,7 @@ import string
 import unicodedata
 from collections import OrderedDict
 from difflib import SequenceMatcher
-from functools import cache, lru_cache
+from functools import cache
 from hashlib import blake2b
 from operator import add
 from threading import RLock
@@ -14,7 +14,7 @@ from typing import Any
 from lxml.etree import _Element
 
 from .settings import LRU_SIZE, Extractor
-from .utils import trim
+from .utils import lru_cache, trim
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
@@ -33,13 +33,39 @@ def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -
     return SequenceMatcher(None, reference, new_string).ratio() >= threshold
 
 
+def _is_word_with_marks(token: str) -> bool:
+    """True if token is letters/digits plus combining marks (category M).
+
+    str.isalnum() rejects Thai, Tamil and Hindi matras and NFD accents.
+    Single pass (not any+all); sample_tokens also skips ASCII via isalnum()
+    and not t.isascii() so this path is rare on Latin text.
+    """
+    category = unicodedata.category
+    has_alnum = False
+    for c in token:
+        if c.isalnum():
+            has_alnum = True
+        elif category(c)[0] != "M":
+            return False
+    return has_alnum
+
+
 def sample_tokens(inputstring: str, length: int = 64) -> list[str]:
     """Split input into list of tokens and adjust length threshold to make sure
     there is enough data."""
-    tokens = [t for token in inputstring.split() if (t := token.strip(string.punctuation)).isalnum()]
+    # isalnum() first (C-fast); only non-ASCII leftovers need the marks check
+    tokens = [
+        t
+        for token in inputstring.split()
+        if (t := token.strip(string.punctuation)).isalnum() or (not t.isascii() and _is_word_with_marks(t))
+    ]
     if not tokens:
         # non-latin punctuation, e.g. mandarin 。
-        tokens = [t for t in inputstring.translate(_punct_tbl()).split() if t.isalnum()]
+        tokens = [
+            t
+            for t in inputstring.translate(_punct_tbl()).split()
+            if t.isalnum() or (not t.isascii() and _is_word_with_marks(t))
+        ]
 
     # tokens are non-empty, so a threshold of 0 would keep them all
     for i in range(4, 0, -1):
@@ -178,8 +204,16 @@ LRU_TEST = LRUCache(maxsize=LRU_SIZE)
 
 
 def duplicate_test(element: _Element, options: Extractor) -> bool:
-    "Check for duplicate text with LRU cache."
+    "Check for duplicate text with LRU cache, each text is counted once per extraction."
     teststring = trim(" ".join(element.itertext()))
     lru = options.dedup if isinstance(options.dedup, LRUCache) else LRU_TEST
-    previous = lru.increment(teststring)
+    seen = options.dedup_seen
+    if seen is None:
+        previous = lru.increment(teststring)
+    elif teststring in seen:
+        # already counted in this extraction: repeat the verdict without counting again
+        previous = lru.get(teststring) - 1
+    else:
+        seen.add(teststring)
+        previous = lru.increment(teststring)
     return len(teststring) > options.min_duplcheck_size and previous > options.max_repetitions

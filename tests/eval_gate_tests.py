@@ -8,6 +8,8 @@ import json
 import os
 import sys
 
+import pytest
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import eval_gate
@@ -108,3 +110,63 @@ def test_repin_writes_new_runner_floor_only_on_accepted_update(tmp_path, monkeyp
     assert written["floors"] == {"fast": 0.9}  # refuse keeps old floors, incl. no new entry
     assert eval_gate.repin(written, _fake_matrices(), PINS, allow_regression=True) == 0
     assert json.loads(target.read_text())["floors"] == {"fast": 0.75, "fallback": 0.8}
+
+
+def test_real_meta_baseline_matches_fields():
+    assert set(eval_gate.load_baseline(eval_gate.META_BASELINE_PATH)["floors"]) == set(eval_gate.META_FIELDS)
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "expected"),
+    [
+        ("title", "", []),
+        ("title", None, []),
+        ("title", " A  Title ", ["a title"]),
+        ("author", "Jane Doe; John Roe", ["jane doe", "john roe"]),
+        ("author", "John Roe, Jane Doe", ["jane doe", "john roe"]),
+        ("author", ["Jane Doe", "John Roe"], ["jane doe", "john roe"]),
+        ("author", "John Roe and Jane Doe", ["jane doe", "john roe"]),
+        ("tags", ["b", "A", ""], ["a", "b"]),
+        ("date", "2020-01-02", ["2020-01-02"]),
+    ],
+)
+def test_meta_values(field, value, expected):
+    assert eval_gate.meta_values(field, value) == expected
+
+
+def test_meta_scores_skip_empty_gold():
+    html = b"<html><head><title>Head Line</title><meta name='author' content='Jane Doe'/></head><body/></html>"
+    evaldata = {
+        "https://example.org/a": {"title": "head line", "author": "", "date": "2020-01-02", "tags": [], "categories": []},
+        "https://example.org/b": {"title": "Other", "author": "jane doe", "date": "", "tags": [], "categories": []},
+        "https://example.org/c": {"title": "", "author": "", "date": "", "tags": [], "categories": []},
+    }
+    docs = dict.fromkeys(evaldata, ("eval/x.html", html))
+    scores = eval_gate.meta_scores(evaldata, docs)
+    assert scores["title"] == 0.5
+    assert scores["author"] == 1.0
+    assert scores["date"] == 0.0
+
+
+def test_meta_scores_count_crash_as_miss(monkeypatch, capsys):
+    def crash(*_args, **_kwargs):
+        raise ValueError("boom")
+
+    monkeypatch.setattr(eval_gate, "extract_metadata", crash)
+    evaldata = {"https://example.org/a": {"title": "Head Line", "author": "", "date": "", "tags": [], "categories": []}}
+    docs = {"https://example.org/a": ("eval/x.html", b"<html><head><title>Head Line</title></head><body/></html>")}
+    assert eval_gate.meta_scores(evaldata, docs)["title"] == 0.0
+    assert "metadata: eval/x.html: ValueError: boom" in capsys.readouterr().out
+
+
+def test_repin_meta(tmp_path, monkeypatch):
+    target = tmp_path / "eval_meta_baseline.json"
+    monkeypatch.setattr(eval_gate, "META_BASELINE_PATH", str(target))
+    # first pin, then a raise
+    assert eval_gate.repin_meta({"title": 0.5}) == 0
+    assert eval_gate.repin_meta({"title": 0.6}) == 0
+    # a drop beyond the noise is refused unless allowed
+    assert eval_gate.repin_meta({"title": 0.5}) == 1
+    assert json.loads(target.read_text())["floors"] == {"title": 0.6}
+    assert eval_gate.repin_meta({"title": 0.5}, allow_regression=True) == 0
+    assert json.loads(target.read_text())["floors"] == {"title": 0.5}

@@ -33,6 +33,7 @@ from .xml import _strip_block_whitespace, delete_element, separates_inline
 from .xpaths import (
     BODY_XPATH,
     COMMENTS_DISCARD_XPATH,
+    COMMENTS_DIV_TEXT_XPATH,
     COMMENTS_XPATH,
     DISCARD_IMAGE_ELEMENTS,
     OVERALL_DISCARD_XPATH,
@@ -47,6 +48,8 @@ TABLE_ELEMS = {"td", "th"}
 # meaningful internal attributes to carry onto a rewired sub-element (drop stray class/style/width/etc.)
 KEEP_ATTRS = {"rend", "role", "target", "src", "alt", "title"}
 CODES_QUOTES = {"code", "quote"}
+# a code language hint as it may appear on a markdown fence line
+CODE_LANGUAGE = re.compile(r"[\w+#.-]+")
 # blocks rebuilt as new elements by handle_textelem(), which leaves the source tail behind
 REBUILT_BLOCKS = CODES_QUOTES | {"list", "table"}
 NOT_AT_THE_END = {"head", "ref"}
@@ -72,7 +75,7 @@ def _wraps_inline(element: _Element) -> bool:
     return len(element) > 0 and (element.tag == "ref" or any(c.tag in INLINE_CARRIED for c in element))
 
 
-def _log_event(msg: str, tag: object, text: bytes | str | None) -> None:
+def _log_event(msg: str, tag: object, text: str | None) -> None:
     "Format extraction event for debugging purposes."
     LOGGER.debug("%s: %s %s", msg, tag, trim(text or "") or "None")
 
@@ -224,12 +227,32 @@ def is_code_block_element(element: _Element) -> bool:
     return code is not None and len(element) == 1 and not (element.text or "").strip() and not (code.tail or "").strip()
 
 
+def code_block_language(element: _Element) -> str | None:
+    "Find an explicit language hint: a language-* class, else a lang attribute."
+    candidates = [candidate for candidate in (element, element.find(".//code")) if candidate is not None]
+    hints = [
+        token[len("language-") :]
+        for candidate in candidates
+        for token in (candidate.get("class") or "").split()
+        if token.startswith("language-")
+    ]
+    # lang usually names a natural language, it only counts if no class names the code language
+    hints.extend(candidate.get("lang") or "" for candidate in candidates)
+    return next((hint for hint in hints if CODE_LANGUAGE.fullmatch(hint)), None)
+
+
 def handle_code_blocks(element: _Element) -> _Element:
     "Turn element into a properly tagged code block."
+    language = code_block_language(element)
     processed_element = deepcopy(element)
     for child in element.iter("*"):
         child.tag = "done"
     processed_element.tag = "code"
+    # every code element keeps the checked hint and no page attribute, the serializer may render a nested one
+    for code in processed_element.iter("code"):
+        code.attrib.clear()
+        if language:
+            code.set("rend", language)
     return processed_element
 
 
@@ -239,6 +262,7 @@ def handle_quotes(element: _Element, options: Extractor) -> _Element | None:
         return handle_code_blocks(element)
 
     processed_element = Element(element.tag)
+    update_elem_rendition(element, processed_element)
     process_nested_elements(element, processed_element, options)
     if is_text_element(processed_element):
         # avoid double/nested tags
@@ -256,6 +280,12 @@ def handle_other_elements(element: _Element, potential_tags: set[str], options: 
     if element.tag != "div" or "div" not in potential_tags:
         if element.tag != "done":
             _log_event("discarding element", element.tag, element.text)
+        return None
+
+    # a wrapper div with children and no text of its own is discarded right
+    # after anyway; letting it reach handle_textnode() would let the dedup
+    # check count its children's text as a duplicate of the paragraph (#1146)
+    if len(element) > 0 and not text_chars_test(element.text):
         return None
 
     processed_element = handle_textnode(element, options, comments_fix=False, preserve_spaces=True)
@@ -324,7 +354,7 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
     # and, sitting between two copies of a paragraph, also defeated the adjacent dedup
     if text_chars_test(processed_element.text):
         return processed_element
-    _log_event("discarding element:", "p", tostring(processed_element))
+    _log_event("discarding element:", "p", tostring(processed_element, encoding="unicode"))
     return None
 
 
@@ -814,6 +844,8 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
         subtree = prune_unwanted_nodes(subtree, COMMENTS_DISCARD_XPATH)
         # todo: unified stripping function, taking include_links into account
         strip_tags(subtree, "ref", "span")
+        for elem in COMMENTS_DIV_TEXT_XPATH(subtree):
+            elem.tag = "p"
         for elem in subtree.xpath(".//*"):
             # Descendants of an appended block already belong to the output.
             if elem.tag not in potential_tags or comments_body in elem.iterancestors():

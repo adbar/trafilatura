@@ -8,6 +8,7 @@ from courlan.meta import clear_caches as reset_caches_courlan
 from htmldate.meta import reset_caches as reset_caches_htmldate
 
 from .deduplication import LRU_TEST, _vector_to_add, is_similar_domain
+from .downloads import _load_cookie_file
 from .readability_lxml import _attribute_weight
 from .utils import line_processing, return_printables_and_spaces, trim
 
@@ -27,5 +28,6 @@ def reset_caches() -> None:
     LRU_TEST.clear()
     _vector_to_add.cache_clear()
     _attribute_weight.cache_clear()
+    _load_cookie_file.cache_clear()
     # garbage collection
     gc.collect()

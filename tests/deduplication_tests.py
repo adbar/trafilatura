@@ -147,6 +147,21 @@ def test_dedup_reset_caches():
         reset_caches()
 
 
+@pytest.mark.parametrize(
+    "body",
+    [
+        "<div>\n<p>{p}</p>\n</div>",
+        "<div><div><div>\n<p>{p}</p>\n</div></div></div>",
+        "<div><p>{p}</p></div>",
+    ],
+)
+def test_dedup_wrapper_div(body):
+    "A short page in a wrapper div still extracts with deduplicate=True (#1146)."
+    p = "<p>" + "A paragraph which only occurs once in the document. " * 4 + "</p>"
+    doc = f"<html><body><article>{body.format(p=p)}</article></body></html>"
+    assert extract(doc, deduplicate=True) == extract(doc)
+
+
 def test_lrucache_api():
     "Direct coverage of the LRUCache public API."
     with pytest.raises(ValueError):
@@ -241,6 +256,27 @@ def test_sample_tokens():
     tokens = sample_tokens(" ".join(f"token{i}" for i in range(40)) + " ab cd")
     assert "ab" not in tokens
     assert len(tokens) == 40
+    # words with combining marks, see issue #1055
+    assert sample_tokens("ประเทศไทย สวยงาม") == ["ประเทศไทย", "สวยงาม"]
+    assert sample_tokens("தமிழ் மொழி") == ["தமிழ்", "மொழி"]
+    assert sample_tokens("भारत देश") == ["भारत", "देश"]
+    assert sample_tokens("cafe\u0301 nai\u0308ve") == ["cafe\u0301", "nai\u0308ve"]
+    assert sample_tokens("\u0301\u0308 ab") == ["ab"]
+
+
+def test_fingerprint_combining_marks():
+    "Different texts with combining marks get different hashes, see issue #1055."
+    thai = content_fingerprint("ประเทศไทยเป็นประเทศที่สวยงาม มีวัดและชายหาดมากมาย")
+    other = content_fingerprint("วันนี้อากาศดีมาก เราจะไปเดินเล่นที่สวนสาธารณะ")
+    assert thai != other
+    assert "ffffffffffffffff" not in (thai, other)
+    tamil = content_fingerprint("தமிழ் ஒரு பழமையான மொழி")
+    assert tamil != content_fingerprint("இன்று வானிலை நன்றாக உள்ளது")
+    hindi = content_fingerprint("भारत एक विशाल देश है जिसकी संस्कृति प्राचीन है")
+    assert hindi != content_fingerprint("आज मौसम अच्छा है हम पार्क में घूमने जाएँगे")
+    assert hindi != "ffffffffffffffff"
+    decomposed = "cafe\u0301 re\u0301sume\u0301 nai\u0308ve"
+    assert content_fingerprint(decomposed) != content_fingerprint("cafe\u0301 sold out")
 
 
 def test_generate_bow_hash():
@@ -267,3 +303,21 @@ def test_dedup_cache_option():
 
     # the global cache is untouched by scoped runs
     assert extract(doc, deduplicate=True) is not None
+
+
+@pytest.mark.parametrize(
+    "body",
+    [
+        "<p>{a}</p>",  # one paragraph: checked in several places per extraction (#1160)
+        "<p>{a}</p><p>{b}</p><p>{a}</p>",  # a text genuinely repeated within one document
+    ],
+)
+def test_dedup_counted_once_per_extraction(body):
+    "A page seen again is kept MAX_REPETITIONS + 1 times, however often its texts are checked."
+    a = "A paragraph which is long enough to be checked for duplicates and appears on every page. " * 2
+    b = "Another distinct paragraph that is unique to this page and is also quite long enough for checks."
+    doc = f"<html><body><article>{body.format(a=a, b=b)}</article></body></html>"
+    lru = LRUCache()
+    assert [extract(doc, deduplicate=lru) is not None for _ in range(4)] == [True, True, True, False]
+    # the repeated text counts once per extraction
+    assert lru.get(" ".join(a.split())) == 4

@@ -3,9 +3,10 @@
 No competitor-extractor deps (unlike evaluate.py), so it's cheap to run in CI.
 eval_baseline.json pins the floors plus a digest of evaldata.json and every
 resolved HTML input — many double as unit-test mock pages in cache/, so a
-refresh there would otherwise change scores unnoticed. After editing either,
-re-pin with ``--update``: it re-pins the corpus but refuses to lower a floor
-without ``--allow-regression``.
+refresh there would otherwise change scores unnoticed. eval_meta_baseline.json
+pins the metadata floors: the share of annotated values matched by
+extract_metadata. After editing either, re-pin with ``--update``: it re-pins
+the corpus but refuses to lower a floor without ``--allow-regression``.
 """
 
 import argparse
@@ -13,15 +14,32 @@ import hashlib
 import json
 import os
 import sys
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from eval_common import RUNNERS, ConfusionMatrix, load_evaldata, read_corpus, report_first_error, run_and_count, validate
+from eval_common import (
+    RUNNERS,
+    ConfusionMatrix,
+    load_evaldata,
+    norm,
+    read_corpus,
+    report_first_error,
+    run_and_count,
+    validate,
+)
+
+from trafilatura.json_metadata import AUTHOR_SPLIT
+from trafilatura.metadata import extract_metadata
+from trafilatura.utils import load_html
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASELINE_PATH = os.path.join(HERE, "eval_baseline.json")
+META_BASELINE_PATH = os.path.join(HERE, "eval_meta_baseline.json")
+# fields with enough annotations, empty gold values are not annotated and skipped
+META_FIELDS = ("title", "author", "date", "tags", "categories")
 
 # one flipped segment moves F1 by ~0.0002; don't fail on measurement noise
 EPSILON = 0.0005
@@ -37,19 +55,20 @@ def regressed(f1: float, floor: float) -> bool:
     return f1 < floor - EPSILON
 
 
-def load_baseline() -> dict[str, Any]:
-    with open(BASELINE_PATH, encoding="utf-8") as f:
+def load_baseline(path: str | None = None) -> dict[str, Any]:
+    with open(path or BASELINE_PATH, encoding="utf-8") as f:
         baseline: dict[str, Any] = json.load(f)
     return baseline
 
 
-def save_baseline(baseline: dict[str, Any]) -> None:
+def save_baseline(baseline: dict[str, Any], path: str | None = None) -> None:
     "Atomic replace, so an interrupted --update can't truncate the pins."
-    tmp = BASELINE_PATH + ".tmp"
+    path = path or BASELINE_PATH
+    tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(baseline, f, indent=2)
         f.write("\n")
-    os.replace(tmp, BASELINE_PATH)
+    os.replace(tmp, path)
 
 
 def corpus_sha(docs: dict[str, tuple[str, bytes]]) -> str:
@@ -86,6 +105,55 @@ def score(evaldata: dict[str, dict[str, Any]], docs: dict[str, tuple[str, bytes]
                 report_first_error(reported, name, relpath, err)
             matrices[name].add(counts)
     return matrices
+
+
+def meta_values(field: str, value: Any) -> list[str]:
+    "Comparable form: case- and whitespace-insensitive, authors and lists as sorted items."
+    if not value:
+        return []
+    if field == "author":
+        value = AUTHOR_SPLIT.split("; ".join(value) if isinstance(value, list) else value)
+    elif not isinstance(value, list):
+        value = [value]
+    return sorted(item for item in (norm(v).casefold() for v in value) if item)
+
+
+def meta_scores(evaldata: dict[str, dict[str, Any]], docs: dict[str, tuple[str, bytes]]) -> dict[str, float]:
+    "Share of annotated values matched, per metadata field."
+    hits: Counter[str] = Counter()
+    totals: Counter[str] = Counter()
+    reported: set[str] = set()
+    for url, item in evaldata.items():
+        gold = {field: meta_values(field, item.get(field)) for field in META_FIELDS}
+        if not any(gold.values()):
+            continue
+        tree = load_html(docs[url][1])
+        try:
+            metadata = extract_metadata(tree, default_url=url) if tree is not None else None
+        except Exception as err:
+            report_first_error(reported, "metadata", docs[url][0], err)
+            metadata = None
+        for field, expected in gold.items():
+            if expected:
+                totals[field] += 1
+                hits[field] += expected == meta_values(field, getattr(metadata, field, None))
+    return {field: round(hits[field] / max(totals[field], 1), 4) for field in META_FIELDS}
+
+
+def repin_meta(measured: dict[str, float], allow_regression: bool = False) -> int:
+    "Rewrite the metadata floors unless that lowers one, returns the exit code."
+    floors = load_baseline(META_BASELINE_PATH)["floors"] if os.path.exists(META_BASELINE_PATH) else {}
+    drops = [
+        f"meta {name}: {measured[name]:.4f} vs floor {floors[name]:.4f}"
+        for name in measured
+        if name in floors and regressed(measured[name], floors[name])
+    ]
+    if drops and not allow_regression:
+        print("\n".join(["refusing to lower a metadata floor:", *drops]))
+        return 1
+    save_baseline({"floors": measured}, META_BASELINE_PATH)
+    print(f"re-pinned metadata floors={measured}")
+    return 0
 
 
 def repin(
@@ -136,16 +204,24 @@ def main(argv: list[str]) -> int:
             sys.exit("corpus changed (annotations or HTML) — re-measure and re-pin:\n    python tests/eval_gate.py --update")
         if set(RUNNERS) != set(baseline["floors"]):
             sys.exit("runners and pinned floors disagree — re-pin:\n    python tests/eval_gate.py --update")
+        meta_floors = load_baseline(META_BASELINE_PATH)["floors"]
+        if set(META_FIELDS) != set(meta_floors):
+            sys.exit("metadata fields and pinned floors disagree — re-pin:\n    python tests/eval_gate.py --update")
 
     matrices = score(evaldata, docs)
+    meta = meta_scores(evaldata, docs)
     if args.update:
-        return repin(baseline, matrices, pins, allow_regression=args.allow_regression)
+        code = repin(baseline, matrices, pins, allow_regression=args.allow_regression)
+        return code | repin_meta(meta, allow_regression=args.allow_regression)
 
     regression = False
     for name, cm in matrices.items():
         f1, floor = measured_f1(cm), baseline["floors"][name]
         regression = regression or regressed(f1, floor)
         print(f"{name:>9}: F1={f1:.4f} (floor {floor:.4f})")
+    for field, value in meta.items():
+        regression = regression or regressed(value, meta_floors[field])
+        print(f"{field:>10}: {value:.4f} (floor {meta_floors[field]:.4f})")
     return int(regression)
 
 

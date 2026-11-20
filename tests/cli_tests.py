@@ -109,6 +109,37 @@ def test_input_file_unreadable_parent(tmp_path, run):
     assert "-i/--input-file: Permission denied" in err
 
 
+@pytest.mark.parametrize(
+    "content, message",
+    [
+        ("MIN_OUTPUT_SIZE = 1\n", "File contains no section headers"),
+        ("[DEFAULT]\nMIN_EXTRACTED_SIZE = 250.5\n", "invalid literal for int()"),
+        ("[DEFAULT]\nEXTENSIVE_DATE_SEARCH = maybe\n", "Not a boolean: maybe"),
+        # download settings are read lazily, their types must be checked up front too
+        ("[DEFAULT]\nSLEEP_TIME = abc\n", "could not convert string to float: 'abc'"),
+        ("[DEFAULT]\nMAX_REDIRECTS = x\n", "invalid literal for int()"),
+        ("[DEFAULT]\nSSRF_PROTECTION = maybe\n", "Not a boolean: maybe"),
+    ],
+)
+def test_config_file_malformed_content(tmp_path, run, content, message):
+    "A config file with bad syntax or types is an argument error, not a traceback."
+    cfg = tmp_path / "bad.cfg"
+    cfg.write_text(content, encoding="utf-8")
+    code, _, err = run(["-u", "https://example.org", "--config-file", str(cfg)])
+    assert code == 2
+    assert "--config-file: " in err
+    assert message in err
+
+
+def test_config_file_non_utf8(tmp_path, run):
+    "A non-UTF-8 config file is an argument error, not a UnicodeDecodeError traceback."
+    cfg = tmp_path / "bad.cfg"
+    cfg.write_bytes(b"[DEFAULT]\nMIN_OUTPUT_SIZE = 1\n\xff\xfe")
+    code, _, err = run(["-u", "https://example.org", "--config-file", str(cfg)])
+    assert code == 2
+    assert "--config-file: " in err
+
+
 @pytest.mark.skipif(os.name == "nt" or os.geteuid() == 0, reason="needs POSIX permissions as non-root")
 @pytest.mark.parametrize(
     "option, label", [("-i", "-i/--input-file"), ("-b", "-b/--blacklist"), ("--config-file", "--config-file")]
@@ -310,6 +341,26 @@ def test_list_ignores_extraction_opts(capsys):
     cli.parse_args(["--list", "--json", "--no-comments", "--with-metadata"])
     err = capsys.readouterr().err
     assert "these options are ignored: --no-comments, --output-format, --with-metadata" in err
+
+
+def test_list_ignores_output_and_tei_opts(capsys):
+    "--list also ignores the output directory and TEI validation."
+    cli.parse_args(["--list", "-u", "https://example.org/", "-o", "out", "--validate-tei"])
+    err = capsys.readouterr().err
+    assert "these options are ignored: --output-dir, --validate-tei" in err
+
+
+def test_list_ignores_target_language(capsys):
+    "--list ignores the target language unless the navigation options filter by it."
+    cli.parse_args(["--list", "-u", "https://example.org/", "--target-language", "de"])
+    err = capsys.readouterr().err
+    assert "--target-language" in err
+    assert "ignored" in err
+
+    for nav in ("--feed", "--sitemap", "--crawl", "--explore", "--probe"):
+        capsys.readouterr()
+        cli.parse_args(["--list", nav, "https://example.org/x", "--target-language", "de"])
+        assert "ignored" not in capsys.readouterr().err
 
 
 def test_help(run):
@@ -514,7 +565,7 @@ def test_csv_stdout_has_no_blank_records(tmp_path, output_args):
         check=True,
     )
     rows = list(csv.reader(io.StringIO(result.stdout.decode("utf-8"), newline=""), delimiter="\t"))
-    assert [len(row) for row in rows] == [11, 11]
+    assert [len(row) for row in rows] == [18, 18]
     assert {row[7] for row in rows} == {
         "Document 1 with some long enough text, here and there.",
         "Document 2 with some long enough text, here and there.",
@@ -1010,6 +1061,20 @@ def test_probing_wrong_language(capsys):
     assert capsys.readouterr().out == ""
 
 
+def test_probing_undetectable_language(capsys):
+    "A --target-language the detector cannot output does not filter, as documented."
+    html = f"<html><body><p>{'Some English text. ' * 20}</p></body></html>"
+    args = cli.parse_args(["--probe", "https://example.org/", "--target-language", "zz"])
+    with (
+        patch.object(cli_utils, "buffered_downloads", return_value=[("https://example.org/", html)]),
+        patch.object(cli_utils, "LANGID_FLAG", True),
+        patch.object(cli_utils, "detectable_languages", return_value={"de", "en"}),
+        patch.object(cli_utils, "language_classifier", return_value="en"),
+    ):
+        assert cli_utils.probe_homepage(args) == 0
+    assert capsys.readouterr().out == "https://example.org/\n"
+
+
 @pytest.mark.parametrize("relative_input", [False, True])
 def test_keep_dirs_local_batch(tmp_path, monkeypatch, relative_input):
     """Kept paths stay relative to the input directory, beneath the output directory."""
@@ -1249,3 +1314,27 @@ def test_explore_crawls_seeds_without_links(tmp_path, list_mode):
         args.blacklist = cli_utils.load_blacklist(args.blacklist)
         assert cli_utils.cli_discovery(args) == 0
     assert sorted(crawled) == ["https://blocked.org/", "https://nolinks.org/"]
+
+
+@pytest.mark.parametrize(
+    "seeds, expected",
+    [
+        (
+            ["https://example.org/en/", "https://example.org/de/"],
+            ["https://example.org/en/", "sleep", "https://example.org/de/"],
+        ),
+        (["https://example.org/en/", "https://example.com/de/"], ["https://example.org/en/", "https://example.com/de/"]),
+    ],
+)
+def test_discovery_waits_between_urls_of_a_website(tmp_path, seeds, expected):
+    "Input URLs of the same website are processed one after the other with a wait in between."
+    (tmp_path / "seeds.txt").write_text("\n".join(seeds), encoding="utf-8")
+    log = []
+    with (
+        patch.object(cli_utils, "sitemap_search", lambda url, **kwargs: log.append(url) or []),
+        patch.object(cli_utils, "sleep", lambda _: log.append("sleep")),
+        patch.object(cli_utils, "url_processing_pipeline", lambda args, store: 0),
+    ):
+        cli_utils.cli_discovery(cli.parse_args(["--sitemap", "-i", str(tmp_path / "seeds.txt"), "--parallel", "2"]))
+    # websites are processed in parallel, so only the order within a website is fixed
+    assert log == expected if "sleep" in expected else sorted(log) == sorted(expected)

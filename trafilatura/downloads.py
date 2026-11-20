@@ -12,11 +12,13 @@ from collections.abc import Callable, Generator
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from configparser import ConfigParser
 from functools import partial
+from http.cookiejar import LoadError, MozillaCookieJar
 from importlib.metadata import version
 from io import BytesIO
 from time import sleep
 from typing import Any
 from urllib.parse import urljoin
+from urllib.request import Request
 
 import certifi
 import urllib3
@@ -28,6 +30,7 @@ from .utils import (
     Response,
     _capped,
     is_acceptable_length,
+    lru_cache,
     make_chunks,
 )
 
@@ -166,15 +169,41 @@ class _SafePoolManager(urllib3.PoolManager):
         self.pool_classes_by_scheme = {"http": _SafeHTTPConnectionPool, "https": _SafeHTTPSConnectionPool}
 
 
-def _determine_headers(config: ConfigParser) -> dict[str, str]:
-    "Overlay user-agent and cookie from the config file on the default headers."
+@lru_cache(maxsize=4)
+def _load_cookie_file(filename: str) -> MozillaCookieJar:
+    "Load a Netscape-format cookie file once, keeping session cookies."
+    jar = MozillaCookieJar()
+    try:
+        # expired cookies are left out when requests are sent
+        jar.load(filename, ignore_discard=True, ignore_expires=True)
+    except (OSError, LoadError) as err:
+        LOGGER.error("cannot load cookie file: %s %s", filename, err)
+    # an expiry of 0 marks a session cookie, Python < 3.13 reads it as expired
+    for cookie in jar:
+        if cookie.expires == 0:  # pragma: no cover
+            cookie.expires, cookie.discard = None, True
+    return jar
+
+
+def _determine_headers(config: ConfigParser, url: str | None = None) -> dict[str, str]:
+    "Overlay user-agent and cookies from the config file on the default headers."
     headers = dict(DEFAULT_HEADERS)
     # rotate over a series of user-agents
     if myagents := config.get("DEFAULT", "USER_AGENTS", fallback="").strip():
         headers["User-Agent"] = random.choice(myagents.splitlines())
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
-    # todo: support for several cookies?
-    if mycookie := config.get("DEFAULT", "COOKIE", fallback=None):
+    # a cookie file takes precedence, only cookies matching the URL are sent
+    if cookiefile := config.get("DEFAULT", "COOKIE_FILE", fallback="").strip():
+        if url:
+            try:
+                request = Request(url)
+                _load_cookie_file(cookiefile).add_cookie_header(request)
+            except ValueError:  # malformed URL, the request is sent without cookies
+                pass
+            else:
+                if mycookie := request.get_header("Cookie"):
+                    headers["Cookie"] = mycookie
+    elif mycookie := config.get("DEFAULT", "COOKIE", fallback=None):
         headers["Cookie"] = mycookie
     return headers
 
@@ -239,7 +268,7 @@ def _send_urllib_request(url: str, no_ssl: bool, config: ConfigParser) -> Respon
         response = pool_manager.request(
             "GET",
             url,
-            headers=_determine_headers(config),
+            headers=_determine_headers(config, url),
             retries=_get_retry_strategy(config),
             timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
             preload_content=False,
@@ -248,6 +277,7 @@ def _send_urllib_request(url: str, no_ssl: bool, config: ConfigParser) -> Respon
             # stream() yields decoded chunks: the cap applies to decompressed bytes
             data = _capped(response.stream(2**17), config.getint("DEFAULT", "MAX_FILE_SIZE"))
         finally:
+            response.close()
             response.release_conn()
 
         # necessary for standardization
@@ -375,7 +405,7 @@ def _urllib3_is_live_page(url: str, config: ConfigParser = DEFAULT_CONFIG) -> bo
         response = _initiate_pool(config, no_ssl=True).request(
             "HEAD",
             url,
-            headers=_determine_headers(config),
+            headers=_determine_headers(config, url),
             # exhausted redirects return the last 3xx, counted as live
             retries=urllib3.util.Retry(
                 total=config.getint("DEFAULT", "MAX_REDIRECTS"),
@@ -502,7 +532,9 @@ def _send_pycurl_request(url: str, no_ssl: bool, config: ConfigParser) -> Respon
 
     # init, let libcurl advertise and decompress the encodings it supports
     headerlist = [
-        f"{header}: {content}" for header, content in _determine_headers(config).items() if header.lower() != "accept-encoding"
+        f"{header}: {content}"
+        for header, content in _determine_headers(config, url).items()
+        if header.lower() != "accept-encoding"
     ]
 
     # prepare curl request

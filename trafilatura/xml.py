@@ -44,32 +44,35 @@ TEI_VALID_TAGS = {
     "row",
     "table",
 }
-TEI_VALID_ATTRS = {"rend", "rendition", "role", "target", "type"}
+TEI_VALID_ATTRS = {"rend", "rendition", "role", "target", "type", "url"}
 TEI_DTD = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
 TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 
-CONTROL_PARSER = XMLParser(remove_blank_text=True)
-
 NEWLINE_ELEMS = {"graphic", "head", "lb", "list", "p", "quote", "row", "table"}
 SPECIAL_FORMATTING = {"code", "del", "head", "hi", "ref", "item", "cell"}
 WITH_ATTRIBUTES = {"cell", "row", "del", "graphic", "head", "hi", "item", "list", "ref"}
+# attributes set by Trafilatura itself, source attributes are dropped (#1158)
+XML_VALID_ATTRS = {"alt", "rend", "role", "src", "target", "title"}
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
 META_ATTRIBUTES = [
-    "sitename",
     "title",
     "author",
-    "date",
     "url",
     "hostname",
     "description",
+    "sitename",
+    "date",
     "categories",
     "tags",
-    "license",
-    "id",
     "fingerprint",
+    "id",
+    "license",
     "language",
+    "image",
+    "pagetype",
+    "filedate",
 ]
 
 HI_FORMATTING = {"#b": "**", "#i": "*", "#t": "`"}
@@ -221,6 +224,7 @@ def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
             }
         )
         commentsbody = outputdict.pop("commentsbody")
+        del outputdict["raw_text"]
     else:
         outputdict = {"text": xmltotxt(docmeta.body, include_formatting=False)}
         commentsbody = docmeta.commentsbody
@@ -233,8 +237,15 @@ def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
 def clean_attributes(tree: _Element) -> _Element:
     """Remove unnecessary attributes."""
     for elem in tree.iter("*"):
-        if elem.tag not in WITH_ATTRIBUTES:
-            elem.attrib.clear()
+        if elem.tag in WITH_ATTRIBUTES:
+            for attribute in [a for a in elem.attrib if a not in XML_VALID_ATTRS]:
+                elem.attrib.pop(attribute)
+            continue
+        # keep the language hint of code blocks
+        language = elem.get("rend") if elem.tag == "code" else None
+        elem.attrib.clear()
+        if language:
+            elem.set("rend", language)
     return tree
 
 
@@ -262,7 +273,7 @@ def control_xml_output(document: Document, options: Extractor) -> str:
 
     output_tree = sanitize_tree(output_tree)
     # necessary for cleaning
-    output_tree = fromstring(tostring(output_tree, encoding="unicode"), CONTROL_PARSER)
+    output_tree = fromstring(tostring(output_tree, encoding="unicode"), XMLParser(remove_blank_text=True))
 
     # validate
     if options.format == "xmltei" and options.tei_validation:
@@ -320,6 +331,9 @@ def check_tei(xmldoc: _Element, url: str | None) -> _Element:
         elif elem.tag == "div":
             _handle_text_content_of_div_nodes(elem)
             _wrap_unwanted_siblings_of_div(elem)
+        elif elem.tag == "graphic" and "src" in elem.attrib:
+            # TEI points to the image with url, src would be dropped below
+            elem.set("url", elem.attrib.pop("src"))
         # check attributes
         for attribute in [a for a in elem.attrib if a not in TEI_VALID_ATTRS]:
             LOGGER.warning("not a valid TEI attribute, removing: %s in %s %s", attribute, elem.tag, url)
@@ -674,7 +688,8 @@ def replace_element_text(element: _Element, include_formatting: bool, in_cell: b
                     elem_text = f"{elem_text}\n{lb.tail or ''}"
                     lb.getparent().remove(lb)
                 fence = _code_fence(elem_text, min_len=3)
-                elem_text = f"{fence}\n{elem_text}\n{fence}\n"
+                language = element.get("rend") or ""
+                elem_text = f"{fence}{language}\n{elem_text}\n{fence}\n"
             else:
                 elem_text = _md_code(elem_text)
     # handle links
@@ -746,11 +761,23 @@ def process_element(
     in_cell: bool = False,
     in_item: bool = False,
     list_positions: dict[_Element, int] | None = None,
+    quote_body: bool = False,
 ) -> None:
     "Recursively convert a LXML element and its children to a flattened string representation."
     if list_positions is None:
         list_positions = {}
     tag = element.tag
+    # only a real quotation gets the '>' marker, not preformatted text (rend="pre")
+    if (
+        tag == "quote"
+        and include_formatting
+        and not in_cell
+        and not in_item
+        and not quote_body
+        and element.get("rend") != "pre"
+    ):
+        _process_quote(element, returnlist, list_positions)
+        return
     # in_cell/in_item are inherited down the recursion instead of re-walking ancestors at every node
     in_cell = in_cell or tag == "cell"
     in_item = in_item or tag == "item"
@@ -835,6 +862,28 @@ def process_element(
         returnlist.append("\n")
 
 
+def _process_quote(element: _Element, returnlist: list[str], list_positions: dict[_Element, int]) -> None:
+    "Render a quote on its own and mark each of its lines with '>', its tail stays outside."
+    if _last_char(returnlist) not in ("\n", ""):
+        returnlist.append("\n")
+    tail, element.tail = element.tail, None
+    quoted: list[str] = []
+    process_element(element, quoted, True, list_positions=list_positions, quote_body=True)
+    element.tail = tail
+    # same line rules as sanitize(): empty lines go, a paragraph break becomes a bare '>'
+    lines: list[str] = []
+    for line in filter(None, "".join(quoted).splitlines()):
+        if line.strip("\u2424"):
+            lines.append(f"> {line}")
+        elif lines and lines[-1] != ">":
+            lines.append(">")
+    while lines and lines[-1] == ">":
+        lines.pop()
+    returnlist.append("\n".join(lines))
+    returnlist.append("\n\u2424\n")
+    _append_tail(element, returnlist, False, False, True, list_positions)
+
+
 def _unescape_text(text: str) -> str:
     "Decode complete entities without interpreting unknown names as entity prefixes."
     if "&" not in text:
@@ -899,6 +948,13 @@ def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t",
                 commentstext,
                 document.license,
                 document.pagetype,
+                document.author,
+                document.description,
+                document.sitename,
+                ";".join(document.categories or []),
+                ";".join(document.tags or []),
+                document.language,
+                document.filedate,
             )
         ]
     )
@@ -920,7 +976,11 @@ def write_teitree(docmeta: Document) -> _Element:
 
 def _define_publisher_string(docmeta: Document) -> str:
     """Construct a publisher string to include in TEI header"""
-    if docmeta.hostname and docmeta.sitename:
+    if (
+        docmeta.hostname
+        and docmeta.sitename
+        and docmeta.sitename.strip().lower().removeprefix("www.") != docmeta.hostname.lower().removeprefix("www.")
+    ):
         publisher = f"{docmeta.sitename.strip()} ({docmeta.hostname})"
     else:
         publisher = docmeta.hostname or docmeta.sitename or "N/A"
@@ -931,7 +991,6 @@ def _define_publisher_string(docmeta: Document) -> str:
 
 def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     """Write TEI header based on gathered metadata"""
-    # todo: add language info
     header = SubElement(teidoc, "teiHeader")
     filedesc = SubElement(header, "fileDesc")
     bib_titlestmt = SubElement(filedesc, "titleStmt")
@@ -954,6 +1013,10 @@ def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     if docmeta.id:
         SubElement(notesstmt, "note", type="id").text = docmeta.id
     SubElement(notesstmt, "note", type="fingerprint").text = docmeta.fingerprint
+    if docmeta.image:
+        SubElement(notesstmt, "note", type="image").text = docmeta.image
+    if docmeta.pagetype:
+        SubElement(notesstmt, "note", type="pagetype").text = docmeta.pagetype
 
     sourcedesc = SubElement(filedesc, "sourceDesc")
     source_bibl = SubElement(sourcedesc, "bibl")
@@ -979,6 +1042,10 @@ def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     profiledesc = SubElement(header, "profileDesc")
     abstract = SubElement(profiledesc, "abstract")
     SubElement(abstract, "p").text = docmeta.description
+
+    if docmeta.language:
+        langusage = SubElement(profiledesc, "langUsage")
+        SubElement(langusage, "language", ident=docmeta.language).text = docmeta.language
 
     if docmeta.categories or docmeta.tags:
         textclass = SubElement(profiledesc, "textClass")

@@ -100,6 +100,63 @@ def test_urllib_request_releases_conn_on_oversize():
     resp.release_conn.assert_called_once()
 
 
+def test_urllib_request_recovers_after_oversize():
+    "An unread oversized response must not poison the next pooled request."
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    release_tail = threading.Event()
+    peers = []
+
+    class Handler(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"
+
+        def do_GET(self):
+            peers.append(self.client_address[1])
+            self.send_response(200)
+            if self.path == "/oversize":
+                self.send_header("Content-Length", str(2**17 + 1))
+                self.end_headers()
+                self.wfile.write(b"x" * (2**17))
+                self.wfile.flush()
+                # Keep the socket live with an unread tail until the following request finishes.
+                release_tail.wait(3)
+                self.close_connection = True
+            else:
+                self.send_header("Content-Length", "2")
+                self.end_headers()
+                self.wfile.write(b"ok")
+
+        def log_message(self, *_args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    thread = threading.Thread(target=lambda: server.serve_forever(poll_interval=0.01))
+    thread.start()
+    base = f"http://127.0.0.1:{server.server_port}"
+    config = use_config()
+    config.set("DEFAULT", "SSRF_PROTECTION", "off")
+    config.set("DEFAULT", "MAX_FILE_SIZE", "1024")
+    config.set("DEFAULT", "DOWNLOAD_TIMEOUT", "1")
+    # Retrying the poisoned connection on a fresh one would hide the regression.
+    config.set("DEFAULT", "MAX_REDIRECTS", "0")
+    try:
+        assert _send_urllib_request(f"{base}/oversize", False, config) is None
+        response = _send_urllib_request(f"{base}/ok", False, config)
+        assert response is not None
+        assert response.data == b"ok"
+        assert len(peers) == 2
+        assert peers[0] != peers[1]
+    finally:
+        release_tail.set()
+        if dl.HTTP_POOL is not None:
+            dl.HTTP_POOL.clear()
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
+        assert not thread.is_alive()
+
+
 @pytest.mark.parametrize(
     "geturl_result, expected",
     [
@@ -677,6 +734,75 @@ def test_partial_config_headers():
     assert _determine_headers(partial) == {**DEFAULT_HEADERS, "User-Agent": "Firefox"}
     # nothing set: fall back to default headers
     assert _determine_headers(ConfigParser()) == DEFAULT_HEADERS
+
+
+@pytest.mark.parametrize("use_pycurl", [False, True] if dl.HAS_PYCURL else [False])
+@pytest.mark.parametrize(
+    "lines, path, cookie, expected",
+    [
+        # only the cookies matching the domain and the path are sent
+        (
+            ["127.0.0.1\tFALSE\t/\tFALSE\t0\tsession\tabc", ".example.org\tTRUE\t/\tFALSE\t0\tother\tno"],
+            "/page",
+            "",
+            "session=abc",
+        ),
+        (["127.0.0.1\tFALSE\t/private\tFALSE\t0\tsession\tabc"], "/page", "", ""),
+        (["127.0.0.1\tFALSE\t/private\tFALSE\t0\tsession\tabc"], "/private/page", "", "session=abc"),
+        # expired cookies and secure cookies over HTTP are left out
+        (["127.0.0.1\tFALSE\t/\tFALSE\t1\tsession\tabc"], "/page", "", ""),
+        (["127.0.0.1\tFALSE\t/\tTRUE\t0\tsession\tabc"], "/page", "", ""),
+        # the cookie file takes precedence over COOKIE
+        (["127.0.0.1\tFALSE\t/\tFALSE\t0\tsession\tabc"], "/page", "lang=en", "session=abc"),
+        # a missing cookie file sends no cookie
+        (None, "/page", "lang=en", ""),
+    ],
+)
+def test_cookie_file(lines, path, cookie, expected, use_pycurl, monkeypatch, tmp_path):
+    "Cookies from a Netscape cookie file are sent with matching requests."
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    class _Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            body = ("received cookies: " + (self.headers.get("Cookie") or "")).encode()
+            self.send_response(200)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *_args):
+            pass
+
+    cookiefile = tmp_path / "cookies.txt"
+    if lines is not None:
+        cookiefile.write_text("# Netscape HTTP Cookie File\n" + "\n".join(lines) + "\n", encoding="utf-8")
+    config = use_config()
+    config.set("DEFAULT", "SSRF_PROTECTION", "off")
+    config.set("DEFAULT", "COOKIE", cookie)
+    config.set("DEFAULT", "COOKIE_FILE", str(cookiefile))
+    monkeypatch.setattr(dl, "HAS_PYCURL", use_pycurl)
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        result = fetch_url(f"http://127.0.0.1:{server.server_port}{path}", config=config)
+    finally:
+        server.shutdown()
+        server.server_close()
+    assert result == f"received cookies: {expected}"
+
+
+@pytest.mark.parametrize("use_pycurl", [False, True] if dl.HAS_PYCURL else [False])
+def test_cookie_file_malformed_url(use_pycurl, monkeypatch, tmp_path):
+    "A malformed URL is handled as without a cookie file."
+    cookiefile = tmp_path / "cookies.txt"
+    cookiefile.write_text("# Netscape HTTP Cookie File\n", encoding="utf-8")
+    config = use_config()
+    config.set("DEFAULT", "COOKIE_FILE", str(cookiefile))
+    monkeypatch.setattr(dl, "HAS_PYCURL", use_pycurl)
+    assert fetch_url("http://[::1/page", config=config) is None
 
 
 def test_parse_curl_headers():

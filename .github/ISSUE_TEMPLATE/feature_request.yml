@@ -1,0 +1,16 @@
+name: Feature request
+description: Suggest a new feature or an improvement
+labels: ["enhancement"]
+body:
+  - type: checkboxes
+    attributes:
+      label: Existing issues
+      options:
+        - label: I searched the open and closed issues and found no similar request.
+          required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: The problem you want to solve, example pages and how it could work.
+    validations:
+      required: true

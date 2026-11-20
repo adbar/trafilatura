@@ -11,6 +11,8 @@ Major changes:
 - Breaking: `cli_utils.examine()` takes `url` and `options` as keyword-only arguments, `settings.args_to_extractor()` no longer accepts `url`, by @adbar
 - Crawler: `CrawlParameters.i` only counts pages that could be fetched, a failed start page leaves it at 0, by @adbar
 - Python API: `ValueError` for unknown output formats, `url` argument applies with `options`, by @adbar
+- Metadata: OpenGraph, sitenames, title site suffixes, tags, relative images, wrapped JSON-LD, more JSON-LD article types, author names and faster author search, by @adbar
+- Metadata: partial `date_extraction_params` and `date_config` of `extract_metadata()` are merged over the defaults, sitenames are only capitalized when fully lowercase ("eBay" stays), by @adbar
 
 
 ## 2.3.1

@@ -7,6 +7,7 @@ import logging
 import os
 import stat
 import sys
+from configparser import Error as ConfigError
 from importlib.metadata import version
 from pathlib import Path
 from platform import python_version
@@ -24,7 +25,7 @@ from .cli_utils import (
     url_processing_pipeline,
     write_result,
 )
-from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI
+from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI, Extractor, use_config
 
 # options taking a URL as optional value
 _NAVIGATION_OPTS = ("feed", "sitemap", "crawl", "explore", "probe")
@@ -43,6 +44,8 @@ _LIST_IGNORED_OPTS = {
     "tables",
     "deduplicate",
     "output_format",
+    "output_dir",
+    "validate_tei",
     "archived",
     "backup_dir",
     "name_from_url",
@@ -219,6 +222,20 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
             parser.error(f"{option}: not a file: {filename}")
         if not os.access(filename, os.R_OK):
             parser.error(f"{option}: cannot read {filename}")
+    # a config file that cannot be parsed would crash mid-run with a traceback
+    if args.config_file:
+        try:
+            config = use_config(args.config_file)
+            Extractor(config=config)
+            # download settings are only read once a download starts, check their types now
+            config.getfloat("DEFAULT", "SLEEP_TIME")
+            config.getint("DEFAULT", "DOWNLOAD_TIMEOUT")
+            config.getint("DEFAULT", "MAX_REDIRECTS")
+            config.getboolean("DEFAULT", "SSRF_PROTECTION")
+            config.getboolean("DEFAULT", "INSECURE_SSL_FALLBACK")
+            config.getboolean("DEFAULT", "EXTERNAL_URLS")
+        except (ConfigError, ValueError, OSError) as err:
+            parser.error(f"--config-file: {err}")
     if args.parallel < 1:
         parser.error("--parallel must be a positive integer")
     if args.name_from_url:
@@ -234,7 +251,9 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
         elif ignored := sorted(
             a.option_strings[-1]
             for a in parser._actions  # noqa: SLF001 (no public dest to flag mapping)
-            if a.dest in _LIST_IGNORED_OPTS and getattr(args, a.dest) != a.default
+            # the language filters URLs on the navigation options, otherwise --list ignores it
+            if (a.dest in _LIST_IGNORED_OPTS or (a.dest == "target_language" and not navigation))
+            and getattr(args, a.dest) != a.default
         ):
             # emitted before logging is configured, so print directly
             print(f"--list only prints URLs; these options are ignored: {', '.join(ignored)}", file=sys.stderr)

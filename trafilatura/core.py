@@ -31,11 +31,13 @@ from .utils import (
     LANGID_FLAG,
     HtmlInput,
     check_html_lang,
+    copy_clean_tree,
+    language_classifier,
     language_filter,
     load_html,
     normalize_unicode,
 )
-from .xml import build_json_output, control_xml_output, delete_element, keeps_empty, xmltocsv, xmltotxt
+from .xml import META_ATTRIBUTES, build_json_output, control_xml_output, delete_element, keeps_empty, xmltocsv, xmltotxt
 from .xpaths import (
     RAW_TREE_PRUNE_XPATH,
     REMOVE_COMMENTS_AND_LISTS_XPATH,
@@ -57,7 +59,6 @@ ESCALATION_ACCEPT_RATIO = 1.5  # accept the retry if it is this much longer
 ESCALATION_JUSTEXT_RATIO = 2.0
 
 TXT_FORMATS = {"markdown", "txt"}
-_YAML_FIELDS = "title author url hostname description sitename date categories tags fingerprint id license".split()
 
 # Metadata is emitted as a YAML-style Markdown header; values such as a title
 # containing ": " (or a leading indicator, or a reserved word) otherwise produce
@@ -108,7 +109,7 @@ def determine_returnstring(document: Document, options: Extractor) -> str:
             # categories/tags are lists, their repr is a valid flow sequence
             fields = "".join(
                 f"{attr}: {_yaml_scalar(value) if isinstance(value, str) else value}\n"
-                for attr in _YAML_FIELDS
+                for attr in META_ATTRIBUTES
                 if (value := getattr(document, attr))
             )
             header = f"---\n{fields}---\n"
@@ -173,9 +174,10 @@ def trafilatura_sequence(
     1. main extractor (includes wild-text recovery for short documents)
     2. comparison with external extractors (readability/justext), skipped in fast mode
     3. baseline rescue on the original, uncleaned tree
-    4. recall escalation, if the result still covers little of the page: a justext candidate
-       first (a different algorithm, not just stricter rules, so it reaches content the rule-based
-       retry cannot), if rejected stages 1-2 re-run in recall mode (_recall_retry)
+    4. recall escalation in balanced or recall mode, if the result still covers little of the
+       page: try justext first (except in fast mode), which can reach content the rule-based
+       retry misses. If rejected, re-run stages 1-2 only in balanced mode, using recall settings
+       (_recall_retry). Recall mode has already run these stages with the same settings.
     Returns the body and comments elements with their text.
 
     Internal helper: its signature and 4-tuple return are not a stable API — call
@@ -218,10 +220,11 @@ def trafilatura_sequence(
             forum_posts = None  # the dump saw the whole page: missing posts are boilerplate, not lost
 
     # 4. recall escalation: a short extraction covering little of the page suggests
-    # under-extraction (non-article layout) — retry in recall mode, keep if clearly bigger.
+    # under-extraction (non-article layout). Try justext, then a recall retry in balanced mode.
     # NOTE: the page measure html2txt(tree) is coupled to BASIC_CLEAN_XPATH — see settings.py.
     if (
-        options.focus == "balanced"
+        options.focus != "precision"
+        and (options.focus == "balanced" or not options.fast)
         and 0 < len(temp_text) < ESCALATION_MAX_LENGTH
         and len(temp_text) < ESCALATION_PAGE_SHARE * len(html2txt(tree))
     ):
@@ -249,7 +252,7 @@ def trafilatura_sequence(
         len_text = len(temp_text)
         if len(j_text) > ESCALATION_JUSTEXT_RATIO * len_text:
             postbody, temp_text, forum_posts = j_body, j_text, None
-        else:
+        elif options.focus != "recall":
             r_text = ""
             try:
                 r_body, r_text = _recall_retry(esc_tree, r_options, url)
@@ -389,6 +392,11 @@ def bare_extraction(
         options.url = url
     url = options.url
 
+    # count each text only once per extraction, on a copy to leave the caller's options untouched
+    if options.dedup:
+        options = copy(options)
+        options.dedup_seen = set()
+
     try:
         # load the HTML tree
         tree = load_html(filecontent, options.max_file_size)
@@ -396,7 +404,7 @@ def bare_extraction(
             LOGGER.error("empty HTML tree: %s", url)
             raise ValueError
         if tree is filecontent:
-            tree = copy(tree)
+            tree = copy_clean_tree(tree)
 
         # quick and dirty HTML lang check
         if options.lang and (options.fast or not LANGID_FLAG):
@@ -472,6 +480,9 @@ def bare_extraction(
             if is_not_target_lang is True:
                 LOGGER.debug("wrong language: %s", options.source)
                 raise ValueError
+        # pass the detected language along with the metadata
+        elif options.with_metadata and LANGID_FLAG:
+            document.language = language_classifier(temp_text, temp_comments)
 
     except (TypeError, ValueError):
         LOGGER.warning("discarding data: %s", options.source)

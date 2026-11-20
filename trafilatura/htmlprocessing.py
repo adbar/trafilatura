@@ -4,7 +4,9 @@ Functions to process nodes in HTML code.
 """
 
 import logging
+from collections.abc import Callable, Sequence
 from copy import deepcopy
+from typing import Any
 
 from lxml.etree import Element, SubElement, XPath, _Element, strip_elements, strip_tags, tostring
 from lxml.html import HtmlElement
@@ -18,7 +20,7 @@ from .settings import (
     Extractor,
 )
 from .utils import LINK_FARM_RATIO, image_src, safe_base_url, safe_relative_url, textfilter, trim
-from .xml import delete_element, meta_items, separates_inline
+from .xml import delete_element, meta_items, remove_empty_elements, separates_inline
 
 LOGGER = logging.getLogger(__name__)
 
@@ -158,7 +160,9 @@ def prune_html(tree: HtmlElement, focus: str = "balanced") -> HtmlElement:
     return tree
 
 
-def prune_unwanted_nodes(tree: HtmlElement, nodelist: list[XPath], with_backup: bool = False) -> HtmlElement:
+def prune_unwanted_nodes(
+    tree: HtmlElement, nodelist: Sequence[Callable[[HtmlElement], Any]], with_backup: bool = False
+) -> HtmlElement:
     "Prune the HTML tree by removing unwanted sections."
     if not with_backup:
         for expression in nodelist:
@@ -309,7 +313,7 @@ def handle_textnode(
     # lb bypass
     if not comments_fix and elem.tag == "lb":
         if not preserve_spaces:
-            elem.tail = trim(elem.tail) or None
+            elem.tail = trim(elem.tail or "") or None
         # no textfilter/dedup for lb, unlike process_node: the two probes are not interchangeable
         return elem
 
@@ -322,7 +326,7 @@ def handle_textnode(
 
     # trim
     if not preserve_spaces:
-        elem.text = trim(elem.text) or None
+        elem.text = trim(elem.text or "") or None
         if elem.tail:
             elem.tail = trim(elem.tail) or None
 
@@ -338,7 +342,7 @@ def process_node(elem: _Element, options: Extractor) -> _Element | None:
         return None
 
     # trim
-    elem.text, elem.tail = trim(elem.text) or None, trim(elem.tail) or None
+    elem.text, elem.tail = trim(elem.text or "") or None, trim(elem.tail or "") or None
 
     # adapt content string
     if elem.tag != "lb" and not elem.text and elem.tail and len(elem) == 0:
@@ -370,6 +374,9 @@ def convert_lists(elem: _Element) -> None:
 
 def convert_quotes(elem: _Element) -> None:
     "Convert quoted elements while accounting for nested structures."
+    # lang on a blockquote names a natural language (embedded tweets): no code marker or code language
+    if elem.tag == "blockquote":
+        elem.attrib.pop("lang", None)
     # a pre is code if it wraps a single span, carries highlight.js spans or code-like text
     hljs = elem.xpath(".//span[starts-with(@class,'hljs')]") if elem.tag == "pre" else []
     for subelem in hljs:
@@ -377,7 +384,21 @@ def convert_quotes(elem: _Element) -> None:
     is_code = elem.tag == "pre" and (
         (len(elem) == 1 and elem[0].tag == "span") or bool(hljs) or any(i in (elem.text or "") for i in CODE_INDICATORS)
     )
+    # a quote from a <pre> is preformatted text, not a quotation: keep its origin
+    if elem.tag == "pre" and not is_code:
+        elem.set("rend", "pre")
     elem.tag = "code" if is_code else "quote"
+
+
+PERMALINK_CLASSES = frozenset({"headerlink", "doc-anchor"})
+
+
+def _is_permalink_anchor(element: _Element) -> bool:
+    "Whether an <a> inside a heading is a documentation permalink (Sphinx ¶, rustdoc §)."
+    target = element.get("href") or ""
+    return (
+        target.startswith("#") and len(target) > 1 and not PERMALINK_CLASSES.isdisjoint((element.get("class") or "").split())
+    )
 
 
 def convert_headings(elem: _Element) -> None:
@@ -429,6 +450,21 @@ def convert_link(elem: HtmlElement, base_url: str | None) -> None:
 
 def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) -> HtmlElement:
     "Simplify markup and convert relevant HTML tags to an XML standard."
+    # Documentation permalinks (Sphinx headerlink ¶, rustdoc doc-anchor §) are decoration,
+    # not content: drop them before the <a> pass, while their classes still exist. Only
+    # same-page fragments qualify, so anchors with an empty or cross-page target stay in
+    # place and keep behaving like the empty-anchor case (#1024).
+    for elem in tree.iter("h1", "h2", "h3", "h4", "h5", "h6"):
+        for subelem in list(elem.iter("a")):
+            if _is_permalink_anchor(subelem):
+                parent = subelem.getparent()
+                delete_element(subelem)
+                # an emptied formatting wrapper must not survive and swallow its tail
+                while parent is not None and parent is not elem and not parent.text and len(parent) == 0:
+                    wrapper = parent
+                    parent = wrapper.getparent()
+                    delete_element(wrapper)
+
     # delete links for faster processing
     if not options.links:
         containers = ("div", "li", "p", "table") if options.tables else ("div", "li", "p")
@@ -532,7 +568,13 @@ def convert_to_html(tree: _Element) -> _Element:
 
 def build_html_output(document: Document, with_metadata: bool = False) -> str:
     "Convert the document to HTML and return a string."
-    html_tree = convert_to_html(document.body)
+    body = remove_empty_elements(deepcopy(document.body))
+    comments = remove_empty_elements(deepcopy(document.commentsbody))
+    if len(comments) or (comments.text or "").strip():
+        comments.tag = "section"
+        comments.set("class", "comments")
+        body.append(comments)
+    html_tree = convert_to_html(body)
 
     if with_metadata:
         head = Element("head")
