@@ -55,7 +55,7 @@ from .settings import (
     Extractor,
     args_to_extractor,
 )
-from .sitemaps import sitemap_search
+from .sitemaps import SCHEME_AND_WWW, filter_by_prefix, is_sitemap_url, sitemap_search
 from .utils import (
     LANGID_FLAG,
     Response,
@@ -327,13 +327,28 @@ def download_queue_processing(
     return errors, counter
 
 
-def process_website_urls(func: Callable[[str], list[str]], urls: list[str], sleep_time: float) -> list[tuple[str, list[str]]]:
-    "Process the URLs of a website one after the other, waiting in between."
+def process_website_urls(
+    func: Callable[[str], list[str]], urls: list[str], sleep_time: float, once: bool = False
+) -> list[tuple[str, list[str]]]:
+    """Process the URLs of a website one after the other, waiting in between.
+    With once, the website is searched a single time and the links are
+    filtered for each URL, except for sitemap URLs which are processed as such."""
+    links: list[str] | None = None
     results = []
-    for i, url in enumerate(urls):
-        if i:
+    searched = False
+    for url in urls:
+        if once and not is_sitemap_url(url):
+            baseurl = get_base_url(url)
+            if links is None:
+                links = func(baseurl + "/")
+                searched = True
+            prefix = SCHEME_AND_WWW.sub("", url) if len(url) > len(baseurl) + 2 else None
+            results.append((url, filter_by_prefix(links, prefix)))
+            continue
+        if searched:
             sleep(sleep_time)
         results.append((url, func(url)))
+        searched = True
     return results
 
 
@@ -364,7 +379,7 @@ def cli_discovery(args: argparse.Namespace) -> int:
 
     # link discovery and storage
     with ThreadPoolExecutor(max_workers=args.parallel) as executor:
-        futures = [executor.submit(process_website_urls, func, urls, sleep_time) for urls in websites.values()]
+        futures = [executor.submit(process_website_urls, func, urls, sleep_time, not args.feed) for urls in websites.values()]
         # process results from the parallel threads and add them
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
