@@ -34,7 +34,7 @@ One pull request per issue. The first complete one with tests is merged, later o
 
 Keep pull requests short. A bug fix is the smallest change that fixes the bug. Reuse existing helpers in Trafilatura and its dependencies, such as courlan, before writing new code. No new dependencies. Do not edit HISTORY.md.
 
-Add tests for the changed behavior, ideally one that fails before the change. Test through the public functions, not internals. Group similar cases with `pytest.mark.parametrize` instead of writing one test per case.
+Add tests for the changed behavior, ideally one that fails before the change. Test through the public functions as far as possible. Group similar cases with `pytest.mark.parametrize` instead of writing one test per case.
 
 Changes that run on every extraction report the processing time before and after.
 

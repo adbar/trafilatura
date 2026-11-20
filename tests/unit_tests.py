@@ -3504,6 +3504,29 @@ def test_recover_wild_text_dedup_scan_cap(monkeypatch):
     assert substring_dup in run(cap=len(filler) // 4)
 
 
+@pytest.mark.parametrize(
+    "markup",
+    [
+        "<root/>",
+        "<root><p/></root>",
+        "<root><p>abc</p><p>def</p></root>",
+        "<root><p>A<hi>B</hi>C<hi>D</hi>E</p>outside</root>",
+        "<root><p>α中🙂</p><p>text</p></root>",
+        "<root><p>A<p>B<hi>C</hi>D</p>E</p><p>F</p></root>",
+        "<root><p>A<!--ignored-->B<?ignored text?>C</p></root>",
+        "<root><div><p>long enough paragraph</p></div><article><p>x</p></article></root>",
+    ],
+)
+@pytest.mark.parametrize("minimum", [0, 1, 3, 5, 6, 7, 8, 20, 100])
+def test_paragraph_text_threshold(markup, minimum):
+    "same result as the former XPath, also on a subtree since the check is document-wide"
+    tree = etree.fromstring(markup)
+    texts = tree.xpath("//p//text()")
+    expected = bool(texts) and len("".join(texts)) >= minimum
+    for subtree in (tree, *tree[-1:]):
+        assert me._has_enough_paragraph_text(subtree, minimum) == expected
+
+
 def test_prune_boilerplate_table_after_nested():
     "regression: prune_unwanted_sections must not skip a boilerplate table that follows a deleted \
     table containing a nested one (deleting mid tree.iter() made the iterator lose the following sibling)."

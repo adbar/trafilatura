@@ -686,6 +686,18 @@ def prune_unwanted_sections(
     return tree
 
 
+def _has_enough_paragraph_text(tree: _Element, minimum: int) -> bool:
+    "Test the length of all paragraph text in the document, stop once it reaches the minimum."
+    length = 0
+    for paragraph in tree.getroottree().iter("p"):
+        if next(paragraph.iterancestors("p"), None) is None:
+            for text in paragraph.itertext():
+                length += len(text)
+                if length >= minimum:
+                    return True
+    return False
+
+
 def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[str]]:
     # init
     potential_tags = set(TAG_CATALOG)
@@ -708,9 +720,8 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
         if len(subtree) == 0:
             continue
         # no paragraphs containing text, or not enough
-        ptest = subtree.xpath("//p//text()")
         factor = 1 if options.focus == "precision" else 3
-        if not ptest or len("".join(ptest)) < options.min_extracted_size * factor:
+        if not _has_enough_paragraph_text(subtree, options.min_extracted_size * factor):
             potential_tags.add("div")
         LOGGER.debug(sorted(potential_tags))
 
