@@ -478,12 +478,9 @@ def document_base_url(tree: HtmlElement, url: str | None) -> str | None:
     for elem in tree.iter("base"):
         href = elem.get("href")
         if href is not None:
-            href = href.strip()
-            if url:
-                return safe_relative_url(url, href) or url
-            # without a page URL, only an absolute <base href> can be used
-            parts = urlsplit(href)
-            return href if parts.scheme in ("http", "https") and parts.netloc else None
+            base = safe_relative_url(url, href.strip()) if url else href.strip()
+            parts = urlsplit(base)
+            return base if parts.scheme in ("http", "https") and parts.netloc else url
     return url
 
 

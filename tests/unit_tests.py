@@ -1612,6 +1612,9 @@ def test_links():
         ('<base href="https://cdn.example.net/docs/">', "file.html", "https://cdn.example.net/docs/file.html"),
         ('<base href="/docs/">', "file.html", "https://example.org/docs/file.html"),
         ('<base href="../">', "file.html", "https://example.org/a/file.html"),
+        # unusable <base href>: the page URL is used
+        ('<base href="javascript:void(0)">', "file.html", "https://example.org/a/b/file.html"),
+        ('<base href="ftp://x.org/">', "file.html", "https://example.org/a/b/file.html"),
     ],
 )
 def test_links_relative_to_page(head, href, expected):
