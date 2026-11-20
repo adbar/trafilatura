@@ -215,6 +215,8 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
         total=max_redirects,
         redirect=max_redirects,  # raise_on_redirect=False,
         connect=0,
+        # SSL errors count as "other": fail at once, the caller handles them
+        other=0,
         # one read retry, without backoff: covers a dropped keep-alive connection
         # while a read timeout costs DOWNLOAD_TIMEOUT twice instead of three times
         read=1,
@@ -274,8 +276,9 @@ def _send_urllib_request(url: str, no_ssl: bool, config: ConfigParser) -> Respon
             preload_content=False,
         )
         try:
-            # stream() yields decoded chunks: the cap applies to decompressed bytes
-            data = _capped(response.stream(2**17), config.getint("DEFAULT", "MAX_FILE_SIZE"))
+            # decoded chunks, the cap applies to decompressed bytes: read_chunked()
+            # leaves them compressed unless decode_content is explicitly set
+            data = _capped(response.stream(2**17, decode_content=True), config.getint("DEFAULT", "MAX_FILE_SIZE"))
         finally:
             response.close()
             response.release_conn()
