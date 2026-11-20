@@ -4240,6 +4240,16 @@ def test_list_item_attr_whitelist():
     assert '<ref target="http://x.io">' in out  # target kept
 
 
+def test_xml_output_drops_source_attributes():
+    "regression #1158: source attributes on list/item elements are dropped, a malformed one must not crash extract()."
+    p = "<p>" + "word " * 50 + "</p>"
+    html = f'<html><body><div>{p}<ol class="a type="1"><li>First item of the list.</li></ol>{p}</div></body></html>'
+    result = extract(html, output_format="xml", config=ZERO_CONFIG)
+    assert result is not None
+    assert '<list rend="ol">' in result
+    assert "class=" not in result
+
+
 def test_image_tail_not_duplicated():
     "regression: an image's tail text must not be emitted twice outside a table cell."
     result = _extract_doc("<ul><li>a <img src='i.jpg' alt='A'/> b</li></ul>", include_images=True)
