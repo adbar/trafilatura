@@ -657,22 +657,14 @@ def prune_unwanted_sections(
 
 
 def _has_enough_paragraph_text(tree: _Element, minimum: int) -> bool:
-    """Test the absolute paragraph-text threshold without materializing an XPath node set."""
+    "Test the length of all paragraph text in the document, stop once it reaches the minimum."
     length = 0
-    for paragraph in tree.getroottree().getroot().iter("p"):
-        # XPath selects each text node once, even for nested paragraphs.
-        if next(paragraph.iterancestors("p"), None) is not None:
-            continue
-        for element in paragraph.iter():
-            # Exclude comment, PI and unresolved entity contents, but retain their tails.
-            for text in (
-                element.text if isinstance(element.tag, str) else None,
-                element.tail if element is not paragraph else None,
-            ):
-                if text is not None:
-                    length += len(text)
-                    if length >= minimum:
-                        return True
+    for paragraph in tree.getroottree().iter("p"):
+        if next(paragraph.iterancestors("p"), None) is None:
+            for text in paragraph.itertext():
+                length += len(text)
+                if length >= minimum:
+                    return True
     return False
 
 
