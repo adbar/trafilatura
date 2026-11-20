@@ -63,6 +63,7 @@ from .utils import (
     is_acceptable_length,
     language_classifier,
     make_chunks,
+    normalize_url_key,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -357,10 +358,12 @@ def cli_discovery(args: argparse.Namespace) -> int:
     )
     no_links = []
 
-    # the URLs of a website are processed in the same thread
+    # the URLs of a website are processed in the same thread;
+    # group by normalized key so that different forms of the same
+    # website (scheme, www., host case) are not processed in parallel
     websites: dict[str, list[str]] = {}
     for url in input_urls:
-        websites.setdefault(get_base_url(url), []).append(url)
+        websites.setdefault(normalize_url_key(get_base_url(url)), []).append(url)
 
     # link discovery and storage
     with ThreadPoolExecutor(max_workers=args.parallel) as executor:

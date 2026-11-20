@@ -21,7 +21,7 @@ from courlan import (
 from .deduplication import is_similar_domain
 from .downloads import fetch_url
 from .settings import DEFAULT_CONFIG, MAX_FEEDS_CHECKED, MAX_LINKS
-from .utils import load_html, safe_relative_url
+from .utils import load_html, normalize_url_key, safe_relative_url
 
 LOGGER = logging.getLogger(__name__)
 
@@ -111,6 +111,19 @@ def has_rss_root(feed_string: str) -> bool:
         if end == -1:
             return False
         pos = end + len(closing)
+
+
+def filter_links_by_url(link_list: list[str], urlfilter: str | None) -> list[str]:
+    """Filter links to the requested subpages, comparing URLs by their
+    normalized key so that scheme, www., host case and userinfo encoding
+    (e.g. @ vs %40) in the filter URL do not hide matching links.
+    Falls back to courlan's filter_urls, keeping its feedburner/feedproxy
+    whitelist for links matching no subpage."""
+    if urlfilter is None:
+        return filter_urls(link_list, None)
+    key = normalize_url_key(urlfilter)
+    matched = sorted({link for link in link_list if key in normalize_url_key(link)})
+    return matched or filter_urls(link_list, urlfilter)
 
 
 def handle_link_list(linklist: list[str], params: FeedParameters) -> list[str]:
@@ -250,7 +263,7 @@ def probe_gnews(params: FeedParameters, urlfilter: str | None, config: ConfigPar
         )
         if downloaded:
             feed_links = extract_links(downloaded, params)
-            feed_links = filter_urls(feed_links, urlfilter)
+            feed_links = filter_links_by_url(feed_links, urlfilter)
             LOGGER.debug("%s Google news links found for %s", len(feed_links), params.domain)
             return feed_links
     return []
@@ -308,7 +321,7 @@ def find_feed_urls(
                 urlfilter = url
         # return links found
         if feed_links:
-            feed_links = filter_urls(feed_links, urlfilter)
+            feed_links = filter_links_by_url(feed_links, urlfilter)
             LOGGER.debug("%s feed links found for %s", len(feed_links), domain)
             return feed_links
         LOGGER.debug("No usable feed links found: %s", url)

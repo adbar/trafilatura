@@ -62,6 +62,7 @@ from trafilatura.utils import (
     line_processing,
     load_html,
     normalize_unicode,
+    normalize_url_key,
     remove_control_characters,
     repair_faulty_html,
     sanitize,
@@ -95,6 +96,21 @@ def _extract_doc(body, *, intro=True, **kwargs):
 
 def _table_md(table, **kwargs):
     return _extract_doc(table, output_format="markdown", include_tables=True, **kwargs)
+
+
+def test_normalize_url_key_ignores_url_form():
+    "regression #1161: scheme, www., host case and @ vs %40 give the same key"
+    assert normalize_url_key("https://example.org/blog/") == "example.org/blog/"
+    assert normalize_url_key("http://example.org/blog/") == "example.org/blog/"
+    assert normalize_url_key("https://www.example.org/blog/") == "example.org/blog/"
+    assert normalize_url_key("https://EXAMPLE.ORG/blog/") == "example.org/blog/"
+    assert normalize_url_key("https://user@example.org/blog/") == "user@example.org/blog/"
+    assert normalize_url_key("https://user%40example.org/blog/") == "user@example.org/blog/"
+    # different hosts, paths and subdomains still differ
+    assert normalize_url_key("https://other.org/blog/") != "example.org/blog/"
+    assert normalize_url_key("https://example.org/news/") != "example.org/blog/"
+    assert normalize_url_key("https://blog.example.org/blog/") != "example.org/blog/"
+    assert normalize_url_key("") == ""
 
 
 def _table_txt(table):
