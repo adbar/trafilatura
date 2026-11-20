@@ -13,6 +13,7 @@ from copy import copy
 from itertools import islice
 from typing import TYPE_CHECKING, Any, Literal, TypeAlias, cast
 from unicodedata import normalize
+from urllib.parse import urlsplit
 
 # response compression
 try:
@@ -474,11 +475,15 @@ def safe_relative_url(baseurl: str, url: str) -> str:
 
 def document_base_url(tree: HtmlElement, url: str | None) -> str | None:
     "URL to resolve relative links against: the first <base href> joined with the page URL, else the page URL."
-    if url:
-        for elem in tree.iter("base"):
-            href = elem.get("href")
-            if href is not None:
-                return safe_relative_url(url, href.strip()) or url
+    for elem in tree.iter("base"):
+        href = elem.get("href")
+        if href is not None:
+            href = href.strip()
+            if url:
+                return safe_relative_url(url, href) or url
+            # without a page URL, only an absolute <base href> can be used
+            parts = urlsplit(href)
+            return href if parts.scheme in ("http", "https") and parts.netloc else None
     return url
 
 

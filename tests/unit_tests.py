@@ -1644,6 +1644,24 @@ def test_images_relative_to_page(head, body, expected):
     assert f"![]({expected})" in result
 
 
+@pytest.mark.parametrize(
+    "head,expected",
+    [
+        ('<base href="https://cdn.example.net/docs/">', "https://cdn.example.net/docs/file.html"),
+        ('<base href="/docs/">', "file.html"),
+        ("", "file.html"),
+    ],
+)
+def test_links_relative_to_base_without_page_url(head, expected):
+    "Without a page URL, links are resolved against an absolute <base href> only (#382)."
+    htmlstring = (
+        f'<html><head>{head}</head><body><p><a href="file.html">Test link text.</a> '
+        "This part of the text has to be long enough.</p></body></html>"
+    )
+    result = extract(htmlstring, include_links=True, fast=True, with_metadata=False, config=ZERO_CONFIG)
+    assert f"[Test link text.]({expected}) This part of the text has to be long enough." in result
+
+
 def test_empty_anchor_keeps_heading_text():
     """An empty permalink anchor must not drop the heading text after it (#1024)."""
     paragraph = "Lorem ipsum dolor sit amet consectetur adipiscing elit. " * 5
