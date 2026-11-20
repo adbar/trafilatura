@@ -90,6 +90,10 @@ def handle_titles(element: _Element, options: Extractor) -> _Element | None:
         strip_elements(title, "done")
         for child in element.iterdescendants("*"):
             child.tag = "done"
+        for graphic in title.iter("graphic"):
+            if (image := handle_image(graphic, options)) is not None:
+                graphic.attrib.clear()
+                graphic.attrib.update(image.attrib)
     return title if is_text_element(title) else None
 
 
