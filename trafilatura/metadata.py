@@ -20,7 +20,7 @@ from courlan import (
 from htmldate import find_date
 
 from .baseline import block_text
-from .dom import HtmlElement, XPath, document_context, to_lxml_html, tostring
+from .dom import HtmlElement, document_context, to_lxml_html, tostring
 from .htmlprocessing import prune_unwanted_nodes
 from .json_metadata import (
     extract_json,

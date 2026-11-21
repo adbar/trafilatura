@@ -283,6 +283,9 @@ class _RootTree:
     def getroot(self) -> "HtmlElement":
         return self._root
 
+    def iter(self, tag: Any = None, *tags: Any) -> Iterator["HtmlElement"]:
+        return self._root.iter(tag, *tags)
+
 
 class HtmlElement:
     "An element of a turbohtml tree behind the lxml element API."
