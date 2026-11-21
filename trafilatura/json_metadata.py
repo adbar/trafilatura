@@ -96,6 +96,8 @@ JSON_SCHEMA_ORG = re.compile(r"^https?://(?:www\.)?schema\.org", flags=re.IGNORE
 JSON_UNICODE_REPLACE = re.compile(r"\\u([0-9a-fA-F]{4})")
 
 AUTHOR_ATTRS = ("givenName", "additionalName", "familyName")
+# longer keyword lists are rather the article text
+MAX_KEYWORDS = 50
 
 JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
@@ -159,6 +161,13 @@ def _json_author_name(author: Any) -> str | None:
     return name if isinstance(name, str) else None
 
 
+def _json_keywords(value: Any) -> list[str]:
+    "Split JSON-LD keywords, a string or a list, without URLs and overlong lists."
+    items = value.split(",") if isinstance(value, str) else [item for item in as_list(value) if isinstance(item, str)]
+    keywords = [kw for kw in (item.strip() for item in items) if kw and not kw.startswith(("http://", "https://"))]
+    return keywords if len(keywords) <= MAX_KEYWORDS else []
+
+
 def process_parent(parent: Any, metadata: Document, backup_sitename: str | None = None) -> Document:
     "Find and extract selected metadata from JSON parts."
     content: dict[str, Any]
@@ -218,6 +227,10 @@ def process_parent(parent: Any, metadata: Document, backup_sitename: str | None 
             if not metadata.categories and "articleSection" in content:
                 sections = as_list(content["articleSection"])
                 metadata.categories = [s for s in sections if isinstance(s, str) and s]
+
+            # keywords, last source of tags as some sites list unrelated ones
+            if not metadata.tags and "keywords" in content:
+                metadata.tags = _json_keywords(content["keywords"])
 
             # try to extract title
             if not metadata.title:
