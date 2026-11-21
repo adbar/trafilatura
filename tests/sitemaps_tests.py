@@ -328,6 +328,16 @@ def test_parse_sitemap_hreflang_one_link_per_entry(entries, root, target_lang, e
             "fr",
             ["https://open.example.org/intl-fr/track/1"],
         ),
+        (
+            (
+                "<url><loc>https://example.org/en/e</loc>"
+                '<xhtml:link rel="alternate" hreflang="fr" href=""/>'
+                '<xhtml:link rel="alternate" hreflang="x-default" href="https://example.org/e"/>'
+                "</url>"
+            ),
+            "fr",
+            ["https://example.org/e"],
+        ),
     ],
 )
 def test_parse_sitemap_hreflang_fallback(entries, target_lang, expected):
@@ -336,6 +346,11 @@ def test_parse_sitemap_hreflang_fallback(entries, target_lang, expected):
         f"{entries}</urlset>"
     )
     assert sitemaps.parse_sitemap(content, "https://example.org/sitemap.xml", target_lang=target_lang) == expected
+
+
+def test_parse_sitemap_loc_outside_entry():
+    content = "<urlset><loc>https://example.org/a</loc></urlset>"
+    assert sitemaps.parse_sitemap(content, "https://example.org/sitemap.xml") == ["https://example.org/a"]
 
 
 def test_extraction():
