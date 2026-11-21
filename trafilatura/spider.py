@@ -23,13 +23,12 @@ try:
 except ImportError:
     pass
 
-from lxml.etree import XPath, tostring
-
-from .baseline import baseline
+from .baseline import baseline_tree
+from .dom import XPath, tostring
 from .downloads import USER_AGENT, fetch_response, fetch_url
 from .htmlprocessing import prune_unwanted_nodes
 from .settings import DEFAULT_CONFIG
-from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, Response, decode_file, detectable_languages, load_html
+from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, Response, decode_file, detectable_languages, load_html_native
 
 LOGGER = logging.getLogger(__name__)
 
@@ -125,7 +124,7 @@ def refresh_detection(
     if "refresh" not in htmlstring.lower():
         return htmlstring, homepage
 
-    html_tree = load_html(htmlstring)
+    html_tree = load_html_native(htmlstring)
     if html_tree is None:
         return htmlstring, homepage
 
@@ -228,7 +227,7 @@ def is_target_language(htmlstring: str, language: str | None) -> bool:
     check if the content matches the target language.
     Return True if language checks are bypassed."""
     if htmlstring and language and LANGID_FLAG and language in (detectable_languages() or set()):
-        _, text, _ = baseline(htmlstring)
+        _, text, _ = baseline_tree(htmlstring)
         result, _ = py3langid.classify(text)
         return bool(result == language)
     return True
@@ -252,7 +251,7 @@ def process_links(
 
     if htmlstring and params.prune_xpath:
         xpaths = [params.prune_xpath] if isinstance(params.prune_xpath, str) else params.prune_xpath
-        tree = load_html(htmlstring)
+        tree = load_html_native(htmlstring)
         if tree is not None:
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in xpaths])
             htmlstring = tostring(tree).decode()
