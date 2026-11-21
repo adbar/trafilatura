@@ -116,6 +116,20 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list -= PRESERVE_IMG_CLEANING
         stripping_list.discard("img")
+        # <noscript> is removed below: keep its images (the fallback of lazy loading), except
+        # tracking pixels and copies of an image already in the same parent
+        if "noscript" in cleaning_list:
+            for noscript in list(tree.iter("noscript")):
+                parent = noscript.getparent()
+                if parent is None:
+                    continue
+                present = {image_src(img) for img in parent.iterchildren("img")}
+                for img in list(noscript.iter("img")):
+                    src = image_src(img)
+                    if src and src not in present and img.get("width") != "1":
+                        img.tail = None
+                        noscript.addprevious(img)
+                        present.add(src)
 
     # a <template> is inert markup a script may clone and is never shown as it is, unless it is a
     # declarative shadow root, which the browser renders in place (and which stays stripped below)
@@ -509,6 +523,11 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
     # images
     if options.images:
         for elem in tree.iter("img"):
+            # <picture>: lxml nests the <img> in the <source> holding the image URLs
+            if image_src(elem) is None and (source := next(elem.iterancestors("source"), None)) is not None:
+                for attr in ("srcset", "data-srcset"):
+                    if source.get(attr):
+                        elem.set(attr, source.get(attr))
             elem.tag = "graphic"
         # move images out of links to prevent duplication/loss
         if options.links:
