@@ -293,6 +293,7 @@ def examine_meta(tree: HtmlElement) -> tuple[Document, str | None]:
     # bootstrap from potential OpenGraph tags
     metadata = Document().from_dict(extract_opengraph(tree))
     tags: list[str] = []
+    article_tags: list[int] = []  # positions in tags
     backups: dict[str, str] = {}
 
     for elem in tree.iterfind(".//head/meta[@content]"):
@@ -311,15 +312,22 @@ def examine_meta(tree: HtmlElement) -> tuple[Document, str | None]:
                 content = invert_citation_name(content)
             metadata.author = normalize_authors(metadata.author, content)
         elif field == "tags":
-            # keyword lists hold several tags, article:tag only one
+            # keyword lists hold several tags, article:tag usually one
             content = normalize_tags(content)
-            tags.extend(content.split(",") if attr == "name" else [content])
+            if attr == "name":
+                tags.extend(content.split(","))
+            else:
+                article_tags.append(len(tags))
+                tags.append(content)
         elif field == "backup":
             backups.setdefault(key, content)
         elif field and not getattr(metadata, field) and (field != "url" or is_valid_url(content)):
             setattr(metadata, field, content)
 
-    metadata.tags = tags
+    # a single article:tag may hold the whole list, two parts can be a name ("Smith, John")
+    if len(article_tags) == 1 and tags[(pos := article_tags[0])].count(",") > 1:
+        tags[pos : pos + 1] = tags[pos].split(",")
+    metadata.tags = [tag for tag in tags if tag.strip()]
     # twitter:app:name variants come last, in document order
     return metadata, next((backups[k] for k in (*BACKUP_ORDER, *backups) if k in backups), None)
 
@@ -442,6 +450,12 @@ def extract_catstags(metatype: str, tree: HtmlElement) -> list[str]:
         # if not results:
         #    for elem in tree.xpath('.//a[@href]'):
         #        search for 'category'
+    # rel links, WordPress marks category links "category tag": no tags
+    if not results:
+        for elem in tree.iterfind(".//a[@rel][@href]"):
+            rel = elem.get("rel", "").lower().split()
+            if metatype in rel and (metatype == "category" or "category" not in rel) and (text := block_text(elem)):
+                results.append(text)
     return results
 
 
@@ -511,6 +525,10 @@ def extract_metadata(
     # initialize dict and try to strip meta tags
     metadata, backup_sitename = examine_meta(tree)
 
+    # tag links come before JSON-LD keywords, the last resort
+    if not metadata.tags:
+        metadata.tags = extract_catstags("tag", tree)
+
     # to check: remove it and replace with author_blacklist in test case
     if metadata.author and " " not in metadata.author:
         metadata.author = None
@@ -569,10 +587,6 @@ def extract_metadata(
     # categories
     if not metadata.categories:
         metadata.categories = extract_catstags("category", tree)
-
-    # tags
-    if not metadata.tags:
-        metadata.tags = extract_catstags("tag", tree)
 
     # license
     metadata.license = extract_license(tree)
