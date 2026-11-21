@@ -218,6 +218,141 @@ def test_parse_sitemap_invalid_input():
     assert sitemaps.parse_sitemap("<urlset>\ud800</urlset>", url) == []
 
 
+HREFLANG_ENTRY = (
+    "<url><loc>https://example.org/en/a</loc>"
+    '<xhtml:link rel="alternate" hreflang="en" href="https://example.org/en/a"/>'
+    '<xhtml:link rel="alternate" hreflang="en-gb" href="https://example.org/en-gb/a"/>'
+    '<xhtml:link rel="alternate" hreflang="de" href="https://example.org/de/a"/>'
+    '<xhtml:link rel="alternate" hreflang="x-default" href="https://example.org/a"/>'
+    "</url>"
+)
+
+
+@pytest.mark.parametrize(
+    ("entries", "root", "target_lang", "expected"),
+    [
+        (
+            HREFLANG_ENTRY + "<url><loc>https://example.org/news/b</loc></url>",
+            "urlset",
+            "en",
+            ["https://example.org/en/a", "https://example.org/news/b"],
+        ),
+        (
+            HREFLANG_ENTRY + "<url><loc>https://example.org/news/b</loc></url>",
+            "urlset",
+            "de",
+            ["https://example.org/de/a", "https://example.org/news/b"],
+        ),
+        (
+            (
+                "<url><loc>https://example.org/c</loc>"
+                '<xhtml:link rel="alternate" hreflang="x-default" href="https://example.org/c"/>'
+                '<xhtml:link rel="alternate" hreflang="EN_GB" href="https://example.org/en-gb/c"/>'
+                "</url>"
+            ),
+            "urlset",
+            "en",
+            ["https://example.org/en-gb/c"],
+        ),
+        (
+            (
+                "<url><loc>https://example.org/fr/d</loc>"
+                '<xhtml:link rel="alternate" hreflang="fr" href="https://example.org/fr/d"/>'
+                '<xhtml:link rel="alternate" hreflang="x-default" href="https://example.org/d"/>'
+                "</url>"
+            ),
+            "urlset",
+            "en",
+            ["https://example.org/d"],
+        ),
+        (
+            (
+                "<sitemap><loc>https://example.org/sitemap-en.xml</loc>"
+                '<xhtml:link rel="alternate" hreflang="de" href="https://example.org/sitemap-de.xml"/>'
+                "</sitemap>"
+            ),
+            "sitemapindex",
+            "de",
+            ["https://example.org/sitemap-de.xml"],
+        ),
+    ],
+)
+def test_parse_sitemap_hreflang_one_link_per_entry(entries, root, target_lang, expected):
+    content = (
+        f'<{root} xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
+        f"{entries}</{root}>"
+    )
+    assert sitemaps.parse_sitemap(content, "https://example.org/sitemap.xml", target_lang=target_lang) == expected
+
+
+@pytest.mark.parametrize(
+    ("entries", "target_lang", "expected"),
+    [
+        (
+            (
+                "<url><loc>https://example.org/a</loc>"
+                '<xhtml:link rel="alternate" hreflang="fr" href="https://other-site.fr/a"/>'
+                '<xhtml:link rel="alternate" hreflang="x-default" href="https://example.org/a"/>'
+                "</url>"
+            ),
+            "fr",
+            ["https://example.org/a"],
+        ),
+        (
+            (
+                "<url><loc>https://example.org/b</loc>"
+                '<xhtml:link rel="alternate" hreflang="fr" href="https://other-site.fr/b"/>'
+                '<xhtml:link rel="alternate" hreflang="x-default" href="https://third-site.net/b"/>'
+                "</url>"
+            ),
+            "fr",
+            ["https://example.org/b"],
+        ),
+        (
+            (
+                "<url><loc>https://example.org/en/c</loc>"
+                '<xhtml:link rel="alternate" hreflang="fr" href="https://example.org/de/c"/>'
+                '<xhtml:link rel="alternate" hreflang="x-default" href="https://example.org/c"/>'
+                "</url>"
+            ),
+            "fr",
+            ["https://example.org/c"],
+        ),
+        (
+            (
+                "<url><loc>https://open.example.org/track/1</loc>"
+                '<xhtml:link rel="alternate" hreflang="fr" href="https://open.example.org/intl-fr/track/1"/>'
+                '<xhtml:link rel="alternate" hreflang="x-default" href="https://open.example.org/track/1"/>'
+                "</url>"
+            ),
+            "fr",
+            ["https://open.example.org/intl-fr/track/1"],
+        ),
+        (
+            (
+                "<url><loc>https://example.org/en/e</loc>"
+                '<xhtml:link rel="alternate" hreflang="fr" href=""/>'
+                '<xhtml:link rel="alternate" hreflang="x-default" href="https://example.org/e"/>'
+                "</url>"
+            ),
+            "fr",
+            ["https://example.org/e"],
+        ),
+    ],
+)
+def test_parse_sitemap_hreflang_fallback(entries, target_lang, expected):
+    content = (
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
+        f"{entries}</urlset>"
+    )
+    assert sitemaps.parse_sitemap(content, "https://example.org/sitemap.xml", target_lang=target_lang) == expected
+
+
+def test_parse_sitemap_loc_outside_entry():
+    content = "<urlset><loc>https://example.org/a</loc></urlset>"
+    assert sitemaps.parse_sitemap(content, "https://example.org/sitemap.xml") == ["https://example.org/a"]
+
+
 def test_extraction():
     """Test simple link extraction"""
     # link handling
@@ -313,11 +448,6 @@ def test_extraction():
     sitemap.extract_sitemap_links()
     assert not sitemap.sitemap_urls
     assert len(sitemap.urls) == 84
-    # hreflang
-    sitemap.urls = []
-    sitemap.extract_sitemap_langlinks()
-    assert not sitemap.sitemap_urls
-    assert not sitemap.urls
 
     # nested sitemaps
     url, domain, baseurl = "http://www.example.com/sitemap.xml", "example.com", "http://www.example.com"
@@ -345,17 +475,18 @@ def test_extraction():
     with open(filepath, encoding="utf-8") as f:
         teststring = f.read()
     sitemap = sitemaps.SitemapObject(baseurl, domain, [], "de")
+    sitemap.current_url = url
     sitemap.content = teststring
-    sitemap.extract_sitemap_langlinks()
+    sitemap.process()
     assert sitemap.sitemap_urls == ["http://www.example.com/sitemap-de.xml.gz"]
     assert len(sitemap.urls) > 0
+    assert "http://www.example.com/english/page.html" not in sitemap.urls
 
-    # target_lang is escaped: a regex-hostile value stays inert
     sitemap = sitemaps.SitemapObject(baseurl, domain, [], "de)|(.")
+    sitemap.current_url = url
     sitemap.content = teststring
-    sitemap.extract_sitemap_langlinks()
-    assert not sitemap.sitemap_urls
-    assert not sitemap.urls
+    sitemap.process()
+    assert sitemap.sitemap_urls == ["http://www.example.com/sitemap2.xml.gz"]
 
     # GZ-compressed sitemaps
     url, domain, baseurl = "https://www.sitemaps.org/sitemap.xml", "sitemaps.org", "https://www.sitemaps.org"
