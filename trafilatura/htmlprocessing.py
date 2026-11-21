@@ -120,10 +120,8 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
         # tracking pixels and copies of an image already in the same parent
         if "noscript" in cleaning_list:
             for noscript in list(tree.iter("noscript")):
-                parent = noscript.getparent()
-                if parent is None:
-                    continue
-                present = {image_src(img) for img in parent.iterchildren("img")}
+                present = {image_src(img) for img in noscript.itersiblings("img", preceding=True)}
+                present |= {image_src(img) for img in noscript.itersiblings("img")}
                 for img in list(noscript.iter("img")):
                     src = image_src(img)
                     if src and src not in present and img.get("width") != "1":
