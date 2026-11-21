@@ -344,7 +344,9 @@ def get_html_parser() -> HTMLParser:
     parser = HTMLParser(collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True)
     # one element class instead of the per-tag lxml.html lookup
     parser.set_element_class_lookup(
-        ElementDefaultClassLookup(element=LxmlHtmlElement, comment=HtmlComment, pi=HtmlProcessingInstruction, entity=HtmlEntity)
+        ElementDefaultClassLookup(
+            element=LxmlHtmlElement, comment=HtmlComment, pi=HtmlProcessingInstruction, entity=HtmlEntity
+        )
     )
     return parser
 
@@ -437,7 +439,7 @@ def load_html_native(htmlobject: HtmlInput, max_size: int | None = None) -> Html
     if isinstance(htmlobject, HtmlElement):
         return htmlobject
     if isinstance(htmlobject, LxmlHtmlElement):
-        return from_lxml(htmlobject)
+        return _remove_invalid_xml_chars(from_lxml(htmlobject))  # the copy already drops comments
     if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, "data"):
         htmlobject = htmlobject.data
     if not isinstance(htmlobject, (bytes, str)):
@@ -459,6 +461,11 @@ def copy_clean_tree(tree: "_TREE") -> "_TREE":
     tree = copy(tree)
     if isinstance(tree, LxmlHtmlElement):  # turbohtml trees hold no comments or processing instructions
         strip_tags(tree, Comment, ProcessingInstruction)  # tails are kept
+    return _remove_invalid_xml_chars(tree)
+
+
+def _remove_invalid_xml_chars(tree: "_TREE") -> "_TREE":
+    "Remove the characters load_html() drops from a string, in place."
     # one check on the whole text, the characters are rare
     if INVALID_XML_CHARS.search("".join(tree.itertext())):
         for elem in tree.iter():

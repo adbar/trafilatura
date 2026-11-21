@@ -9,7 +9,7 @@ import logging
 import pkgutil
 import sys
 import time
-from copy import copy, deepcopy
+from copy import copy
 from datetime import datetime
 from functools import _lru_cache_wrapper, partial
 from os import path
@@ -62,6 +62,7 @@ from trafilatura.utils import (
     is_image_file,
     language_classifier,
     line_processing,
+    load_html,
     load_html_native,
     normalize_unicode,
     remove_control_characters,
@@ -387,7 +388,7 @@ def test_relocated_content_survives_cleaning(tag):
     # prunes those tags wherever they sit (MANUALLY_CLEANED),
     # independently of this defect
     tree = load_html(_implied_head_doc(f"<{tag}>{_PARA}</{tag}>"))
-    cleaned = tree_cleaning(deepcopy(tree), core.Extractor())
+    cleaned = tree_cleaning(dom.from_lxml(tree), core.Extractor())
     assert "Alpha body paragraph" in cleaned.text_content()
 
 
@@ -409,7 +410,7 @@ def test_explicit_head_document_unchanged():
         tree = load_html(doc)
         assert tree.find(".//main").getparent().tag == "body"
         assert [child.tag for child in tree.find("head")] == ["meta", "title"]
-        cleaned = tree_cleaning(deepcopy(tree), core.Extractor())
+        cleaned = tree_cleaning(dom.from_lxml(tree), core.Extractor())
         assert "Alpha body paragraph" in cleaned.text_content()
 
 
