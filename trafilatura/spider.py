@@ -150,9 +150,7 @@ def refresh_detection(
     if url2.rstrip("/") == homepage.rstrip("/"):
         LOGGER.info("refresh to the same page, skipping: %s", url2)
         return htmlstring, homepage
-    # robots.txt rules only apply to URLs on the same site, as
-    # can_fetch() ignores the host
-    if rules and is_same_site(get_base_url(homepage), get_base_url(url2)) and not rules.can_fetch(USER_AGENT, url2):
+    if is_disallowed_by_robots(rules, homepage, url2):
         LOGGER.info("refresh target disallowed by robots.txt: %s", url2)
         return htmlstring, homepage
     # wait like between two regular requests, then fetch the target
@@ -162,6 +160,9 @@ def refresh_detection(
     if not response or not response.data or response.status != 200:
         LOGGER.warning("failed redirect: %s", url2)
         return None, None
+    if is_disallowed_by_robots(rules, homepage, response.url):
+        LOGGER.info("refresh target redirected to a path disallowed by robots.txt: %s", response.url)
+        return htmlstring, homepage
     LOGGER.info("successful redirect: %s", response.url)
     return decode_file(response.data), response.url
 
@@ -178,6 +179,9 @@ def probe_alternative_homepage(
         return None, None, None
 
     if response.url != homepage:
+        if is_disallowed_by_robots(rules, homepage, response.url):
+            LOGGER.info("homepage redirected to a path disallowed by robots.txt: %s", response.url)
+            return None, None, None
         LOGGER.info("followed homepage redirect: %s", response.url)
         homepage = response.url
 
@@ -199,6 +203,13 @@ def is_same_site(base_url: str, new_base_url: str) -> bool:
     new_scheme, _, new_host = new_base_url.lower().partition("://")
     return host.removeprefix("www.") == new_host.removeprefix("www.") and (
         scheme == new_scheme or (scheme, new_scheme) == ("http", "https")
+    )
+
+
+def is_disallowed_by_robots(rules: RobotFileParser | None, reference: str, url: str) -> bool:
+    "Check robots.txt for a URL on the same site as the reference URL, as can_fetch() ignores the host."
+    return (
+        rules is not None and is_same_site(get_base_url(reference), get_base_url(url)) and not rules.can_fetch(USER_AGENT, url)
     )
 
 
@@ -298,6 +309,9 @@ def process_response(
     # convert urllib3 response to string and proceed to link extraction
     final_base = get_base_url(response.url)
     if not is_same_site(params.base, final_base):
+        return
+    if is_disallowed_by_robots(params.rules, params.base, response.url):
+        LOGGER.info("redirected to a path disallowed by robots.txt: %s", response.url)
         return
     url = response.url if final_base == params.base else params.base
     process_links(decode_file(response.data), params, url)
