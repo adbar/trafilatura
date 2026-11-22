@@ -195,8 +195,6 @@ def test_reset_caches(monkeypatch):
     caches = {
         id(obj): obj
         for info in pkgutil.iter_modules(trafilatura.__path__)
-        # the turbohtml backend is not installed on Python 3.10
-        if info.name != "_turbohtml" or sys.version_info >= (3, 11)
         for obj in vars(importlib.import_module(f"trafilatura.{info.name}")).values()
         if isinstance(obj, _lru_cache_wrapper) and obj is not _punct_tbl and obj.__module__ != "urllib.parse"
     }

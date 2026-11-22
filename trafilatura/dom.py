@@ -1,12 +1,11 @@
 import sys
 
 if sys.version_info >= (3, 11):
-    from ._turbohtml import (
+    from turbohtml.etree import (
         Element,
-        HtmlElement,
+        ElementView,
         SubElement,
         XPath,
-        _Element,
         document_context,
         document_fromstring,
         fragment_fromstring,
@@ -18,6 +17,8 @@ if sys.version_info >= (3, 11):
         to_lxml_html,
         tostring,
     )
+
+    HtmlElement = _Element = ElementView
 else:
     from ._lxml import (
         Element,

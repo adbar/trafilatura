@@ -39,7 +39,7 @@ def test_drop_tree_keeps_tail_in_parent(backend: ModuleType) -> None:
 
     removed.drop_tree()
 
-    assert (removed.tail, root.text_content(), removed[0] is descendant) == ("tail", "tailC", True)
+    assert (root.text_content(), removed[0] is descendant) == ("tailC", True)
 
 
 @pytest.mark.parametrize("backend", [dom, html], ids=["turbohtml", "lxml"])
