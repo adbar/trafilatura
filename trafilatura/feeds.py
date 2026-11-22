@@ -52,6 +52,7 @@ FEED_TYPES = {
 FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
 CHAR_REF = re.compile(r"&#?\w+;")
 RSS_ROOT = re.compile(r"<(?:rss|(?:\w+:)?RDF)\b")
+FEED_ITEM = re.compile(r"<(?:[\w.-]+:)?(?:item|entry)\b")
 
 LINK_ATTRS = re.compile(r"""<link\s+(?:[^>"']|"[^"]*"|'[^']*')*["']?/?>""")
 LINK_ATTRIBUTES = re.compile(r"""\s([\w:-]+)\s*=\s*(["'])(.*?)\2""", re.DOTALL)
@@ -160,14 +161,18 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
             LOGGER.debug("Possibly invalid feed: %s", params.domain)
         return []
 
+    # skip the links of the feed itself
+    first_item = FEED_ITEM.search(feed_string)
+    start = first_item.start() if first_item else 0
+
     # RSS first when the root says so: the HTML of its items can contain <link .../> tags
     if "<link>" in feed_string and has_rss_root(feed_string):
-        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)]
+        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string, start), MAX_LINKS)]
 
     # Atom
     if LINK_ATTRS.search(feed_string):
         links = []
-        for match in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS):
+        for match in islice(LINK_ATTRS.finditer(feed_string, start), MAX_LINKS):
             attributes = {attr[1]: attr[3] for attr in LINK_ATTRIBUTES.finditer(match[0])}
             # only candidates for page links: e.g. rel="self" is the feed itself,
             # rel="replies" is the comments link WordPress adds to every entry,
@@ -179,7 +184,7 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
 
     # RSS
     if "<link>" in feed_string:
-        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)]
+        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string, start), MAX_LINKS)]
 
     return []
 
