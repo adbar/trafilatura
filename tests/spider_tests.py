@@ -760,6 +760,45 @@ def test_robots():
     # assert not rules.can_fetch("*", "https://example.org/private")
 
 
+REDIRECT_SITE = {  # requested URL: (final URL after HTTP redirects, page content)
+    "https://example.org/": ("https://example.org/", '<a href="/a">a</a><a href="/b">b</a>'),
+    "https://example.org/a": ("https://example.org/private/a", '<a href="/from-a">a</a>'),
+    "https://example.org/b": ("https://example.org/public/b", '<a href="/from-b">b</a>'),
+    "https://example.org/start": ("https://example.org/private/start", '<a href="/from-start">s</a>'),
+    "https://example.org/refresh": (
+        "https://example.org/refresh",
+        '<meta http-equiv="refresh" content="0; url=/r"><a href="/from-refresh-page">p</a>',
+    ),
+    "https://example.org/r": ("https://example.org/private/r", '<a href="/from-r">r</a>'),
+}
+
+
+def fetch_from_redirect_site(url, **_):
+    final, content = REDIRECT_SITE.get(url, (url, ""))
+    return Response(f"<html><body>{content}</body></html>".encode(), 200, final)
+
+
+@pytest.mark.parametrize(
+    "start, expected",
+    [
+        # a link redirecting to a disallowed path is not followed, an allowed one is
+        ("https://example.org/", ["https://example.org/from-b"]),
+        # a start URL redirecting to a disallowed path stops the crawl
+        ("https://example.org/start", []),
+        # a meta refresh redirecting to a disallowed path keeps the original page
+        ("https://example.org/refresh", ["https://example.org/from-refresh-page"]),
+    ],
+)
+def test_robots_after_http_redirect(start, expected):
+    "robots.txt applies to the final URL after HTTP redirects"
+    rules = RobotFileParser()
+    rules.parse(["User-agent: *", "Disallow: /private/"])
+    spider.URL_STORE.reset()
+    with patch.object(spider, "fetch_response", side_effect=fetch_from_redirect_site), patch.object(spider, "sleep"):
+        _, known = spider.focused_crawler(start, rules=rules)
+    assert sorted(url for url in known if "/from-" in url) == expected
+
+
 @pytest.mark.parametrize(
     "robots, todo, expected",
     [
