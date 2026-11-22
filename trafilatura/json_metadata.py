@@ -12,7 +12,7 @@ from re import Pattern
 from typing import Any
 
 from .settings import Document
-from .utils import HTML_STRIP_TAGS, as_list, trim
+from .utils import HTML_STRIP_TAGS, as_list, language_code, trim
 
 LOGGER = logging.getLogger(__name__)
 
@@ -180,6 +180,9 @@ def process_parent(parent: Any, metadata: Document, backup_sitename: str | None 
         publisher = content.get("publisher")
         if isinstance(publisher, dict) and is_plausible_sitename(metadata, publisher.get("name")):
             metadata.sitename = publisher["name"]
+        # the language declared in the markup comes first
+        if not metadata.language:
+            metadata.language = language_code(content.get("inLanguage"))
 
         if "@type" not in content or not content["@type"]:
             continue

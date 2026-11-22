@@ -3,9 +3,12 @@
 Unit tests for the trafilatura's text filters.
 """
 
+from unittest.mock import patch
+
+import pytest
 from lxml import html
 
-from trafilatura import extract
+from trafilatura import bare_extraction, extract
 from trafilatura.metadata import Document
 from trafilatura.settings import Extractor, use_config
 from trafilatura.utils import LANGID_FLAG, check_html_lang, detectable_languages, language_filter
@@ -227,3 +230,23 @@ def test_prune_xpath():
     assert extract(doc2(), config=ZERO_CONFIG) != ""
     assert extract(doc3(), config=ZERO_CONFIG) != ""
     assert extract(doc4(), config=ZERO_CONFIG) != ""
+
+
+LANG_PAGE = (
+    '<html lang="de"><body><article><p>How many ages hence shall this our lofty scene be acted over, '
+    "in states unborn and accents yet unknown!</p></article></body></html>"
+)
+
+
+@pytest.mark.skipif(not LANGID_FLAG, reason="py3langid not installed")
+def test_detected_language_wins_over_markup():
+    "With py3langid, the language detected on the text is kept, not the markup value (#1183)."
+    assert bare_extraction(LANG_PAGE, with_metadata=True, config=ZERO_CONFIG).language == "en"
+
+
+def test_markup_language_without_detector():
+    "Without py3langid, the markup value is kept and target_language discards nothing (#1183)."
+    with patch("trafilatura.core.LANGID_FLAG", False), patch("trafilatura.utils.LANGID_FLAG", False):
+        document = bare_extraction(LANG_PAGE, with_metadata=True, target_language="en", config=ZERO_CONFIG)
+    assert document is not None
+    assert document.language == "de"

@@ -30,7 +30,7 @@ from .json_metadata import (
     normalize_json_values,
 )
 from .settings import Document, set_date_params
-from .utils import HTML_STRIP_TAGS, load_html, safe_base_url, trim
+from .utils import HTML_STRIP_TAGS, language_code, load_html, safe_base_url, trim
 from .xpaths import (
     AUTHOR_DISCARD_XPATHS,
     AUTHOR_XPATHS,
@@ -288,6 +288,15 @@ META_FIELDS = {
 BACKUP_ORDER = ("application-name", "twitter:site")
 
 
+def extract_language(tree: HtmlElement) -> str | None:
+    "Language declared in the markup: <html lang>, then the content-language meta tag, then og:locale."
+    candidates = [elem.get("lang") for elem in tree.iter("html")]
+    metas = list(tree.iter("meta"))
+    candidates += [m.get("content") for m in metas if (m.get("http-equiv") or "").lower() == "content-language"]
+    candidates += [m.get("content") for m in metas if (m.get("property") or "").lower() == "og:locale"]
+    return next((code for code in map(language_code, candidates) if code), None)
+
+
 def examine_meta(tree: HtmlElement) -> tuple[Document, str | None]:
     """Search meta tags for relevant information, return a backup sitename separately"""
     # bootstrap from potential OpenGraph tags
@@ -524,6 +533,8 @@ def extract_metadata(
 
     # initialize dict and try to strip meta tags
     metadata, backup_sitename = examine_meta(tree)
+    # declared language, JSON-LD comes next and py3langid has the last word in bare_extraction()
+    metadata.language = extract_language(tree)
 
     # tag links come before JSON-LD keywords, the last resort
     if not metadata.tags:

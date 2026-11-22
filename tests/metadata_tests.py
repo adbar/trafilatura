@@ -996,3 +996,27 @@ def test_author_markers(decoy, marker):
 def test_author_discard_markers(marker):
     "Authors inside discarded sections are ignored."
     assert extract_metadata(wrap(marker, '<span class="author">Jenny Smith</span>')).author is None
+
+
+LANG_LD = (
+    '<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "inLanguage": "es-ES"}</script>'
+)
+
+
+@pytest.mark.parametrize(
+    ("page", "expected"),
+    [
+        ('<html lang="en-US"><head></head></html>', "en"),
+        ('<html><head><meta http-equiv="Content-Language" content="de, en"></head></html>', "de"),
+        ('<html><head><meta property="og:locale" content="fr_FR"></head></html>', "fr"),
+        (f"<html><head>{LANG_LD}</head></html>", "es"),
+        ('<html lang="utf-8"><head></head></html>', None),
+        # an invalid value falls through to the next source
+        ('<html lang="eng"><head><meta property="og:locale" content="fr_FR"></head></html>', "fr"),
+        # the markup comes before JSON-LD
+        (f'<html lang="it"><head>{LANG_LD}</head></html>', "it"),
+    ],
+)
+def test_markup_language(page, expected):
+    "The language declared in the markup fills the metadata, the text is not analyzed here (#1183)."
+    assert extract_metadata(page).language == expected
