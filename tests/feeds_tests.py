@@ -577,3 +577,33 @@ def test_find_feed_urls_relative_links(url, head, feed_url, expected):
     }
     with patch("trafilatura.feeds.fetch_url", side_effect=lambda link, config=None: pages.get(link)):
         assert find_feed_urls(url) == [expected]
+
+
+@pytest.mark.parametrize(
+    "feed,expected",
+    [
+        (
+            (
+                '<rss version="2.0"><channel><link>https://example.org/blog/</link>'
+                "<item><link>https://example.org/blog/post-1</link></item></channel></rss>"
+            ),
+            ["https://example.org/blog/post-1"],
+        ),
+        (
+            (
+                '<feed xmlns="http://www.w3.org/2005/Atom"><link rel="alternate" href="https://example.org/blog/"/>'
+                '<entry><link rel="alternate" href="https://example.org/blog/post-1"/></entry></feed>'
+            ),
+            ["https://example.org/blog/post-1"],
+        ),
+        # no items: unchanged
+        (
+            f"{XMLDECL}<link>https://example.org/blog/</link><link>https://example.org/blog/post-1</link>",
+            ["https://example.org/blog/", "https://example.org/blog/post-1"],
+        ),
+    ],
+)
+def test_feed_links_from_items_only(feed, expected):
+    "The link of the feed itself is not one of its items (#1172)."
+    with patch("trafilatura.feeds.fetch_url", return_value=feed):
+        assert find_feed_urls("https://example.org/feed", sleep_time=0) == expected
