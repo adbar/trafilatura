@@ -590,17 +590,30 @@ def as_list(value: Any) -> list[Any]:
     return value if isinstance(value, list) else [value]
 
 
+PLACEHOLDER_IMAGES = ("blank", "dummy", "spacer", "placeholder", "pixel", "1x1", "transparent")
+
+
 def image_src(element: _Element) -> str | None:
     """Image source of an element: lazy-loading attributes, src, the first data-src* attribute
-    pointing to an image file, then the first image URL of data-srcset or srcset."""
+    pointing to an image file, then the first image URL of a srcset attribute. A placeholder
+    src (blank.gif, spacer.png...) is only used if nothing else is found."""
+    placeholder = None
     for attr in ("data-src", "data-lazy-src", "data-original", "src"):
         src = element.get(attr, "").strip()
         if is_image_file(src):
+            # the file name, not the path: "track-spacer.jpg" is a real image
+            if attr == "src" and src.split("?")[0].rsplit("/", 1)[-1].lower().startswith(PLACEHOLDER_IMAGES):
+                placeholder = src
+                continue
             return src
-    data_srcs = (v for a, v in element.attrib.items() if a.startswith("data-src") and a != "data-srcset")
+    data_srcs = (v for a, v in element.attrib.items() if a.startswith("data-src") and "srcset" not in a)
+    # data-srcset and srcset first, then variants such as data-srcset-webp
+    srcset_attrs = ["data-srcset", "srcset"] + [
+        a for a in element.attrib if "srcset" in a and a not in ("data-srcset", "srcset")
+    ]
     # srcset URLs can contain commas (e.g. CDN paths), candidates are separated by whitespace
-    srcsets = (url.rstrip(",") for attr in ("data-srcset", "srcset") for url in element.get(attr, "").split())
-    return next((v for v in chain(data_srcs, srcsets) if is_image_file(v)), None)
+    srcsets = (url.rstrip(",") for attr in srcset_attrs for url in element.get(attr, "").split())
+    return next((v for v in chain(data_srcs, srcsets) if is_image_file(v)), placeholder)
 
 
 def is_image_file(imagesrc: str | None) -> bool:

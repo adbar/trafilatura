@@ -6,6 +6,7 @@ Functions to process nodes in HTML code.
 import logging
 from collections.abc import Callable, Sequence
 from copy import deepcopy
+from itertools import chain
 from typing import Any
 
 from lxml.etree import Element, SubElement, XPath, _Element, strip_elements, strip_tags, tostring
@@ -116,6 +117,24 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list -= PRESERVE_IMG_CLEANING
         stripping_list.discard("img")
+        # <noscript> is removed below: keep its images (the fallback of lazy loading), except
+        # tracking pixels and copies of an image already in the same parent
+        if "noscript" in cleaning_list:
+            # images of each parent, collected once: wrapped lazy-loaded images count too,
+            # and pages with many <noscript> copies in one parent stay linear
+            seen: dict[Any, set[str | None]] = {}
+            for noscript in list(tree.iter("noscript")):
+                parent = noscript.getparent()
+                if parent not in seen:
+                    others = parent.iter("img") if parent is not None else ()
+                    seen[parent] = {image_src(i) for i in others if next(i.iterancestors("noscript"), None) is None}
+                present = seen[parent]
+                for img in list(noscript.iter("img")):
+                    src = image_src(img)
+                    if src and src not in present and img.get("width") != "1":
+                        img.tail = None
+                        noscript.addprevious(img)
+                        present.add(src)
 
     # a <template> is inert markup a script may clone and is never shown as it is, unless it is a
     # declarative shadow root, which the browser renders in place (and which stays stripped below)
@@ -509,6 +528,13 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
     # images
     if options.images:
         for elem in tree.iter("img"):
+            # <picture>: lxml nests the <img> in the <source> holding the image URLs,
+            # or makes it a sibling when the <source /> is closed
+            sources = chain(elem.iterancestors("source"), elem.itersiblings("source", preceding=True))
+            if image_src(elem) is None and (source := next(sources, None)) is not None:
+                for attr in ("srcset", "data-srcset"):
+                    if source.get(attr):
+                        elem.set(attr, source.get(attr))
             elem.tag = "graphic"
         # move images out of links to prevent duplication/loss
         if options.links:

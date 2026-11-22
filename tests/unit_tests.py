@@ -1558,6 +1558,34 @@ def test_images_lazy_loading(img, expected):
     assert result == f"![]({expected})"
 
 
+@pytest.mark.parametrize(
+    "img,expected",
+    [
+        ('<picture><source srcset="/pic.webp"><img></picture>', "![](https://a.b/pic.webp)"),
+        # a closed <source /> makes the <img> its sibling, not its child
+        ('<picture><source srcset="/pic.webp" /><img></picture>', "![](https://a.b/pic.webp)"),
+        ('<img class="lazy"><noscript><img src="/pic.jpg"></noscript>', "![](https://a.b/pic.jpg)"),
+        ('<img src="/blank.gif" srcset="/pic.jpg 800w">', "![](https://a.b/pic.jpg)"),
+        ('<img data-srcset-webp="/pic.webp 1x, /pic-2x.webp 2x">', "![](https://a.b/pic.webp)"),
+        # a lazy-loaded image is not repeated by its <noscript> copy
+        ('<img data-src="/pic.jpg"><noscript><img src="/pic.jpg"></noscript>', "![](https://a.b/pic.jpg)"),
+        # also when the lazy-loaded image is wrapped in another element
+        ('<span><img data-src="/pic.jpg"></span><noscript><img src="/pic.jpg"></noscript>', "![](https://a.b/pic.jpg)"),
+        # a tracking pixel stays out
+        ('<noscript><img src="/track.gif" width="1" height="1"></noscript>', ""),
+        # a <picture> with a real src keeps it
+        ('<picture><source srcset="/pic.webp"><img src="/main.jpg"></picture>', "![](https://a.b/main.jpg)"),
+        # only file names starting with a placeholder word count, and they stay a last resort
+        ('<img src="/track-spacer.jpg">', "![](https://a.b/track-spacer.jpg)"),
+        ('<img src="/blank.gif">', "![](https://a.b/blank.gif)"),
+    ],
+)
+def test_images_picture_noscript_placeholders(img, expected):
+    "Images in <picture> and <noscript> and behind placeholder sources give the real image URL (#1174)."
+    result = _extract_doc(f"<p>{img}</p>", intro=False, include_images=True, fast=True, url="https://a.b/c.html")
+    assert result == expected
+
+
 def test_links():
     """Test link extraction function"""
     options = core.Extractor(config=ZERO_CONFIG)
