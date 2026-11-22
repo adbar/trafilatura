@@ -1562,11 +1562,15 @@ def test_images_lazy_loading(img, expected):
     "img,expected",
     [
         ('<picture><source srcset="/pic.webp"><img></picture>', "![](https://a.b/pic.webp)"),
+        # a closed <source /> makes the <img> its sibling, not its child
+        ('<picture><source srcset="/pic.webp" /><img></picture>', "![](https://a.b/pic.webp)"),
         ('<img class="lazy"><noscript><img src="/pic.jpg"></noscript>', "![](https://a.b/pic.jpg)"),
         ('<img src="/blank.gif" srcset="/pic.jpg 800w">', "![](https://a.b/pic.jpg)"),
         ('<img data-srcset-webp="/pic.webp 1x, /pic-2x.webp 2x">', "![](https://a.b/pic.webp)"),
         # a lazy-loaded image is not repeated by its <noscript> copy
         ('<img data-src="/pic.jpg"><noscript><img src="/pic.jpg"></noscript>', "![](https://a.b/pic.jpg)"),
+        # also when the lazy-loaded image is wrapped in another element
+        ('<span><img data-src="/pic.jpg"></span><noscript><img src="/pic.jpg"></noscript>', "![](https://a.b/pic.jpg)"),
         # a tracking pixel stays out
         ('<noscript><img src="/track.gif" width="1" height="1"></noscript>', ""),
         # a <picture> with a real src keeps it
