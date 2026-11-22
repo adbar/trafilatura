@@ -542,6 +542,80 @@ def test_urllib_request_ssl_retry():
     assert pool.request.call_count == 1
 
 
+@pytest.mark.parametrize(
+    "payload, max_size, accepted",
+    [
+        (b"<html><body>" + b"x" * 1000 + b"</body></html>", "20000000", True),
+        # compressed size under the cap, decompressed size over it
+        (b"0" * 100_000, "10000", False),
+    ],
+    ids=["html", "over-cap"],
+)
+def test_urllib_request_chunked_gzip(payload, max_size, accepted):
+    "A gzip answer sent with Transfer-Encoding: chunked is decoded, and the cap applies to decoded bytes."
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    body = gzip.compress(payload)
+
+    class _Handler(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"
+
+        def do_GET(self):
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
+            self.send_header("Content-Encoding", "gzip")
+            self.send_header("Transfer-Encoding", "chunked")
+            self.end_headers()
+            for i in range(0, len(body), 100):
+                chunk = body[i : i + 100]
+                self.wfile.write(f"{len(chunk):x}\r\n".encode() + chunk + b"\r\n")
+            self.wfile.write(b"0\r\n\r\n")
+
+        def log_message(self, *_args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    config = use_config()
+    config.set("DEFAULT", "SSRF_PROTECTION", "off")
+    config.set("DEFAULT", "MAX_FILE_SIZE", max_size)
+    try:
+        with patch.object(dl, "HAS_PYCURL", False):
+            response = dl.fetch_response(f"http://127.0.0.1:{server.server_port}/", config=config)
+        if accepted:
+            assert response.data == payload
+        else:
+            assert response is None
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
+@pytest.mark.parametrize("fallback, attempts", [("on", 2), ("off", 1)])
+def test_urllib_request_cert_error_not_retried(fallback, attempts, monkeypatch):
+    "A certificate error goes straight to the insecure fallback or None, without retries or backoff."
+    import ssl
+
+    import urllib3
+
+    calls = []
+
+    def _connect(self):
+        calls.append(self.host)
+        raise ssl.SSLCertVerificationError("certificate verify failed")
+
+    naps = []
+    monkeypatch.setattr(urllib3.connection.HTTPSConnection, "connect", _connect)
+    monkeypatch.setattr(dl.urllib3.util.retry.time, "sleep", naps.append)
+    config = use_config()
+    config.set("DEFAULT", "INSECURE_SSL_FALLBACK", fallback)
+    with patch.object(dl, "HAS_PYCURL", False):
+        assert fetch_url("https://ssl.example/", config=config) is None
+    assert len(calls) == attempts
+    assert naps == []
+
+
 def test_fetch_response_decode_cap():
     "The per-request MAX_FILE_SIZE reaches the decompression stage."
     body = gzip.compress(b"0" * 25_000_000)  # expands beyond the 20MB default cap
