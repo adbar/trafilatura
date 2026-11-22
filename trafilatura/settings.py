@@ -295,7 +295,11 @@ class Document:
             if isinstance(value, (str, list, dict)):
                 cleaned = list(dict.fromkeys(c for c in (_trim_value(slot, v) for v in as_list(value)) if c))
                 if slot in LIST_SLOTS:
-                    setattr(self, slot, cleaned)
+                    # regardless of case, the first spelling stays
+                    unique: dict[str, str] = {}
+                    for item in cleaned:
+                        unique.setdefault(item.casefold(), item)
+                    setattr(self, slot, list(unique.values()))
                 elif slot == "author" and isinstance(value, list):
                     from .json_metadata import normalize_authors  # noqa: PLC0415
 

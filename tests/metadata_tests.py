@@ -2,6 +2,7 @@
 Unit tests for the metadata parts.
 """
 
+import json
 import logging
 import sys
 
@@ -602,6 +603,44 @@ def test_catstags_nested_blocks(block, attr, href):
     )
     expected = [name for i in range(1000) for name in (f"T{i}", f"U{i}")]
     assert getattr(extract_metadata(f"<html><body><{block}>{rows}</{tag}></body></html>"), attr) == expected
+
+
+def ld_keywords(keywords):
+    schema = {"@context": "https://schema.org", "@type": "Article", "keywords": keywords}
+    return f'<script type="application/ld+json">{json.dumps(schema)}</script>'
+
+
+@pytest.mark.parametrize(
+    "head,body,tags,categories",
+    [
+        ("", '<a href="/t/lxml" rel="tag">lxml</a>', ["lxml"], []),
+        ("", '<a href="/c/news" rel="category tag">News</a>', [], ["News"]),
+        (ld_keywords("lxml, html"), "", ["lxml", "html"], []),
+        ('<meta property="article:tag" content="lxml,html,xml">', "", ["lxml", "html", "xml"], []),
+        ('<meta name="keywords" content="lxml, LXML">', "", ["lxml"], []),
+        ('<meta name="keywords" content=",">', '<div class="tags"><a href="/tag/lxml">lxml</a></div>', ["lxml"], []),
+        # a single article:tag with two parts can be a name
+        ('<meta property="article:tag" content="Smith, John">', "", ["Smith, John"], []),
+        # several article:tag values stay as they are
+        (
+            '<meta property="article:tag" content="lxml, html, xml"><meta property="article:tag" content="Smith, John">',
+            "",
+            ["lxml, html, xml", "Smith, John"],
+            [],
+        ),
+        # tag links come before JSON-LD keywords
+        (ld_keywords("lxml, html"), '<div class="tags"><a href="/tag/xml">xml</a></div>', ["xml"], []),
+        # a category link is no tag
+        (ld_keywords("lxml, html"), '<a href="/c/news" rel="category tag">News</a>', ["lxml", "html"], ["News"]),
+        # JSON-LD keywords without URLs and overlong lists
+        (ld_keywords(["lxml", "https://example.org/tag/html"]), "", ["lxml"], []),
+        (ld_keywords(", ".join(f"word{i}" for i in range(51))), "", [], []),
+    ],
+)
+def test_tags_and_categories_sources(head, body, tags, categories):
+    "Meta tags, links and JSON-LD keywords, see #1175."
+    metadata = extract_metadata(f"<html><head>{head}</head><body>{body}</body></html>")
+    assert (metadata.tags, metadata.categories) == (tags, categories)
 
 
 def test_date_config():
