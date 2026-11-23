@@ -888,6 +888,111 @@ def test_title_site_suffix(title, sitename, url, expected):
     )
 
 
+@pytest.mark.parametrize(
+    ("title", "body", "expected"),
+    [
+        # what follows the page's headline is branding, whether or not it names the site
+        (
+            "Mayor opens new library | The Express | Regional news",
+            "<h1>Mayor opens new library</h1>",
+            "Mayor opens new library",
+        ),
+        (
+            "Tomaten richtig schneiden - Tipps & Tricks - kochbar.de",
+            "<h1>Tomaten richtig schneiden</h1>",
+            "Tomaten richtig schneiden",
+        ),
+        (
+            "Bridge opens next month – Local news",
+            '<div><meta itemprop="headline" content="Bridge opens next month"/></div>',
+            "Bridge opens next month",
+        ),
+        ("1000 Euro Kredit » 1000 EUR sofort aufs Konto", "<h1>1000 Euro Kredit</h1>", "1000 Euro Kredit"),
+        ("Laufen im Winter › Nordish by Nature", "<h1>Laufen im Winter</h1>", "Laufen im Winter"),
+        (
+            "So viel Regen gab es lange nicht : 31.10.2023",
+            "<h1>So viel Regen gab es lange nicht</h1>",
+            "So viel Regen gab es lange nicht",
+        ),
+        ("Pferdesport bei Olympia dabei -", "<h1>Pferdesport bei Olympia dabei</h1>", "Pferdesport bei Olympia dabei"),
+        (
+            "Lions club’s gift funds fire fighting unit | The District Advertiser | Local News for the district",
+            "<h1>Lions club’s gift funds fire fighting unit</h1>",
+            "Lions club’s gift funds fire fighting unit",
+        ),
+        # words without a separator may go on with the headline
+        ("Chapel of Expiation in Paris", "<h1>Chapel of Expiation</h1>", "Chapel of Expiation in Paris"),
+        # a kicker before the headline
+        ("Chronik: Lotte Tobisch ist tot", "<h1>Lotte Tobisch ist tot</h1>", "Lotte Tobisch ist tot"),
+        ("Pressemitteilung | Endlich mehr Wind wagen!", "<h1>Endlich mehr Wind wagen!</h1>", "Endlich mehr Wind wagen!"),
+        (
+            "Faith for Today: Love and obedience go hand-in-hand",
+            "<h1>Love and obedience go hand-in-hand</h1>",
+            "Love and obedience go hand-in-hand",
+        ),
+        # the longest headline goes first, whatever form matches it
+        (
+            "Fachmeldungen - Verkündung des Tabaksteuermodernisierungsgesetzes",
+            "<h1>Zoll</h1><h1>Fachmeldungen</h1><h1>Verkündung des Tabaksteuermodernisierungsgesetzes</h1>",
+            "Verkündung des Tabaksteuermodernisierungsgesetzes",
+        ),
+        # a heading after the title's last separator is the site's logo, not the headline
+        (
+            "Water Supply Update - Glen Innes Bulletin",
+            "<h1>Glen Innes Bulletin</h1>",
+            "Water Supply Update - Glen Innes Bulletin",
+        ),
+        # the same title in the page's quotes and dashes
+        ("&quot;Welches Europa wir wollen&quot;", "<h1>„Welches Europa wir wollen“</h1>", "„Welches Europa wir wollen“"),
+        ("Editor's Letter: bye, hi Baby!", "<h1>Editor’s Letter: bye, hi Baby!</h1>", "Editor’s Letter: bye, hi Baby!"),
+        # letter case is the title's own
+        ("ARE PROTEIN SHAKES GOOD FOR YOU?", "<h1>Are protein shakes good for you?</h1>", "ARE PROTEIN SHAKES GOOD FOR YOU?"),
+        # entities and spacing do not hide the headline
+        ("Mayor opens new&nbsp;library  |  The Express", "<h1>Mayor opens new library</h1>", "Mayor opens new library"),
+        # a colon right after the headline opens a subtitle
+        (
+            "Mayor opens new library: what it holds",
+            "<h1>Mayor opens new library</h1>",
+            "Mayor opens new library: what it holds",
+        ),
+        # the headline inside a longer word, and a short headline, stay
+        ("Mayor opens new libraryCafe", "<h1>Mayor opens new library</h1>", "Mayor opens new libraryCafe"),
+        ("Weather - Regional news", "<h1>Weather</h1>", "Weather - Regional news"),
+        # a title that is a headline stays, the longest headline goes first
+        (
+            "Bhindi masala (okra stir fry)",
+            "<h1>Bhindi masala</h1><h1>Bhindi masala (okra stir fry)</h1>",
+            "Bhindi masala (okra stir fry)",
+        ),
+        (
+            "Bhindi masala (okra stir fry) - recipe",
+            "<h1>Bhindi masala</h1><h1>Bhindi masala (okra stir fry)</h1>",
+            "Bhindi masala (okra stir fry)",
+        ),
+        # another headline
+        (
+            "Bridge opens next month | Regional news",
+            "<h1>Mayor opens new library</h1>",
+            "Bridge opens next month | Regional news",
+        ),
+        ("Bridge opens next month", "<p>no heading</p>", "Bridge opens next month"),
+    ],
+)
+def test_title_from_headline(title, body, expected):
+    "a title holding the page's own headline whole, with more around it, is the headline"
+    page = f'<html><head><meta property="og:title" content="{title}"/></head><body>{body}</body></html>'
+    assert extract_metadata(page, default_url="https://www.example.org/a").title == expected
+
+
+def test_title_from_headline_skips_the_site_name():
+    "a heading that is the site name is the logo, not the headline"
+    head = '<meta property="og:title" content="Example Gazette | Rain expected across the region"/>'
+    head += '<meta property="og:site_name" content="Example Gazette"/>'
+    page = f"<html><head>{head}</head><body><h1>Example Gazette</h1></body></html>"
+    title = extract_metadata(page, default_url="https://www.example.org/a").title
+    assert title == "Example Gazette | Rain expected across the region"
+
+
 def test_title_adjacent_separators():
     metadata = extract_metadata(head_page("<title>C++ - | Site.com</title>"))
     assert (metadata.title, metadata.sitename) == ("C++", "Site.com")
