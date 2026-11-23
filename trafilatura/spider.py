@@ -268,18 +268,14 @@ def process_links(
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in xpaths])
             htmlstring = tostring(tree).decode()
 
-    try:
-        candidates = extract_links(
-            pagecontent=htmlstring,
-            url=url or params.base,
-            external_bool=False,
-            language=params.lang,
-            with_nav=True,
-            strict=False,
-        )
-    except ValueError:  # malformed relative link
-        LOGGER.warning("link extraction failed: %s", url or params.base)
-        return
+    candidates = extract_links(
+        pagecontent=htmlstring,
+        url=url or params.base,
+        external_bool=False,
+        language=params.lang,
+        with_nav=True,
+        strict=False,
+    )
 
     links, links_priority = [], []
     for link in candidates:

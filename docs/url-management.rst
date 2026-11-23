@@ -30,7 +30,7 @@ Before a list of URLs can be filtered, it usually has to be gathered from a page
     >>> url = 'https://www.sitemaps.org/'
     >>> html = fetch_url(url)
     >>> extract_links(html, url=url, language='en')
-    {'https://www.sitemaps.org/protocol.php', 'https://www.sitemaps.org/faq.php', ...}
+    ['https://www.sitemaps.org/faq.php', 'https://www.sitemaps.org/protocol.php', ...]
 
 For more granular control, ``filter_links()`` additionally consults ``robots.txt`` rules and returns two separate lists, one to keep and one to discard:
 

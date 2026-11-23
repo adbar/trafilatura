@@ -13,6 +13,7 @@ from urllib.parse import urljoin
 
 from courlan import (
     extract_domain,
+    get_base_url,
     is_valid_url,
     normalize_url,
     validate_url,
@@ -31,7 +32,7 @@ from .json_metadata import (
     normalize_json_values,
 )
 from .settings import Document, set_date_params
-from .utils import HTML_STRIP_TAGS, language_code, load_html, safe_base_url, trim
+from .utils import HTML_STRIP_TAGS, language_code, load_html, trim
 from .xpaths import (
     AUTHOR_DISCARD_XPATHS,
     AUTHOR_XPATHS,
@@ -475,7 +476,7 @@ def extract_url(tree: HtmlElement, default_url: str | None = None) -> str | None
         for element in tree.iterfind(".//head//meta[@content]"):
             attrtype = element.get("name") or element.get("property") or ""
             if attrtype.startswith(("og:", "twitter:")):
-                base_url = safe_base_url(element.attrib["content"])
+                base_url = get_base_url(element.attrib["content"])
                 if base_url:
                     # prepend URL
                     url = base_url + url
