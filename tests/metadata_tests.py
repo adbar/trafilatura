@@ -140,6 +140,7 @@ def test_author_blacklist():
 
 HEAD_BEGIN, HEAD_END = "<html><head>", "</head><body></body></html>"
 BODY_BEGIN, BODY_END = "<html><body>", "</body></html>"
+FILLER_TEXT = "Paragraph text that is long enough to be kept in the extraction result here."
 
 
 @pytest.mark.parametrize(
@@ -285,6 +286,50 @@ def test_author_from_markup(doc, expected):
 def test_url(head, default_url):
     """Test URL extraction"""
     assert extract_metadata(head_page(head), default_url).url == "https://example.org"
+
+
+BASE_HREF_PAGE = "https://example.org/blog/2024/post-1"
+
+
+@pytest.mark.parametrize(
+    "base",
+    [
+        '<base href="https://example.org/">',
+        '<base href="https://example.org">',
+        '<base href="https://cdn.example.net/assets/">',
+        '<base href="//cdn.example.net/a/">',
+    ],
+    ids=["root-url", "root-url-no-slash", "cdn", "cdn-protocol-relative"],
+)
+def test_base_href_does_not_replace_document_url(base):
+    "A <base href> resolves relative references, it does not identify the document."
+    assert extract_metadata(head_page(base), BASE_HREF_PAGE).url == BASE_HREF_PAGE
+
+
+def test_base_href_does_not_leak_into_output_url():
+    "The output URL is the page URL, not the base used to resolve its references."
+    head = '<title>A post</title><base href="https://cdn.example.net/assets/"/>'
+    body = f"<p>{FILLER_TEXT}</p><p>{FILLER_TEXT}</p>"
+    result = extract(
+        f"<html><head>{head}</head><body><article>{body}</article></body></html>",
+        url=BASE_HREF_PAGE,
+        output_format="json",
+        with_metadata=True,
+    )
+    assert f'"source": "{BASE_HREF_PAGE}"' in result
+
+
+def test_base_href_still_resolves_relative_image():
+    "<base href> keeps its other job: relative image sources resolve against it."
+    head = '<title>A post</title><base href="https://cdn.example.net/docs/"/>'
+    body = f"<p>{FILLER_TEXT}</p><p><img src='pic.jpg' alt='pic'></p>"
+    result = extract(
+        f"<html><head>{head}</head><body><article>{body}</article></body></html>",
+        url=BASE_HREF_PAGE,
+        output_format="markdown",
+        include_images=True,
+    )
+    assert "![pic](https://cdn.example.net/docs/pic.jpg)" in result
 
 
 @pytest.mark.parametrize(
