@@ -668,6 +668,17 @@ def check_html_lang(tree: HtmlElement, target_language: str, strict: bool = Fals
     return True
 
 
+def language_code(value: Any) -> str | None:
+    "First ISO 639-1 code in a declared language such as 'en-US', 'fr_FR' or 'de, en', None for 'utf-8' or 'eng'."
+    if not isinstance(value, str):
+        return None
+    for part in re.split(r"[\s,;]+", value):
+        code = re.split(r"[-_]", part, maxsplit=1)[0].lower()
+        if len(code) == 2 and code.isascii() and code.isalpha():
+            return code
+    return None
+
+
 def language_classifier(temp_text: str, temp_comments: str) -> str | None:
     """Run external component (if installed) for language identification"""
     if LANGID_FLAG is True:
@@ -688,15 +699,16 @@ def language_filter(temp_text: str, temp_comments: str, target_language: str, do
     """Filter text based on language detection and store relevant information"""
     # todo: run and pass info along anyway?
     if target_language is not None:
-        # more thorough: detection on actual text content
-        docmeta.language = language_classifier(temp_text, temp_comments)
+        # more thorough: detection on actual text content, the markup value stays if there is none
+        detected = language_classifier(temp_text, temp_comments)
+        docmeta.language = detected or docmeta.language
         # the detector can never return this language, so do not filter (as documented)
         available = detectable_languages()
         if available is not None and target_language not in available:
             LOGGER.warning("target language not available in the detector, skipping filter: %s", target_language)
             return False, docmeta
-        # HTML lang check? sometimes contradicted by detection above
-        if docmeta.language is not None and docmeta.language != target_language:
+        # filter on the detected language only, HTML tags don't always match the content (#224)
+        if detected is not None and detected != target_language:
             LOGGER.warning("wrong language: %s %s", docmeta.language, docmeta.url)
             return True, docmeta
     return False, docmeta
