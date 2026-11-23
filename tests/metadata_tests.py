@@ -643,6 +643,75 @@ def test_tags_and_categories_sources(head, body, tags, categories):
     assert (metadata.tags, metadata.categories) == (tags, categories)
 
 
+def breadcrumbs(*crumbs):
+    "A BreadcrumbList of (name, link) pairs, None for no link."
+    items = [
+        {"@type": "ListItem", "position": i, "name": name, **({"item": link} if link else {})}
+        for i, (name, link) in enumerate(crumbs, 1)
+    ]
+    return {"@type": "BreadcrumbList", "itemListElement": items}
+
+
+def ld_script(schema):
+    return f'<script type="application/ld+json">{json.dumps({"@context": "https://schema.org", **schema})}</script>'
+
+
+NEWS = breadcrumbs(("Home", "https://www.example.org/"), ("News", "https://www.example.org/news/"), ("A title", None))
+WORLD = breadcrumbs(("World", "/world/"), ("Europe", "/world/europe/"), ("Article", None))
+
+
+@pytest.mark.parametrize(
+    "head,body,categories",
+    [
+        (ld_script(NEWS), "", ["News"]),
+        # in position order
+        (ld_script(WORLD), "", ["World", "Europe"]),
+        (ld_script({**WORLD, "itemListElement": WORLD["itemListElement"][::-1]}), "", ["World", "Europe"]),
+        # no home entries, site name, hostname or title
+        (
+            ld_script(
+                breadcrumbs(("Home", "/start/"), ("Example News", "/en/"), ("example.org", "/org/"), ("News", "/news/"))
+            ),
+            "",
+            ["News"],
+        ),
+        (ld_script(breadcrumbs(("A title", "/a-title/"), ("News", "/news/"))), "", ["News"]),
+        # no links to the root path or to the page itself
+        (
+            ld_script(breadcrumbs(("Start", "https://www.example.org"), ("News", "/news/"), ("Article", "/news/a-title"))),
+            "",
+            ["News"],
+        ),
+        # the last entry stays when it has a link and is not part of the title
+        (ld_script(breadcrumbs(("News", "/news/"), ("title", "/news/title/"))), "", ["News"]),
+        (ld_script(breadcrumbs(("News", "/news/"), ("Politics", "/news/politics/"))), "", ["News", "Politics"]),
+        # the item may be an object
+        (
+            ld_script({"@type": "BreadcrumbList", "itemListElement": [{"item": {"@id": "/news/", "name": "News"}}]}),
+            "",
+            ["News"],
+        ),
+        # nested lists, the first one counts
+        (ld_script({"@graph": [{"@type": "WebPage", "breadcrumb": {"@id": "#breadcrumb"}}, NEWS]}), "", ["News"]),
+        (ld_script({"@type": "WebPage", "breadcrumb": NEWS}), ld_script(breadcrumbs(("Sport", "/sport/"))), ["News"]),
+        # empty or malformed lists
+        (ld_script(breadcrumbs()), "", []),
+        (ld_script({"@type": "BreadcrumbList", "itemListElement": "Home > News"}), "", []),
+        (ld_script({"@type": "BreadcrumbList", "itemListElement": ["Home", {"position": 2, "name": 3}]}), "", []),
+        # articleSection and category links come first
+        (ld_script({"@type": "Article", "articleSection": "Sport"}) + ld_script(NEWS), "", ["Sport"]),
+        (ld_script(NEWS), '<a href="/c/sport" rel="category">Sport</a>', ["Sport"]),
+    ],
+)
+def test_breadcrumb_categories(head, body, categories):
+    "JSON-LD breadcrumbs as the last source of categories, see #1182."
+    page = (
+        '<html><head><title>A title</title><link rel="canonical" href="https://www.example.org/news/a-title">'
+        f'<meta property="og:site_name" content="Example News">{head}</head><body>{body}</body></html>'
+    )
+    assert extract_metadata(page).categories == categories
+
+
 def test_date_config():
     "A user date_config without 'max_date' must not raise, and must not be mutated."
     cfg = {"original_date": True, "extensive_search": False}

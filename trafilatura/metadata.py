@@ -9,7 +9,7 @@ from collections.abc import Callable, Sequence
 from copy import deepcopy
 from html import unescape
 from typing import Any
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit
 
 from courlan import (
     extract_domain,
@@ -26,6 +26,7 @@ from .baseline import block_text
 from .htmlprocessing import prune_unwanted_nodes
 from .json_metadata import (
     extract_json,
+    extract_json_breadcrumbs,
     extract_json_parse_error,
     normalize_authors,
     normalize_json,
@@ -519,6 +520,37 @@ def extract_catstags(metatype: str, tree: HtmlElement) -> list[str]:
     return results
 
 
+def extract_breadcrumbs(tree: HtmlElement, metadata: Document) -> list[str]:
+    "Categories from the first JSON-LD BreadcrumbList, without the home page, the site and the page itself."
+    crumbs = None
+    for elem in tree.iterfind('.//script[@type="application/ld+json"]'):
+        if elem.text and "BreadcrumbList" in elem.text:
+            try:
+                schema = json.loads(JSON_WRAPPER.sub("", elem.text), strict=False)
+            except json.JSONDecodeError:
+                continue
+            crumbs = extract_json_breadcrumbs(normalize_json_values(schema))
+            if crumbs is not None:
+                break
+    if not crumbs:
+        return []
+    title = (metadata.title or "").casefold()
+    skipped = {"home", title} | {name.casefold() for name in (metadata.sitename, metadata.hostname) if name}
+    page = (metadata.url or "").rstrip("/")
+    results = []
+    for i, (name, link) in enumerate(crumbs, 1):
+        try:
+            url = urljoin(metadata.url or "", link) if link else None
+            own = url is not None and (urlsplit(url).path in ("", "/") or url.rstrip("/") == page)
+        except ValueError:  # malformed link
+            continue
+        # links to the root path or to the page, the last entry without a link or in the title is the page itself
+        if own or name.casefold() in skipped or (i == len(crumbs) and (url is None or name.casefold() in title)):
+            continue
+        results.append(name)
+    return results
+
+
 def parse_license_element(element: HtmlElement, strict: bool = False) -> str | None:
     """Probe a link for identifiable free license cues.
     Parse the href attribute first and then the link text."""
@@ -646,9 +678,9 @@ def extract_metadata(
         if mymatch:
             metadata.sitename = mymatch[1]
 
-    # categories
+    # categories, JSON-LD breadcrumbs come last
     if not metadata.categories:
-        metadata.categories = extract_catstags("category", tree)
+        metadata.categories = extract_catstags("category", tree) or extract_breadcrumbs(tree, metadata)
 
     # license
     metadata.license = extract_license(tree)

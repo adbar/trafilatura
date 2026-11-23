@@ -316,6 +316,30 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document, backup_
     return process_parent(parents, metadata, backup_sitename)
 
 
+def extract_json_breadcrumbs(schema: Any) -> list[tuple[str, str | None]] | None:
+    """Names and links of the first BreadcrumbList, also in @graph or under breadcrumb,
+    in position order, None if there is none."""
+    for parent in as_list(schema):
+        if not isinstance(parent, dict) or not is_schema_org_context(parent.get("@context")):
+            continue
+        for node in [parent, *as_list(parent.get("@graph"))]:
+            for crumbs in (node, node.get("breadcrumb")) if isinstance(node, dict) else ():
+                if not isinstance(crumbs, dict) or "BreadcrumbList" not in as_list(crumbs.get("@type")):
+                    continue
+                entries = [entry for entry in as_list(crumbs.get("itemListElement")) if isinstance(entry, dict)]
+                with suppress(KeyError, TypeError, ValueError):
+                    entries = sorted(entries, key=lambda entry: int(entry["position"]))
+                results = []
+                for entry in entries:
+                    item = entry.get("item")
+                    name = entry.get("name") or (item.get("name") if isinstance(item, dict) else None)
+                    link = (item.get("@id") or item.get("url")) if isinstance(item, dict) else item
+                    if isinstance(name, str) and name:
+                        results.append((name, link if isinstance(link, str) and link else None))
+                return results
+    return None
+
+
 def extract_json_author(elemtext: str, regular_expression: Pattern[str]) -> str | None:
     """Crudely extract author names from JSON-LD data"""
     authors = None
