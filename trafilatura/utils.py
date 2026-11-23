@@ -55,7 +55,7 @@ except ImportError:
     cchardet_detect = None  # type: ignore[assignment]
 
 from charset_normalizer import from_bytes
-from courlan import fix_relative_urls, get_base_url
+from courlan import fix_relative_urls
 from lxml.etree import Comment, ElementDefaultClassLookup, ProcessingInstruction, _Element, strip_tags
 from lxml.html import HtmlComment, HtmlElement, HtmlEntity, HTMLParser, HtmlProcessingInstruction, fromstring
 
@@ -455,14 +455,6 @@ def copy_clean_tree(tree: HtmlElement) -> HtmlElement:
             if elem.tail:
                 elem.tail = INVALID_XML_CHARS.sub("", elem.tail)
     return tree
-
-
-def safe_base_url(url: str) -> str:
-    "Get the base URL, empty string if malformed."
-    try:
-        return get_base_url(url)
-    except ValueError:
-        return ""
 
 
 def safe_relative_url(baseurl: str, url: str) -> str:

@@ -1,18 +1,47 @@
 ## History / Changelog
 
 
-## Unreleased
+## 2.4.0
 
-Major changes:
-- Built-in jusText-derived fallback without stopwords, keeps links, formatting and images. Breaking: jusText dependency dropped, `try_justext()` takes `options` instead of `target_language`, `settings.JUSTEXT_LANGUAGES`, `external.jt_stoplist_init()` and `external.get_stoplist()` removed, by @adbar
-- Fallback cascade: tree cleaning undone in all modes, jusText tried before the recall retry, by @adbar
-- CLI fixes: exit codes, argument checks, input lists and link discovery, by @adbar
-- CLI: `--feed` and `--sitemap` without `--list` only process the discovered URLs, not the input URLs, by @adbar
-- Breaking: `cli_utils.examine()` takes `url` and `options` as keyword-only arguments, `settings.args_to_extractor()` no longer accepts `url`, by @adbar
-- Crawler: `CrawlParameters.i` only counts pages that could be fetched, a failed start page leaves it at 0, by @adbar
-- Python API: `ValueError` for unknown output formats, `url` argument applies with `options`, by @adbar
-- Metadata: OpenGraph, sitenames, title site suffixes, tags, relative images, wrapped JSON-LD, more JSON-LD article types, author names and faster author search, by @adbar
-- Metadata: partial `date_extraction_params` and `date_config` of `extract_metadata()` are merged over the defaults, sitenames are only capitalized when fully lowercase ("eBay" stays), by @adbar
+Highlights:
+- Built-in fallback derived from jusText: no stopword lists, keeps links, formatting and images, jusText dependency dropped, revised fallback cascade, by @adbar (#1064)
+- Faster extraction by @adbar, @GoldArowana and @deadstrobe5 (#1001, #1093, #1127)
+- `extract()` no longer crashes when run in concurrent threads, by @prometheus-maker (#1092)
+- More precise metadata with a quality gate, new fields (language, article image, more tag and category sources) and the same fields in every output format, by @adbar, @SajjadPSavoji, @felipehertzer, @SudiptoKumar, @jjohnnystwsss and @ayoushbirjani4-spec (#1080, #1091, #1129, #1135, #1178, #1185)
+- Images found in lazy-loading attributes, srcset, `<picture>` and `<noscript>` by @ayoushbirjani4-spec (#1169, #1179)
+- Politer crawling: robots.txt and crawl delay respected across redirects and meta refresh, by @SudiptoKumar, @Primeteumm and @AnvitDevadiga (#1102, #1151, #1157, #1177)
+
+Breaking changes:
+- jusText: `try_justext()` takes `options` instead of `target_language`, `settings.JUSTEXT_LANGUAGES`, `external.jt_stoplist_init()` and `external.get_stoplist()` removed (#1064)
+- Internals removed: `utils.HTML_PARSER` and `xml.CONTROL_PARSER` (use `get_html_parser()`), `utils.LINES_TRIMMING`, `JT_STOPLIST`, `compare_extraction()` takes one tree (#1001, #1092)
+- Trees from `load_html()` use a single element class, without tag-specific lxml.html classes such as `FormElement` (#1001)
+- With tables turned off, all tables are now removed, many were left in before, pages laid out with tables can return much less text (#1001)
+- Output: no `raw_text` in JSON, image source in `graphic/@url` in TEI, XML keeps only the attributes Trafilatura sets (#1115, #1135, #1162)
+- CLI and API: `--feed` and `--sitemap` without `--list` only process the discovered URLs, malformed config files exit with code 2, `ValueError` for unknown output formats, the `url` argument also applies when `options` are passed, `cli_utils.examine()` takes `url` and `options` as keyword-only arguments, `settings.args_to_extractor()` no longer accepts `url` (#1070, #1122)
+- Crawler: `CrawlParameters.i` only counts pages that could be fetched, a failed start page leaves it at 0 (#1070)
+- Metadata: partial `date_extraction_params` and `date_config` of `extract_metadata()` are merged over the defaults, site names are only capitalized when fully lowercase ("eBay" stays) (#1080)
+- `sitemap_search()` and `find_feed_urls()` wait 5 s by default, as set in the config (#1063)
+
+New features:
+- CLI: progress bar and output file names derived from URLs by @ShayanMuhammad-CS and @JackyHsu-X (#976, #1007)
+- Cookies read from a Netscape cookie file by @DheerajPiduru52 (#1156)
+- Sitemaps parsed from caller-provided text by @IlyaKhalafi (#983)
+
+Fixes:
+- Better text extraction: recall mode, language filter, infinite scroll, links, images in links, quotations, lists, templates, dialogs, permalink anchors, prefixed tags, misnested markup, Discourse pages, special characters and duplicates by @epistemedeus, @moneebullah25, @RavSinghChandan, @L4XB, @hasandenizuk, @bfs2021, @MankhongGarden, @scks1, @lee3Q, @gezerui888, @felipehertzer, @hamids-ai-automations, @SudiptoKumar, @ahmadkhancodes, @sarankumar1325, @jadhavgaurav, @mccalpink, @audi0417, @asadsehto and @jjohnnystwsss (#962, #969, #972, #996, #997, #998, #1012, #1014, #1025, #1072, #1073, #1074, #1075, #1086, #1088, #1094, #1113, #1134, #1148, #1149, #1164, #1170)
+- Better comment extraction by @MohammadHijjawi97, @audi0417 and @cvl01 (#973, #974, #1139)
+- Better output formats: lists, definition lists, tables, code blocks, blockquotes, LaTeX, HTML structure and TEI by @raashish1601, @RavSinghChandan, @zhaoruizhe81, @ybai08, @L4XB, @IlyaKhalafi, @r0h1tb, @scks1, @jayhemnani9910, @mayankdhingra02, @emirmrkaljevic and @rishi02102017 (#959, #975, #978, #984, #987, #995, #1006, #1008, #1069, #1083, #1106, #1115, #1128)
+- Better metadata: authors, publishers, headlines, site names, JSON-LD contexts and escapes by @raashish1601, @cvl01, @Enesuygurs, @emirmrkaljevic, @Shriraj1901 and @felipehertzer (#949, #960, #999, #1035, #1040, #1130, #1132, #1138, #1168)
+- More robust CLI: exit codes, input checks, local batches, output files, blacklists, logging and discovery by @adbar, @IlyaKhalafi, @GoldArowana, @devYRPauli, @jackiectl2, @cycsmail, @Shriraj1901, @edsonsims, @bfs2021 and @Primeteumm (#991, #992, #993, #1003, #1005, #1026, #1038, #1043, #1060, #1070, #1079, #1122, #1152)
+- More robust crawling: status codes, redirects, fragments, crawl boundary, resumed crawls and meta refresh by @Shriraj1901, @GoldArowana, @hasandenizuk, @mayankdhingra02 and @SudiptoKumar (#1041, #1042, #1046, #1089, #1105, #1107, #1110, #1131)
+- More robust sitemaps: detection, namespaces, size limits, robots.txt, hreflang links, wait time and fewer guessed requests by @IlyaKhalafi, @r0h1tb, @jadhavgaurav, @wolfgang-aura, @Shriraj1901, @mayuriphad, @flynn-eye, @sarankumar1325, @emirmrkaljevic, @GoldArowana, @SudiptoKumar and @anubhavlal07 (#981, #982, #1004, #1015, #1036, #1039, #1048, #1063, #1076, #1090, #1109, #1125, #1147)
+- More robust feeds: detection, RDF feeds, Atom links and character references by @RavSinghChandan, @cycsmail, @emirmrkaljevic, @GoldArowana, @jackiectl2 and @Primeteumm (#1002, #1013, #1037, #1044, #1085, #1114, #1181)
+- More robust downloads: redirects, retries, pooled connections, chunked answers and certificate errors by @ColumbusLabs, @sinnercode228, @GoldArowana and @costajohnt (#1027, #1071, #1084, #1176)
+
+Maintenance:
+- Dependencies updated, courlan 1.5.0 required, by @adbar
+- Typing and settings cleanup by @IlyaKhalafi and @Primeteumm (#1000, #1153)
+- Contributing guidelines updated by @adbar (#1116)
 
 
 ## 2.3.1
@@ -26,7 +55,7 @@ Major changes:
 
 Major changes:
 - Downloads and decompression overhaul by @adbar (#921)
-- Simplified document handling code and better correctness by @adbar (#938)
+- Simplified document handling code and better correctness by @adbar (#938), `settings.CONFIG_MAPPING`, `Extractor().min_extracted_comm_size` and `Document(retry_length=)` removed
 - Simpler and faster deduplication, scoped caches accepted by @adbar (#919)
 - Dependencies updated, stricter linting and typing (ruff, mypy) by @adbar (#907)
 
