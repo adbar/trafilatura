@@ -11,7 +11,7 @@ import zlib
 from collections.abc import Callable, Iterable, Iterator, Mapping
 from copy import copy
 from itertools import chain, islice
-from typing import TYPE_CHECKING, Any, Literal, TypeAlias, cast
+from typing import TYPE_CHECKING, Any, Final, Literal, TypeAlias, cast
 from unicodedata import normalize
 from urllib.parse import urlsplit
 
@@ -56,11 +56,15 @@ except ImportError:
 
 from charset_normalizer import from_bytes
 from courlan import fix_relative_urls
-from lxml.etree import Comment, ElementDefaultClassLookup, ProcessingInstruction, _Element, strip_tags
-from lxml.html import HtmlComment, HtmlElement, HtmlEntity, HTMLParser, HtmlProcessingInstruction, fromstring
+from lxml.etree import Comment, ElementDefaultClassLookup, LxmlError, ProcessingInstruction, _Element, strip_tags
+from lxml.html import HtmlComment, HtmlEntity, HTMLParser, HtmlProcessingInstruction, fromstring
+from lxml.html import HtmlElement as LxmlHtmlElement
 
 # response types
 from urllib3.response import HTTPResponse
+
+from .dom import HtmlElement, from_lxml, to_lxml_html
+from .dom import fromstring as dom_fromstring
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import ParamSpec, Protocol, TypeVar
@@ -70,6 +74,7 @@ if TYPE_CHECKING:  # pragma: no cover
     _P = ParamSpec("_P")
     _R = TypeVar("_R")
     _R_co = TypeVar("_R_co", covariant=True)
+    _TREE = TypeVar("_TREE", HtmlElement, LxmlHtmlElement)
 
     class _CachedFunction(Protocol[_P, _R_co]):
         "Function wrapped by lru_cache, keeping its signature for type checkers."
@@ -118,7 +123,7 @@ class Response:
 
 
 # accepted input for HTML loading
-HtmlInput: TypeAlias = HtmlElement | HTTPResponse | Response | bytes | str
+HtmlInput: TypeAlias = HtmlElement | LxmlHtmlElement | HTTPResponse | Response | bytes | str
 
 LOGGER = logging.getLogger(__name__)
 
@@ -138,19 +143,6 @@ INVALID_XML_CHARREFS = re.compile(
     r"|[xX]0*(?:[0-8bBcCeEfF]|1[0-9a-fA-F]|[fF]{3}[eEfF])(?![0-9a-fA-F]));?"
 )
 _INVALID_XML_CHARREFS_BYTES = re.compile(INVALID_XML_CHARREFS.pattern.encode())
-
-
-# note: htmldate could use HTML comments
-# huge_tree=True, remove_blank_text=True
-def get_html_parser() -> HTMLParser:
-    "Return a new HTML parser: a parser shared across threads makes concurrent extractions crash (#925)."
-    parser = HTMLParser(collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True)
-    # one element class instead of the per-tag lxml.html lookup
-    parser.set_element_class_lookup(
-        ElementDefaultClassLookup(element=HtmlElement, comment=HtmlComment, pi=HtmlProcessingInstruction, entity=HtmlEntity)
-    )
-    return parser
-
 
 URL_BLACKLIST_REGEX = re.compile(r"^https?://|/+$")
 
@@ -345,13 +337,18 @@ def repair_faulty_html(htmlstring: str, beginning: str) -> str:
     return htmlstring
 
 
-def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
-    "Try to pass bytes to LXML parser."
-    try:
-        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=get_html_parser())
-    except Exception as err:
-        LOGGER.error("lxml parser bytestring %s", err)
-    return None
+# note: htmldate could use HTML comments
+# huge_tree=True, remove_blank_text=True
+def get_html_parser() -> HTMLParser:
+    "Return a new HTML parser: a parser shared across threads makes concurrent extractions crash (#925)."
+    parser = HTMLParser(collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True)
+    # one element class instead of the per-tag lxml.html lookup
+    parser.set_element_class_lookup(
+        ElementDefaultClassLookup(
+            element=LxmlHtmlElement, comment=HtmlComment, pi=HtmlProcessingInstruction, entity=HtmlEntity
+        )
+    )
+    return parser
 
 
 # elements that legitimately live in <head>: HTML metadata content and the
@@ -360,7 +357,7 @@ def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
 HEAD_CONTENT_TAGS = {"base", "link", "meta", "noscript", "script", "style", "template", "title"}
 
 
-def _relocate_head_content(tree: HtmlElement) -> None:
+def _relocate_head_content(tree: LxmlHtmlElement) -> None:
     """Move flow content mis-nested in <head> to the front of <body>.
 
     libxml2 keeps the implied head open across HTML5 semantic sectioning
@@ -389,64 +386,86 @@ def _relocate_head_content(tree: HtmlElement) -> None:
         body.insert(index, child)
 
 
-def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
-    """Load object given as input and validate its type
-    (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string).
-
-    Expects a full document: the dubious-HTML check below rejects a single-block
-    fragment (e.g. "<p>x</p>" alone has one child and is treated as not-quite-HTML).
-    Wrap bare fragments in an extra element (e.g. f"<div>{fragment}</div>") first.
+def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> LxmlHtmlElement | None:
+    """Retain lxml interoperability and caller-supplied tree identity.
 
     Parsed elements are plain HtmlElement objects, without lxml.html's form helpers
     (FormElement, InputElement...). Use lxml.html.fromstring() if they are needed.
     """
-    # use tree directly
-    if isinstance(htmlobject, HtmlElement):
+    if isinstance(htmlobject, LxmlHtmlElement):
         return htmlobject
-    # use trafilatura or urllib3 responses directly
+    if isinstance(htmlobject, HtmlElement):
+        return to_lxml_html(htmlobject)
     if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, "data"):
         htmlobject = htmlobject.data
-    # do not accept any other type after this point
     if not isinstance(htmlobject, (bytes, str)):
         raise TypeError("incompatible input type", type(htmlobject))
-    # start processing
-    tree = None
-    # try to guess encoding and decode file: if None then keep original
     htmlobject = decode_file(htmlobject, max_size)
-    # sanity checks
-    beginning = htmlobject[:50].lower()
-    check_flag = is_dubious_html(beginning)
-    # repair first
+    beginning: Final = htmlobject[:50].lower()
     htmlobject = repair_faulty_html(htmlobject, beginning)
-    # first pass: use Unicode string
-    fallback_parse = False
+    tree = None
+    fallback = False
     try:
         tree = fromstring(htmlobject, parser=get_html_parser())
     except ValueError:
-        # "Unicode strings with encoding declaration are not supported."
         tree = fromstring_bytes(htmlobject)
-        fallback_parse = True
-    except Exception as err:  # pragma: no cover
-        LOGGER.error("lxml parsing failed: %s", err)
-    # second pass: try passing bytes to LXML
-    if (tree is None or len(tree) < 1) and not fallback_parse:
+        fallback = True
+    except LxmlError as error:
+        LOGGER.error("lxml parsing failed: %s", error)
+    if (tree is None or len(tree) < 1) and not fallback:
         tree = fromstring_bytes(htmlobject)
-    # rejection test: is it (well-formed) HTML at all?
-    # log parsing errors
-    if tree is not None and check_flag is True and len(tree) < 2:
+    if tree is not None and is_dubious_html(beginning) and len(tree) < 2:
         LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
-        tree = None
+        return None
     # repair a mis-nested implied head (flow content parsed into <head>)
     if tree is not None:
         _relocate_head_content(tree)
     return tree
 
 
-def copy_clean_tree(tree: HtmlElement) -> HtmlElement:
+def fromstring_bytes(htmlobject: str) -> LxmlHtmlElement | None:
+    """Support encoding declarations and unpaired surrogates through lxml's byte parser."""
+    try:
+        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=get_html_parser())
+    except (LxmlError, ValueError) as error:
+        LOGGER.error("lxml parser bytestring %s", error)
+        return None
+
+
+def load_html_native(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
+    """Reject bare single-block fragments; wrap them in an extra element before extraction."""
+    if sys.version_info < (3, 11):
+        return load_html(htmlobject, max_size)
+    if isinstance(htmlobject, HtmlElement):
+        return htmlobject
+    if isinstance(htmlobject, LxmlHtmlElement):
+        return _remove_invalid_xml_chars(from_lxml(htmlobject))  # the copy already drops comments
+    if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, "data"):
+        htmlobject = htmlobject.data
+    if not isinstance(htmlobject, (bytes, str)):
+        raise TypeError("incompatible input type", type(htmlobject))
+    htmlobject = decode_file(htmlobject, max_size)
+    beginning: Final = htmlobject[:50].lower()
+    htmlobject = repair_faulty_html(htmlobject, beginning)
+    # Replace unpaired surrogates before passing text to the native parser.
+    tree: Final = dom_fromstring(htmlobject.encode("utf8", "surrogatepass").decode("utf8", "replace"))
+    if is_dubious_html(beginning) and len(tree) < 2:
+        LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
+        return None
+    return tree
+
+
+def copy_clean_tree(tree: "_TREE") -> "_TREE":
     """Copy a tree given by the caller and clean it like load_html() does for a string:
     comments, processing instructions and invalid XML characters are removed (#1144)."""
     tree = copy(tree)
-    strip_tags(tree, Comment, ProcessingInstruction)  # tails are kept
+    if isinstance(tree, LxmlHtmlElement):  # turbohtml trees hold no comments or processing instructions
+        strip_tags(tree, Comment, ProcessingInstruction)  # tails are kept
+    return _remove_invalid_xml_chars(tree)
+
+
+def _remove_invalid_xml_chars(tree: "_TREE") -> "_TREE":
+    "Remove the characters load_html() drops from a string, in place."
     # one check on the whole text, the characters are rare
     if INVALID_XML_CHARS.search("".join(tree.itertext())):
         for elem in tree.iter():
@@ -585,7 +604,7 @@ def as_list(value: Any) -> list[Any]:
 PLACEHOLDER_IMAGES = ("blank", "dummy", "spacer", "placeholder", "pixel", "1x1", "transparent")
 
 
-def image_src(element: _Element) -> str | None:
+def image_src(element: _Element | HtmlElement) -> str | None:
     """Image source of an element: lazy-loading attributes, src, the first data-src* attribute
     pointing to an image file, then the first image URL of a srcset attribute. A placeholder
     src (blank.gif, spacer.png...) is only used if nothing else is found."""
@@ -706,7 +725,7 @@ def language_filter(temp_text: str, temp_comments: str, target_language: str, do
     return False, docmeta
 
 
-def textfilter(element: _Element) -> bool:
+def textfilter(element: _Element | HtmlElement) -> bool:
     """Filter out unwanted text"""
     testtext = element.tail if element.text is None else element.text
     # to check: line len → continue if len(line) <= 5
