@@ -514,6 +514,12 @@ The links are also seamlessly filtered for patterns given by the user, e.g. usin
 
 An optional ``external`` argument controls whether URLs from other domains are included. By default, only URLs matching the input domain are returned (``external=False``).
 
+To update a collection, the ``since`` argument keeps only the entries modified on or after an ISO date, based on the ``<lastmod>`` values in the sitemaps. Entries without a readable date are kept. Child sitemaps of an index are skipped and not downloaded when their date in the index is earlier, note that some websites do not update these dates.
+
+.. code-block:: python
+
+    >>> mylinks = sitemaps.sitemap_search('https://www.example.org/', since='2026-11-01')
+
 Pass your HTTP client's decoded response text or a cached sitemap to ``parse_sitemap()`` to parse one file without network requests:
 
 .. code-block:: python
@@ -524,7 +530,7 @@ Pass your HTTP client's decoded response text or a cached sitemap to ``parse_sit
     sitemap_text = Path("sitemap.xml").read_text(encoding="utf-8")
     links = parse_sitemap(sitemap_text, "https://example.org/sitemap.xml")
 
-The result contains sorted unique links. For a sitemap index, these are nested sitemap addresses. Fetch and parse those separately with your own HTTP client. The ``target_lang`` and ``external`` options apply the existing link filters.
+The result contains sorted unique links. For a sitemap index, these are nested sitemap addresses. Fetch and parse those separately with your own HTTP client. The ``target_lang``, ``external`` and ``since`` options apply the same filters as ``sitemap_search()``.
 
 
 Web crawling
