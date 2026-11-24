@@ -178,6 +178,13 @@ def test_trim():
     assert sanitize("Test&nbsp;Text") == "Test Text"
 
 
+def test_sanitize_tree_drops_invalid_attributes():
+    "An attribute with a colon and no declared namespace is invalid in XML output: it is dropped, the others stay."
+    tree = html.fromstring('<div><p xml:lang="en" og:title="Title" data-id="1">Text</p></div>')
+    trafilatura.utils.sanitize_tree(tree)
+    assert dict(tree.find("p").attrib) == {"data-id": "1"}
+
+
 def test_reset_caches(monkeypatch):
     "reset_caches() must clear every functools cache found in trafilatura modules (bar the costly _punct_tbl)."
     caches = {
