@@ -142,15 +142,15 @@ def delete_element(element: _Element, keep_tail: bool = True) -> None:
 
 def merge_with_parent(element: _Element, include_formatting: bool = False) -> None:
     """Merge element with its parent and convert formatting to markdown.
-    Children are moved to the parent, blocks are flattened to text inside hi and ref."""
+    Children are moved to the parent, blocks are flattened to text inside hi, p and ref."""
     parent = element.getparent()
     if parent is None:
         return
 
     # inline-consuming elements fold their children into the text, the others hand them over
     children = [] if _consumes_inline_children(element) else list(element)
-    if children and parent.tag in ("hi", "ref"):
-        # no blocks inside inline elements: flatten them to text first
+    if children and parent.tag in ("hi", "p", "ref"):
+        # no blocks inside inline elements or paragraphs: flatten them to text first
         while (block := next((c for c in element if c.tag in BLOCK_ELEMS), None)) is not None:
             merge_with_parent(block, include_formatting)
         children = list(element)

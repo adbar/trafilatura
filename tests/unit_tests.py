@@ -1165,6 +1165,24 @@ def test_merge_with_parent_keeps_children(fmt, body, kwargs, expected):
     assert "text after the block" in out
 
 
+@pytest.mark.parametrize(
+    "body, text",
+    [
+        ("<p>Skip to content <header><list><item>Contact Us</item></list></header></p>", "Skip to content Contact Us"),
+        ("<p>A <header>head <lb/>x</header> tail</p>", "A head x tail"),
+    ],
+    ids=["blocks-flattened", "inline-child-kept"],
+)
+def test_check_tei_merged_element_in_paragraph(body, text):
+    "A merged element inside a paragraph leaves no blocks in it (issue #966)."
+    tei = etree.fromstring(f"<TEI><text><body><div>{body}</div></body></text></TEI>")
+    para = xml.check_tei(tei, None).find(".//body//p")
+    assert not para.xpath(".//list | .//item | .//header")
+    assert " ".join("".join(para.itertext()).split()) == text
+    if "lb" in body:
+        assert para.find("lb") is not None
+
+
 def test_markdown_sup_sub_keep_boundary():
     """sup/sub must keep a boundary, else 100<sup>2</sup> reads as 1002 (issue #889)"""
     sup = "<html><body><article><p>The layer has 100<sup>2</sup>=10000 nodes.</p></article></body></html>"
