@@ -330,21 +330,28 @@ def download_queue_processing(
 def process_website_urls(
     func: Callable[[str], list[str]], urls: list[str], sleep_time: float, once: bool = False
 ) -> list[tuple[str, list[str]]]:
-    """Process the URLs of a website one after the other, waiting in between.
-    With once, the website is searched a single time and the links are
-    filtered for each URL, except for sitemap URLs which are processed as such."""
+    """Process the URLs of a website one after the other, waiting before each search but the first.
+    With once, the homepage is searched a single time and the links are filtered for each page URL.
+    A page URL without links is searched on its own, sitemap URLs are processed as such."""
+    pages = [url for url in urls if not is_sitemap_url(url)]
+    once = once and len(pages) > 1
     links: list[str] | None = None
     results = []
     searched = False
     for url in urls:
-        if once and not is_sitemap_url(url):
+        # a page URL is first looked up in the links of the homepage
+        if once and url in pages:
             baseurl = get_base_url(url)
+            is_home = len(url) <= len(baseurl) + 2
             if links is None:
+                if searched:
+                    sleep(sleep_time)
                 links = func(baseurl + "/")
                 searched = True
-            prefix = SCHEME_AND_WWW.sub("", url) if len(url) > len(baseurl) + 2 else None
-            results.append((url, filter_by_prefix(links, prefix)))
-            continue
+            found = links if is_home else filter_by_prefix(links, SCHEME_AND_WWW.sub("", url))
+            if found or is_home:
+                results.append((url, found))
+                continue
         if searched:
             sleep(sleep_time)
         results.append((url, func(url)))
