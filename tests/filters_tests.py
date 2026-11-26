@@ -190,6 +190,22 @@ def test_filters():
     )
 
 
+@pytest.mark.parametrize(
+    ("declaration", "target", "expected"),
+    [
+        ('<meta http-equiv="content-language" content="fr-CA">', "fr", True),
+        ('<meta http-equiv="content-language" content="fr-CA">', "ca", False),
+        ('<meta property="og:locale" content="pt_BR">', "br", False),
+        ('<meta http-equiv="content-language" content="zh-TW, en">', "tw", False),
+        ('<meta http-equiv="content-language" content="zh-TW, en">', "en", True),
+    ],
+)
+def test_html_lang_ignores_region_subtags(declaration, target, expected):
+    "Region subtags are not languages: fr-CA is French, not Catalan"
+    tree = html.fromstring(f"<html><head>{declaration}</head><body></body></html>")
+    assert check_html_lang(tree, target_language=target) is expected
+
+
 def test_detectable_languages_without_detector(monkeypatch):
     "Without the language detector there is no list of detectable languages"
     monkeypatch.setattr("trafilatura.utils.LANGID_FLAG", False)
