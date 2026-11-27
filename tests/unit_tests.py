@@ -5787,3 +5787,42 @@ def test_tree_input_baseline(body):
     assert html2txt(tree) == html2txt(page)
     assert baseline(tree)[1] == baseline(page)[1]
     assert etree.tostring(tree) == before
+
+
+ADV_STORY = "".join(
+    f"<p>The council confirmed on Saturday that the new bridge will open to traffic next month. Paragraph {n} of the "
+    "story says more about the bridge works.</p>"
+    for n in range(6)
+)
+
+
+@pytest.mark.parametrize("fast", [False, True])
+@pytest.mark.parametrize(
+    "page,ad_kept",
+    [
+        # an ad slot whose class is "adv"
+        (
+            f'<article>{ADV_STORY}<div class="adv"><p>Buy our garden tools today at the best price in town</p></div></article>',
+            False,
+        ),
+        (
+            f'<article>{ADV_STORY}<div class="adv adv-leaderboard"><p>Buy our garden tools today at the best price in town</p></div></article>',
+            False,
+        ),
+        # other classes starting with the same letters are no ad slots
+        (
+            f'<article>{ADV_STORY}<div class="advice"><p>Buy our garden tools today at the best price in town</p></div></article>',
+            True,
+        ),
+        (
+            f'<article><div class="advert-placement">{ADV_STORY}<p>Buy our garden tools today at the best price in town</p></div></article>',
+            True,
+        ),
+    ],
+    ids=["adv", "adv-and-more", "advice", "advert-placement"],
+)
+def test_ad_slot_named_adv(page, ad_kept, fast):
+    "An element whose class is the bare token adv is an ad slot."
+    text = extract(f"<html><body>{page}</body></html>", fast=fast)
+    assert "Paragraph 5 of the story" in text
+    assert ("garden tools" in text) is ad_kept
