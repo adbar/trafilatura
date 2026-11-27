@@ -162,7 +162,6 @@ SPACING_PROTECTED = {"code", "pre"}
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
 TARGET_LANG_ATTRS = ('http-equiv="content-language"', 'property="og:locale"')
-RE_HTML_LANG = re.compile(r"([a-z]{2})")
 
 # Mostly filters for social media (text-level analog of the xpaths social/share tokens)
 RE_FILTER = re.compile(
@@ -642,7 +641,7 @@ def check_html_lang(tree: HtmlElement, target_language: str, strict: bool = Fals
     for attr in TARGET_LANG_ATTRS:
         elems = tree.findall(f".//meta[@{attr}][@content]")
         if elems:
-            if any(target_language in RE_HTML_LANG.split(elem.get("content", "").lower()) for elem in elems):
+            if any(target_language in declared_languages(elem.get("content", "")) for elem in elems):
                 return True
             LOGGER.debug("%s lang attr failed", attr)
             return False
@@ -651,7 +650,7 @@ def check_html_lang(tree: HtmlElement, target_language: str, strict: bool = Fals
     if strict:
         elems = tree.xpath("//html[@lang]")
         if elems:
-            if any(target_language in RE_HTML_LANG.split(elem.get("lang", "").lower()) for elem in elems):
+            if any(target_language in declared_languages(elem.get("lang", "")) for elem in elems):
                 return True
             LOGGER.debug("HTML lang failed")
             return False
@@ -669,6 +668,11 @@ def language_code(value: Any) -> str | None:
         if len(code) == 2 and code.isascii() and code.isalpha():
             return code
     return None
+
+
+def declared_languages(value: str) -> set[str]:
+    "Primary language subtags in a declaration such as 'de_DE, en_US', without the region subtags."
+    return {re.split(r"[-_]", part, maxsplit=1)[0] for part in re.split(r"[\s,;]+", value.lower())}
 
 
 def language_classifier(temp_text: str, temp_comments: str) -> str | None:
