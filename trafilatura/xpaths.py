@@ -157,7 +157,10 @@ COMMENTS_XPATH = [
 # or contains(@class, 'Comments')
 
 _COMMENTS_ID = "[Cc]omment(?!ary)|comol"
-_COMMENTS_CLASS = "^[Cc]omment(?!ary)|(?:article|post)-comments"
+# a class token ending in "-comments" names a comment section ("story-comments"), a state class does not ("has-comments")
+_COMMENTS_CLASS = (
+    "^[Cc]omment(?!ary)|(?:article|post)-comments|(?:^|\\s)(?!(?:has|no|with|show|open|closed)-)\\w+-comments(?:\\s|$)"
+)
 REMOVE_COMMENTS_XPATH = [
     XPath(
         f"""
