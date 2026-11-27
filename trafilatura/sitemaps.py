@@ -6,6 +6,7 @@ import logging
 import re
 from collections.abc import Callable, Iterator
 from configparser import ConfigParser
+from datetime import date
 from itertools import islice
 from re import Pattern
 from time import sleep
@@ -70,7 +71,9 @@ class SitemapObject:
         "domain",
         "external",
         "seen",
+        "since",
         "sitemap_urls",
+        "skipped",
         "target_lang",
         "urls",
     ]
@@ -83,6 +86,7 @@ class SitemapObject:
         target_lang: str | None = None,
         external: bool = False,
         config: ConfigParser = DEFAULT_CONFIG,
+        since: date | None = None,
     ) -> None:
         self.base_url: str = base_url
         self.config: ConfigParser = config
@@ -91,7 +95,10 @@ class SitemapObject:
         self.external: bool = external
         self.current_url: str = ""
         self.seen: set[str] = set()
+        self.since: date | None = since
         self.sitemap_urls: list[str] = sitemapsurls
+        # valid links left out because of their modification date
+        self.skipped: list[str] = []
         self.target_lang: str | None = target_lang
         self.urls: list[str] = []
 
@@ -101,7 +108,7 @@ class SitemapObject:
         self.content = (fetch_url(self.current_url, config=self.config) or "").lstrip(LEADING_SPACE)
         self.seen.add(self.current_url)
 
-    def handle_link(self, link: str, *, is_sitemap: bool | None = None) -> bool:
+    def handle_link(self, link: str, *, is_sitemap: bool | None = None, outdated: bool = False) -> bool:
         """Examine a link and determine if it's valid and if it leads to
         a sitemap or a web page."""
         if link == self.current_url:  # safety check
@@ -128,7 +135,9 @@ class SitemapObject:
 
         if is_sitemap is None:
             is_sitemap = bool(DETECT_SITEMAP_LINK.search(link))
-        if is_sitemap:
+        if outdated:
+            self.skipped.append(link)
+        elif is_sitemap:
             self.sitemap_urls.append(link)
         else:
             self.urls.append(link)
@@ -163,6 +172,19 @@ class SitemapObject:
                 ranked[2].append(href)
         return list(dict.fromkeys([*ranked[0], *ranked[1], *ranked[2], location]))
 
+    def is_outdated(self, entry: etree._Element, lastmod_tags: list[str]) -> bool:
+        "Check if the entry was last modified before the since date, entries without a readable date are kept."
+        if self.since is None:
+            return False
+        lastmod = next(entry.iterchildren(*lastmod_tags), None)
+        if lastmod is None:
+            return False
+        # a date (2023-11-26) or a W3C datetime (2026-11-20T12:47:21+00:00): the date part is enough
+        try:
+            return date.fromisoformat((lastmod.text or "").strip()[:10]) < self.since
+        except ValueError:
+            return False
+
     def extract_sitemap_links(self) -> None:
         "Extract locations in the sitemap namespace (or legacy unnamespaced XML)."
         parser = etree.XMLParser(encoding="utf-8", resolve_entities=False, no_network=True, recover=True)
@@ -182,6 +204,7 @@ class SitemapObject:
         )
         sitemap_tags = {f"{prefix}sitemap" for prefix in prefixes}
         url_tags = {f"{prefix}url" for prefix in prefixes}
+        lastmod_tags = [f"{prefix}lastmod" for prefix in prefixes]
         for element in islice(tree.iter(*(f"{prefix}loc" for prefix in prefixes)), MAX_LINKS):
             # Entity references and nested markup are not part of a location URL.
             location = (element.text or "").strip()
@@ -196,8 +219,9 @@ class SitemapObject:
                 if parent is None or is_sitemap is None:
                     self.handle_link(location, is_sitemap=is_sitemap)
                     continue
+                outdated = self.is_outdated(parent, lastmod_tags)
                 for candidate in self.lang_candidates(parent, location):
-                    if self.handle_link(candidate, is_sitemap=is_sitemap):
+                    if self.handle_link(candidate, is_sitemap=is_sitemap, outdated=outdated):
                         break
 
     def process(self) -> None:
@@ -219,6 +243,7 @@ def parse_sitemap(
     url: str,
     target_lang: str | None = None,
     external: bool = False,
+    since: str | None = None,
 ) -> list[str]:
     """Extract links from caller-provided sitemap text without network requests.
 
@@ -227,6 +252,9 @@ def parse_sitemap(
         url: The sitemap URL, used for domain filtering.
         target_lang: Optional two-letter language code for URL filtering.
         external: Include links from other domains.
+        since: Optional ISO date (e.g. "2026-11-01"), skip the entries
+               whose <lastmod> is earlier. Entries without a readable
+               <lastmod> are kept.
 
     Returns:
         Sorted unique links. For an index, these are nested sitemap URLs;
@@ -234,14 +262,16 @@ def parse_sitemap(
 
     Raises:
         TypeError: If content is not a string.
+        ValueError: If since is not an ISO date.
     """
     if not isinstance(content, str):
         raise TypeError("content must be a string")
+    since_date = parse_since(since)
     domainname, baseurl = get_hostinfo(url)
     if domainname is None:
         LOGGER.warning("invalid URL: %s", url)
         return []
-    sitemap = SitemapObject(baseurl, domainname, [], target_lang, external)
+    sitemap = SitemapObject(baseurl, domainname, [], target_lang, external, since=since_date)
     sitemap.current_url = url
     sitemap.content = content.lstrip(LEADING_SPACE)
     try:
@@ -259,6 +289,7 @@ def sitemap_search(
     sleep_time: float | None = None,
     max_sitemaps: int = MAX_SITEMAPS_SEEN,
     config: ConfigParser = DEFAULT_CONFIG,
+    since: str | None = None,
 ) -> list[str]:
     """Look for sitemaps for the given URL and gather links.
 
@@ -273,11 +304,19 @@ def sitemap_search(
                     (defaults to SLEEP_TIME in the config).
         max_sitemaps: Maximum number of sitemaps to process.
         config: Pass configuration values for download control.
+        since: Optional ISO date (e.g. "2026-11-01"), skip the entries
+               whose <lastmod> is earlier. Entries without a readable
+               <lastmod> are kept. Child sitemaps are skipped based on
+               the dates in the index, which some websites do not update.
 
     Returns:
         The extracted links as a list (sorted list of unique links).
 
+    Raises:
+        ValueError: If since is not an ISO date.
+
     """
+    since_date = parse_since(since)
     domainname, baseurl = get_hostinfo(url)
     if domainname is None:
         LOGGER.warning("invalid URL: %s", url)
@@ -310,7 +349,7 @@ def sitemap_search(
         sitemap_config.read_dict(config)
         sitemap_config.set("DEFAULT", "MAX_FILE_SIZE", str(MAX_SITEMAP_SIZE))
 
-    sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external, sitemap_config)
+    sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external, sitemap_config, since_date)
 
     # A sitemap can use a different scheme or www. form of the same host.
     prefix = SCHEME_AND_WWW.sub("", urlfilter) if urlfilter is not None else None
@@ -326,7 +365,9 @@ def sitemap_search(
             sitemap.current_url = sitemap.sitemap_urls.pop()
         else:
             next_guess = next((guess for guess in guesses if guess not in sitemap.seen), None)
-            if next_guess is None or any(prefix is None or SCHEME_AND_WWW.sub("", u).startswith(prefix) for u in sitemap.urls):
+            # entries skipped by date also mean that a sitemap was found
+            found = [*sitemap.urls, *sitemap.skipped]
+            if next_guess is None or any(prefix is None or SCHEME_AND_WWW.sub("", u).startswith(prefix) for u in found):
                 break
             sitemap.current_url = next_guess
 
@@ -343,6 +384,16 @@ def sitemap_search(
 
     LOGGER.debug("%s sitemap links found for %s", len(sitemap.urls), domainname)
     return sitemap.urls
+
+
+def parse_since(since: str | None) -> date | None:
+    "Convert the since argument to a date, raise a ValueError if it is not an ISO date."
+    if since is None:
+        return None
+    try:
+        return date.fromisoformat(since)
+    except (TypeError, ValueError) as err:
+        raise ValueError(f"since must be an ISO date such as 2026-11-01: {since!r}") from err
 
 
 def is_plausible_sitemap(url: str, contents: str | None) -> bool:

@@ -830,3 +830,136 @@ def test_sleep_time_defaults_to_config(monkeypatch):
     with patch.object(sitemaps, "sleep") as mock_sleep:
         sitemaps.sitemap_search("https://example.org", sleep_time=0.5, config=config)
     assert mock_sleep.call_args_list == [call(0.5)]
+
+
+def dated_entries(tag, entries, prefix=""):
+    "Sitemap entries as (location, lastmod) pairs, lastmod None for an undated entry."
+    return "".join(
+        f"<{prefix}{tag}><{prefix}loc>{location}</{prefix}loc>"
+        + (f"<{prefix}lastmod>{lastmod}</{prefix}lastmod>" if lastmod is not None else "")
+        + f"</{prefix}{tag}>"
+        for location, lastmod in entries
+    )
+
+
+DATED = [
+    ("old", "2023-11-26"),
+    ("new", "2026-11-20T12:47:21+00:00"),
+    ("same-day", "2026-11-01"),
+    ("undated", None),
+    ("unreadable", "last week"),
+    ("partial", "2026-11"),
+]
+
+
+@pytest.mark.parametrize(
+    ("namespace", "prefix"),
+    [
+        ("", ""),
+        (' xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"', ""),
+        (' xmlns:sm="http://www.google.com/schemas/sitemap/0.84"', "sm:"),
+    ],
+)
+@pytest.mark.parametrize("index", [False, True])
+def test_parse_sitemap_since(namespace, prefix, index):
+    """Entries modified before `since` are skipped, undated and unreadable ones are kept."""
+    root, tag, ext = ("sitemapindex", "sitemap", ".xml") if index else ("urlset", "url", "")
+    entries = [(f"https://example.org/{name}{ext}", lastmod) for name, lastmod in DATED]
+    content = f"<{prefix}{root}{namespace}>{dated_entries(tag, entries, prefix)}</{prefix}{root}>"
+    url = "https://example.org/sitemap.xml"
+
+    assert sitemaps.parse_sitemap(content, url, since="2026-11-01") == [
+        f"https://example.org/{name}{ext}" for name in ("new", "partial", "same-day", "undated", "unreadable")
+    ]
+    assert len(sitemaps.parse_sitemap(content, url)) == len(DATED)
+
+
+@pytest.mark.parametrize(
+    ("lastmod", "target_lang", "expected"),
+    [
+        ("2026-11-20", "de", ["https://example.org/de/a"]),
+        ("2026-11-20", None, ["https://example.org/en/a"]),
+        ("2023-11-26", "de", []),
+        ("2023-11-26", None, []),
+    ],
+)
+def test_parse_sitemap_since_applies_to_hreflang_links(lastmod, target_lang, expected):
+    entry = HREFLANG_ENTRY.replace("</url>", f"<lastmod>{lastmod}</lastmod></url>")
+    content = (
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
+        f"{entry}</urlset>"
+    )
+    url = "https://example.org/sitemap.xml"
+    assert sitemaps.parse_sitemap(content, url, target_lang=target_lang, since="2026-11-01") == expected
+
+
+def test_parse_sitemap_since_keeps_txt_and_loose_locations():
+    txt = "https://example.org/a\nhttps://example.org/b"
+    assert sitemaps.parse_sitemap(txt, "https://example.org/sitemap.txt", since="2026-11-01") == [
+        "https://example.org/a",
+        "https://example.org/b",
+    ]
+    loose = "<urlset><loc>https://example.org/loose</loc><lastmod>2020-01-01</lastmod></urlset>"
+    assert sitemaps.parse_sitemap(loose, "https://example.org/sitemap.xml", since="2026-11-01") == [
+        "https://example.org/loose"
+    ]
+
+
+@pytest.mark.parametrize("since", ["01/11/2026", "2026-11", "", "yesterday"])
+def test_since_must_be_an_iso_date(monkeypatch, since):
+    def unexpected_request(*args, **kwargs):
+        raise AssertionError("no request expected")
+
+    monkeypatch.setattr(sitemaps, "fetch_url", unexpected_request)
+    monkeypatch.setattr(sitemaps, "is_live_page", unexpected_request)
+    with pytest.raises(ValueError):
+        sitemaps.parse_sitemap("<urlset/>", "https://example.org/sitemap.xml", since=since)
+    with pytest.raises(ValueError):
+        sitemaps.sitemap_search("https://example.org", since=since)
+
+
+@pytest.mark.parametrize(
+    ("start", "maps", "fetched", "expected"),
+    [
+        # old child sitemaps of an index are not downloaded
+        (
+            "",
+            {"sitemap.xml": [("part-a.xml", "2023-11-26"), ("part-b.xml", "2026-11-20")], "part-b.xml": [("b", None)]},
+            ["sitemap.xml", "part-b.xml"],
+            ["b"],
+        ),
+        # a guessed sitemap with old entries only counts as found
+        ("", {"sitemap.xml": [("a", "2023-11-26")], "sitemap.xml.gz": [("b", None)]}, ["sitemap.xml"], []),
+        # old entries outside the subpage do not count, a later guess has a recent one inside
+        (
+            "/blog",
+            {"sitemap.xml": [("news/a", "2023-11-26")], "sitemap.xml.gz": [("blog/b", "2026-11-20")]},
+            ["sitemap.xml", "sitemap.xml.gz"],
+            ["blog/b"],
+        ),
+        # old entries inside the subpage do count
+        (
+            "/blog",
+            {"sitemap.xml": [("blog/a", "2023-11-26")], "sitemap.xml.gz": [("blog/b", "2026-11-20")]},
+            ["sitemap.xml"],
+            [],
+        ),
+    ],
+)
+def test_sitemap_search_since(monkeypatch, start, maps, fetched, expected):
+    base = "https://example.org"
+
+    def fetch(url, **kwargs):
+        entries = maps.get(url.removeprefix(f"{base}/"))
+        if not entries:
+            return None
+        root, tag = ("sitemapindex", "sitemap") if entries[0][0].endswith(".xml") else ("urlset", "url")
+        return f"<{root}>{dated_entries(tag, [(f'{base}/{loc}', lastmod) for loc, lastmod in entries])}</{root}>"
+
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "find_robots_sitemaps", lambda url, config: [])
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+    with patch.object(sitemaps, "fetch_url", side_effect=fetch) as request:
+        assert sitemaps.sitemap_search(f"{base}{start}", since="2026-11-01") == [f"{base}/{page}" for page in expected]
+
+    assert [args[0] for args, _ in request.call_args_list] == [f"{base}/{path}" for path in fetched]
