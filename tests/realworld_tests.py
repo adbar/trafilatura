@@ -227,15 +227,42 @@ def _source_text(htmlstring):
     return normalize_unicode(trim(" ".join(tree.itertext())))
 
 
+def _repeated(htmlstring, source, url=None, **options):
+    "N-grams output more often than they appear in the source."
+    output = _ngrams(extract(htmlstring, url, **options) or "")
+    return [" ".join(g) for g, c in output.items() if 0 < source[g] < c][:3]
+
+
 @pytest.mark.parametrize("url", MOCK_PAGES)
 def test_no_repeated_segments(url):
     "Text segments must not be output more often than they appear in the source (GH#951)."
     htmlstring = load_mock_page_meta(url)
     source = _ngrams(_source_text(htmlstring))
     for options in ({}, {"output_format": "markdown", "include_formatting": True, "include_links": True}):
-        output = _ngrams(extract(htmlstring, url, **options) or "")
-        repeated = [g for g, c in output.items() if 0 < source[g] < c]
-        assert not repeated, (options, [" ".join(g) for g in repeated[:3]])
+        assert not (repeated := _repeated(htmlstring, source, url, **options)), (options, repeated)
+
+
+EVAL_DIR = os.path.join(TEST_DIR, "eval")
+EVAL_FILES = sorted(f for f in os.listdir(EVAL_DIR) if f.endswith(".html"))
+KNOWN_REPEATED_EVAL = {
+    "chefkoch.de.mandarinen.html",
+    "critical.com.pa-amador.html",
+    "piratenpartei-hessen.de.nachbarschaftshilfe.html",
+}
+
+
+def test_known_repeated_eval_exist():
+    assert KNOWN_REPEATED_EVAL <= set(EVAL_FILES)
+
+
+@pytest.mark.parametrize("filename", EVAL_FILES)
+def test_no_repeated_segments_eval(filename, request):
+    "Same check over the evaluation corpus, text output only."
+    if filename in KNOWN_REPEATED_EVAL:
+        request.applymarker(pytest.mark.xfail(strict=True, raises=AssertionError, reason="known repeated segments"))
+    with open(os.path.join(EVAL_DIR, filename), "rb") as f:
+        htmlstring = f.read()
+    assert not (repeated := _repeated(htmlstring, _ngrams(_source_text(htmlstring)))), repeated
 
 
 @pytest.mark.parametrize("xmloutput,formatting", [(True, False), (False, False), (False, True)])

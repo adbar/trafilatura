@@ -43,6 +43,7 @@ def test_load_evaldata_reports_a_missing_file_as_such(tmp_path):
 
 def test_validate_accepts_well_formed_corpus():
     validate({"url": {"file": "a.html", "with": ["x"], "without": ["y"]}})
+    validate({"url": {"file": "a.html", "with": ["\u0915\u094d\u200d\u0937"], "without": ["y"]}})  # zero-width joiner kept
 
 
 def test_validate_rejects_missing_file():
@@ -61,11 +62,21 @@ def test_validate_rejects_missing_file():
         {"file": "a.html", "with": [str(n) for n in range(MAX_CHUNKS + 1)], "without": ["y"]},  # over the annotation bound
         {"file": "a.html", "with": ["x", " x "], "without": []},  # duplicate double-counts
         {"file": "a.html", "with": ["hello world"], "without": ["world"]},  # unsatisfiable
+        {"file": "a.html", "with": ["soft\u00adhyphen"], "without": ["y"]},  # format character never in output
+        {"file": "a.html", "with": ["cafe\u0301"], "without": ["y"]},  # not NFC
+        {"file": "a.html", "with": ["icon\ue001glyph"], "without": ["y"]},  # private-use character never in output
+        {"file": "a.html", "with": ["x"], "without": ["y"], "title": "soft\u00adhyphen"},  # title never matched
+        {"file": "a.html", "with": ["x"], "without": ["y"], "author": ["A", "cafe\u0301"]},  # author list not NFC
     ],
 )
 def test_validate_rejects_malformed_item(item):
     with pytest.raises(ValueError):
         validate({"url": item})
+
+
+def test_validate_names_the_invisible_character():
+    with pytest.raises(ValueError, match=r"soft\\xadhyphen"):
+        validate({"url": {"file": "a.html", "with": ["x", "soft\u00adhyphen"], "without": ["y"]}})
 
 
 def test_norm_collapses_whitespace():
@@ -80,6 +91,11 @@ def test_count_item_matches_both_sides():
 def test_count_item_whitespace_normalized():
     item = {"with": ["hello   world"], "without": []}
     assert count_item(item, "prefix hello world suffix") == (1, 0, 0, 0)
+
+
+def test_count_item_canonicalizes_output():
+    item = {"with": ["Klimawandel", "caf\u00e9"], "without": []}
+    assert count_item(item, "Klima\u00adwandel cafe\u0301") == (2, 0, 0, 0)
 
 
 def test_read_corpus_rejects_unresolvable_file(tmp_path):
