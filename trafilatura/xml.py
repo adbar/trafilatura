@@ -48,6 +48,7 @@ TEI_VALID_ATTRS = {"rend", "rendition", "role", "target", "type", "url"}
 TEI_DTD = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
 TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
+BLOCK_ELEMS = TEI_DIV_SIBLINGS | {"cell", "div", "head", "item", "row"}  # not allowed inside hi or ref
 
 NEWLINE_ELEMS = {"graphic", "head", "lb", "list", "p", "quote", "row", "table"}
 SPECIAL_FORMATTING = {"code", "del", "head", "hi", "ref", "item", "cell"}
@@ -142,13 +143,22 @@ def delete_element(element: _Element, keep_tail: bool = True) -> None:
 
 
 def merge_with_parent(element: _Element, include_formatting: bool = False) -> None:
-    """Merge element with its parent and convert formatting to markdown."""
+    """Merge element with its parent and convert formatting to markdown.
+    Children are moved to the parent, blocks are flattened to text inside hi, p and ref."""
     parent = element.getparent()
     if parent is None:
         return
 
+    # inline-consuming elements fold their children into the text, the others hand them over
+    children = [] if _consumes_inline_children(element) else list(element)
+    if children and parent.tag in ("hi", "p", "ref"):
+        # no blocks inside inline elements or paragraphs: flatten them to text first
+        while (block := next((c for c in element if c.tag in BLOCK_ELEMS), None)) is not None:
+            merge_with_parent(block, include_formatting)
+        children = list(element)
+
     full_text = replace_element_text(element, include_formatting)
-    if element.tail is not None:
+    if element.tail is not None and not children:
         full_text += element.tail
 
     previous = element.getprevious()
@@ -159,6 +169,12 @@ def merge_with_parent(element: _Element, include_formatting: bool = False) -> No
         parent.text = f"{parent.text} {full_text}"
     else:
         parent.text = full_text
+
+    if children:
+        if element.tail is not None:
+            children[-1].tail = (children[-1].tail or "") + element.tail
+        for child in children:
+            element.addprevious(child)
     parent.remove(element)
 
 
@@ -319,18 +335,19 @@ def check_tei(xmldoc: _Element, url: str | None) -> _Element:
     for elem in xmldoc.findall(".//text/body//div/lb"):
         if elem.tail and elem.tail.strip():
             elem.tag, elem.text, elem.tail = "p", elem.tail, None
-    # look for elements that are not valid
+    # merge elements that are not valid first, their text and children go to the parent
     for elem in xmldoc.findall(".//text/body//*"):
-        # check elements
         if elem.tag not in TEI_VALID_TAGS:
             LOGGER.warning("not a TEI element, removing: %s %s", elem.tag, url)
             merge_with_parent(elem)
-            continue
+    for elem in xmldoc.findall(".//text/body//*"):
         if elem.tag in TEI_REMOVE_TAIL:
             _handle_unwanted_tails(elem)
         elif elem.tag == "div":
             _handle_text_content_of_div_nodes(elem)
             _wrap_unwanted_siblings_of_div(elem)
+        elif elem.tag in TEI_DIV_SIBLINGS and getattr(elem.getparent(), "tag", None) == "div":
+            _handle_unwanted_tails(elem)  # e.g. text left behind by a merged element
         elif elem.tag == "graphic" and "src" in elem.attrib:
             # TEI points to the image with url, src would be dropped below
             elem.set("url", elem.attrib.pop("src"))

@@ -1133,6 +1133,56 @@ def test_linebreak_before_inline_kept_in_xml(fmt):
     assert '<p>Rutgers University<lb/><hi rend="#b">Linda</hi></p>' in out
 
 
+@pytest.mark.parametrize(
+    "fmt, body, kwargs, expected",
+    [
+        (
+            "xml",
+            "<pre><code>def f():<br>    return 1<br>print(f())</code></pre>",
+            {},
+            ["def f():<lb/>    return 1<lb/>print(f())</code>"],
+        ),
+        (
+            "xmltei",
+            "<pre><code>def f():<br>    return 1<br>print(f())</code></pre>",
+            {},
+            ["def f():<lb/>    return 1<lb/>print(f())</code>"],
+        ),
+        (
+            "xmltei",
+            "<figure>Caption words<table><tr><td>cell one</td><td>cell two</td></tr></table></figure>",
+            {"include_tables": True, "intro": False, "fast": True, "favor_recall": True, "config": use_config()},
+            ["cell one", "cell two"],
+        ),
+    ],
+    ids=["xml-pre-code", "tei-pre-code", "tei-invalid-elements-keep-text"],
+)
+def test_merge_with_parent_keeps_children(fmt, body, kwargs, expected):
+    "Merged elements hand their children and tails to the parent (issue #966)."
+    out = _extract_doc(body + "<p>text after the block</p>", output_format=fmt, include_formatting=True, **kwargs)
+    for fragment in expected:
+        assert fragment in out
+    assert "text after the block" in out
+
+
+@pytest.mark.parametrize(
+    "body, text",
+    [
+        ("<p>Skip to content <header><list><item>Contact Us</item></list></header></p>", "Skip to content Contact Us"),
+        ("<p>A <header>head <lb/>x</header> tail</p>", "A head x tail"),
+    ],
+    ids=["blocks-flattened", "inline-child-kept"],
+)
+def test_check_tei_merged_element_in_paragraph(body, text):
+    "A merged element inside a paragraph leaves no blocks in it (issue #966)."
+    tei = etree.fromstring(f"<TEI><text><body><div>{body}</div></body></text></TEI>")
+    para = xml.check_tei(tei, None).find(".//body//p")
+    assert not para.xpath(".//list | .//item | .//header")
+    assert " ".join("".join(para.itertext()).split()) == text
+    if "lb" in body:
+        assert para.find("lb") is not None
+
+
 def test_markdown_sup_sub_keep_boundary():
     """sup/sub must keep a boundary, else 100<sup>2</sup> reads as 1002 (issue #889)"""
     sup = "<html><body><article><p>The layer has 100<sup>2</sup>=10000 nodes.</p></article></body></html>"
