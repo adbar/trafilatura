@@ -8,6 +8,7 @@ import json
 import os
 import re
 from dataclasses import dataclass
+from datetime import date
 from functools import partial
 from typing import Any, TypedDict
 
@@ -79,11 +80,20 @@ def validate(evaldata: Any) -> None:
         for without in map(norm, item["without"]):
             if any(without in w for w in withs):
                 raise ValueError(f"{url}: {without[:50]!r} in 'without' also occurs inside 'with'")
-        for key in ("title", "author"):
+        for key in ("title", "author", "tags", "categories"):
             values = item.get(key)
             for value in values if isinstance(values, list) else [values]:
                 if isinstance(value, str) and canonical(value) != value:
                     raise ValueError(f"{url}: {key!r} {value!r} is not in extract() output form")
+        if gold := item.get("date"):
+            try:
+                valid = (
+                    isinstance(gold, str) and bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", gold)) and bool(date.fromisoformat(gold))
+                )
+            except ValueError:
+                valid = False
+            if not valid:
+                raise ValueError(f"{url}: 'date' {gold!r} is not a valid YYYY-MM-DD date")
 
 
 def resolve(here: str, filename: str) -> str | None:

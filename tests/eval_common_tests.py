@@ -43,6 +43,7 @@ def test_load_evaldata_reports_a_missing_file_as_such(tmp_path):
 
 def test_validate_accepts_well_formed_corpus():
     validate({"url": {"file": "a.html", "with": ["x"], "without": ["y"]}})
+    validate({"url": {"file": "a.html", "with": ["x"], "without": ["y"], "date": "2022-11-29"}})
     validate({"url": {"file": "a.html", "with": ["\u0915\u094d\u200d\u0937"], "without": ["y"]}})  # zero-width joiner kept
 
 
@@ -67,6 +68,11 @@ def test_validate_rejects_missing_file():
         {"file": "a.html", "with": ["icon\ue001glyph"], "without": ["y"]},  # private-use character never in output
         {"file": "a.html", "with": ["x"], "without": ["y"], "title": "soft\u00adhyphen"},  # title never matched
         {"file": "a.html", "with": ["x"], "without": ["y"], "author": ["A", "cafe\u0301"]},  # author list not NFC
+        {"file": "a.html", "with": ["x"], "without": ["y"], "tags": ["Klima\u00adwandel"]},  # tag never matched
+        {"file": "a.html", "with": ["x"], "without": ["y"], "categories": ["cafe\u0301"]},  # category not NFC
+        {"file": "a.html", "with": ["x"], "without": ["y"], "date": "2022-29-11"},  # month out of range
+        {"file": "a.html", "with": ["x"], "without": ["y"], "date": "2022-11-1"},  # not zero-padded
+        {"file": "a.html", "with": ["x"], "without": ["y"], "date": "2022-01.26"},  # wrong separator
     ],
 )
 def test_validate_rejects_malformed_item(item):

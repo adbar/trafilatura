@@ -26,6 +26,9 @@ from trafilatura import extract
 from trafilatura.metadata import extract_metadata
 from trafilatura.utils import load_html, normalize_unicode, trim
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from eval_common import canonical, load_evaldata, norm
+
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
@@ -227,10 +230,9 @@ def _source_text(htmlstring):
     return normalize_unicode(trim(" ".join(tree.itertext())))
 
 
-def _repeated(htmlstring, source, url=None, **options):
-    "N-grams output more often than they appear in the source."
-    output = _ngrams(extract(htmlstring, url, **options) or "")
-    return [" ".join(g) for g, c in output.items() if 0 < source[g] < c][:3]
+def _repeated(output, source):
+    "N-grams output more often than they appear in the source n-grams."
+    return [" ".join(g) for g, c in _ngrams(output).items() if 0 < source[g] < c][:3]
 
 
 @pytest.mark.parametrize("url", MOCK_PAGES)
@@ -239,30 +241,61 @@ def test_no_repeated_segments(url):
     htmlstring = load_mock_page_meta(url)
     source = _ngrams(_source_text(htmlstring))
     for options in ({}, {"output_format": "markdown", "include_formatting": True, "include_links": True}):
-        assert not (repeated := _repeated(htmlstring, source, url, **options)), (options, repeated)
+        assert not (repeated := _repeated(extract(htmlstring, url, **options) or "", source)), (options, repeated)
 
 
 EVAL_DIR = os.path.join(TEST_DIR, "eval")
 EVAL_FILES = sorted(f for f in os.listdir(EVAL_DIR) if f.endswith(".html"))
+EVAL_CHUNKS = {item["file"]: item["with"] for item in load_evaldata(TEST_DIR).values()}
 KNOWN_REPEATED_EVAL = {
     "chefkoch.de.mandarinen.html",
     "critical.com.pa-amador.html",
     "piratenpartei-hessen.de.nachbarschaftshilfe.html",
 }
+KNOWN_INVERTED_EVAL = {
+    "0a12df42d1764095989ab078ee0f940b.html",
+    "Ile jest warta godzina pracy_ W tych krajach praca popłaca - Forsal.pl.html",
+    "houzz.de-Projekte.html",
+}
 
 
-def test_known_repeated_eval_exist():
+@functools.cache
+def _eval_page(filename):
+    "Source text and default extract() output of a tests/eval page, shared by the checks below."
+    with open(os.path.join(EVAL_DIR, filename), "rb") as f:
+        htmlstring = f.read()
+    return _source_text(htmlstring), extract(htmlstring) or ""
+
+
+def _inverted(chunks, source, output):
+    "Chunks found once in source and output, listed in output order if it differs from the source order."
+    source, output = norm(canonical(source)), norm(canonical(output))
+    found = sorted((source.find(c), output.find(c), c) for c in map(norm, chunks) if source.count(c) == output.count(c) == 1)
+    in_output = sorted(found, key=lambda f: f[1])
+    return [c[:40] for *_, c in in_output] if in_output != found else []
+
+
+def test_known_eval_failures_exist():
     assert KNOWN_REPEATED_EVAL <= set(EVAL_FILES)
+    assert KNOWN_INVERTED_EVAL <= set(EVAL_FILES) & EVAL_CHUNKS.keys()
 
 
 @pytest.mark.parametrize("filename", EVAL_FILES)
 def test_no_repeated_segments_eval(filename, request):
-    "Same check over the evaluation corpus, text output only."
+    "Same check over the pages in tests/eval, text output only."
     if filename in KNOWN_REPEATED_EVAL:
         request.applymarker(pytest.mark.xfail(strict=True, raises=AssertionError, reason="known repeated segments"))
-    with open(os.path.join(EVAL_DIR, filename), "rb") as f:
-        htmlstring = f.read()
-    assert not (repeated := _repeated(htmlstring, _ngrams(_source_text(htmlstring)))), repeated
+    source, output = _eval_page(filename)
+    assert not (repeated := _repeated(output, _ngrams(source))), repeated
+
+
+@pytest.mark.parametrize("filename", [f for f in EVAL_FILES if f in EVAL_CHUNKS])
+def test_chunk_order_eval(filename, request):
+    "Annotated main-content chunks keep their page order in the output."
+    if filename in KNOWN_INVERTED_EVAL:
+        request.applymarker(pytest.mark.xfail(strict=True, raises=AssertionError, reason="known moved blocks"))
+    source, output = _eval_page(filename)
+    assert not (inverted := _inverted(EVAL_CHUNKS[filename], source, output)), inverted
 
 
 @pytest.mark.parametrize("xmloutput,formatting", [(True, False), (False, False), (False, True)])

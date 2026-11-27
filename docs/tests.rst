@@ -91,7 +91,7 @@ Benchmark and evaluation
 ------------------------
 
 If you work on text extraction, please report scores before and after on the
-external benchmarks listed in `CONTRIBUTING.md
+`external benchmarks`_ listed in `CONTRIBUTING.md
 <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ if possible.
 The
 evaluation allows for comparing changes made to Trafilatura, for example in a
@@ -136,6 +136,85 @@ Use ``--small`` to run the Trafilatura-based components only, or ``--all`` to ru
 all supported algorithms. See the `tests README
 <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ for more
 information on the evaluation and its data sources.
+
+External benchmarks
+~~~~~~~~~~~~~~~~~~~
+
+Each benchmark comes with its own scorer. Run it on master and on your branch
+in the same environment and report both scores. Install Trafilatura from your
+checkout with ``pip install -e``, otherwise the scores come from the PyPI
+release.
+
+**AEB**, the `article extraction benchmark
+<https://github.com/scrapinghub/article-extraction-benchmark>`_, holds 181 news
+and blog articles. The repository ships a Trafilatura runner, which overwrites
+``output/trafilatura.json``:
+
+.. code-block:: bash
+
+    $ git clone --depth 1 https://github.com/scrapinghub/article-extraction-benchmark
+    $ cd article-extraction-benchmark
+    $ python extractors/run_trafilatura.py
+    $ python evaluate.py
+
+Report the F1 column of the ``trafilatura`` row.
+
+**WCXB**, the `web content extraction benchmark
+<https://github.com/Murrough-Foley/web-content-extraction-benchmark>`_, covers
+seven page types. Use the held-out ``test`` split. The scorer reads a JSON file
+that maps file IDs to extracted text:
+
+.. code-block:: bash
+
+    $ git clone --depth 1 https://github.com/Murrough-Foley/web-content-extraction-benchmark
+    $ cd web-content-extraction-benchmark
+
+.. code-block:: python
+
+    import gzip
+    import json
+    from pathlib import Path
+
+    from trafilatura import extract
+
+    predictions = {
+        path.name.split(".")[0]: extract(gzip.open(path).read()) or ""
+        for path in sorted(Path("test/html").glob("*.html.gz"))
+    }
+    Path("trafilatura.json").write_text(json.dumps(predictions), encoding="utf-8")
+
+.. code-block:: bash
+
+    $ python evaluate.py --split test --results trafilatura.json
+
+Report the overall F1, a word-level F1 averaged over pages. Add ``--per-type``
+for a breakdown by page type.
+
+**WMB**, `WebMainBench <https://github.com/opendatalab/WebMainBench>`_, scores
+Markdown output on a 545-page subset with edit distances on text, code,
+formulas and tables. Its package imports every extractor it supports, so
+install it from source with its requirements:
+
+.. code-block:: bash
+
+    $ git clone --depth 1 https://github.com/opendatalab/WebMainBench
+    $ cd WebMainBench
+    $ pip install -r requirements.txt lxml_html_clean
+    $ pip install -e . -e /path/to/trafilatura
+    $ curl -LO https://huggingface.co/datasets/opendatalab/WebMainBench/resolve/main/WebMainBench_545.jsonl
+
+.. code-block:: python
+
+    from webmainbench import DataLoader, Evaluator, ExtractorFactory
+
+    dataset = DataLoader.load_jsonl("WebMainBench_545.jsonl")
+    evaluator = Evaluator(llm_config={"use_llm": False})
+    result = evaluator.evaluate(dataset, ExtractorFactory.create("trafilatura"))
+    print(result.overall_metrics)
+
+Report ``overall`` and ``text_edit``. The built-in extractor calls
+``extract()`` with Markdown output and comments included. The LLM option needs
+an API key. Keep it off so that scores stay comparable.
 
 Building the documentation
 --------------------------
