@@ -3,7 +3,7 @@ Benchmarks and evaluation
 
 .. meta::
     :description lang=en:
-        See how Python tools work on main text extraction from HTML pages (html2txt).
+        See how Python tools work on main text extraction from HTML pages.
         Trafilatura consistently outperforms other open-source libraries,
         showcasing its accuracy in extracting web content.
 
@@ -21,10 +21,10 @@ The extraction focuses on the main content, which is usually the part displayed 
 External evaluations
 --------------------
 
-- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_ (older evaluation)
+- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_ (older evaluation, the repository is now archived)
 - Best overall tool according to `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (Lejeune & Barbaresi 2020)
 - Comparison on a small `sample of Polish news texts and forums <https://github.com/tsolewski/Text_extraction_comparison_PL>`_ (now integrated in the internal benchmark, Trafilatura has improved since)
-- Best single tool by ROUGE-LSum Mean F1 Page Scores in `An Empirical Comparison of Web Content Extraction Algorithms <https://webis.de/downloads/publications/papers/bevendorff_2023b.pdf>`_ (Bevendorff et al. 2023)
+- Best single tool by ROUGE-LSum Mean F1 Page Scores in `An Empirical Comparison of Web Content Extraction Algorithms <https://downloads.webis.de/publications/papers/bevendorff_2023b.pdf>`_ (Bevendorff et al. 2023)
 
 
 Alternatives
@@ -47,19 +47,19 @@ These packages focus on main text extraction:
 - `jusText <https://github.com/miso-belica/jusText>`_ is designed to preserve mainly text containing full sentences along with some markup, it has been explicitly developed to create linguistic resources
 - `magic-html <https://github.com/opendatalab/magic-html>`_ extracts the main content of a page as HTML, geared towards LLM training data
 - `newspaper4k <https://github.com/AndyTheFactory/newspaper4k>`_ (the maintained successor of *newspaper3k*) is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction
-- `news-please <https://github.com/fhamborg/news-please>`_ is a news crawler that extracts structured information
+- `news-please <https://github.com/fhamborg/news-please>`_ is a news crawler that extracts structured information, it is not maintained anymore (archived in 2026)
 - `readability-lxml <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup
 - `resiliparse <https://github.com/chatnoir-eu/chatnoir-resiliparse>`_ converts HTML to plain text with a focus on speed and robustness, run here in main-content mode
 - *readabilipy* is not part of the comparison anymore, it is provided for reference only (in older evaluations)
 - `trafilatura <https://github.com/adbar/trafilatura>`_ is the library documented here, several options are tested regarding main text extraction only, without metadata or comments
 
-The tools are compared to the raw page source and to a meaningful baseline consisting of extracting the raw text contained in the JSON article element or in a combination of paragraph, code and quote elements.
+The tools are compared to the raw page source and to a meaningful baseline taking the first source with enough text among embedded JSON content (such as the article body), article elements, a combination of paragraph, code and quote elements, and finally the whole page body.
 
 
 Description
 -----------
 
-**Test set**: The experiments below are run on a collection of documents which are either typical for Internet articles (news outlets, blogs). Some are harder to process due to mixed content (lists, tables) or not fully valid HTML code. They are selected from `large collections of web pages in German <https://www.dwds.de/d/k-web>`_, for the sake of completeness documents in other languages are added (notably English, French, other European languages, Chinese and Arabic, about 20-30% of the total).
+**Test set**: The experiments below are run on a collection of documents which are typical for Internet articles (news outlets, blogs). Some are harder to process due to mixed content (lists, tables) or not fully valid HTML code. They are selected from `large collections of web pages in German <https://www.dwds.de/d/k-web>`_, for the sake of completeness documents in other languages are added (notably English, French, other European languages, Chinese and Arabic, about 20-30% of the total).
 
 **Evaluation**: Decisive document segments are singled out which are not statistically representative but very significant in the perspective of working with the texts, most notably left/right columns, additional header, author or footer information such as imprints or addresses, as well as affiliated and social network links, in short boilerplate. Raw text segments are expected which is also a way to evaluate the quality of HTML extraction in itself.
 

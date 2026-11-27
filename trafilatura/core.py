@@ -308,7 +308,7 @@ def bare_extraction(
     config: ConfigParser = DEFAULT_CONFIG,
     options: Extractor | None = None,
 ) -> Document | dict[str, Any] | None:
-    """Internal function for text extraction returning bare Python variables.
+    """Text extraction returning bare Python variables.
 
     Args:
         filecontent: HTML code as string.
@@ -342,7 +342,7 @@ def bare_extraction(
         options: Directly provide a whole extractor configuration.
 
     Returns:
-        A Python dict() containing all the extracted information or None.
+        A Document containing all the extracted information or None.
 
     Raises:
         ValueError: Unknown output format.

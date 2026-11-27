@@ -297,7 +297,12 @@ def detect_encoding(bytesobject: bytes) -> list[str]:
 
 def decode_file(filecontent: bytes | str, max_size: int | None = None) -> str:
     """Decompress the bytestring if necessary, guess its encoding and
-    decode to a Unicode string, resorting to destructive conversion otherwise."""
+    decode to a Unicode string, resorting to destructive conversion otherwise.
+
+    Args:
+        filecontent: Bytes or string to decode, strings are returned as they are.
+        max_size: Maximum size of decompressed input in bytes, MAX_FILE_SIZE by default.
+    """
     if isinstance(filecontent, str):
         return filecontent
 
@@ -393,12 +398,16 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string).
 
-    Expects a full document: the dubious-HTML check below rejects a single-block
-    fragment (e.g. "<p>x</p>" alone has one child and is treated as not-quite-HTML).
-    Wrap bare fragments in an extra element (e.g. f"<div>{fragment}</div>") first.
+    Expects a full document: without "html" in its first 50 characters, input that
+    parses to fewer than two top-level elements is rejected, e.g. "<p>x</p>" or
+    "<div><p>x</p></div>". Wrap fragments in "<html><body>...</body></html>" first.
 
     Parsed elements are plain HtmlElement objects, without lxml.html's form helpers
     (FormElement, InputElement...). Use lxml.html.fromstring() if they are needed.
+
+    Args:
+        htmlobject: Input to load.
+        max_size: Maximum size of decompressed input in bytes, MAX_FILE_SIZE by default.
     """
     # use tree directly
     if isinstance(htmlobject, HtmlElement):
@@ -528,7 +537,13 @@ def line_processing(line: str, preserve_space: bool = False, trailing_space: boo
 
 
 def sanitize(text: str, preserve_space: bool = False, trailing_space: bool = False) -> str | None:
-    """Convert text and discard incompatible and invalid characters"""
+    """Convert text and discard incompatible and invalid characters.
+
+    Args:
+        text: Text to sanitize, processed line by line.
+        preserve_space: Keep the spaces as they are instead of normalizing them.
+        trailing_space: Process the text as a single line, keep a leading or trailing space if present.
+    """
     # consider all text as a single line
     if trailing_space:
         return line_processing(text, preserve_space, True)

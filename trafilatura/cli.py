@@ -72,7 +72,7 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     group5_ex = group5.add_mutually_exclusive_group()
 
     group1_ex.add_argument("-i", "--input-file", help="name of input file for batch processing", type=str)
-    group1_ex.add_argument("--input-dir", help="read files from a specified directory (relative path)", type=str)
+    group1_ex.add_argument("--input-dir", help="read files from a specified directory", type=str)
     group1_ex.add_argument("-u", "--URL", help="custom URL download", type=str)
 
     group1.add_argument(
@@ -89,7 +89,7 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     group1.add_argument("-b", "--blacklist", help="file containing unwanted URLs to discard during processing", type=str)
 
     group2.add_argument("--list", help="display a list of URLs without downloading them", action="store_true")
-    group2.add_argument("-o", "--output-dir", help="write results in a specified directory (relative path)", type=str)
+    group2.add_argument("-o", "--output-dir", help="write results in a specified directory", type=str)
     group2.add_argument("--backup-dir", help="preserve a copy of downloaded files in a backup directory", type=str)
     group2.add_argument("--keep-dirs", help="keep input directory structure and file names", action="store_true")
     group2.add_argument("--name-from-url", help="name downloaded output files using their source URLs", action="store_true")

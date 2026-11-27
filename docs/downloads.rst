@@ -59,8 +59,11 @@ Using the ``fetch_response()`` function instead provides access to more informat
     >>> response = fetch_response('https://www.example.org', decode=True)
     # html attribute populated, headers are always stored
 
-.. note::
-    New in version 1.7.0.
+.. versionadded:: 1.7.0
+    ``fetch_response()``
+
+.. versionchanged:: 2.0.0
+    ``fetch_url()`` has no ``decode`` argument, use ``fetch_response()``.
 
 
 Trafilatura-backed parallel threads
@@ -71,7 +74,7 @@ Threads are a way to run several program parts at once, see for instance `An Int
 .. hint::
     This only makes sense if you are fetching pages from different websites and want the downloads to run in parallel.
 
-The following variant of multi-threaded downloads with throttling is implemented, it also uses a compressed dictionary to store URLs and possibly save space. Both happen seamlessly, here is how to run it:
+The following variant of multi-threaded downloads with throttling is implemented, it also stores URLs in a dictionary, which can be compressed with ``compression=True`` to save space. Throttling happens seamlessly, here is how to run it:
 
 
 .. code-block:: python	        
@@ -116,8 +119,8 @@ Alternatively, the variable ``trafilatura.downloads.PROXY_URL`` can be set manua
 
 The unstable end-to-end proxy tests have been discarded in favor of unit tests.
 
-.. note::
-    New in version 1.12.2.
+.. versionadded:: 1.12.2
+    SOCKS proxies
 
 
 On the command-line

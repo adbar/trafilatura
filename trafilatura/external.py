@@ -142,7 +142,13 @@ def _blocks(body: _Element) -> Iterator[_Element]:
 
 def try_justext(tree: HtmlElement, url: str | None, *, options: Extractor | None = None) -> _Element:
     """Second safety net: paragraph classification derived from jusText.
-    Links, formatting and images are kept according to the options."""
+    Links, formatting and images are kept according to the options.
+
+    Args:
+        tree: Parsed HTML document.
+        url: URL of the page, only used without options.
+        options: Extraction options, defaults apply without them.
+    """
     if options is None:
         options = Extractor()
         options.url = url

@@ -35,9 +35,10 @@ When extraction produces unexpected results, enable verbose logging to see what 
 
 Common log messages and what they mean:
 
-- ``discarding document``: the extracted text was too short (below ``MIN_OUTPUT_SIZE``). Try ``favor_recall=True`` or lower the threshold in ``settings.cfg``.
-- ``not a text document``: the input could not be parsed as HTML.
-- ``downloaded document is too small/too large``: the page size is outside ``MIN_FILE_SIZE`` / ``MAX_FILE_SIZE`` bounds.
+- ``discarding data: ...``: the document was rejected, the preceding messages give the reason.
+- ``text and comments not long enough: ...``: the main text is below ``MIN_OUTPUT_SIZE`` and the comments below ``MIN_OUTPUT_COMM_SIZE``. Try ``favor_recall=True`` or lower the thresholds in ``settings.cfg``.
+- ``parsed tree length: ..., wrong data type or not valid HTML`` or ``empty HTML tree: ...``: the input could not be parsed as HTML.
+- ``too small/incorrect for URL ...`` or ``too large: length ... for URL ...``: the page size is outside ``MIN_FILE_SIZE`` / ``MAX_FILE_SIZE`` bounds.
 
 
 Extraction problems
@@ -49,11 +50,11 @@ Output is empty or ``None``
 
 Walk through these causes in order:
 
-1. **Is the HTML valid?** Pass it to ``load_html()`` first — it returns ``None`` on empty or severely malformed input. Note that lxml's parser is lenient: sufficiently long non-HTML text can still come back as a (meaningless) parsed element rather than ``None``, so a non-``None`` result here doesn't guarantee the input was actually HTML.
+1. **Is the HTML valid?** Pass it to ``load_html()`` first — it returns ``None`` on empty or severely malformed input. Note that lxml's parser is lenient: non-HTML text can still come back as a (meaningless) parsed element rather than ``None`` if "html" occurs in its first 50 characters or if it parses to at least two top-level elements, so a non-``None`` result here doesn't guarantee the input was actually HTML.
 2. **Is the page JavaScript-rendered?** Trafilatura works on raw HTML. See `Page requires JavaScript`_ below.
 3. **Is language filtering active?** If ``target_language`` is set and the detected language doesn't match, ``extract()`` returns ``None``. Remove the filter to test.
 4. **Is metadata filtering active?** With ``only_with_metadata=True``, pages missing a title, URL, or date are discarded. Try without it.
-5. **Is the text too short?** If the extracted text is below ``MIN_OUTPUT_SIZE`` (default: 1) or ``MIN_EXTRACTED_SIZE`` (default: 250, triggers fallbacks), the result may be empty. Lower these in a custom `settings.cfg <settings.html>`_.
+5. **Is the text too short?** A document is discarded if its main text is below ``MIN_OUTPUT_SIZE`` and its comments below ``MIN_OUTPUT_COMM_SIZE``. ``MIN_EXTRACTED_SIZE`` only triggers the fallbacks, it does not discard anything. See `settings.cfg <settings.html#file-structure>`_ for the default values.
 6. **Try relaxing extraction:** ``favor_recall=True`` keeps more content. If still empty, ``html2txt()`` extracts everything — if even that is empty, the HTML has no text.
 
 .. note::
@@ -65,7 +66,7 @@ Output has too much noise
 
 Escalate through these steps:
 
-1. **Use precision mode:** ``extract(html, favor_precision=True)`` or ``--precision`` on the CLI. This prunes comments more aggressively and skips fallback stages.
+1. **Use precision mode:** ``extract(html, favor_precision=True)`` or ``--precision`` on the CLI. This prunes comments more aggressively and skips the baseline rescue and recall escalation.
 
 2. **Prune specific elements:** pass XPath expressions to remove known noisy sections:
 
@@ -78,11 +79,11 @@ Escalate through these steps:
    .. doctest::
 
        >>> from trafilatura.settings import MANUALLY_CLEANED
-       >>> MANUALLY_CLEANED.append("aside")  # must use in-place methods
+       >>> MANUALLY_CLEANED.append("details")  # must use in-place methods
 
    .. testcleanup::
 
-       MANUALLY_CLEANED.remove("aside")
+       MANUALLY_CLEANED.remove("details")
 
 See `settings and customization <settings.html>`_ for more options.
 
@@ -145,7 +146,7 @@ Command-line alternatives
 Getting blocked or rate-limited
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- **Increase delay:** set ``SLEEP_TIME`` in ``settings.cfg`` (default: 5 seconds between requests to the same domain).
+- **Increase delay:** set ``SLEEP_TIME`` in `settings.cfg <settings.html#file-structure>`_ (seconds between requests to the same domain).
 - **Set cookies:** in ``settings.cfg``, e.g. ``COOKIE = session=abc123; lang=en``. Or use Python's `cookiejar <https://docs.python.org/3/library/http.cookiejar.html>`_ with ``urllib3``.
 - **Separate download from extraction:** download pages with a different tool or IP, then process locally with ``--input-dir``. See `downloads page <downloads.html>`_.
 - **Use a custom user agent:** set ``USER_AGENTS`` in ``settings.cfg``.
@@ -189,7 +190,7 @@ See `deduplication <deduplication.html#clearing-the-cache>`_ for details.
 Slow processing
 ^^^^^^^^^^^^^^^
 
-- ``fast=True`` / ``--fast``: skips fallback algorithms, roughly 2× faster.
+- ``fast=True`` / ``--fast``: skips fallback algorithms, which is faster.
 - Disable what you don't need: ``include_comments=False``, ``include_tables=False``.
 - ``--parallel N``: use multiple threads for batch downloads (CLI).
 - Use ``load_download_buffer()`` for parallel downloads in Python — see `downloads <downloads.html>`_.

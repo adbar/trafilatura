@@ -5242,6 +5242,23 @@ def test_lang_detection():
         assert detected == sample["expected"]
 
 
+@pytest.mark.parametrize(
+    ("include_comments", "min_comm_size", "kept"),
+    [(True, "1", True), (False, "1", False), (True, "1000", False)],
+)
+def test_min_output_size_with_comments(include_comments, min_comm_size, kept):
+    "A document is discarded only if both its text and its comments are below their minimum."
+    page = (
+        "<html><body><article><p>Short main text.</p></article>"
+        '<div id="comments"><p>A reader comment that is long enough to count as comments text.</p></div>'
+        "</body></html>"
+    )
+    config = use_config()
+    config["DEFAULT"]["MIN_OUTPUT_SIZE"] = "100"
+    config["DEFAULT"]["MIN_OUTPUT_COMM_SIZE"] = min_comm_size
+    assert (extract(page, include_comments=include_comments, config=config) is not None) is kept
+
+
 def test_config_loading():
     "Check if the config file is read correctly."
     with pytest.raises(FileNotFoundError):

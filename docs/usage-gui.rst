@@ -11,13 +11,13 @@ Graphical user interface
 
 For users who prefer a visual interface over writing scripts or typing commands, a graphical user interface (GUI) was offered.
 
-The GUI was a feature in Trafilatura until version 1.8.1 and is no longer available. Get in touch if you are interested in working towards a more robust or feature-complete version.
+The GUI was developed until version 1.8.1, shipped in a limited capacity until version 1.12 and removed in version 2.0. Get in touch if you are interested in working towards a more robust or feature-complete version.
 
 If installation fails, usage on the command-line is recommended.
 
 
 .. hint::
-    This interface is removed until further notice starting from Trafilatura version 2, mostly due to issues with cross-platform tests and maintenance.
+    This interface is removed until further notice starting from Trafilatura version 2.0, mostly due to issues with cross-platform tests and maintenance.
 
 
 Installation
@@ -28,7 +28,7 @@ Installation
 2. Install Python (see the installation page)
 3. Install the necessary software versions straight from the repositories by copying the following instructions into the terminal window (use ``pip3`` or ``pip`` otherwise):
 
-   - ``pip3 install -U trafilatura==1.8.1[gui]``
+   - ``pip3 install -U "trafilatura[gui]==1.8.1"``
    - Allow some time for the installation to run...
 
 

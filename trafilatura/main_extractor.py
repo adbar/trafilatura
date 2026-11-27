@@ -835,7 +835,15 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Ele
 
 
 def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, HtmlElement]:
-    "Try to extract comments out of potential sections in the HTML."
+    """Try to extract comments out of potential sections in the HTML.
+
+    Args:
+        tree: Parsed HTML document, the comment section found is removed from it.
+        options: Extraction options.
+
+    Returns:
+        The comments as a tree and as text, and the tree without them.
+    """
     comments_body = Element("body")
     # define iteration strategy
     potential_tags = set(TAG_CATALOG)  # not div: trouble with <div class="comment-author meta">

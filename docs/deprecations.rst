@@ -17,6 +17,55 @@ Python version support
 - See `installation <installation.html>`_ for last supported versions per Python release.
 
 
+Breaking changes by version
+---------------------------
+
+Changes that can break existing code or alter its results without an error message are in bold.
+
+**2.4.0**
+
+- **Text inside layout tables is removed when tables are turned off**, see `choice of HTML elements <usage-python.html#choice-of-html-elements>`_
+- **CSV rows have 18 columns instead of 11**, see `metadata fields <usage-python.html#metadata-fields>`_
+- **Without** ``--list``, **the feed or sitemap URL itself is no longer processed**, see `link discovery <usage-cli.html#link-discovery>`_
+- **Custom date extraction parameters are merged with the defaults**, see `date <usage-python.html#date>`_
+- JSON has no ``raw_text`` field, XML keeps only the attributes Trafilatura sets, the XML-TEI image source is in ``graphic/@url``, see `output formatting <extraction-overview.html#output-formatting>`_
+- Revised fallback cascade, text output differs, see `fallback cascade <extraction-overview.html#fallback-cascade>`_
+- ``try_justext()`` takes ``options`` instead of ``target_language``, see `core functions <corefunctions.html#try-justext>`_
+- jusText is no longer installed with Trafilatura, ``settings.JUSTEXT_LANGUAGES``, ``external.jt_stoplist_init()`` and ``external.get_stoplist()`` are removed
+- ``EXTRACTION_TIMEOUT`` is removed from the settings, it had no effect, see `settings <settings.html#file-structure>`_
+- Unknown output formats raise a ``ValueError`` instead of an ``AttributeError``, see `output <usage-python.html#output>`_
+- A malformed config file exits with code 2, see `exit codes <usage-cli.html#exit-codes>`_
+- Removed internal helpers are listed in the `changelog <https://github.com/adbar/trafilatura/blob/master/HISTORY.md>`_
+
+**2.3.0**
+
+- **Requests to non-public addresses such as** ``localhost`` **are blocked by default**, see ``SSRF_PROTECTION`` in `settings <settings.html#file-structure>`_
+
+**2.0.0**
+
+- ``bare_extraction()`` returns a ``Document`` instead of a dict, see `Python objects as output <usage-python.html#python-objects-as-output>`_
+- ``fetch_url()`` has no ``decode`` argument, see `Response object <downloads.html#response-object>`_
+- The ``max_tree_size`` argument raises an error, use ``MAX_TREE_SIZE`` in `settings <settings.html#file-structure>`_
+- See `Migrating to v2`_ below for the other changes
+
+**1.12.0**
+
+- Unknown output formats raise an error instead of falling back to TXT, ``-out`` is deprecated in favor of ``--output-format``
+
+**1.11.0**
+
+- **Metadata is no longer extracted by default**, see `metadata <extraction-overview.html#metadata>`_
+
+**1.10.0**
+
+- Deprecated command-line and function arguments raise an error, see `Command-line interface`_ below
+- Deduplication functions moved to ``trafilatura.deduplication``, see `deduplication <deduplication.html>`_
+
+**1.6.0**
+
+- Content fingerprints use simhash instead of sha1, see `hashing functions <deduplication.html#hashing-functions>`_
+
+
 Migrating to v2
 ----------------
 
@@ -88,7 +137,7 @@ Old                              New
 Other changes in v2
 ^^^^^^^^^^^^^^^^^^^
 
-- Graphical user interface removed (was deprecated since v1.12)
+- Graphical user interface removed (last shipped with v1.12)
 - Output format must be specified via ``--output-format`` or format shorthands (``--json``, ``--xml``, etc.)
 - Explicit exports through ``__all__`` in the package
 

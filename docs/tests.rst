@@ -6,8 +6,8 @@ Running the tests
         How to run Trafilatura's test suite and code quality checks: pytest, mypy, ruff, and the evaluation gate.
 
 This page regroups the instructions needed to run the test suite and the code
-quality checks. Pull requests are only accepted if the changes are tested and if
-there are no errors. See the `Contributing page
+quality checks. Pull requests are only accepted if CI passes and if they don't add
+gaps in test coverage. See the `Contributing page
 <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ for the
 rules on issues, pull requests and AI tools.
 
@@ -27,8 +27,7 @@ Without uv, ``pip install -e ".[dev,all]"`` in any virtual environment works too
 On Windows, activate the environment with ``.venv\Scripts\activate``.
 
 The ``dev`` extra pulls in everything required to run the tests and the checks:
-``pytest`` (with ``pytest-cov``), ``mypy`` and ``ruff``. The ``all`` extra
-matches the CI environment of the quality gate.
+``pytest`` (with ``pytest-cov``), ``mypy`` and ``ruff``.
 
 
 Running the test suite
@@ -46,6 +45,16 @@ It is also possible to select a particular test suite, for example
 .. code-block:: bash
 
     $ pytest tests/realworld_tests.py
+
+Some tests in ``downloads_tests.py`` need network access.
+
+CI runs the tests on Python 3.10 to 3.15, mostly without the ``all`` extra, so
+code has to work without the optional dependencies. Codecov measures coverage on
+Python 3.13 with the ``all`` extra. To check it locally:
+
+.. code-block:: bash
+
+    $ pytest --cov=trafilatura --cov-report=term-missing
 
 
 Type checking and code style
@@ -81,9 +90,10 @@ The documentation tests need the ``docs`` extra, which requires Python 3.12 or l
 Benchmark and evaluation
 ------------------------
 
-If you work on text extraction, report scores before and after on the external
-benchmarks listed in `CONTRIBUTING.md
-<https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_. The
+If you work on text extraction, please report scores before and after on the
+external benchmarks listed in `CONTRIBUTING.md
+<https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ if possible.
+The
 evaluation allows for comparing changes made to Trafilatura, for example in a
 new version or pull request.
 
@@ -99,7 +109,6 @@ The gate also checks metadata: for title, author, date, tags and categories,
 the share of annotated values found by the metadata extraction must not fall
 below its pinned floor.
 
-Without the ``all`` extra, scores can differ slightly on non-UTF-8 pages.
 Editing the annotations or an HTML input requires a re-pin with
 ``python tests/eval_gate.py --update``. A
 re-pin never lowers the baseline on its own: a measured F1 below a pinned floor

@@ -529,6 +529,17 @@ def test_html2txt():
 
 
 @pytest.mark.parametrize(
+    "boilerplate",
+    ["<aside>side</aside>", "<footer>side</footer>", '<div class="footer">side</div>', '<div id="cookie-banner">side</div>'],
+)
+def test_html2txt_clean(boilerplate):
+    "Asides, footers and cookie banners are only kept with clean=False."
+    page = f"<html><body><p>content</p>{boilerplate}</body></html>"
+    assert html2txt(page) == "content"
+    assert html2txt(page, clean=False) == "content side"
+
+
+@pytest.mark.parametrize(
     "text,expected",
     [
         ("<p>", True),

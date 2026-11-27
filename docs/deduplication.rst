@@ -15,8 +15,8 @@ Trafilatura offers two types of duplicate detection: identical segment detection
 Duplicate tracking is performed on a per-process basis, without relying on centralized information. By default all extractions in the same process share the same cache, see below for scoped tracking.
 
 
-.. note::
-    The functions have been regrouped in ``trafilatura.deduplication`` in version 1.10.0 and are not accessible anymore from the ``filters`` or ``hashing`` submodules.
+.. versionchanged:: 1.10.0
+    The functions have been regrouped in ``trafilatura.deduplication`` and are not accessible anymore from the ``filters`` or ``hashing`` submodules.
 
 
 Element and paragraph level
@@ -54,6 +54,9 @@ By default, duplicate tracking uses a cache shared across all extractions in the
 
 
 A cache instance is only shared within a process: with a ``ProcessPoolExecutor``, each submitted task receives a pickled copy of the cache, so duplicates are not tracked across documents. Cross-document deduplication requires processing the documents in the same process.
+
+.. versionadded:: 2.3.0
+    A dedicated ``LRUCache`` can be passed to ``deduplicate``.
 
 
 Custom functions
@@ -139,6 +142,9 @@ Hashing functions
 
 The ``content_fingerprint()`` function generates a simhash value for any string without using the class. Instead of the internal integer representation the function returns the hash value as a string of hexadecimal characters.
 
+.. versionchanged:: 1.6.0
+    Simhash replaces sha1, fingerprints from earlier versions differ.
+
 
 .. doctest::
 
@@ -173,7 +179,7 @@ To reset the cache between batches, call ``reset_caches()``:
 This also frees memory held by other internal caches (htmldate, courlan).
 
 .. note::
-    Each thread maintains its own dedup state, but ``reset_caches()`` clears the shared caches. Call it from the main thread between independent processing runs.
+    The default dedup cache is shared by all threads of a process, and ``reset_caches()`` clears it for all of them. Pass a dedicated ``LRUCache`` instance to keep the state of a thread separate.
 
 
 Configuration

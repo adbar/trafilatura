@@ -74,12 +74,11 @@ def test_repin_idempotent_when_values_unchanged(tmp_path, monkeypatch):
     assert json.loads(target.read_text())["floors"] == {"fast": 0.75, "fallback": 0.8}
 
 
-def test_repin_tolerates_a_drop_within_epsilon(tmp_path, monkeypatch):
-    "Measurement noise below EPSILON must not require --allow-regression."
-    baseline, target = _baseline_target(tmp_path, monkeypatch, {"fast": 0.7503, "fallback": 0.8})
+def test_repin_refuses_the_smallest_drop(tmp_path, monkeypatch):
+    baseline, target = _baseline_target(tmp_path, monkeypatch, {"fast": 0.7501, "fallback": 0.8})
 
-    assert eval_gate.repin(baseline, _fake_matrices(), PINS) == 0
-    assert json.loads(target.read_text())["floors"] == {"fast": 0.75, "fallback": 0.8}
+    assert eval_gate.repin(baseline, _fake_matrices(), PINS) == 1
+    assert json.loads(target.read_text())["floors"] == {"fast": 0.7501, "fallback": 0.8}
 
 
 def test_repin_refuses_to_lower_a_floor_but_still_pins_corpus(tmp_path, monkeypatch):
@@ -165,7 +164,7 @@ def test_repin_meta(tmp_path, monkeypatch):
     # first pin, then a raise
     assert eval_gate.repin_meta({"title": 0.5}) == 0
     assert eval_gate.repin_meta({"title": 0.6}) == 0
-    # a drop beyond the noise is refused unless allowed
+    # a drop is refused unless allowed
     assert eval_gate.repin_meta({"title": 0.5}) == 1
     assert json.loads(target.read_text())["floors"] == {"title": 0.6}
     assert eval_gate.repin_meta({"title": 0.5}, allow_regression=True) == 0

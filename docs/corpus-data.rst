@@ -73,4 +73,4 @@ Further corpus analysis software can be found on `corpus-analysis.com <https://c
 Generic NLP solutions
 ---------------------
 
-For natural language processing see this list of open-source/off-the-shelf `NLP tools for German <https://github.com/adbar/German-NLP>`_ and `further lists for other languages <https://github.com/adbar/German-NLP#Comparable-lists>`_.
+For natural language processing see this list of open-source/off-the-shelf `NLP tools for German <https://github.com/adbar/German-NLP>`_ and `further lists for other languages <https://github.com/adbar/German-NLP#comparable-lists>`_.
