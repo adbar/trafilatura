@@ -237,7 +237,7 @@ _AD_CLASS_TOKENS = (
 )
 _FOOTER_CLASS_TOKENS = ("footer", "Footer")
 _AUTHOR_CLASS_TOKENS = ("byline", "Byline")
-_SHARE_CLASS_TOKENS = ("share-", "sociable", "embedded", "embed")
+_SHARE_CLASS_TOKENS = ("share-", "sociable", "embedded", "embed", "udio-?[Pp]layer")
 _TAGS_CLASS_TOKENS = ("tag-list",)
 _CONSENT_CLASS_TOKENS = ("consent", "modal-content", "permission")
 _RELATED_CLASS_TOKENS = ("elated", "next-", "-stories", "most-popular", "more-on")
