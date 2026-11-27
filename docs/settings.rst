@@ -37,7 +37,7 @@ The settings in detail:
    * ``SSRF_PROTECTION`` block requests to non-public IP addresses, set to ``off`` for intranet use cases. Inactive when a proxy is configured, and for pycurl downloads when a proxy is set by environment variables such as ``https_proxy``: hosts listed in ``no_proxy`` (e.g. ``169.254.169.254``) are then reached unchecked
    * ``INSECURE_SSL_FALLBACK`` retry without certificate verification after an SSL error. This keeps sites with broken certificates reachable but lets an attacker on the network path read or alter the download, including a configured ``COOKIE``. Set to ``off`` to refuse unverified connections
 - Input (downloads and command-line tool)
-   * ``MAX_FILE_SIZE`` maximum acceptable size of input (in bytes). ``extract()`` does not check the size of its input, except compressed input, capped at this size once decompressed
+   * ``MAX_FILE_SIZE`` maximum acceptable size of input (in bytes). ``extract()`` does not check the size of its input, except compressed input, capped at this size once decompressed. Sitemaps can always reach 50 MiB (52428800 bytes), the size allowed by the sitemap protocol
    * ``MIN_FILE_SIZE`` minimum acceptable size of input (in bytes)
 - Extraction
    * ``MIN_EXTRACTED_SIZE`` acceptable size in characters (used to trigger fallbacks)

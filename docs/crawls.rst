@@ -50,7 +50,7 @@ The spider module implements politeness rules as defined by the Robots Exclusion
 
 Duplicate removal is also implemented at URL level. This allows the crawler to detect and avoid revisiting previously crawled URLs, pages with identical content under different URLs are not detected.
 
-The crawl stays in the directory of the start URL. The trailing slash decides: ``https://example.org/de/`` only leads to pages under ``/de/``, ``https://example.org/de`` to the whole website. Links with another protocol or host than the start page, including subdomains and the ``www`` variant, are not followed.
+The crawl stays in the directory of the start URL. The trailing slash decides: ``https://example.org/de/`` only leads to pages under ``/de/``, ``https://example.org/de`` to the whole website. Links with another protocol or host than the start page, including subdomains and the ``www`` variant, are not followed. If the start page redirects to ``https`` or adds or drops ``www``, the crawl continues on the new address.
 
 .. versionchanged:: 2.4.0
     Links have to be inside the start directory, a path only sharing its beginning such as ``/deutsch/`` for ``/de/`` no longer counts.

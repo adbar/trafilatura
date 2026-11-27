@@ -3,7 +3,7 @@ Deprecations and migration
 
 .. meta::
     :description lang=en:
-        Overview of deprecated features and migration guide for upgrading to Trafilatura v2.
+        Overview of deprecated features, breaking changes and their replacements, to help upgrade Trafilatura.
 
 
 This page consolidates all deprecations and breaking changes to help users upgrade.
@@ -43,79 +43,56 @@ Changes that can break existing code or alter its results without an error messa
 
 **2.0.0**
 
-- ``bare_extraction()`` returns a ``Document`` instead of a dict, see `Python objects as output <usage-python.html#python-objects-as-output>`_
-- ``fetch_url()`` has no ``decode`` argument, see `Response object <downloads.html#response-object>`_
+- ``bare_extraction()`` returns a ``Document`` instead of a dict, use ``.as_dict()`` on it if you need a dictionary, see `Python objects as output <usage-python.html#python-objects-as-output>`_
+- ``fetch_url()`` has no ``decode`` argument, use ``fetch_response()`` instead, see `Response object <downloads.html#response-object>`_
 - The ``max_tree_size`` argument raises an error, use ``MAX_TREE_SIZE`` in `settings <settings.html#file-structure>`_
-- See `Migrating to v2`_ below for the other changes
+- The ``no_fallback`` and ``as_dict`` arguments are deprecated, see `Deprecated arguments`_ below
+- Functions and command-line arguments deprecated in 1.x are removed, see `Removed functions and arguments`_ below
+- The graphical user interface is removed (last shipped with v1.12)
+- The package exports are explicit through ``__all__``
 
 **1.12.0**
 
-- Unknown output formats raise an error instead of falling back to TXT, ``-out`` is deprecated in favor of ``--output-format``
+- Unknown output formats raise an error instead of falling back to TXT
+- ``-out`` is deprecated in favor of ``--output-format`` or format shorthands such as ``--json`` and ``--xml``
 
 **1.11.0**
 
-- **Metadata is no longer extracted by default**, see `metadata <extraction-overview.html#metadata>`_
+- **Metadata is no longer extracted by default**, pass ``with_metadata=True`` to ``extract()`` or use ``--with-metadata`` on the CLI, see `metadata <extraction-overview.html#metadata>`_
+- ``with_metadata`` and ``--with-metadata`` used to keep only documents with the necessary metadata, this is now ``only_with_metadata`` and ``--only-with-metadata``
 
 **1.10.0**
 
-- Deprecated command-line and function arguments raise an error, see `Command-line interface`_ below
-- Deduplication functions moved to ``trafilatura.deduplication``, see `deduplication <deduplication.html>`_
+- Deprecated command-line and function arguments raise an error
+- Deduplication functions moved from ``trafilatura.hashing`` to ``trafilatura.deduplication``, see `deduplication <deduplication.html>`_
 
 **1.6.0**
 
 - Content fingerprints use simhash instead of sha1, see `hashing functions <deduplication.html#hashing-functions>`_
 
 
-Migrating to v2
-----------------
+Deprecated arguments
+--------------------
 
-Trafilatura 2.0 introduced several breaking changes. Here is what to update:
+These arguments still work but issue a warning:
+
+- ``no_fallback`` on ``bare_extraction()`` and ``extract()`` → use ``fast`` instead
+- ``bare_extraction(as_dict=True)`` → use the ``.as_dict()`` method on the returned ``Document``
 
 
-Python API
-^^^^^^^^^^
+Removed functions and arguments
+-------------------------------
 
-**Removed** (will raise an error):
+Python API:
 
 - ``process_record()`` → use ``extract()``
 - ``csv_output()``, ``json_output()``, ``tei_output()``, ``xml_output()`` → use the ``output_format`` parameter on ``extract()``
-- ``fetch_url(decode=...)`` → use ``fetch_response()`` instead
+- ``fetch_url(decode=...)`` → use ``fetch_response()``
 - ``decode_response()`` in utils → use ``decode_file()``
-- ``trafilatura.hashing`` module → renamed to ``trafilatura.deduplication`` (since v1.10)
-- ``max_tree_size`` parameter → moved to ``settings.cfg``
+- ``trafilatura.hashing`` module → use ``trafilatura.deduplication``
+- ``max_tree_size`` parameter → use ``MAX_TREE_SIZE`` in ``settings.cfg``
 
-**Deprecated** (still works but will warn):
-
-- ``no_fallback`` parameter on ``bare_extraction()`` and ``extract()`` → use ``fast`` instead
-- ``bare_extraction(as_dict=True)`` → the function returns a ``Document`` object, use ``.as_dict()`` method on it
-
-**Changed defaults:**
-
-- ``bare_extraction()`` now returns a ``Document`` object instead of a dict. Use ``.as_dict()`` on the return value if you need a dictionary.
-- Metadata is no longer included by default (since v1.11). Pass ``with_metadata=True`` to ``extract()`` or use ``--with-metadata`` on the CLI.
-
-.. note::
-    ``with_metadata`` previously had the effect of today's ``only_with_metadata`` (filtering to documents with necessary metadata). It now simply includes metadata in the output.
-
-**Example migration:**
-
-.. code-block:: python
-
-    # Before (v1.x)
-    from trafilatura import process_record, fetch_url
-    response = fetch_url(url, decode=False)
-    result = process_record(response, no_fallback=True)
-
-    # After (v2.x)
-    from trafilatura import extract, fetch_response
-    response = fetch_response(url)
-    result = extract(response.data, url=response.url, fast=True)
-
-
-Command-line interface
-^^^^^^^^^^^^^^^^^^^^^^
-
-The following CLI arguments were renamed or removed:
+Command-line interface:
 
 ================================ ================================
 Old                              New
@@ -128,24 +105,7 @@ Old                              New
 ``-out``                         ``--output-format``
 ================================ ================================
 
-- ``--hash-as-name`` was removed (hashes are used by default).
-
-.. note::
-    ``--with-metadata`` previously had the effect of today's ``--only-with-metadata`` (filtering to documents with necessary metadata). It now simply includes metadata in the output.
-
-
-Other changes in v2
-^^^^^^^^^^^^^^^^^^^
-
-- Graphical user interface removed (last shipped with v1.12)
-- Output format must be specified via ``--output-format`` or format shorthands (``--json``, ``--xml``, etc.)
-- Explicit exports through ``__all__`` in the package
-
-
-Changes in v2.1
-^^^^^^^^^^^^^^^^
-
-- Python 3.8 and 3.9 support dropped (minimum is now 3.10)
+- ``--hash-as-name`` is removed, hashes are used as file names by default
 
 
 For the full version history, see the `changelog <https://github.com/adbar/trafilatura/blob/master/HISTORY.md>`_.

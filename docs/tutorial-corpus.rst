@@ -30,7 +30,7 @@ A comprehensive overview of the available documents can be obtained faster and m
 
 XML sitemap locations are resolved by namespace, so default and prefixed sitemap namespaces are supported. Location tags in extension namespaces (such as image sitemaps) are ignored. Legacy XML without a namespace is also supported.
 
-In addition, Trafilatura supports multilingual and multinational sitemaps, for example when a site targets different languages through paths like ``/en/…`` and ``/de/…``. With a target language (``target_lang`` in Python, ``--target-language`` on the command line), the hreflang alternates listed in a sitemap select the URL in this language, URLs without alternates are kept unless their path names another language.
+In addition, Trafilatura supports multilingual and multinational sitemaps, for example when a site targets different languages through paths like ``/en/…`` and ``/de/…``. With a target language (``target_lang`` in Python, ``--target-language`` on the command line), the hreflang alternates listed in a sitemap select the URL in this language. Without such an alternate, the ``x-default`` alternate or the listed URL is kept unless its path names another language, so the result can include language-neutral URLs.
 
 .. hint::
     Sources can also consist of previously known web pages, lists of links gathered by other projects, or content from Wikipedia and social networks. See the `sources page <sources.html>`_ for details.
@@ -99,7 +99,7 @@ In Python, use the ``target_language`` parameter to discard pages that don't mat
     html = fetch_url("https://www.example.com/de/artikel")
     text = extract(html, target_language="de")  # None if language doesn't match
 
-Language detection relies on the ``py3langid`` package (optional, install it with ``pip install trafilatura[all]``) and checks the extracted text. HTML metadata are only checked in fast mode or without ``py3langid``. Use `ISO 639-1 codes <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_ (e.g. ``de``, ``fr``, ``zh``).
+Language detection relies on the ``py3langid`` package (optional, install it with ``pip install trafilatura[all]``) and checks the extracted text. In fast mode the ``content-language`` and ``og:locale`` meta tags are checked too. Without ``py3langid`` only these tags are checked, not ``<html lang>``, and pages without them pass the filter. Use `ISO 639-1 codes <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_ (e.g. ``de``, ``fr``, ``zh``).
 
 
 Link filtering

@@ -59,7 +59,7 @@ The tools are compared to the raw page source and to a meaningful baseline takin
 Description
 -----------
 
-**Test set**: The experiments below are run on a collection of documents which are typical for Internet articles (news outlets, blogs). Some are harder to process due to mixed content (lists, tables) or not fully valid HTML code. They are selected from `large collections of web pages in German <https://www.dwds.de/d/k-web>`_, for the sake of completeness documents in other languages are added (notably English, French, other European languages, Chinese and Arabic, about 20-30% of the total).
+**Test set**: The experiments below are run on a collection of documents which are typical for Internet articles (news outlets, blogs). Some are harder to process due to mixed content (lists, tables) or not fully valid HTML code. They were selected from large collections of web pages in German, for the sake of completeness documents in other languages were added (notably English, French, other European languages, Chinese and Arabic, about 20-30% of the total).
 
 **Evaluation**: Decisive document segments are singled out which are not statistically representative but very significant in the perspective of working with the texts, most notably left/right columns, additional header, author or footer information such as imprints or addresses, as well as affiliated and social network links, in short boilerplate. Raw text segments are expected which is also a way to evaluate the quality of HTML extraction in itself.
 

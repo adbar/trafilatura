@@ -109,7 +109,7 @@ license                                free license, e.g. ``CC BY 4.0``
 language                               language code
 image                                  URL of the main image
 pagetype                               type of page, e.g. ``article``
-filedate                               date of the extraction, of the file with ``--input-dir``
+filedate                               ``max_date`` of the date extraction: the day of the extraction by default, of the file with ``--input-dir``
 ==============  =====================  ================================================
 
 CSV output is a tab-separated row without header, in this order: url, id, fingerprint, hostname, title, image, date, text, comments, license, pagetype, author, description, sitename, categories, tags, language, filedate.

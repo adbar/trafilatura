@@ -208,7 +208,7 @@ The following command line arguments are relevant:
 
    This option allows for bulk download and processing of a list of URLs from a file listing one link per line. The input list will be read sequentially, only lines beginning with a valid URL will be read. Each line is cut at the first space or tab, so the rest of the line can hold other information which will be discarded.
 
-   The list can also be piped: ``cat list.txt | trafilatura -i /dev/stdin``.
+   The list can also be piped: ``cat list.txt | trafilatura -i /dev/stdin`` (Linux and macOS).
 
 -  ``-o`` or ``--output-dir`` to define a directory to eventually store the results.
 
@@ -279,7 +279,7 @@ Link discovery can be performed over `web feeds <https://en.wikipedia.org/wiki/W
 
 Both the homepage and a particular page can be used as input depending on the selected options (e.g. a sitemap or feed URL). The URL is given either as the option's value or with ``-u``/``--URL`` or ``-i``/``--input-file``, not both.
 
-Without ``--list``, the discovered links are downloaded and processed, the input URLs themselves are not. Links from feeds and sitemaps are not checked against the ``Disallow`` rules of ``robots.txt``. The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
+Without ``--list``, the links found in feeds and sitemaps are downloaded and processed, the input URLs themselves are not. Crawled links are printed, not processed, see `web crawling`_ below. Links from feeds and sitemaps are not checked against the ``Disallow`` rules of ``robots.txt``. The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
 
 .. warning::
     .. versionchanged:: 2.4.0
