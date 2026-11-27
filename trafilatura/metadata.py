@@ -154,7 +154,10 @@ OG_PROPERTIES = {
 
 OG_AUTHOR = {"og:author", "og:article:author"}
 
-URL_SELECTORS = ['.//head//link[@rel="canonical"]', ".//head//base", './/head//link[@rel="alternate"][@hreflang="x-default"]']
+URL_SELECTORS = ['.//head//link[@rel="canonical"]', './/head//link[@rel="alternate"][@hreflang="x-default"]']
+# <base href> only tells how relative references resolve, not which page the document is,
+# so it identifies the document only when the caller has no URL at all
+URL_FALLBACK_SELECTORS = [*URL_SELECTORS, ".//head//base"]
 
 
 def normalize_tags(tags: str) -> str:
@@ -462,7 +465,10 @@ def extract_author(tree: HtmlElement) -> str | None:
 
 def extract_url(tree: HtmlElement, default_url: str | None = None) -> str | None:
     """Extract the URL from the canonical link"""
-    for selector in URL_SELECTORS:
+    # relative canonical links are resolved against a base, which is also the only
+    # document identity available when the caller passes no URL
+    selectors = URL_SELECTORS if default_url else URL_FALLBACK_SELECTORS
+    for selector in selectors:
         element = tree.find(selector)
         url = element.attrib.get("href") if element is not None else None
         if url:
