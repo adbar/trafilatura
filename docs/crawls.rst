@@ -48,7 +48,12 @@ Characteristics
 
 The spider module implements politeness rules as defined by the Robots Exclusion Standard, where applicable.
 
-Duplicate removal is also implemented, which involves both URL- and text-level analysis. This allows the crawler to detect and avoid revisiting previously crawled URLs or web pages with identical content.
+Duplicate removal is also implemented at URL level. This allows the crawler to detect and avoid revisiting previously crawled URLs, pages with identical content under different URLs are not detected.
+
+The crawl stays in the directory of the start URL. The trailing slash decides: ``https://example.org/de/`` only leads to pages under ``/de/``, ``https://example.org/de`` to the whole website. Links with another protocol or host than the start page, including subdomains and the ``www`` variant, are not followed. If the start page redirects to ``https`` or adds or drops ``www``, the crawl continues on the new address.
+
+.. versionchanged:: 2.4.0
+    Links have to be inside the start directory, a path only sharing its beginning such as ``/deutsch/`` for ``/de/`` no longer counts.
 
 It is safe to crawl a fairly high number of websites and pages per host, bounding factors are time (waiting between requests on the same host), bandwidth (for concurrent downloads), and RAM (above millions of URLs to track).
 
@@ -66,6 +71,9 @@ The ``focused_crawler()`` function integrates all necessary components and can b
 * ``todo``: provide a previously generated list of pages to visit (i.e. a crawl frontier)
 * ``known_links``: provide a list of previously known pages
 * ``lang``: try to target links according to language heuristics (two-letter code)
+* ``prune_xpath``: remove unwanted elements from the downloaded pages using XPath expressions
+
+Between two pages, the function waits the ``Crawl-delay`` given in ``robots.txt``, otherwise ``SLEEP_TIME`` (see `settings <settings.html#file-structure>`_).
 
 The following example demonstrates how to set up a focused crawler to extract internal links from a given website:
 

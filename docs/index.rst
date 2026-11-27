@@ -55,8 +55,8 @@ Features
   - Live URLs, efficient and polite processing of download queues
   - Previously downloaded HTML files and parsed HTML trees
 - Robust and configurable extraction of key elements:
-  - Main text (own rule-based extractor with jusText and readability-lxml as fallbacks)
-  - Metadata (title, author, date, site name, categories and tags)
+  - Main text (own rule-based extractor with built-in versions of readability and jusText as fallbacks)
+  - Metadata (title, author, date, site name, categories and tags, image, language)
   - Formatting and structure: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
   - Optional elements: comments, links, images, tables
   - Optional add-ons: language detection, speed optimizations
@@ -181,7 +181,7 @@ Software ecosystem
 Jointly developed plugins and additional packages also contribute to the field of web data extraction and analysis:
 
 .. image:: software-ecosystem.png
-    :alt: Diagram of trafilatura and related packages (htmldate, courlan, jusText)
+    :alt: Diagram of trafilatura and related packages (courlan, htmldate)
     :align: center
     :width: 65%
 

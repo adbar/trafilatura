@@ -60,7 +60,7 @@ To tailor the output to your specific requirements, Trafilatura allows you to co
 Fast mode
 ^^^^^^^^^
 
-By default, ``extract()`` uses a cascade of extractors (its own rules, then readability and jusText as fallbacks). In fast mode these fallbacks are skipped, making extraction roughly twice as fast at the cost of potentially missing content on difficult pages:
+By default, ``extract()`` uses a cascade of extractors (its own rules, then readability and jusText as fallbacks). In fast mode these fallbacks are skipped, making extraction faster at the cost of potentially missing content on difficult pages:
 
 .. code-block:: python
 
@@ -74,7 +74,7 @@ For a full list of options see `Python usage <usage-python.html>`_.
 Extracting all text content
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Unlike ``extract()`` which focuses on the main content, ``html2txt()`` returns all text from the page, including navigation, footers, etc.:
+Unlike ``extract()`` which focuses on the main content, ``html2txt()`` returns all text from the page, including navigation (footers, asides, cookie banners, scripts and styles only with ``clean=False``):
 
 .. code-block:: python
 

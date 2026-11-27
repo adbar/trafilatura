@@ -44,6 +44,9 @@ Extraction
 
 .. autofunction:: trafilatura.external.try_justext
 
+.. versionchanged:: 2.4.0
+    Built-in algorithm derived from jusText, ``options`` replaces ``target_language``.
+
 ``extract_metadata()``
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -53,6 +56,8 @@ Extraction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: trafilatura.extract_with_metadata
+
+.. versionadded:: 2.1.0
 
 ``extract_comments()``
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -67,6 +72,8 @@ Link discovery
 ~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: trafilatura.sitemaps.parse_sitemap
+
+.. versionadded:: 2.4.0
 
 ``sitemap_search()``
 ~~~~~~~~~~~~~~~~~~~~

@@ -38,14 +38,17 @@ The functions can be imported using ``from trafilatura import ...`` and used on 
 
 Main text extraction, good balance between precision and recall:
 
-- ``extract``: Main extraction function — runs Trafilatura's own rule-based extractor, then falls back to readability and jusText if the result is too short (see `how extraction works <extraction-overview.html>`_)
+- ``extract``: Main extraction function — runs Trafilatura's own rule-based extractor, then compares its result with readability, and with jusText if the result is short or contains boilerplate elements (see `how extraction works <extraction-overview.html#fallback-cascade>`_)
 - ``bare_extraction``: Same cascade as ``extract()``, but returns a ``Document`` object with structured access to text, comments, and metadata
-- ``extract_with_metadata``: Shorthand for ``extract()`` with ``with_metadata=True``
+- ``extract_with_metadata``: Same as ``extract()`` with ``with_metadata=True``, but returns a ``Document`` object, the output is in its ``.text`` attribute
+
+.. versionadded:: 2.1.0
+    ``extract_with_metadata()``
 
 Simpler alternatives (no cascade, faster):
 
-- ``baseline``: Targets text paragraphs and/or JSON metadata only
-- ``html2txt``: Extracts all text in the document, including navigation and footers
+- ``baseline``: Takes the first source with enough text among embedded JSON content, article elements and text paragraphs, otherwise the whole page body
+- ``html2txt``: Extracts all text in the document including navigation, with ``clean=False`` also footers, asides, cookie banners, scripts and styles
 
 
 .. note::
@@ -72,9 +75,51 @@ By default, the output is in plain text (TXT) format without metadata. The follo
 
 To specify the output format, use one of the following strings: ``"csv", "json", "html", "markdown", "txt", "xml", "xmltei"``. Another value raises a ``ValueError``.
 
-The ``bare_extraction`` function uses the ``python`` format by default and returns a ``Document`` object for direct use in Python.
+.. versionchanged:: 2.4.0
+    Unknown formats raise a ``ValueError`` instead of an ``AttributeError``.
+
+The ``bare_extraction`` function uses the ``python`` format by default and returns a ``Document`` object for direct use in Python, see `Python objects as output`_.
 
 To extract and include metadata in the output, use the ``with_metadata=True`` argument.
+
+.. warning::
+    .. versionchanged:: 1.11.0
+        Metadata is no longer extracted by default.
+
+Metadata fields
+~~~~~~~~~~~~~~~
+
+With ``with_metadata=True``, every output format carries the same fields. TXT and Markdown output start with a YAML header, XML and HTML use attributes and ``<meta>`` elements, XML-TEI fills the ``teiHeader``. Three fields have another name in JSON.
+
+==============  =====================  ================================================
+Field           JSON key               Content
+==============  =====================  ================================================
+title                                  title of the page
+author                                 author names
+url             ``source``             URL of the page
+hostname                               domain name
+description     ``excerpt``            description of the page
+sitename        ``source-hostname``    name of the website
+date                                   publication date
+categories                             categories, separated by ``;``, a list in YAML, one ``<term>`` each in XML-TEI
+tags                                   tags, separated by ``;``, a list in YAML, one ``<term>`` each in XML-TEI
+fingerprint                            hash of the title and text, see `deduplication <deduplication.html>`_
+id                                     value of ``record_id``
+license                                free license, e.g. ``CC BY 4.0``
+language                               language code
+image                                  URL of the main image
+pagetype                               type of page, e.g. ``article``
+filedate                               ``max_date`` of the date extraction: the day of the extraction by default, of the file with ``--input-dir``
+==============  =====================  ================================================
+
+CSV output is a tab-separated row without header, in this order: url, id, fingerprint, hostname, title, image, date, text, comments, license, pagetype, author, description, sitename, categories, tags, language, filedate.
+
+.. warning::
+    .. versionchanged:: 2.4.0
+        CSV rows have 18 columns instead of 11, the new columns are appended.
+
+.. versionchanged:: 2.4.0
+    Image and language are in every output format, the language falls back to the one declared in the markup.
 
 Examples
 ~~~~~~~~
@@ -110,7 +155,14 @@ Customize the extraction process by including or excluding specific HTML element
    ``include_links=True``
         Keep link targets (in ``href="..."``)
    ``include_images=True``
-        Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
+        Keep track of images along with their targets (``<img>`` attributes: alt, src, title), also from lazy-loading attributes, ``srcset``, ``<picture>`` and ``<noscript>``
+
+.. warning::
+    .. versionchanged:: 2.4.0
+        With ``include_tables=False``, text inside layout tables is removed as well.
+
+.. versionadded:: 2.4.0
+    Images from more lazy-loading attributes (``data-lazy-src``, ``data-original``), ``srcset``, ``<picture>`` and ``<noscript>``.
 
 
 To operate on these elements, pass the corresponding parameters to the ``extract()`` function:
@@ -160,7 +212,7 @@ Precision
 ~~~~~~~~~
 
 - Use when your results contain too much boilerplate or irrelevant content.
-- Comments are pruned more aggressively, link-heavy sections are discarded, and fallback stages are skipped.
+- Comments are pruned more aggressively, link-heavy sections are discarded, and the baseline rescue and recall escalation are skipped.
 - Additionally, you can use the ``prune_xpath`` parameter to target specific HTML elements using a list of XPath expressions:
 
 .. code-block:: python
@@ -189,7 +241,7 @@ The ``html2txt`` and ``baseline`` functions offer simpler approaches to extracti
 html2txt()
 ~~~~~~~~~~
 
-The ``html2txt`` function serves as a last resort for extracting text from HTML content. It emulates the behavior of similar functions in other packages and can be used to output all possible text from a given HTML source, maximizing recall. However, it may not always produce accurate or meaningful results, as it does not consider the context of the extracted sections.
+The ``html2txt`` function serves as a last resort for extracting text from HTML content. It emulates the behavior of similar functions in other packages and can be used to output all possible text from a given HTML source, maximizing recall. Footers, asides, cookie banners, scripts and styles are left out unless ``clean=False`` is passed. However, it may not always produce accurate or meaningful results, as it does not consider the context of the extracted sections.
 
 .. code-block:: python
 
@@ -240,12 +292,15 @@ Optimizing for speed
 
 Execution speed not only depends on the platform and on supplementary packages (``trafilatura[all]``, ``htmldate[speed]``), but also on the extraction strategy.
 
-By default, ``extract()`` runs a cascade: its own rule-based extractor first, then readability and jusText as fallbacks if the initial result is too short. These fallbacks improve accuracy but are slower. In *fast* mode they are skipped entirely, making extraction about twice as fast:
+By default, ``extract()`` runs a cascade: its own rule-based extractor first, then a comparison with readability and jusText. These fallbacks improve accuracy but are slower. In *fast* mode they are skipped entirely, making extraction faster:
 
 .. code-block:: python
 
     # skip algorithms used as fallback
     >>> result = extract(downloaded, fast=True)
+
+.. versionchanged:: 2.0.0
+    ``fast`` replaces ``no_fallback``.
 
 The following combination usually leads to shorter processing times:
 
@@ -285,8 +340,8 @@ Here is how to use the class:
 
 With ``options``, the other extraction parameters are ignored, except ``url``, ``record_id`` and ``prune_xpath``. The ``url`` argument applies on a copy of the options.
 
-
-See the ``settings.py`` file for a full example.
+.. versionchanged:: 2.4.0
+    ``url`` also applies when ``options`` are passed.
 
 
 Metadata extraction
@@ -304,7 +359,7 @@ Metadata extraction
 Date
 ~~~~
 
-Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. By default, focus is on original dates and the extraction replicates the *fast* option.
+Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. Dates are only extracted with ``with_metadata=True``. By default, focus is on original dates and the extensive search is activated (``EXTENSIVE_DATE_SEARCH`` in ``settings.cfg``).
 
 `Custom parameters <https://htmldate.readthedocs.io/en/latest/corefunctions.html#handling-date-extraction>`_ can be passed through the extraction function or through the ``extract_metadata`` function in ``trafilatura.metadata``, most notably:
 
@@ -317,9 +372,15 @@ Among metadata extraction, dates are handled by an external module: `htmldate <h
 
     # import the extract() function, use a previously downloaded document
     # pass the new parameters as dict
-    >>> extract(downloaded, output_format="xml", date_extraction_params={
+    >>> extract(downloaded, output_format="xml", with_metadata=True, date_extraction_params={
             "extensive_search": True, "max_date": "2018-07-01"
         })
+
+Custom parameters are merged with the defaults, only the values to change need to be passed.
+
+.. warning::
+    .. versionchanged:: 2.4.0
+        Custom parameters are merged with the defaults. Before, they replaced them, and passing any of them turned ``original_date`` off.
 
 
 URL
@@ -363,12 +424,17 @@ Python objects as output
 
 The extraction can be customized using a series of parameters, for more see the `core functions <corefunctions.html>`_ page.
 
-The function ``bare_extraction`` can be used to bypass output conversion. It returns a ``Document`` object with metadata as string attributes (``.title``, ``.author``, ``.text``, ``.comments``, etc.) and the extracted content as LXML elements (``.body``, ``.commentsbody``). Call ``.as_dict()`` on the result to get a plain dictionary.
+The function ``bare_extraction`` can be used to bypass output conversion. It returns a ``Document`` object with the text and metadata as attributes (``.title``, ``.author``, ``.text``, ``.comments``, etc., strings except the lists of ``.categories`` and ``.tags``) and the extracted content as LXML elements (``.body``, ``.commentsbody``). Call ``.as_dict()`` on the result to get a plain dictionary.
+
+.. versionchanged:: 2.0.0
+    ``bare_extraction()`` returns a ``Document`` instead of a dict.
+
+The metadata attributes are only filled with ``with_metadata=True``, which ``only_with_metadata``, ``url_blacklist``, ``author_blacklist`` and XML-TEI output also turn on. They are ``None`` otherwise. ``fingerprint`` and ``id`` are only set by ``extract()``.
 
 .. code-block:: python
 
     >>> from trafilatura import bare_extraction
-    >>> bare_extraction(downloaded)
+    >>> bare_extraction(downloaded, with_metadata=True)
 
 
 Raw HTTP response objects
@@ -440,9 +506,16 @@ Navigation
 
 Trafilatura can discover URLs to extract from via three strategies:
 
-- **Feeds** (Atom/RSS): mostly for fresh content
+- **Feeds** (Atom, RSS, JSON Feed): mostly for fresh content
 - **Sitemaps**: for exhaustivity — all potential pages as listed by the site owners
 - **Web crawling**: follow internal links to discover pages
+
+``find_feed_urls()`` and ``sitemap_search()`` wait ``SLEEP_TIME`` seconds (see `settings <settings.html#file-structure>`_) before each further feed or sitemap of the same website, pass ``sleep_time`` to change it.
+
+.. versionchanged:: 2.4.0
+    The default wait went from 2 to 5 seconds and is read from ``SLEEP_TIME``.
+
+The ``Disallow`` rules of ``robots.txt`` are not applied to links found in feeds and sitemaps, only the crawler follows them. See `downloads <downloads.html#robots-exclusion-standard>`_ to filter a list of links.
 
 
 Feeds
@@ -531,6 +604,9 @@ Pass your HTTP client's decoded response text or a cached sitemap to ``parse_sit
     links = parse_sitemap(sitemap_text, "https://example.org/sitemap.xml")
 
 The result contains sorted unique links. For a sitemap index, these are nested sitemap addresses. Fetch and parse those separately with your own HTTP client. The ``target_lang``, ``external`` and ``since`` options apply the same filters as ``sitemap_search()``.
+
+.. versionadded:: 2.4.0
+    ``parse_sitemap()``
 
 
 Web crawling

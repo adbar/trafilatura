@@ -32,12 +32,30 @@ Before a list of URLs can be filtered, it usually has to be gathered from a page
     >>> extract_links(html, url=url, language='en')
     ['https://www.sitemaps.org/faq.php', 'https://www.sitemaps.org/protocol.php', ...]
 
-For more granular control, ``filter_links()`` additionally consults ``robots.txt`` rules and returns two separate lists, one to keep and one to discard:
+For crawling purposes, ``filter_links()`` returns two separate lists, the content links and the navigation links (e.g. categories or pagination) to visit first. ``robots.txt`` rules are applied if a parsed ``RobotFileParser`` is passed with ``rules``:
 
-.. code-block:: python
+.. doctest::
 
+    >>> from urllib.robotparser import RobotFileParser
     >>> from courlan import filter_links
-    >>> good_links, discarded_links = filter_links(html, url)
+
+    >>> page = """<html><body>
+    ... <a href="/blog/first-post">First post</a>
+    ... <a href="/category/news">News</a>
+    ... <a href="/page/2">Next page</a>
+    ... <a href="/private/draft">Draft</a>
+    ... <a href="https://other.org/article">Elsewhere</a>
+    ... </body></html>"""
+    >>> links, navigation_links = filter_links(page, "https://example.org")
+    >>> links
+    ['https://example.org/blog/first-post', 'https://example.org/private/draft']
+    >>> navigation_links
+    ['https://example.org/category/news', 'https://example.org/page/2']
+
+    >>> rules = RobotFileParser()
+    >>> rules.parse(["User-agent: *", "Disallow: /private/"])
+    >>> filter_links(page, "https://example.org", rules=rules)[0]
+    ['https://example.org/blog/first-post']
 
 This is the same mechanism used internally for `web crawling <crawls.html>`_.
 

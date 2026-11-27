@@ -36,6 +36,12 @@ URLs can be used directly (``-u/--URL``):
     # displays help message
     $ trafilatura -h
 
+    # displays the versions of Trafilatura and Python
+    $ trafilatura --version
+
+    # displays more information on the processing (-v) or debugging messages (-vv)
+    $ trafilatura -v -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
+
 
 You can also pipe a HTML document (and response body) to trafilatura:
 
@@ -70,7 +76,14 @@ Several elements can be included or discarded (see list of options below):
    ``--links``
       Keep link targets (in ``href="..."``), converting relative URLs to absolute where possible
    ``--images``
-      Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
+      Keep track of images along with their targets (``<img>`` attributes: alt, src, title), also from lazy-loading attributes, ``srcset``, ``<picture>`` and ``<noscript>``
+
+.. warning::
+    .. versionchanged:: 2.4.0
+        With ``--no-tables``, text inside layout tables is removed as well.
+
+.. versionadded:: 2.4.0
+    Images from more lazy-loading attributes (``data-lazy-src``, ``data-original``), ``srcset``, ``<picture>`` and ``<noscript>``.
 
 .. note::
     Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML). Including extra elements works best with conversion to XML/XML-TEI.
@@ -86,6 +99,8 @@ Output as TXT without metadata is the default, another format can be selected in
 -  ``--csv``, ``--html``, ``--json``, ``--markdown``, ``--xml`` or ``--xmltei``
 -  ``--output-format`` {csv,json,html,markdown,txt,xml,xmltei}
 
+With ``--validate-tei``, XML-TEI output is checked against the TEI schema. Invalid documents are reported in the logs and still written.
+
 .. hint::
     Combining TXT and CSV formats with certain structural elements (e.g. formatting or links) triggers output in Markdown format. Selecting Markdown automatically includes text formatting. Note: ``--formatting`` has no effect on JSON output.
 
@@ -94,7 +109,7 @@ Output as TXT without metadata is the default, another format can be selected in
 Fast mode
 ~~~~~~~~~
 
-The ``--fast`` or ``-f`` flag skips the fallback extraction cascade (readability and jusText), making extraction roughly twice as fast. Use it when speed matters more than completeness:
+The ``--fast`` or ``-f`` flag skips the fallback extraction cascade (readability and jusText), making extraction faster. Use it when speed matters more than completeness:
 
 .. code-block:: bash
 
@@ -108,7 +123,7 @@ Optimizing for precision and recall
 
 The arguments ``--precision`` or ``--recall`` can be passed to adjust the focus of the extraction process.
 
-- ``--precision``: use when results contain too much boilerplate — comments are pruned more aggressively, link-heavy sections are discarded, and fallback stages are skipped.
+- ``--precision``: use when results contain too much boilerplate — comments are pruned more aggressively, link-heavy sections are discarded, and the baseline rescue and recall escalation are skipped.
 - ``--recall``: use when parts of documents are missing — more elements are kept, link density thresholds are relaxed.
 - If parts of the contents are still missing, see `troubleshooting <troubleshooting.html>`_.
 
@@ -132,17 +147,24 @@ Metadata
 - ``--with-metadata``: extract metadata (title, author, date, etc.) and include it in the output. Off by default.
 - ``--only-with-metadata``: only output documents that have all essential metadata (title, URL, date).
 
+.. warning::
+    .. versionchanged:: 1.11.0
+        Metadata is no longer extracted by default.
+
 
 Deduplication
 ~~~~~~~~~~~~~
 
-The ``--deduplicate`` flag activates duplicate detection across documents and within documents. Repeated segments (e.g. navigation text) are removed from the output. See `deduplication <deduplication.html>`_.
+The ``--deduplicate`` flag activates duplicate detection across documents. Repeated segments (e.g. navigation text) longer than ``MIN_DUPLCHECK_SIZE`` are removed from the output once they have been seen in more than ``MAX_REPETITIONS`` earlier documents (see `settings <settings.html#file-structure>`_), and so are repeated whole documents. The count is kept per process: with ``--input-dir``, each of the ``--parallel`` processes has its own. See `deduplication <deduplication.html>`_.
 
 
 Blacklist
 ~~~~~~~~~
 
-The ``-b`` / ``--blacklist`` flag accepts a file containing URLs to skip during batch processing (one URL per line).
+The ``-b`` / ``--blacklist`` flag accepts a file containing URLs to skip (one URL per line). It applies to the input URLs and to the links found with ``--feed``, ``--sitemap``, ``--crawl`` and ``--explore``. URLs are compared without their protocol and trailing slashes, the rest has to match exactly.
+
+.. versionchanged:: 2.4.0
+    The blacklist also applies to discovered and crawled links.
 
 
 Changing default settings
@@ -186,6 +208,8 @@ The following command line arguments are relevant:
 
    This option allows for bulk download and processing of a list of URLs from a file listing one link per line. The input list will be read sequentially, only lines beginning with a valid URL will be read. Each line is cut at the first space or tab, so the rest of the line can hold other information which will be discarded.
 
+   The list can also be piped: ``cat list.txt | trafilatura -i /dev/stdin`` (Linux and macOS).
+
 -  ``-o`` or ``--output-dir`` to define a directory to eventually store the results.
 
    The output directory can be created on demand, but it must be writable.
@@ -209,9 +233,14 @@ The following command line arguments are relevant:
 
     ``$ trafilatura --input-file links.txt --output-dir converted/ --progress``
 
+.. versionadded:: 2.4.0
+    ``--progress``
+
 
 Source-based file names
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 2.4.0
 
 Use ``--name-from-url`` to identify downloaded pages by their output file names:
 
@@ -246,11 +275,15 @@ There is a fair chance to find archived versions for larger websites, whereas pa
 Link discovery
 --------------
 
-Link discovery can be performed over `web feeds <https://en.wikipedia.org/wiki/Web_feed>`_ (Atom and RSS, mostly for fresh content), `sitemaps <https://en.wikipedia.org/wiki/Sitemaps>`_ for exhaustivity (all potential pages as listed by the owners), and discovery by web crawling (i.e. by following the internal links, more experimental).
+Link discovery can be performed over `web feeds <https://en.wikipedia.org/wiki/Web_feed>`_ (Atom, RSS and JSON Feed, mostly for fresh content), `sitemaps <https://en.wikipedia.org/wiki/Sitemaps>`_ for exhaustivity (all potential pages as listed by the owners), and discovery by web crawling (i.e. by following the internal links, more experimental).
 
 Both the homepage and a particular page can be used as input depending on the selected options (e.g. a sitemap or feed URL). The URL is given either as the option's value or with ``-u``/``--URL`` or ``-i``/``--input-file``, not both.
 
-Without ``--list``, the discovered links are downloaded and processed, the input URLs themselves are not. The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
+Without ``--list``, the links found in feeds and sitemaps are downloaded and processed, the input URLs themselves are not. Crawled links are printed, not processed, see `web crawling`_ below. Links from feeds and sitemaps are not checked against the ``Disallow`` rules of ``robots.txt``. The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
+
+.. warning::
+    .. versionchanged:: 2.4.0
+        Without ``--list``, the feed or sitemap URL itself is no longer processed.
 
 For more information please refer to the `tutorial on content discovery <tutorial-corpus.html#content-discovery>`_.
 
@@ -338,7 +371,10 @@ Exit codes
 - ``0``: success, including inputs without extractable content and local files or STDIN input rejected for their size.
 - ``1``: some inputs could not be downloaded or read (downloads rejected for their size count as failed), ``--feed`` or ``--sitemap`` found no links for some of them, no valid input URL is left (also for an empty input list), or the output directory cannot be written.
 - ``126``: more than 99% of the inputs could not be downloaded (also when ``--crawl``, ``--probe`` or ``--explore`` cannot fetch the start pages).
-- ``2``: invalid arguments, for example a missing input file, ``--parallel 0``, or ``--feed`` without a URL.
+- ``2``: invalid arguments, for example a missing input file, a malformed ``--config-file``, ``--parallel 0``, or ``--feed`` without a URL.
+
+.. versionchanged:: 2.4.0
+    A malformed config file exits with code 2.
 
 
 Deprecations

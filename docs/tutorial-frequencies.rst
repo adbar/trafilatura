@@ -8,7 +8,7 @@ Tutorial: Word frequency lists from web pages
         a list of the most frequent word forms.
 
 
-This tutorial shows in a simple and accessible way how to extract extract text from web pages and compute frequency lists. You will learn how to use command-line tools to process the links, extract the content, and then break it down into individual words and phrases. From there, you can sort and filter the results to get a sense of what is most commonly found in the corpus.
+This tutorial shows in a simple and accessible way how to extract text from web pages and compute frequency lists. You will learn how to use command-line tools to process the links, extract the content, and then break it down into individual words and phrases. From there, you can sort and filter the results to get a sense of what is most commonly found in the corpus.
 
 
 Get your system up and running

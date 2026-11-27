@@ -911,7 +911,12 @@ def _unescape_text(text: str) -> str:
 
 
 def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
-    "Convert to plain text format and optionally preserve formatting as markdown."
+    """Convert to plain text format and optionally preserve formatting as markdown.
+
+    Args:
+        xmloutput: Internal XML tree of an extraction.
+        include_formatting: Render headings and text formatting as Markdown.
+    """
     if xmloutput is None:
         return ""
 

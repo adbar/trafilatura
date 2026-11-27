@@ -22,31 +22,52 @@ Text extraction can be parametrized by providing a custom configuration file whi
 File structure
 ^^^^^^^^^^^^^^
 
-The default file included in the package is `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_ . Important values include:
+The default file included in the package is `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_:
+
+.. literalinclude:: ../trafilatura/settings.cfg
+    :language: ini
+
+The settings in detail:
 
 - Download
-   * ``DOWNLOAD_TIMEOUT = 30`` the time (in seconds) before requests are dropped
-   * ``SLEEP_TIME = 5`` time between requests (higher is better to avoid detection)
-   * ``USER_AGENTS`` and ``COOKIE`` are empty by default
+   * ``DOWNLOAD_TIMEOUT`` the time (in seconds) before requests are dropped
+   * ``SLEEP_TIME`` time between requests (in seconds, higher is better to avoid detection)
+   * ``USER_AGENTS`` (one per line, a random one is picked for each request) and ``COOKIE`` for HTTP requests
    * ``COOKIE_FILE`` path to a ``cookies.txt`` file in Netscape format, only the cookies matching each URL's domain and path are sent. Takes precedence over ``COOKIE``
-   * ``SSRF_PROTECTION = on`` block requests to non-public IP addresses, set to ``off`` for intranet use cases. Inactive when a proxy is configured, and for pycurl downloads when a proxy is set by environment variables such as ``https_proxy``: hosts listed in ``no_proxy`` (e.g. ``169.254.169.254``) are then reached unchecked
-   * ``INSECURE_SSL_FALLBACK = on`` retry without certificate verification after an SSL error. This keeps sites with broken certificates reachable but lets an attacker on the network path read or alter the download, including a configured ``COOKIE``. Set to ``off`` to refuse unverified connections
-- Input
-   * ``MAX_FILE_SIZE = 20000000`` maximum acceptable size of input (in bytes)
-   * ``MIN_FILE_SIZE = 10`` minimum acceptable size of input (in bytes)
+   * ``SSRF_PROTECTION`` block requests to non-public IP addresses, set to ``off`` for intranet use cases. Inactive when a proxy is configured, and for pycurl downloads when a proxy is set by environment variables such as ``https_proxy``: hosts listed in ``no_proxy`` (e.g. ``169.254.169.254``) are then reached unchecked
+   * ``INSECURE_SSL_FALLBACK`` retry without certificate verification after an SSL error. This keeps sites with broken certificates reachable but lets an attacker on the network path read or alter the download, including a configured ``COOKIE``. Set to ``off`` to refuse unverified connections
+- Input (downloads and command-line tool)
+   * ``MAX_FILE_SIZE`` maximum acceptable size of input (in bytes). ``extract()`` does not check the size of its input, except compressed input, capped at this size once decompressed. Sitemaps can always reach 50 MiB (52428800 bytes), the size allowed by the sitemap protocol
+   * ``MIN_FILE_SIZE`` minimum acceptable size of input (in bytes)
 - Extraction
-   * ``MIN_EXTRACTED_SIZE = 250`` acceptable size in characters (used to trigger fallbacks)
-   * ``MIN_OUTPUT_SIZE = 1`` absolute acceptable minimum for main text output
-   * ``MIN_OUTPUT_COMM_SIZE`` works the same for comment extraction
-   * ``MAX_TREE_SIZE`` discard documents with more HTML elements than this number (empty by default, i.e. no limit)
+   * ``MIN_EXTRACTED_SIZE`` acceptable size in characters (used to trigger fallbacks)
+   * ``MIN_OUTPUT_SIZE`` absolute acceptable minimum for main text output
+   * ``MIN_OUTPUT_COMM_SIZE`` works the same for comment extraction, a document is only discarded if both the main text and the comments are below their minimum
+   * ``MAX_TREE_SIZE`` discard documents whose output has more top-level elements than this number, checked once the extraction is done (empty means no limit)
 - Deduplication (not active by default)
-   * ``MIN_DUPLCHECK_SIZE = 100`` minimum size in characters to run deduplication on
-   * ``MAX_REPETITIONS = 2`` maximum number of duplicates allowed
+   * ``MIN_DUPLCHECK_SIZE`` minimum size in characters to run deduplication on
+   * ``MAX_REPETITIONS`` maximum number of duplicates allowed
 - Metadata
-   * ``EXTENSIVE_DATE_SEARCH = on`` set to ``off`` to deactivate ``htmldate``'s opportunistic search (lower recall, higher precision)
+   * ``EXTENSIVE_DATE_SEARCH`` set to ``off`` to deactivate ``htmldate``'s opportunistic search (lower recall, higher precision)
 - Navigation
-   * ``EXTERNAL_URLS = off`` do not take URLs from other websites in feeds and sitemaps (CLI mode)
-   * ``MAX_REDIRECTS = 2``: maximum number of `URL redirections <https://en.wikipedia.org/wiki/URL_redirection>`_ to be followed. Set to 0 to not follow any redirection.
+   * ``EXTERNAL_URLS`` set to ``on`` to also take URLs from other websites in feeds and sitemaps (CLI mode)
+   * ``MAX_REDIRECTS`` maximum number of `URL redirections <https://en.wikipedia.org/wiki/URL_redirection>`_ to be followed. Set to 0 to not follow any redirection.
+
+.. warning::
+    .. versionchanged:: 2.3.0
+        Requests to non-public addresses such as ``localhost`` are blocked by default, see ``SSRF_PROTECTION``.
+
+.. versionadded:: 2.4.0
+    ``COOKIE_FILE``
+
+.. versionchanged:: 2.4.0
+    ``EXTRACTION_TIMEOUT`` removed, it had no effect.
+
+.. versionadded:: 2.3.0
+    ``INSECURE_SSL_FALLBACK``, the retry without certificate verification was not configurable before.
+
+.. versionchanged:: 2.0.0
+    ``MAX_TREE_SIZE`` replaces the ``max_tree_size`` argument, which raises an error.
 
 
 Using a custom file on the command-line
@@ -159,7 +180,7 @@ Some of these variables are Python lists which can also be adapted on the fly, w
 
 
 .. hint::
-    Most extraction parameters and options can be defined in an ``Extractor`` object which is then passed to the extraction functions instead of the arguments and (in some cases) instead of the config file. See ``settings.py`` for an example.
+    Most extraction parameters and options can be defined in an ``Extractor`` object which is then passed to the extraction functions instead of the arguments and (in some cases) instead of the config file. See `function parameters <usage-python.html#function-parameters>`_ for an example.
 
 .. seealso::
     `Python usage <usage-python.html>`_, `Command-line usage <usage-cli.html>`_

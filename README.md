@@ -56,8 +56,8 @@ including by HuggingFace, IBM, Microsoft Research, NVIDIA, the Allen Institute f
   - Previously downloaded HTML files and parsed HTML trees
 
 - Robust and configurable extraction of key elements:
-  - Main text (own rule-based extractor with jusText and readability-lxml as fallbacks)
-  - Metadata (title, author, date, site name, categories and tags)
+  - Main text (own rule-based extractor with built-in versions of readability and jusText as fallbacks)
+  - Metadata (title, author, date, site name, categories and tags, image, language)
   - Formatting and structure: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
   - Optional elements: comments, links, images, tables
   - Optional add-ons: language detection, speed optimizations
@@ -190,7 +190,7 @@ acquisition. Here is how to cite it:
 Jointly developed plugins and additional packages also contribute to the
 field of web data extraction and analysis:
 
-<img alt="Diagram of trafilatura and related packages (htmldate, courlan, jusText)" src="https://raw.githubusercontent.com/adbar/htmldate/master/docs/software-ecosystem.png" align="center" width="65%"/>
+<img alt="Diagram of trafilatura and related packages (courlan, htmldate)" src="https://raw.githubusercontent.com/adbar/htmldate/master/docs/software-ecosystem.png" align="center" width="65%"/>
 
 Corresponding posts can be found on [Bits of
 Language](https://adrien.barbaresi.eu/blog/tag/trafilatura.html).

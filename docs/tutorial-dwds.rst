@@ -116,6 +116,6 @@ Die Ausgabe von *Trafilatura* erfolgt auf zweierlei Weise: die extrahierten Text
 
 ``trafilatura --input-file linkliste.txt --output-dir ausgabe/ --backup-dir html-quellen/``
 
-So werden TXT-Dateien ohne Metadaten ausgegeben. Wenn Sie ``--csv``, ``--json``, ``--xml`` oder ``--xmltei`` hinzufügen, werden Metadaten einbezogen und das entsprechende Format für die Ausgabe bestimmt. Zusätzliche Optionen sind verfügbar, siehe die passenden Dokumentationsseiten.
+So werden TXT-Dateien ohne Metadaten ausgegeben. Wenn Sie ``--csv``, ``--json``, ``--xml`` oder ``--xmltei`` hinzufügen, wird das entsprechende Format für die Ausgabe bestimmt. Metadaten werden mit ``--with-metadata`` einbezogen, bei ``--xmltei`` immer. Zusätzliche Optionen sind verfügbar, siehe die passenden Dokumentationsseiten.
 
 Für bis zu einige Tausend URLs gelingt dieses Verfahren problemlos von einem Laptop aus, für mehr URLs kann ein Server notwendig sein, vor allem um lange Wartezeiten zu handhaben (zunächst werden die Seiten nämlich heruntergeladen).

@@ -127,6 +127,8 @@ py3langid
     Language detection on extracted main text
 pycurl
     Faster downloads, useful where urllib3 fails
+tqdm
+    Progress bar on the command-line (``--progress``)
 urllib3[socks]
     Downloads through SOCKS proxy with urllib3
 backports.zstd

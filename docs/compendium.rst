@@ -63,7 +63,7 @@ Specialized corpora
 ~~~~~~~~~~~~~~~~~~~
 
 
-On the second hand, there are specialized corpora which focus on a particular genre or a particular source. They can be opportunistic in nature but they mostly involve prior knowledge of the contents and also a certain amount of control over what comes into the corpus. Contrarily to open ended-corpora, the goal for linguists is to get a better coverage of particular linguistic settings or phenomena:
+On the second hand, there are specialized corpora which focus on a particular genre or a particular source. They can be opportunistic in nature but they mostly involve prior knowledge of the contents and also a certain amount of control over what comes into the corpus. Contrarily to open-ended corpora, the goal for linguists is to get a better coverage of particular linguistic settings or phenomena:
 
 The purpose of focused web corpora is to complement existing collections, as they allow for better coverage of specific written text types and genres, especially the language evolution seen through the lens of user-generated content, which gives access to a number of variants, socio- and idiolects, for example in the case of blogs (Barbaresi 2019).
 
@@ -151,9 +151,9 @@ In case a search engine is used to find documents, pre- and post-processing phas
 
     “A large reference corpus for an arbitrary language can be collected in six steps: word selection, query generation, downloading from the Internet, post-processing, composition assessment and comparison of word lists (the last two steps are optional).” (Sharoff 2006)
 
-*N.B.: unlike in BootCat corpora, in this approach words from the general lexicon as used as seeds.*
+*N.B.: unlike in BootCat corpora, in this approach words from the general lexicon are used as seeds.*
 
-In the case of a corpus based on web feeds, four steps can be distinguished: feed discovery, validation, scheduling and crawling (Minocha et al. 2014).
+In the case of a corpus based on web feeds, four steps can be distinguished: feed discovery, validation, scheduling and crawling (Minocha et al. 2013).
 
 
 Crawling and download
@@ -204,7 +204,7 @@ When confronted with web pages, the main issues affecting the content can be sum
 - How do we identify metadata, paragraphs and other structural information?
 - How do we produce output in a standard form suitable for further processing?
 
-On site level, recurring elements are called boilerplate. Removing them allow for avoiding hundreds of occurrences of phrases like “back to the main page” or “Copyright 2022 (site name)”.
+On site level, recurring elements are called boilerplate. Removing them allows for avoiding hundreds of occurrences of phrases like “back to the main page” or “Copyright 2022 (site name)”.
 
 Preserving some elements of the page structure can be useful to distinguish main text, quotes and comments. Authorship definitely is meaningful in a humanities context. Metadata such as the page title or the publication date are also quite relevant.
 
@@ -230,7 +230,7 @@ That is why web texts can and should be further examined and prepared for inclus
     Further text quality criteria are discussed in Schäfer & Bildhauer (2013) chapter 5, and Barbaresi (2015) chapter 2.
 
 
-A different series of questions arise when randomly searching for text on the Internet: What is a text? When does input stop to be a text? What should be included in the corpus? Sometimes the results are bounded by certain texts types (like classified ads) or by the toolchain (with scraps of text coming from the tools). See the challenges and indicators described in Kilgarriff & Suchomel (2013), Schäfer et al. (2013). For work on corpus description in terms of genres see Sharoff (2018).
+A different series of questions arise when randomly searching for text on the Internet: What is a text? When does input stop to be a text? What should be included in the corpus? Sometimes the results are bounded by certain text types (like classified ads) or by the toolchain (with scraps of text coming from the tools). See the challenges and indicators described in Kilgarriff & Suchomel (2013), Schäfer et al. (2013). For work on corpus description in terms of genres see Sharoff (2018).
 
 Quality assessments can also be made in the context of distributional semantics, for example by creating vectors of co-occurring lemmas (Versley & Panchenko 2012). Evert (2015) lists the following approaches: statistical properties, corpus comparison, use as training data in NLP, and linguistic evaluation (e.g. frequency comparisons).
 
@@ -307,7 +307,7 @@ References
 * Kilgarriff, A. (2007). Googleology is bad science. *Computational linguistics*, 33(1), 147-151.
 * Kilgarriff, A. and Suchomel, V. (2013) "Web Spam". In: *Proceedings of the 8th Web as Corpus Workshop (WAC-8)*, Corpus Linguistics 2013, pp. 46–52.
 * McEnery, T. (2003). Corpus Linguistics. In R. Mitkov (Ed.), *The Oxford Handbook of Computational Linguistics* (pp. 448–463). Oxford University Press.
-* Minocha, A., Reddy, S., & Kilgarriff, A. (2014). Feed Corpus: an ever growing up-to-date corpus. *Proceedings of the 8th Web as Corpus Workshop*, pp. 1-4, ACL SIGWAC.
+* Minocha, A., Reddy, S., & Kilgarriff, A. (2013). Feed Corpus: an ever growing up-to-date corpus. *Proceedings of the 8th Web as Corpus Workshop*, pp. 1-4, ACL SIGWAC.
 * Nelson, M. (2010). Building a written corpus. *The Routledge Handbook of Corpus Linguistics*, 53-65.
 * Schäfer, R., Barbaresi, A., & Bildhauer, F. (2013). The Good, the Bad, and the Hazy: Design Decisions in Web Corpus Construction. In *8th Web as Corpus Workshop*, pp. 7-15, ACL SIGWAC.
 * Schäfer, R., & Bildhauer, F. (2013). Web Corpus Construction. Morgan & Claypool.

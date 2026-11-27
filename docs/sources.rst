@@ -63,7 +63,7 @@ Searching for URLs
 The Common Crawl is a good place to start looking for already known URLs, and possibly for the corresponding pages stored by the project. So is the Internet Archive (with a different focus):
 
 - `getallurls (gau) <https://github.com/lc/gau>`_ to fetch known URLs from the Wayback Machine and the Common Crawl (among others)
-- `cdx_toolkit <https://github.com/cocrawler/cdx_toolkit/>`_ (toolkit for CDX indices such as Common Crawl and the Internet Archive's Wayback Machine) & `Python example <https://github.com/cocrawler/cdx_toolkit/blob/master/examples/iter-and-warc.py>`_
+- `cdx_toolkit <https://github.com/commoncrawl/cdx_toolkit>`_ (toolkit for CDX indices such as Common Crawl and the Internet Archive's Wayback Machine) & `Python example <https://github.com/commoncrawl/cdx_toolkit/blob/main/examples/iter-and-warc.py>`_
 - `Python script <https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050>`_ to extract all URLs known by the Internet Archive for a given domain
 
 
@@ -134,7 +134,7 @@ Series of surface scrapers that crawl the networks without even logging in, thus
 
 Previously collected tweet IDs can be “hydrated”, i.e. retrieved from Twitter in bulk.
 
-Links can be extracted from tweets with a regular expression such as ``re.findall(r'https?://[^ ]+')``. They probably need to be resolved first to get actual link targets and not just shortened URLs (like t.co/…).
+Links can be extracted from tweets with a regular expression such as ``re.findall(r'https?://[^ ]+', text)``. They probably need to be resolved first to get actual link targets and not just shortened URLs (like t.co/…).
 
 For further ideas from previous projects see references below.
 
@@ -169,5 +169,5 @@ References
 * Blombach, A., Dykes, N., Heinrich, P., Kabashi, B., & Proisl, T. (2020). A corpus of German Reddit exchanges (GeRedE). In Proceedings of the 12th Language Resources and Evaluation Conference (pp. 6310-6316).
 * Henzinger, M. R., Heydon, A., Mitzenmacher, M., & Najork, M. (2000). On near-uniform URL sampling. Computer Networks, 33(1-6), 295-308.
 * Jauhiainen, H., Jauhiainen, T., & Lindén, K. (2020). Building web corpora for minority languages. In Proceedings of the 12th Web as Corpus Workshop (pp. 23-32).
-* Minocha, A., Reddy, S., & Kilgarriff, A. (2014). Feed Corpus: an ever growing up-to-date corpus. *Proceedings of the 8th Web as Corpus Workshop*, pp. 1-4, ACL SIGWAC.
+* Minocha, A., Reddy, S., & Kilgarriff, A. (2013). Feed Corpus: an ever growing up-to-date corpus. *Proceedings of the 8th Web as Corpus Workshop*, pp. 1-4, ACL SIGWAC.
 * Schäfer, R., Barbaresi, A., & Bildhauer, F. (2014). Focused web corpus crawling. In Proceedings of the 9th Web as Corpus workshop (WAC-9), pp. 9-15.

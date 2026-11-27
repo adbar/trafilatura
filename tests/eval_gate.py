@@ -41,18 +41,10 @@ META_BASELINE_PATH = os.path.join(HERE, "eval_meta_baseline.json")
 # fields with enough annotations, empty gold values are not annotated and skipped
 META_FIELDS = ("title", "author", "date", "tags", "categories")
 
-# one flipped segment moves F1 by ~0.0002; don't fail on measurement noise
-EPSILON = 0.0005
-
 
 def measured_f1(cm: ConfusionMatrix) -> float:
     "F1 at the floors' grain."
     return round(cm.f1(), 4)
-
-
-def regressed(f1: float, floor: float) -> bool:
-    "Below the floor by more than measurement noise."
-    return f1 < floor - EPSILON
 
 
 def load_baseline(path: str | None = None) -> dict[str, Any]:
@@ -146,7 +138,7 @@ def repin_meta(measured: dict[str, float], allow_regression: bool = False) -> in
     drops = [
         f"meta {name}: {measured[name]:.4f} vs floor {floors[name]:.4f}"
         for name in measured
-        if name in floors and regressed(measured[name], floors[name])
+        if name in floors and measured[name] < floors[name]
     ]
     if drops and not allow_regression:
         print("\n".join(["refusing to lower a metadata floor:", *drops]))
@@ -168,7 +160,7 @@ def repin(
     drops = [
         f"{name}: F1={f1:.4f} vs floor {floors[name]:.4f} ({f1 - floors[name]:+.4f})"
         for name, f1 in measured.items()
-        if name in floors and regressed(f1, floors[name])
+        if name in floors and f1 < floors[name]
     ]
 
     baseline.update(pins)
@@ -217,10 +209,10 @@ def main(argv: list[str]) -> int:
     regression = False
     for name, cm in matrices.items():
         f1, floor = measured_f1(cm), baseline["floors"][name]
-        regression = regression or regressed(f1, floor)
+        regression = regression or f1 < floor
         print(f"{name:>9}: F1={f1:.4f} (floor {floor:.4f})")
     for field, value in meta.items():
-        regression = regression or regressed(value, meta_floors[field])
+        regression = regression or value < meta_floors[field]
         print(f"{field:>10}: {value:.4f} (floor {meta_floors[field]:.4f})")
     return int(regression)
 

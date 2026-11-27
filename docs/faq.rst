@@ -33,9 +33,9 @@ Function                         Returns              Speed            When to u
 ===============================  ===================  ===============  ===========================================
 ``extract()``                    ``str | None``        Standard         Default choice — full cascade, best quality
 ``extract_with_metadata()``      ``Document | None``   Standard         Shorthand for ``extract()`` with metadata on
-``bare_extraction()``            ``Document | None``   Standard         Need structured access to fields (title, author, text, etc.)
-``baseline()``                   tuple                 Fast             Quick paragraph extraction, no fallbacks
-``html2txt()``                   ``str``               Very fast        All text including boilerplate — last resort
+``bare_extraction()``            ``Document | None``   Standard         Need structured access to fields (title, author, text, etc.), metadata with ``with_metadata=True``
+``baseline()``                   tuple                 Fast             Quick extraction from embedded JSON, articles or paragraphs, no fallbacks
+``html2txt()``                   ``str``               Very fast        All text including navigation — last resort
 ``extract_metadata()``           ``Document``          Fast             Metadata only, no text extraction
 ===============================  ===================  ===============  ===========================================
 
@@ -115,8 +115,9 @@ How to process many pages efficiently
 
 **Tips:**
 
-- ``fast=True`` skips fallback algorithms — roughly 2× faster.
+- ``fast=True`` skips fallback algorithms, which is faster.
 - Disable ``include_comments`` and ``include_tables`` if you don't need them.
+- ``extract()`` can run in concurrent threads since version 2.4.0. The deduplication cache is then shared between them, see `deduplication <deduplication.html#clearing-the-cache>`_.
 - Call ``reset_caches()`` (``from trafilatura.meta import reset_caches``) between unrelated batches to free memory and avoid stale dedup state.
 - Respect ``SLEEP_TIME`` in ``settings.cfg`` to avoid getting blocked.
 
@@ -171,10 +172,10 @@ Use ``bare_extraction()`` for direct access to structured fields:
     from trafilatura import fetch_url, bare_extraction
 
     html = fetch_url("https://example.org")
-    doc = bare_extraction(html)
+    doc = bare_extraction(html, with_metadata=True)
     data = doc.as_dict()  # {'title': ..., 'author': ..., 'text': ..., ...}
 
-The ``Document`` object has attributes for all extracted fields: ``title``, ``author``, ``date``, ``text``, ``comments``, ``sitename``, ``categories``, ``tags``, and more.
+The ``Document`` object has attributes for all extracted fields: ``title``, ``author``, ``date``, ``text``, ``comments``, ``sitename``, ``categories``, ``tags``, and more. The metadata fields are ``None`` without ``with_metadata=True``, see `Python objects as output <usage-python.html#python-objects-as-output>`_ for the options that also turn it on.
 
 For a DataFrame from multiple URLs, use JSON output:
 
@@ -192,22 +193,19 @@ For a DataFrame from multiple URLs, use JSON output:
 How to handle large or slow pages
 ---------------------------------
 
-Two settings in ``settings.cfg`` control resource limits:
-
-- ``MAX_FILE_SIZE = 20000000``: reject input larger than this (bytes). Lower it to skip bloated pages.
-- ``MAX_TREE_SIZE``: discard documents with more HTML elements than this (empty = no limit). For example, set it to ``50000`` to prevent extraction from running on huge DOM trees.
+``MAX_FILE_SIZE`` in `settings.cfg <settings.html#file-structure>`_ rejects downloads larger than this (bytes), the command-line tool also applies it to local files. Lower it to skip bloated pages. ``extract()`` does not check the size of its input, except compressed input, capped at ``MAX_FILE_SIZE`` once decompressed. Check it before the call if needed.
 
 In Python, pass a custom config:
 
 .. code-block:: python
 
     from copy import deepcopy
-    from trafilatura import extract
+    from trafilatura import fetch_url
     from trafilatura.settings import DEFAULT_CONFIG
 
     config = deepcopy(DEFAULT_CONFIG)
-    config['DEFAULT']['MAX_TREE_SIZE'] = '50000'
-    extract(html, config=config)
+    config['DEFAULT']['MAX_FILE_SIZE'] = '5000000'
+    html = fetch_url("https://example.org", config=config)
 
 Using ``fast=True`` also helps — it skips the fallback cascade, which is where most time is spent on complex pages.
 

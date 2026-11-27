@@ -95,11 +95,11 @@ Text extraction from HTML documents (including downloads) is available in a stra
     # extracting the text content
     > text <- trafilatura$extract(downloaded)
     > cat(text)
-    [1] "This domain is for use in documentation examples without needing permission. Avoid use in operations.\nLearn more"
+    This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.
 
     # extraction with arguments
     > trafilatura$extract(downloaded, output_format="xml", url=url)
-    [1] "<doc fingerprint=\"bcbae6b725d8d3f0\">\n  <main>\n    <p>This domain is for use in documentation examples without needing permission. Avoid use in operations.</p>\n    <p>Learn more</p>\n  </main>\n  <comments/>\n</doc>"
+    [1] "<doc fingerprint=\"32ebc6a635d9d7b0\">\n  <main>\n    <p>This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.</p>\n  </main>\n  <comments/>\n</doc>"
 
 For a full list of arguments see `extraction documentation <corefunctions.html#extraction>`_. R's ``TRUE``/``FALSE`` are passed through transparently as Python booleans, so extraction options work exactly as in Python:
 
