@@ -23,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from eval_common import (
     RUNNERS,
     ConfusionMatrix,
+    canonical,
     load_evaldata,
     norm,
     read_corpus,
@@ -100,14 +101,14 @@ def score(evaldata: dict[str, dict[str, Any]], docs: dict[str, tuple[str, bytes]
 
 
 def meta_values(field: str, value: Any) -> list[str]:
-    "Comparable form: case- and whitespace-insensitive, authors and lists as sorted items."
+    "Comparable form: canonical, case- and whitespace-insensitive, authors and lists as sorted items."
     if not value:
         return []
     if field == "author":
         value = AUTHOR_SPLIT.split("; ".join(value) if isinstance(value, list) else value)
     elif not isinstance(value, list):
         value = [value]
-    return sorted(item for item in (norm(v).casefold() for v in value) if item)
+    return sorted(item for item in (norm(canonical(v)).casefold() for v in value) if item)
 
 
 def meta_scores(evaldata: dict[str, dict[str, Any]], docs: dict[str, tuple[str, bytes]]) -> dict[str, float]:

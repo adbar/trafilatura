@@ -121,6 +121,7 @@ def test_real_meta_baseline_matches_fields():
         ("title", "", []),
         ("title", None, []),
         ("title", " A  Title ", ["a title"]),
+        ("title", "Cafe\u0301", ["caf\u00e9"]),
         ("author", "Jane Doe; John Roe", ["jane doe", "john roe"]),
         ("author", "John Roe, Jane Doe", ["jane doe", "john roe"]),
         ("author", ["Jane Doe", "John Roe"], ["jane doe", "john roe"]),

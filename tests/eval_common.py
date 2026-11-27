@@ -8,10 +8,12 @@ import json
 import os
 import re
 from dataclasses import dataclass
+from datetime import date
 from functools import partial
 from typing import Any, TypedDict
 
 from trafilatura import extract
+from trafilatura.utils import normalize_unicode, remove_control_characters
 
 
 class _ExtractOpts(TypedDict):
@@ -47,6 +49,11 @@ def norm(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def canonical(text: str) -> str:
+    "extract() output form: NFC, non-printable characters dropped except zero-width joiners."
+    return normalize_unicode(remove_control_characters(text))
+
+
 # annotation bound per side, keeps single documents from dominating the scores
 MAX_CHUNKS = 6
 
@@ -62,6 +69,8 @@ def validate(evaldata: Any) -> None:
             chunks = item.get(key)
             if not isinstance(chunks, list) or not all(isinstance(c, str) and c.strip() for c in chunks):
                 raise ValueError(f"{url}: {key!r} must be a list of non-empty strings")
+            if bad := next((c for c in chunks if canonical(c) != c), None):
+                raise ValueError(f"{url}: {key!r} chunk {bad!r} is not in extract() output form")
             if not 0 < len(chunks) <= MAX_CHUNKS:
                 raise ValueError(f"{url}: {key!r} must hold 1 to {MAX_CHUNKS} chunks, found {len(chunks)}")
             if len({norm(c) for c in chunks}) != len(chunks):
@@ -71,6 +80,20 @@ def validate(evaldata: Any) -> None:
         for without in map(norm, item["without"]):
             if any(without in w for w in withs):
                 raise ValueError(f"{url}: {without[:50]!r} in 'without' also occurs inside 'with'")
+        for key in ("title", "author", "tags", "categories"):
+            values = item.get(key)
+            for value in values if isinstance(values, list) else [values]:
+                if isinstance(value, str) and canonical(value) != value:
+                    raise ValueError(f"{url}: {key!r} {value!r} is not in extract() output form")
+        if gold := item.get("date"):
+            try:
+                valid = (
+                    isinstance(gold, str) and bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", gold)) and bool(date.fromisoformat(gold))
+                )
+            except ValueError:
+                valid = False
+            if not valid:
+                raise ValueError(f"{url}: 'date' {gold!r} is not a valid YYYY-MM-DD date")
 
 
 def resolve(here: str, filename: str) -> str | None:
@@ -106,9 +129,9 @@ def read_corpus(here: str, evaldata: dict[str, dict[str, Any]]) -> dict[str, tup
 
 
 def count_item(item: dict[str, Any], result: str | None) -> tuple[int, int, int, int]:
-    "Per-item (tp, fp, fn, tn) via whitespace-normalized substring matching."
+    "Per-item (tp, fp, fn, tn) via substring matching on canonical, whitespace-normalized output."
     if isinstance(result, str):
-        resn = norm(result)
+        resn = norm(canonical(result))
         tp = sum(1 for w in item["with"] if norm(w) in resn)
         fp = sum(1 for w in item["without"] if norm(w) in resn)
     else:

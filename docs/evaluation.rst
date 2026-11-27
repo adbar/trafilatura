@@ -16,6 +16,7 @@ The extraction focuses on the main content, which is usually the part displayed 
 
 .. hint::
     To run the evaluation with the latest data and packages see the `corresponding readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ .
+    To score a change on the external benchmarks AEB, WCXB and WMB, see `Running the tests <tests.html#external-benchmarks>`_.
 
 
 External evaluations

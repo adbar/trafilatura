@@ -1,0 +1,703 @@
+<!doctype html><html lang="ta"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1">
+<meta name="Author" content="G.Chandrasekaran">
+<link rel="shortcut icon" href="https://www.chennailibrary.com/favicon.ico">
+<style media="all">
+@font-face {font-family: "NotoSansTamil-Regular";  src: url("https://www.chennailibrary.com/fonts/NotoSansTamil-Regular.ttf"); font-display: swap;}
+body {margin: 0px auto; text-align:center;font-family: 'NotoSansTamil-Regular', sans-serif; font-size: 13px; line-height:1.8; padding: 10px ;border: 0; background-color:#ffffff;}
+#stickyheader {position: fixed; top: 0;background: #ffffff; width:100%; padding-top: 0px; height:95px;  font-size: 13px; line-height:1.8; z-index:99;}
+#header {position: relative; left:0px; top:105px; width:auto;height:auto; padding:0px;  background-repeat:no-repeat; overflow: visible;}
+#contentlayer {position: relative;  margin-top: 100px; margin-bottom: auto; width: 100%; height: 100%; padding: 0; background: #ffffff; overflow: visible;} 
+#footer {position: relative;  bottom: 0px; clear:both;left:0px;	width:100%; height:auto; padding-left:1px; background: #ffffff; background-repeat:no-repeat; overflow: hidden;}
+/* Two equal columns Layout - start */
+
+.columnone {
+    width: 50%;
+    padding: 0 5px 0 0;
+    float: left;
+}
+
+.columntwo {
+    width: 50%;
+    padding: 0 5px 0 0;
+    float: right;
+}
+
+@media only screen and (max-width: 800px) {
+
+   .columnone {
+        width: 100%;
+        padding-bottom: 5px;
+        float: none;
+    }
+
+    .columntwo {
+        width: 100%;
+        padding-bottom: 5px;
+        float: none;
+    }
+    
+}
+/* Two equal columns Layout - End */
+/* Three columns Layout - Start */
+* { box-sizing: border-box; }
+/* Create three equal columns that floats next to each other */
+.column3 { float: left; width: 33.33%; padding: 10px; height: auto; }
+/* Clear floats after the columns */
+.row3:after { content: ""; display: table; clear: both; }
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+    .column3 {
+        width: 100%;
+    }
+}
+/* Three columns Layout - End */
+
+h1, h2, h3, p, table, li, a:link, a:visited, a:active, a:hover {font-family: 'NotoSansTamil-Regular', sans-serif; font-size: 13px; line-height:1.8; font-style: normal;	font-weight: normal;text-decoration: none;margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0;} a:hover {text-decoration: underline;} 
+.f1, .f1 A:link, .f1 A:visited, .f1 A:hover, .f2, .f2 A:link, .f2 A:visited, .f2 A:hover, .f3, .f3 A:link, .f3 A:visited, .f3 A:hover, .f4, .f4 A:link, .f4 A:visited, .f4 A:hover, .f5, .f5 A:link, .f5 A:visited, .f5 A:hover, .f6, .f6 A:link, .f6 A:visited, .f6 A:hover, .f7, .f7 A:link, .f7 A:visited, .f7 A:hover, .f8, .f8 A:link, .f8 A:visited, .f8 A:hover {font-family: 'NotoSansTamil-Regular', sans-serif; font-size: 13px; line-height:1.8; font-style: normal;font-weight: normal;text-decoration: none;} .f1, .f1 A:link, .f1 A:visited, .f1 A:hover {color: #ffffff;} .f2, .f2 A:link, .f2 A:visited, .f2 A:hover {color: #000000; text-align: justify;} .f3, .f3 A:link, .f3 A:visited, .f3 A:hover {color: #008000;} .f4, .f4 A:link, .f4 A:visited, .f4 A:hover {color: #0000ff;} .f5, .f5 A:link, .f5 A:visited, .f5 A:hover {color: #ff0000;} .f6, .f6 A:link, .f6 A:visited, .f6 A:hover {color: #ff00ff;} .f7, .f7 A:link, .f7 A:visited, .f7 A:hover {color: #696969;} .f8, .f8 A:link, .f8 A:visited, .f8 A:hover {color: #974B00;} 
+.f1 A:hover, .f2 A:hover, .f7 A:hover {text-decoration: underline;} .htbg1 {background-color: #696969;} .htbg2 {background-color: #ffffff;} 
+.underline {text-decoration: underline;}
+.fontsize9 {font-size:9px;}
+.fontsize10 {font-size:10px;}
+.fontsize11 {font-size:11px;}
+.fontsize12 {font-size:12px;}
+.fontsize14 {font-size:14px;}
+.fontsize16 {font-size:16px;}
+.fontsize18 {font-size:18px;}
+.fontsize20 {font-size:20px;}
+.maxwidth100 {max-width: 100%;}
+.w20 {width:20%;}
+.w25 {width:25%;}
+.w30 {width:30%;}
+.w45 {width:45%;}
+.w50 {width:50%;}
+.w70 {width:70%;}
+.w95 {width:95%;}
+.w98 {width:98%;}
+.w99 {width:99%;}
+.w100 {width:100%;}
+.wauto {width:auto;}
+.w15 {width:15px;}
+.w40 {width:40px;}
+.w120 {width:120px;}
+.w140 {width:140px;}
+.w150 {width:150px;}
+.w240 {width:240px;}
+.w300 {width:300px;}
+.w315 {width:315px;}
+.w325 {width:325px;}
+.h10 {height:10px;}
+.h20 {height:20px;}
+.h25 {height:25px;}
+.h30 {height:30px;}
+.h170 {height:170px;}
+.h180 {height:180px;}
+.h200 {height:200px;}
+.h220 {height:220px;}
+.h250 {height:250px;}
+.h270 {height:270px;}
+.h280 {height:280px;}
+.h300 {height:300px;}
+.displayblock {display:block;}
+.displaynone {display:none;}
+.visibilityhidden {visibility:hidden;}
+.floatleft {float:left;}.floatright {float:right;}
+.overflowauto {overflow:auto;}
+.veralignmiddle {vertical-align:middle;}
+.veraligntop {vertical-align:top;}
+.bordercollapse {border-collapse: collapse;}
+.bordertopsolid {border-top-style:solid;}
+.borderbottomsolid {border-bottom-style:solid;}
+.border1solidblack {border: 1px solid black;}
+.border2solidblack {border: 2px solid black;}
+.border1solidcolor {border: 1px solid #696969;}
+.border2solidcolor {border: 2px solid #696969;}
+.borderwidth1 {border-width:1px;}
+.borderradius25 {border-radius: 25px;} 
+.borderspacing2 {border-spacing:2px;}
+.bordercolorgrey {border-color: #808080;}
+.borderradius25 {border-radius: 25px;} 
+.padding1 {padding: 1px;}
+.padding2 {padding: 2px;}
+.padding3 {padding: 3px;}
+.padding5 {padding: 5px;}
+.padding10 {padding: 10px;}
+.paddingright5 {padding-right: 5px;}
+.paddingright10 {padding-right: 10px;}
+.resp-img {max-width: 640px; margin: 0 auto}
+
+.bg1 {background-color: #696969;} 
+.bg2 {background-color: #b7b7b7;} 
+.bg3 {background-color: #eaeaea;} 
+.bg4 {background-color: #ffffff;}
+
+
+.bgblack {background-color: #000000;} 
+.bggreen {background-color: #008000}
+.bgblue {background-color:#0000ff}
+.bgred {background-color: #ff0000}
+.bgpink {background-color: #ff00ff;}
+.bgyellow {background-color: #ffff00;}
+.bgorangedark {background-color: #fa6b1c;}
+.bgorangelight {background-color: #fed9c5;}
+.bgrosedark {background-color: #c400a1;}
+.bgroselight {background-color: #ffd7f8;}
+.bgbluedark {background-color: #1d498c;}
+.bgbluelight {background-color: #c5d8f3;}
+.bgolivegreendark {background-color: #587437;}
+.bgolivegreenlight {background-color: #dce8ce;}
+.bgindigodark {background-color: #4a0094;}
+.bgindigolight {background-color: #e4caff;}
+.bgbrowndark {background-color: #9c3f41;}
+.bgbrownlight {background-color: #edd1d2;}
+.fviolet,  .fviolet A:link, .fviolet A:visited, .fviolet A:hover {color: #4a0094;}
+.fbrown,  .fbrown A:link, .fbrown A:visited, .fbrown A:hover {color: #9c3f41}
+.fblue,  .fblue A:link, .fblue A:visited, .fblue A:hover {color: #1d498c}
+.fyellow,  .fyellow A:link, .fyellow A:visited, .fyellow A:hover {color: #ffff00}
+hr {height: 1px;width: 100%;color: #696969;} 
+.sp {margin-left:5px;margin-right:5px;} 
+.sp1 {margin-left:10px;margin-right:10px;margin-top:10px;margin-bottom:10px;} 
+.sp2 {margin-left:10px;margin-right:10px;}
+.sp3 {margin-left:5px;margin-right:5px;margin-top:5px;margin-bottom:5px;} 
+.sp0 {margin-left:0px;margin-right:0px;margin-top:0px;margin-bottom:0px;} 
+.hidden {display: none; }
+.tableoutline {border-radius: 25px; border: 2px solid #696969; padding: 2px;}
+.tableoutlinesquare {border: 1px solid #696969; padding: 1px;}
+.tableborderthin {border-spacing:1px; padding:1px; background-color: #696969; color:#696969}
+.tablecenter {margin-left: auto; margin-right: auto;}
+.textcenter {text-align:center;}
+.textright {text-align:right;}
+.textleft {text-align:left;}
+.textjustify {text-align:justify;}
+.marginbottom {margin-bottom:3px;}
+.margintop {margin-top:3px;}
+.container {position: relative; overflow: hidden; width: 100%; padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */}
+/* Then style the iframe to fit in the container div with full height and width */
+.responsive-iframe {position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;}
+.tabletopbottom {background: #696969;-webkit-border-top-left-radius: 25px 25px;-webkit-border-top-right-radius: 25px 25px;-webkit-border-bottom-right-radius: 25px 25px;-webkit-border-bottom-left-radius: 25px 25px;-moz-border-radius-topleft: 25px 25px;-moz-border-radius-topright: 25px 25px;-moz-border-radius-bottomright: 25px 25px;-moz-border-radius-bottomleft: 25px 15px;border-top-left-radius: 25px 25px;border-top-right-radius: 25px 25px;border-bottom-right-radius: 25px 25px;border-bottom-left-radius: 25px 25px;}
+.tabletopbottomlight {background: #b7b7b7;-webkit-border-top-left-radius: 15px 15px;-webkit-border-top-right-radius: 15px 15px;-webkit-border-bottom-right-radius: 15px 15px;-webkit-border-bottom-left-radius: 15px 15px;-moz-border-radius-topleft: 15px 15px;-moz-border-radius-topright: 15px 15px;-moz-border-radius-bottomright: 15px 15px;-moz-border-radius-bottomleft: 15px 15px;border-top-left-radius: 15px 15px;border-top-right-radius: 15px 15px;border-bottom-right-radius: 15px 15px;border-bottom-left-radius: 15px 15px;}
+.tabletop {background: #696969;-webkit-border-top-left-radius: 15px 15px;-webkit-border-top-right-radius: 15px 15px;-webkit-border-bottom-right-radius: 0px;-webkit-border-bottom-left-radius: 0px;-moz-border-radius-topleft: 15px 15px;-moz-border-radius-topright: 15px 15px;-moz-border-radius-bottomright: 0px;-moz-border-radius-bottomleft: 0px;border-top-left-radius: 15px 15px;border-top-right-radius: 15px 15px;border-bottom-right-radius: 0px;border-bottom-left-radius: 0px;}
+.tabletopbottomleft {background: #696969;-webkit-border-top-left-radius: 15px 15px;-webkit-border-top-right-radius: 0px;-webkit-border-bottom-right-radius: 0px;-webkit-border-bottom-left-radius: 15px 15px;-moz-border-radius-topleft: 15px 15px;-moz-border-radius-topright: 0px;-moz-border-radius-bottomright: 0px;-moz-border-radius-bottomleft: 15px 15px;border-top-left-radius: 15px 15px;border-top-right-radius: 0px;border-bottom-right-radius: 0px;border-bottom-left-radius: 15px 15px;}
+.tabletopbottomright {background: #b7b7b7;-webkit-border-top-left-radius: 0px;-webkit-border-top-right-radius: 15px 15px;-webkit-border-bottom-right-radius: 15px 15px;-webkit-border-bottom-left-radius: 0px;-moz-border-radius-topleft: 0px;-moz-border-radius-topright: 15px 15px;-moz-border-radius-bottomright: 15px 15px;-moz-border-radius-bottomleft: 0px;border-top-left-radius: 0px;border-top-right-radius: 15px 15px;border-bottom-right-radius: 15px 15px;border-bottom-left-radius: 0px;}
+.tablebottom {background: #b7b7b7;-webkit-border-top-left-radius: 0px;-webkit-border-top-right-radius: 0px;-webkit-border-bottom-right-radius: 15px 15px;-webkit-border-bottom-left-radius: 15px 15px;-moz-border-radius-topleft: 0px;-moz-border-radius-topright: 0px;-moz-border-radius-bottomright: 15px 15px;-moz-border-radius-bottomleft: 15px 15px;border-top-left-radius: 0px;border-top-right-radius: 0px;border-bottom-right-radius: 15px 15px;border-bottom-left-radius: 15px 15px;}
+.tablebottomlight {background: #eaeaea;-webkit-border-top-left-radius: 0px;-webkit-border-top-right-radius: 0px;-webkit-border-bottom-right-radius: 15px 15px;-webkit-border-bottom-left-radius: 15px 15px;-moz-border-radius-topleft: 0px;-moz-border-radius-topright: 0px;-moz-border-radius-bottomright: 15px 15px;-moz-border-radius-bottomleft: 15px 15px;border-top-left-radius: 0px;border-top-right-radius: 0px;border-bottom-right-radius: 15px 15px;border-bottom-left-radius: 15px 15px;}
+.tablebottomleft {background: #b7b7b7;-webkit-border-top-left-radius: 0px;-webkit-border-top-right-radius: 0px;-webkit-border-bottom-right-radius: 0px;-webkit-border-bottom-left-radius: 15px 15px;-moz-border-radius-topleft: 0px;-moz-border-radius-topright: 0px;-moz-border-radius-bottomright: 0px;-moz-border-radius-bottomleft: 15px 15px;border-top-left-radius: 0px;border-top-right-radius: 0px;border-bottom-right-radius: 0px;border-bottom-left-radius: 15px 15px;}
+.tablebottomright {background: #b7b7b7;-webkit-border-top-left-radius: 0px;-webkit-border-top-right-radius: 0px;-webkit-border-bottom-right-radius: 15px 15px;-webkit-border-bottom-left-radius: 0px;-moz-border-radius-topleft: 0px;-moz-border-radius-topright: 0px;-moz-border-radius-bottomright: 15px 15px;-moz-border-radius-bottomleft: 0px;border-top-left-radius: 0px;border-top-right-radius: 0px;border-bottom-right-radius: 15px 15px;border-bottom-left-radius: 0px;}
+img {max-width: 100%; height: auto; margin-left:5px;margin-right:5px;margin-top:5px;margin-bottom:5px;}
+.smallimg {max-width: 400px; margin: 0 auto}
+.videoWrapper {position: relative; padding-bottom: 56.25%; /* 16:9 */ padding-top: 25px; height: 0;}
+.videoWrapper iframe {position: absolute; top: 0;	left: 0;	width: 100%;	height: 100%;}
+
+
+</style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4ETQG8RB14"></script>
+<script>  window.dataLayer = window.dataLayer || [];  function gtag(){dataLayer.push(arguments);}  gtag('js', new Date());  gtag('config', 'G-4ETQG8RB14');</script>
+<!-- Google Analytics - End -->
+
+
+<title>மாஸ்டர் மெதுவடை - Master Medhuvadai -  சிறுகதைகள் - Short Stories - அமரர் கல்கியின் படைப்புகள் - Works of Amarar Kalki - சென்னை நூலகம் - ChennaiLibrary.com</title>
+
+<meta name="description" content="மாஸ்டர் மெதுவடை - Master Medhuvadai -  சிறுகதைகள் - Short Stories - அமரர் கல்கியின் படைப்புகள் - Works of Amarar Kalki - சென்னை நூலகம் - ChennaiLibrary.com">
+<meta name="keywords" content="மாஸ்டர் மெதுவடை, Master Medhuvadai, சிறுகதைகள், Short Stories, அமரர் கல்கியின் படைப்புகள், Works of Amarar Kalki, சென்னை நூலகம், ChennaiLibrary.com">
+
+<meta property="og:url" content="http://www.chennailibrary.com/kalki/mis/mastermedhuvadai.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="மாஸ்டர் மெதுவடை - Master Medhuvadai -  சிறுகதைகள் - Short Stories - அமரர் கல்கியின் படைப்புகள் - Works of Amarar Kalki - சென்னை நூலகம் - ChennaiLibrary.com">
+<meta property="og:image" content="http://www.chennailibrary.com/images/cllogo.gif">
+<meta property="og:image:width" content="200">
+<meta property="og:image:height" content="26">
+<meta property="og:site_name" content="சென்னை நூலகம்">
+<meta property="og:description" content="மாஸ்டர் மெதுவடை - Master Medhuvadai -  சிறுகதைகள் - Short Stories - அமரர் கல்கியின் படைப்புகள் - Works of Amarar Kalki - சென்னை நூலகம் - ChennaiLibrary.com">
+
+<meta name="twitter:title" content="மாஸ்டர் மெதுவடை - Master Medhuvadai -  சிறுகதைகள் - Short Stories - அமரர் கல்கியின் படைப்புகள் - Works of Amarar Kalki - சென்னை நூலகம் - ChennaiLibrary.com">
+<meta name="twitter:description" content="மாஸ்டர் மெதுவடை - Master Medhuvadai -  சிறுகதைகள் - Short Stories - அமரர் கல்கியின் படைப்புகள் - Works of Amarar Kalki - சென்னை நூலகம் - ChennaiLibrary.com">
+<meta name="twitter:image" content="http://www.chennailibrary.com/images/cllogo.gif">
+<meta name="twitter:card" content="summary">
+
+</head><body>
+<div id=stickyheader><table class='tablecenter borderwidth0 w100 h60'><tr><td class='veraligntop'><a href=https://www.chennailibrary.com/index.html target=_top><span class='textcenter'><img alt="சென்னை நூலகம்" class="smallimg textcenter" src="https://www.chennailibrary.com/images/logo.gif" width=370 height=90></span></a></td></tr></table></div>
+<div id=header><div class="header"><!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-15278939-1"></script><script>  window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-15278939-1'); </script>
+<table class='tablecenter w100 h60 bg4 bordertopsolid borderwidth1 bordercolorgrey'><tr><td class='textcenter veraligntop'><div class='f2 textcenter'><a target=_top href=https://www.chennailibrary.com/index.html><span class='underline fontsize11'><strong>முகப்பு</strong></span></a>&nbsp;|&nbsp;<a target=_top href=https://www.chennailibrary.com/ebooks/ebooks.html><span class='f2 underline fontsize11'><strong>நூல்கள் அட்டவணை</strong></span></a>&nbsp;|&nbsp;<a target=_top href=https://www.chennailibrary.com/siteinfo/donate.html><span class='f4 underline fontsize11'><strong>நன்கொடை அளிக்க!</strong></span></a>&nbsp;|&nbsp;<a target=_top href=https://www.chennailibrary.com/members/members.html><span class='f2 underline fontsize11'><strong>உறுப்பினர் பக்கம்</strong></span></a>&nbsp;|&nbsp;<a target=_top href=https://www.chennailibrary.com/patron/patron.html><span class='f2 underline fontsize11'><strong>புரவலர் பக்கம்</strong></span></a>&nbsp;|&nbsp;<a target=_top href=https://www.chennailibrary.com/publishers/publishers.html><span class='f2 underline fontsize11'><strong>பதிப்பாளர்கள்</strong></span></a>&nbsp;|&nbsp;<a target=_top href=https://www.chennailibrary.com/siteinfo/aboutus.html><span class='f2 underline fontsize11'><strong>எங்களைப் பற்றி</strong></span></a>&nbsp;|&nbsp;<a target=_top href=https://www.chennailibrary.com/siteinfo/contactus.html><span class='f2 underline fontsize11'><strong>தொடர்புக்கு</strong></span></a><!-- <a href=https://www.chennailibrary.com/login.php target=_top><span class='f2 underline fontsize11'><strong>உள்நுழை (Log In)</strong></span></a>&nbsp;|&nbsp;<a href=https://www.chennailibrary.com/logout.php target=_top><span class='f2 underline fontsize11'><strong>வெளியேறு (Log Out)</strong></span></a> --></div></td></tr></table>
+
+<table class='tablecenter borderwidth0 w100 h60 bg4 borderwidth1 bordertopsolid borderbottomsolid bordercolorgrey'><tr><td class='veralignmiddle bg4 w100 textcenter hauto'><div class='f2 textcenter'><a href=https://www.agalvilakku.com/index.html target=_blank><span class='fontsize9'><strong>அகல்விளக்கு.காம்</strong></span></a> | <a href=https://www.attavanai.com/index.html target=_blank><span class='fontsize9'><strong>அட்டவணை.காம்</strong></span></a> | <a href=https://www.chennainetwork.com/index.html target=_blank><span class='fontsize9'><strong>சென்னைநெட்வொர்க்.காம்</strong></span></a> | <a href=https://www.triptraveltour.com/index.html target=_blank><span class='fontsize9'><strong>டிரிப்டிராவல்டூர்.காம்</strong></span></a> | <a href=https://www.tamilagarathi.com/index.html target=_blank><span class='fontsize9'><strong>தமிழ்அகராதி.காம்</strong></span></a> | <a href=https://www.tamilthiraiulagam.com/index.html target=_blank><span class='fontsize9'><strong>தமிழ்திரைஉலகம்.காம்</strong></span></a> | <a href=https://www.deviscorner.com target=_blank><span class='fontsize9'><strong>தேவிஸ்கார்னர்.காம்</strong></span></a> | <a href=https://www.dharanish.in/index.html target=_blank><span class='fontsize9'><strong>தரணிஷ்.இன்</strong></span></a> | <a href=https://www.dharanishmart.com/index.html target=_blank><span class='fontsize9'><strong>தரணிஷ்மார்ட்.காம்</strong></span></a> | <a href=https://www.gowthampathippagam.com/index.html target=_blank><span class='fontsize9'><strong>கௌதம்பதிப்பகம்.காம்</strong></span></a></div></td></tr></table>
+
+<table class='tablecenter tableoutline bg3 w99 h20'><tr><td class='textcenter veralignmiddle'><div class='f2 textcenter'><a href=https://www.chennainetwork.com/index.html target=_top><span class='f5 underline'><strong>சென்னை நெட்வொர்க் (www.chennainetwork.com)</strong></span></a><strong> - தற்போதைய வெளியீடு : </strong></a>
+<a href=https://www.chennainetwork.com/animals/brahminykite.html target=_blank><span class=f4><strong>செம்பருந்து (Brahminy Kite)</strong></span></a></div></td></tr></table><br>
+
+<table class='tablecenter tableoutline bg3 w99 h20'><tr><td class='textcenter veralignmiddle'><div class='f2 textcenter'><a href=https://www.agalvilakku.com/index.html target=_top><span class='f5 underline'><strong>அகல் விளக்கு (www.agalvilakku.com)</strong></span></a><strong> - தற்போதைய வெளியீடு : </strong></a>
+<a href=https://www.agalvilakku.com/temples/muruga/kumaragiri.html target=_blank><span class=f4><strong>குமரகிரி அருள்மிகு தண்டாயுதபாணி கோவில்</strong></span></a></div></td></tr></table><br>
+
+<!-- <table class='tablecenter tableoutline bg3 w99 h20'><tr><td class='textcenter veralignmiddle'><div class='f2 textcenter'><a href=https://www.dharanishmart.com/index.html target=_blank><span class='f5 fontsize16 underline'><strong>தரணிஷ் மார்ட் (www.dharanishmart.com)</strong></span></a><span class='f3 fontsize16'><strong> - தற்போது 20% தள்ளுபடி விலையில்  : </strong></span><br><a href=https://www.dharanishmart.com/books/publishers/disco/disco00052.html target=_blank><span class='f4 underline'><strong>நா. முத்துக்குமார் கவிதைகள்</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/finge/finge00002.html target=_blank><span class='f4 underline'><strong>உங்கள் ஆழ்மனதின் அற்புத சக்தி</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/manju/manju00033.html target=_blank><span class='f4 underline'><strong>சிந்தனையை ஒருமுகப்படுத்தி செல்வத்தைக் குவியுங்கள்</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/manju/manju00068.html target=_blank><span class='f4 underline'><strong>ரசவாதி</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/manju/manju00032.html target=_blank><span class='f4 underline'><strong>இலக்குகள்!</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/manju/manju00013.html target=_blank><span class='f4 underline'><strong>அதிசயங்களை நிகழ்த்தும் அதிகாலை</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/manju/manju00005.html target=_blank><span class='f4 underline'><strong>காலை எழுந்தவுடன் தவளை!</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/manju/manju00004.html target=_blank><span class='f4 underline'><strong>ஒரே ஒரு விஷயம்</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/manju/manju00087.html target=_blank><span class='f4 underline'><strong>கூட்டு விளைவு</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/manju/manju00031.html target=_blank><span class='f4 underline'><strong>சுயஒழுங்கின் வியத்தகு சக்தி</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/gowth/gowth00093.html target=_blank><span class='f4 underline'><strong>கடலும் கிழவனும்</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/gowth/gowth00088.html target=_blank><span class='f4 underline'><strong>வெண்ணிற இரவுகள்</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/dhara/dhara00043.html target=_blank><span class='f4 underline'><strong>சேற்றில் மனிதர்கள்</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/dhara/dhara00014.html target=_blank><span class='f4 underline'><strong>கள்வனின் காதலி</strong></span></a>&nbsp;|&nbsp;<a href=https://www.dharanishmart.com/books/publishers/gowth/gowth00037.html target=_blank><span class='f4 underline'><strong>பொய்மான் கரடு</strong></span></a>&nbsp;|&nbsp;</div></td></tr></table><br>
+
+
+
+<table class='tablecenter tableoutline bg3 w99 h20'><tr><td class='textcenter veralignmiddle'><div class='f2 textcenter'><a href=https://www.tamilthiraiulagam.com/index.html target=_top><span class='f5 underline'><strong>தமிழ் திரை உலகம் (www.tamilthiraiulagam.com)</strong></span></a><strong> - தற்போதைய வெளியீடு : </strong></a>
+<a href=https://www.tamilthiraiulagam.com/films/1983/ilamaikaalangal.html target=_blank><span class=f4><strong>ஈரமான ரோஜாவே - இளமைக் காலங்கள் (1983)</strong></span></a></div></td></tr></table><br>
+
+<table class='tablecenter tableoutline bg3 w99 h20'><tr><td class='textcenter veralignmiddle'><div class='f2 textcenter'><span class='f5 underline'><strong>தேவிஸ் கார்னர் (www.deviscorner.com)</strong></span></a><strong> - தற்போதைய வெளியீடு : </strong><a href=https://www.deviscorner.com/fruits/fig.html target=_blank><span class='f4 underline'><strong>அத்திப் பழம் - Fig</strong></span></a></div></td></tr></table><br>
+
+<table class='tablecenter tableoutline bg3 w99 h20'><tr><td class='textcenter veralignmiddle'><div class='f2 textcenter'><a href=https://www.chennailibrary.com/index.html target=_blank><span class='f5 underline'><strong>சென்னை நூலகம் (www.chennailibrary.com)</strong></span></a><strong> - தற்போதைய வெளியீடு : </strong><a href=https://www.chennailibrary.com/venugopalan/maruthiyinkaadhal/maruthiyinkaadhal27.html target=_blank><span class='f4 underline'><strong>மருதியின் காதல் - 27. உறையூர் முற்றுகை</strong></span></a></div></td></tr></table><br> -->
+
+
+<table class='tablecenter w100 h20 borderwidth1 bordercolor bg4'><tr><td class='textcenter veralignmiddle'><div class='f2 fontsize14 textcenter'><a target=_blank href=https://www.facebook.com/gcsekaran><img alt="tamil thirai ulagam"  src="https://www.chennailibrary.com/images/facebook.jpg" width=180 height=50></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=https://chat.whatsapp.com/EephGJ676HP7k4bGcZCZS7?mode=ac_c target=_blank><img alt="tamil thirai ulagam"  src="https://www.chennailibrary.com/images/whatsapp.jpg" width=180 height=50></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=https://www.instagram.com/gcsekaran1 target=_blank><img alt="tamil thirai ulagam"  src="https://www.chennailibrary.com/images/instagram.jpg" width=180 height=50></a></div></td></tr></table>
+
+<table class='tablecenter w100 h20 bordertopsolid borderbottomsolid borderwidth1 bordercolor'><tr><td class='textcenter veralignmiddle'><div class='f2 textcenter'>
+<a href=https://www.chennailibrary.com/kalki/kalki.html><span class='fontsize11'><strong>கல்கி கிருஷ்ணமூர்த்தி</strong></span></a> | <a href=https://www.chennailibrary.com/parthasarathy/parthasarathy.html target=_top><span class='fontsize11'><strong>தீபம் நா. பார்த்தசாரதி</strong></span></a> | <a href=https://www.chennailibrary.com/rajamkrishnan/rajamkrishnan.html target=_top><span class='fontsize11'><strong>ராஜம் கிருஷ்ணன்</strong></span></a> | <a href=https://www.chennailibrary.com/samuthiram/samuthiram.html target=_top><span class='fontsize11'><strong>சு. சமுத்திரம்</strong></span></a> | <a href=https://www.chennailibrary.com/ppn/ppn.html target=_top><span class='fontsize11'><strong>புதுமைப்பித்தன்</strong></span></a> | <a href=https://www.chennailibrary.com/annadurai/annadurai.html target=_top><span class='fontsize11'><strong>அறிஞர் அண்ணா</strong></span></a> | <a href=https://www.chennailibrary.com/bharathiyar/bharathiyar.html target=_top><span class='fontsize11'><strong>பாரதியார்</strong></span></a> | <a href=https://www.chennailibrary.com/bharathidasan/bharathidasan.html target=_top><span class='fontsize11'><strong>பாரதிதாசன்</strong></span></a> | <a href=https://www.chennailibrary.com/muvaa/muvaa.html target=_top><span class='fontsize11'><strong>மு.வரதராசனார்</strong></span></a> | <a href=https://www.chennailibrary.com/pitchamoorthy/pitchamoorthy.html target=_top><span class='fontsize11'><strong>ந.பிச்சமூர்த்தி</strong></span></a> | <a href=https://www.chennailibrary.com/ramamirtham/ramamirtham.html target=_top><span class='fontsize11'><strong>லா.ச.ராமாமிருதம்</strong></span></a> | <a href=https://www.chennailibrary.com/thanjaiprakash/thanjaiprakash.html target=_top><span class='fontsize11'><strong>தஞ்சை பிரகாஷ்</strong></span></a> | <a href=https://www.chennailibrary.com/singaram/singaram.html target=_top><span class='fontsize11'><strong>ப. சிங்காரம்</strong></span></a> | <a href=https://www.chennailibrary.com/sankararam/sankararam.html target=_top><span class='fontsize11'><strong>சங்கரராம்</strong></span></a> | <a href=https://www.chennailibrary.com/ragunathan/ragunathan.html target=_top><span class='fontsize11'><strong>தொ.மு.சி. ரகுநாதன்</strong></span></a> | <a href=https://www.chennailibrary.com/vindhan/vindhan.html target=_top><span class='fontsize11'><strong>விந்தன்</strong></span></a> | <a href=https://www.chennailibrary.com/shanmugasundaram/shanmugasundaram.html target=_top><span class='fontsize11'><strong>ஆர். சண்முகசுந்தரம்</strong></span></a> | <a href=https://www.chennailibrary.com/saavi/saavi.html target=_top><span class='fontsize11'><strong>சாவி</strong></span></a> | <a href=https://www.chennailibrary.com/kanaasubramanyam/kanaasubramanyam.html target=_top><span class='fontsize11'><strong>க. நா.சுப்ரமண்யம்</strong></span></a> | <a href=https://www.chennailibrary.com/gopalan/gopalan.html target=_top><span class='fontsize11'><strong>கி.ரா.கோபாலன்</strong></span></a> | <a href=https://www.chennailibrary.com/gandhi/gandhi.html target=_top><span class='fontsize11'><strong>மகாத்மா காந்தி</strong></span></a> | <a href=https://www.chennailibrary.com/laxminarayanan/laxminarayanan.html target=_top><span class='fontsize11'><strong>ய. லட்சுமி நாராயணன்</strong></span></a> | <a href=https://www.chennailibrary.com/panasaikannabiraan/panasaikannabiraan.html target=_top><span class='fontsize11'><strong>பனசை கண்ணபிரான்</strong></span></a> | <a href=https://www.chennailibrary.com/maayaavi/maayaavi.html target=_top><span class='fontsize11'><strong>மாயாவி</strong></span></a> | <a href=https://www.chennailibrary.com/venugopalan/venugopalan.html target=_top><span class='fontsize11'><strong>வ. வேணுகோபாலன்</strong></span></a> | <a href=https://www.chennailibrary.com/gowrirajan/gowrirajan.html target=_top><span class='fontsize11'><strong>கௌரிராஜன்</strong></span></a> | <a href=https://www.chennailibrary.com/deivasigamani/deivasigamani.html target=_top><span class='fontsize11'><strong>என்.தெய்வசிகாமணி</strong></span></a> | <a href=https://www.chennailibrary.com/geethadeivasigamani/geethadeivasigamani.html target=_top><span class='fontsize11'><strong>கீதா தெய்வசிகாமணி</strong></span></a> | <a href=https://www.chennailibrary.com/slakshmisubramanian/slakshmisubramanian.html target=_top><span class='fontsize11'><strong>எஸ்.லட்சுமி சுப்பிரமணியம்</strong></span></a> | <a href=https://www.chennailibrary.com/kabilan/kabilan.html target=_top><span class='fontsize11'><strong>வே. கபிலன்</strong></span></a> | <a href=https://www.chennailibrary.com/vivekanandar/vivekanandar.html target=_top><span class='fontsize11'><strong>விவேகானந்தர்</strong></span></a> | <a href=https://www.chennailibrary.com/gchandrasekaran/gchandrasekaran.html target=_top><span class='fontsize11'><strong>கோ.சந்திரசேகரன்</strong></span></a></div></td></tr></table>
+<table class='tablecenter w100 h20 borderbottomsolid borderwidth1 bordercolor'><tr><td class='textcenter veralignmiddle'><div class='f2 textcenter'><a href=https://www.chennailibrary.com/ettuthogai/ettuthogai.html target=_top><span class='fontsize11'><strong>எட்டுத் தொகை</strong></span></a> | <a href=https://www.chennailibrary.com/pathuppattu/pathuppattu.html target=_top><span class='fontsize11'><strong>பத்துப்பாட்டு</strong></span></a> | <a href=https://www.chennailibrary.com/pathinenkeelkanakku/pathinenkeelkanakku.html target=_top><span class='fontsize11'><strong>பதினெண் கீழ்க்கணக்கு</strong></span></a> | <a href=https://www.chennailibrary.com/iymperumkappiangal/iymperumkappiangal.html target=_top><span class='fontsize11'><strong>ஐம்பெருங்காப்பியங்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/iynchirukappiangal/iynchirukappiangal.html target=_top><span class='fontsize11'><strong>ஐஞ்சிறு காப்பியங்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/vaishnava/vaishnava.html target=_top><span class='fontsize11'><strong>வைஷ்ணவ நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/saiva/saiva.html target=_top><span class='fontsize11'><strong>சைவ சித்தாந்தம்</strong></span></a> | <a href=https://www.chennailibrary.com/meikandasathirangal/meikandasathirangal.html target=_top><span class='fontsize11'><strong>மெய்கண்ட சாத்திரங்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/pandarasathirangal/pandarasathirangal.html target=_top><span class='fontsize11'><strong>பண்டார சாத்திரங்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/siddhar/siddhar.html target=_top><span class='fontsize11'><strong>சித்தர் நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/kambar/kambar.html target=_top><span class='fontsize11'><strong>கம்பர்</strong></span></a> | <a href=https://www.chennailibrary.com/avvai/avvai.html target=_top><span class='fontsize11'><strong>ஔவையார்</strong></span></a> | <a href=https://www.chennailibrary.com/kumarakuruparar/kumarakuruparar.html target=_top><span class='fontsize11'><strong>ஸ்ரீ குமரகுருபரர்</strong></span></a> | <a href=https://www.chennailibrary.com/thirugnanasambandar/thirugnanasambandar.html target=_top><span class='fontsize11'><strong>திருஞானசம்பந்தர்</strong></span></a> | <a href=https://www.chennailibrary.com/thirikoodarasappar/thirikoodarasappar.html target=_top><span class='fontsize11'><strong>திரிகூடராசப்பர்</strong></span></a> | <a href=https://www.chennailibrary.com/ramanar/ramanar.html target=_top><span class='fontsize11'><strong>ரமண மகரிஷி</strong></span></a> | <a href=https://www.chennailibrary.com/muruga/muruga.html target=_top><span class='fontsize11'><strong>முருக பக்தி நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/moral/moral.html target=_top><span class='fontsize11'><strong>நீதி நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/grammar/grammar.html target=_top><span class='fontsize11'><strong>இலக்கண நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/nigandu/nigandu.html target=_top><span class='fontsize11'><strong>நிகண்டு நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/siledai/siledai.html target=_top><span class='fontsize11'><strong>சிலேடை நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/ula/ula.html target=_top><span class='fontsize11'><strong>உலா நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/kuram/kuram.html target=_top><span class='fontsize11'><strong>குறம் நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/pallu/pallu.html target=_top><span class='fontsize11'><strong>பள்ளு நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/anthadhi/anthadhi.html target=_top><span class='fontsize11'><strong>அந்தாதி நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/kummi/kummi.html target=_top><span class='fontsize11'><strong>கும்மி நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/irattaimanimalai/irattaimanimalai.html target=_top><span class='fontsize11'><strong>இரட்டைமணிமாலை நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/pillaitamil/pillaitamil.html target=_top><span class='fontsize11'><strong>பிள்ளைத்தமிழ் நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/nanmanimalai/nanmanimalai.html target=_top><span class='fontsize11'><strong>நான்மணிமாலை நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/thoothu/thoothu.html target=_top><span class='fontsize11'><strong>தூது நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/kovai/kovai.html target=_top><span class='fontsize11'><strong>கோவை நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/kalambagam/kalambagam.html target=_top><span class='fontsize11'><strong>கலம்பகம் நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/sadhagam/sadhagam.html target=_top><span class='fontsize11'><strong>சதகம் நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/mis/otherbooks.html target=_top><span class='fontsize11'><strong>பிற நூல்கள்</strong></span></a> | <a href=https://www.chennailibrary.com/meditation/meditation.html target=_blank><span class='fontsize11'><strong>தினசரி தியானம்</strong></span></a></div></td></tr></table><br>
+
+<table class='tablecenter tableoutline bg3 w99 h20'><tr><td class='textcenter veralignmiddle'><div class='f2 textcenter'><a href=https://www.chennailibrary.com/index.html target=_blank><span class='f5 underline'><strong>சென்னை நூலகம் (www.chennailibrary.com)</strong></span></a><strong> - தற்போதைய வெளியீடு : </strong><a href=https://www.chennailibrary.com/venugopalan/maruthiyinkaadhal/maruthiyinkaadhal27.html target=_blank><span class='f4 underline'><strong>மருதியின் காதல் - 27. உறையூர் முற்றுகை</strong></span></a></div></td></tr></table><br>
+</div></div>
+<div id='contentlayer'>
+
+<table class='tabletopbottom tablecenter w99 hauto bg2'><tr><td class='veralignmiddle w100 textcenter h25'><div class='f1 textcenter'><a href=https://www.chennailibrary.com/kalki/kalki.html target=_top><strong>கல்கி (இரா. கிருஷ்ணமூர்த்தி) நூல்கள்</strong></a></div></td></tr></table>
+
+<table class='tablecenter w98'><tr><td class='textleft veraligntop w100'><div class='f2 textjustify'><br>
+
+
+<div class='f6 textcenter'><span class='fontsize16'><strong>மாஸ்டர் மெதுவடை</strong></span></div><br>
+
+<div class='f5 textcenter'>1</div><br>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;அவருடைய உண்மைப் பெயர் அப்பாஸாமி என்பது 
+            அநேகம் பேருக்குத் தெரியாது. டிராமா நோட்டிஸுகளிலெல்லாம், <br>
+            <br>
+            <div class=f4> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"மாஸ்டர் மெதுவடை தோன்றுகிறார், 
+              உலகமெங்கும் புகழ்பெற்ற தென்னிந்திய ஹாஸ்ய நடிகர் ஜீரணமணி..."<br>
+              <br>
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;என்றுதான் வெளியிட்டு வந்தார்கள். இப்போது 
+            ஷுட் செய்யப்பட்டு வந்த தமிழ் டாக்கியின் பூர்வாங்க விளம்பரங்களிலும் 
+            அதே பெயர் தான் காணப்பட்டது. ஒரு விளம்பரம் "மெதுவடை சுடப்படுகிறது!" 
+            என்று மணிபிரவாள சிலேடையில் ஆரம்பமாயிற்று. இந்த சிலேடைக்கு வியாக்யானம் 
+            தேவை என்று தோன்றுகிறது. சாதாரணமாய், இங்கிலீஷில் டாக்கி படம் பிடிப்பதைக் 
+            குறிப்பிடும்போது, 'ஷுட் ஆகிறது', 'ஷாட் எடுக்கிறார்கள்' என்று குறிப்பிடுவது 
+            உண்டு. 'ஷுட்' என்பதற்கு 'சுடு' என்றும் ஒரு அர்த்தம் இருக்கிறதல்லவா? 
+            அந்தத் துப்பாக்கி சுடுகையை வடைசுடுவதற்கு உபயோகப்படுத்தி மேற்படி சிலேடையைப் 
+            போட்டவர், அந்த டாக்கி கம்பெனியார் மாதம் 371/2 ரூபாய் சம்பளத்தில் அமர்த்தியிருந்த 
+            கலியுகக் காளமேகக் கவிச் சக்கரவர்த்தி, பழனி பிரஸாதராவ். (அந்தப் பழைய 
+            காளமேகன் திரேதாயுகத்தைச் சேர்ந்தவனென்பது அவர் எண்ணம்.)<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;மாஸ்டர் மெதுவடை நெடுங்காலமாகத் தென்னிந்திய 
+            நாடக மேடைகளில் தமது விகட சக்ராதிபத்தியத்தை நிலைநிறுத்தி வந்தவர். பச்சை 
+            சிருங்காரப் பேச்சினால்தான் அவர் அவ்வளவு பிரசித்தியடைந்தது. மேடையில் 
+            வந்து நிற்பார்; இரண்டு தடவை கண்ணைச் சிமிட்டுவார். சபையில் கிளுகிளு 
+            வென்று சிரிப்பு அலை பரவும்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"மாடி மேல் மாடி!" என்பார். பின்னால் 
+            வரப் போவதை அறிந்து சபையோர், 'கலீர்' என்று சிரிக்கத் தொடங்குவார்கள்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"அதன் மேலே ஒரு லேடி!" என்பார். பிறகு, 
+            சபையோரின் குதூகலத்தை யாரால் கட்டிப் பிடிக்க முடியும்? "அவளும் நானும் 
+            ஜோடி!" என்றாரோ இல்லையோ, கொட்டகைச் சொந்தக்காரன் வயிற்றில் நெருப்புத்தான். 
+            கொட்டகை இடிந்து விழும் படியான சிரிப்பும் ஆரவாரமும் ஏற்படும்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;அவருடைய ஹாஸ்யத்தில் நான் ஒரு கோடிதான் 
+            காண்பித்திருக்கிறேன். இன்னும் வாடி, மோடி, கூடி என்று மேலே மேலே போய்க் 
+            கொண்டிருப்பார். அவருடன் தொடர்ந்து போவது என்னால் முடியாத காரியமாகையால், 
+            அவருக்கு "மெதுவடை" என்று பெயர்வந்த காரணத்தைப் பற்றி மட்டும் சொல்லி 
+            விடுகிறேன். ஒரு தடவை அவர் நாடக மேடையில், முழுசு முழுசாக இருபத்தெட்டு 
+            மெதுவடைகளை வாயசைக்காமல் விழுங்கினாராம்! அப்புறம் ஆறு மாத காலம் அவர் 
+            ஒவ்வொரு நாடகத்திலும் இருபத்தேழுவடைகள் தின்னவேண்டியிருந்ததாம். அந்தக் 
+            காட்சியை நடத்திக் காட்டினாலொழிய, ஜனங்கள் கலவரம் செய்யவும், டிக்கெட் 
+            பணத்தை வாபஸ் கேட்கவும் ஆரம்பித்து விட்டார்களாம். இதிலிருந்து அவருக்கு 
+            "மாஸ்டர் மெதுவடை" என்ற பெயர் ஏற்பட்டு நிலைத்து விட்டது.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;இப்பேர்ப்பட்ட ஹாஸ்ய நடிக சக்கரவர்த்தி 
+            இந்தியாவின் சார்லி சாப்ளின் - தமிழ் நாட்டு ஹாரல்ட்லாயிட் தமிழ் டாக்கி 
+            முதலாளிகளின் வலையில் விழாமல் வெகு காலம் தப்ப முடியுமா? ஒரு நாள் தலை 
+            குப்புற விழுந்தார்; விழுந்ததோடில்லாமல் கழுத்தையும் முறித்துக் கொள்ளும்படியான 
+            நிலைமை ஏற்பட்டது.<br>
+            <br>
+            
+              <div class='f5 textcenter'>2</div>
+            
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;சென்னைப் பட்டணத்திலுள்ள ஜாலிவுட் ஸ்டூடியோவைப் 
+            பற்றித் தெரியாதவர்கள் டாக்கி உலகத்தில் யாரும் இருக்க முடியாது. அந்த 
+            ஜாலிவுட் ஸ்டூடியோவில் பிடிக்கும் படங்களுக்கு ஹாலிவுட் டிம்பன் என்பவர் 
+            பிரபல டைரக்டராக இருந்தார். ஹாலிவுட்டைப் பற்றியும் அங்குள்ள நடிகர்கள் 
+            டைரக்டர்கள் பற்றியும் மிஸ்டர் டிம்பன் அநேக அபூர்வமான விவரங்களைச் சொல்வார். 
+            இந்த விவரங்கள் எல்லாம் மேற்படி நடிகர்களுக்கும் டைரக்டர்களுக்குமே தெரியாதன 
+            வென்றால், அவை எவ்வளவு அபூர்வமாயிருக்க வேண்டுமென்று நான் சொல்ல வேண்டியதில்லை.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;மிஸ்டர் டிம்பனுக்குத் தமிழ் டாக்கி உலகத்தில் 
+            ரொம்பவும் பிரசித்தி ஏற்பட்டிருந்தது. அவருக்குத் தமிழ் தெரியாது; சங்கீதம் 
+            தெரியாது; கண்பார்வை கொஞ்சம் கம்மி; காது சிறிது மந்தம் - ஆகவே, தமிழ் 
+            டாக்கி டைரக்டராவதற்கு வேண்டிய எல்லா அம்சங்களும் அவரிடம் பொருந்தியிருந்தன 
+            வென்று சொல்ல வேண்டாமல்லவா? அப்பேர்ப்பட்டவரின் மேற்பார்வையில் இப்போது 
+            ஜாலிவுட் ஸ்டூடியோவில் இரண்டு படங்கள் 'ஷுட்' செய்யப்பட்டு வந்தன. அவற்றில் 
+            ஒன்று சமூகப் படம். இன்னொன்று புராணப் படம்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;இந்த இரண்டு படங்களிலும் நடிக்கும் பாக்கியம் 
+            வாய்ந்த ஒரு 'நட்சத்திரம்' அங்கே பிரகாசித்துக் கொண்டிருந்தது. அதன் 
+            பெயர் மிஸ் டி.கே.ஹம்ஸா. புராணக் கதையில் ஹம்ஸாவுக்கு அருந்ததி வேஷம்; 
+            சமூகக் கதையில் தாஸி வேஷம்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;தாஸி வேஷத்தில் மிஸ் ஹம்ஸா நடிக்கும் 
+            அதே காட்சியில் அப்பாஸாமியும் நடித்தான். சந்தர்ப்பம் என்ன வென்பதை நேயர்கள் 
+            ஊகித்து அறிந்திருக்கலாம். வேறென்ன தான் இருக்கப் போகிறது? ஹம்ஸாவின் 
+            வீட்டுக்கு வழக்கமாக வருகிற கிழ ஜமீந்தார் ஒருவன் இருக்கிறான். அவளுக்குக் 
+            கள்ளக் காதலன் ஒருவனும் இருக்கிறான். ஒரு சமயம் இரண்டு பேரும் சேர்ந்தார்ப்போல் 
+            வந்து விடுகிறார்கள். கள்ளக் காதலனை ஒளித்து வைக்க ஹம்ஸா முயல்கிறாள். 
+            முடியவில்லை. இருவரும் சந்திக்கிறார்கள்; குஸ்தி போடுகிறார்கள். இவன் 
+            ஒரு தடவையும் அவன் ஒரு தடவையுமாக ஹம்ஸாவின் மேல் விழுகிறார்கள்...<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;திரும்பித் திரும்பி இந்த ஆபாஸந்தானா 
+            என்று நீங்கள் நினைக்கக் கூடாது. இதெல்லாம் ஜனங்களுக்கு நீதி கற்பிக்கத்தானே 
+            யன்றி வேறில்லை. "தாஸிகளை நம்பக் கூடாது" என்பது நீதி.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;இந்த நீதியை ஜனங்களுடைய மனத்தில் நன்கு 
+            பதியச் செய்வதற்காக நடிகர்கள் மூவர், டைரக்டர் ஒருவர், போட்டோ பிடிப்பவர் 
+            ஒருவர், சில்லறைச் சிப்பந்திகள் ஐந்து பேர், பட முதலாளிகள் மூன்று பேர், 
+            அவர்களுடைய சிநேகிதர்கள் பதினைந்து பேர் - ஆக இவ்வளவு பேரும் வெகு பாடுபட்டார்கள். 
+            பாமரஜனங்களிடமிருந்து பணம் வருவதற்கு இந்தக் காட்சியைத்தான் நம்பியிருந்தார்களாதலால் 
+            அவ்வளவு விசேஷ கவனம் செலுத்தப்பட்டது. இதே காட்சி ஐந்தாறு நாள் திருப்பித் 
+            திருப்பி எடுக்கப்பட்டது. <br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;இப்படி இந்த 'ஷுட்டிங்' வளர்த்தப்படுவதை 
+            விரும்பாத பிராணி ஒருவன் இருந்தான். அவன் தான் அந்தக் காட்சியில் கிழ 
+            ஜமீந்தாராக நடித்தவன். அவனுக்கு அதில் அவ்வளவு வெறுப்பு ஏற்படக் காரணமாக 
+            இருந்தவன் அப்பாஸாமி தான். அந்த ஹாஸ்ய நடிகனுக்கு அவனுடைய வாழ்நாளில் 
+            இதுவரையில் கனவிலும் அறியாத அனுபவம் ஏற்பட்டிருந்தது. அவன் உண்மையிலேயே 
+            ஹம்ஸாவுக்குத் தன் உள்ளத்தைப் பறிகொடுத்து விட்டான். சென்ற ஒரு மாதமாக 
+            அவன் மாறி மாறி சொர்க்கத்திலும் நரகத்திலுமாக வாழ்ந்து வந்தான். ஹம்ஸா 
+            தன்னைப் பார்த்துப் புன்னகை புரியும் போதெல்லாம் அவன் ஏழாவது சொர்க்கத்துக்கே 
+            போய் விடுவான்; அவள் வேறு யாரையாவது பார்த்துப் புன்னகை புரியும் போது 
+            கொதிக்கும் எண்ணெயில் போட்டது போல் துடிதுடித்தான். கடைசி காதல் காட்சியின் 
+            'ஷுட்டிங்' நடக்கும் போது முதலில் அவனுக்கு இன்பக் கடலில் மிதப்பது போலிருந்தது; 
+            பிறகு வரவரச் சுற்றி நின்று பார்ப்பவர்கள் மேல் கோபம் கோபமாய் வந்தது. 
+            "இந்தச் சனியன்கள் எல்லாம் ஏன் இங்கே சுற்றி நிற்கின்றன?" என்று எண்ணிக் 
+            கொதித்தான். தன்னுடைய கோபத்தை யெல்லாம் பாவம், அந்தக் கிழஜமீந்தார் வேஷம் 
+            போட்டவன் மேல் காட்டினான். அவன் மேல் விழுந்த அடி உதைகளெல்லாம் வெறும் 
+            போலியாயிராமல் நிஜமான அடி உதைகளாகவே விழுந்தன; இந்தக் காட்சி வளர்த்தப்படுவதை 
+            அவன் விரும்பாததில் ஆச்சரியமில்லை யல்லவா?<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"இன்றோடு முடியா விட்டால், நாளை தினம் 
+            நான் நிச்சயமாய் வரமாட்டேன்; ஓடியே போய்விடுவேன்" என்று அந்த ஜமீந்தார் 
+            வேஷக்காரன் அன்று காலையே டைரக்டரிடம் சொல்லியிருந்தான். 'ஷுட்டிங்' முடிந்ததும், 
+            "தீர்ந்ததா, இல்லையா?" என்று கேட்டான். "டன்" என்றார் டைரக்டர் டிம்பன். 
+            ஜமீந்தார் வேஷக்காரன் அப்பாஸாமியைப் பார்த்து "ஒருநாள் உன் முதுகுத் 
+            தோலை உரிக்கிறேனா, இல்லையா, பார்" என்று சொல்லி விட்டு விரைவாக நகர்ந்தான். 
+            அப்பாஸாமி "தூ" என்று காரித்துப்பினான்.<br>
+            <br>
+            
+              <div class='f5 textcenter'>3</div>
+            
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;மாஸ்டர் மெதுவடை சொப்பன லோகத்திலிருந்து 
+            பூமியில் இறங்கினான். "டன்!" எல்லாம் முடிந்தது. மிஸ் ஹம்ஸா நாளை முதல் 
+            அருந்ததியாகி விடுகிறாள்; அவளருகில் இனிமேல் நெருங்க முடியாது. 'ஸ்டூடியோ'வுக்குள் 
+            இது விஷயமாக வெகு கண்டிப்பான சட்டம் இருந்தது! காட்சிகள் நடிக்கப் படுகையில் 
+            தவிர மற்ற வேளைகளில் ஸ்திரீபுருஷர்கள் நெருங்கிப் பேசக்கூடாது. இத்தகைய 
+            சட்டம் இருந்தால் தான், அந்தந்த நட்சத்திரங்களுக்குரிய முதலாளி செட்டியார்கள், 
+            அவர்கள் டாக்கியில் நடிப்பதற்குச் சம்மதிப்பார்கள்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ஒரு மாதத்திற்கு முன்னால் 'ஸ்டூடியோ'வில் 
+            ஒரு சம்பவம் நடந்தது. ராமனும் சூர்ப்பனகையும் காமராவுக்கு முன் ஒரு தினுசாகக் 
+            காதல் ஸீனை நடித்த பிறகு, தூண்மறைவில் அதை மாற்றி நடித்து 'பிராக்டீஸ்' 
+            செய்து கொண்டார்கள். அதாவது, ராமபிரான் சூர்ப்பனகை மேல் காதல் செய்யத் 
+            தொடங்கவே அவள் "சீ! போ!" என்று புறக்கணித்தாள். இந்தத் தூண் மறைவுக் 
+            காட்சியை வேறு சிலர் பார்த்து விடவே, அவர்கள் இரண்டு பேருக்கும் தலைக்கு 
+            ஐம்பது ரூபாய் அபராதம் விதித்து நோட்டீஸ் போர்டிலும் போட்டு விட்டார்கள்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;அப்பாசாமிக்கு இது தெரிந்ததுதான். ஸ்டூடியோவுக்கு 
+            வெளியில் ஹம்ஸாவைச் சந்திக்கலா மென்றாலோ, அதற்கும் ஒரு இடையூறு இருந்தது. 
+            மிஸ் ஹம்ஸா மற்ற நடிகைகளைப் போல், ஸ்டூடியோவிலேயே ஏற்படுத்தப் பட்டிருக்கும் 
+            ஜாகையில் வசிப்பவள் அல்ல; தினம் வேலை முடிந்ததும் அவள் தன் வீட்டுக்குப் 
+            போய்விடுவாள். அவளுடைய புருஷனைப் பற்றிச் சிலர் ஒரு விதமாய்ச் சொன்னார்கள். 
+            ஆனால் எல்லாரும் 'புருஷன்' ஒருவன் இருக்கிறான் என்பதை ஒப்புக் கொண்டார்கள். 
+            அவன் எப்படிப்பட்டவனோ, என்னமோ?<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;மேலும் அவளை அப்படிப் பின் தொடர்வதற்கும் 
+            அவள் சம்மதிக்க வேண்டாமா? அவளுடைய மனோபாவத்தையோ சிறிதும் கண்டறிய முடியவில்லை. 
+            சில சமயம் அப்பாசாமியுடன் காதல் காட்சியில் நடிக்கும் பொழுது 'இது நடிப்பன்று, 
+            உண்மைக்காதல்' என்றே தோன்றும். அவள் ஒரு மோகனச் சிரிப்பு சிரித்துக் 
+            கொண்டு இவனுடைய கன்னங்களைப் பரிகாசமாகக் கிள்ளும் போது 'ஒரு நாளும் இது 
+            பொய்க் காதலாக - வேஷக்காதலாக - இருக்க முடியாது' என்று நமது விதூஷக சக்ரவர்த்தி 
+            நினைத்ததுண்டு. ஆனால் அந்தக் கிழ ஜமீந்தாருடன் அவள் காதல் செய்யும் போதும் 
+            அவ்வளவு உண்மையாகத் தானே தோன்றுகிறது!<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;அப்பாசாமி 'ஷுட்டிங்' நடந்த இடத்திலிருந்து, 
+            வேஷத்தைக் கலைக்கும் இடத்துக்கு மிக்க மனச் சோர்வுடன் போய்க் கொண்டிருந்தான். 
+            வழியில் ராமர், லக்ஷ்மணர், விசுவாமித்திரர், ஜனகர், சீதை முதலியவர்களை 
+            அவன் பார்த்தான். இராமர் சிகரெட் புகை விட்டுக் கொண்டிருந்தார்; சீதை 
+            பீங்கான் கிண்ணத்தில் டீ குடித்துக் கொண்டிருந்தாள்; லக்ஷ்மணன் ஒரு பெரிய 
+            கொட்டாவி விட்டு தன்னை மீறி வந்த தூக்கத்தைப் போக்கிக் கொள்வதற்காக ஒரு 
+            சிமிட்டா பொடி உறிஞ்சினான். விசுவாமித்திரர் காதிலே பூணூலை மாட்டிக் 
+            கொண்டு அவசரமாய் எங்கேயோ போனார். இதையெல்லாம் பார்த்த அப்பாசாமிக்கு 
+            "இந்த வேஷமெல்லாம் எப்படிப் பொய்யோ, அதுபோல் உலக வாழ்க்கையே பொய்" என்ற 
+            எண்ணம் உதித்தது. இந்த உயிர் வாழ்விலே தான் என்ன ரஸம் இருக்கிறது? எதற்காக 
+            இந்த ஜீவனை வைத்துக் கொண்டு வாழவேண்டும்?...<br>
+            <br>
+            
+              <div class='f5 textcenter'>4</div>
+            
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;சாயங்காலம் ஆறரை மணிக்கு ஜார்ஜ் டவுன் 
+            துங்கப்ப நாய்க்கன் வீதியில் அப்பாசாமி போய்க் கொண்டிருந்தான். அவன் 
+            கையில் ஒரு துணியிலே சுற்றப்பெற்ற ஒரு சிறு மூட்டை இருந்தது. அதற்குள் 
+            ஒரு டார்ச் லைட்டும், சுமார் பத்து அடி நீளம் மணிக்கயிறும் இருந்தனவென்பதை 
+            உங்களுக்கு நான் சொல்லத்தான் வேண்டியிருக்கிறது - மேலே கதையில் சுவாரஸ்யம் 
+            உண்டு பண்ணும் பொருட்டு.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;மேற்படி துங்கப்ப நாய்க்கன் வீதியிலிருந்து 
+            கேவல்தாஸ் சந்து பிரியும் இடத்தில் 'ஐரீஸ் மாளிகை' என்று ஒரு பிரம்மாண்டமான 
+            கட்டடம் கட்டப் பெற்று வந்தது. இரண்டு மச்சு ஏற்கெனவே கட்டியாகிவிட்டது. 
+            இன்னும் நாலைந்து மச்சுக்களாவது கட்டுவார்களென்று அங்கே வானுறவோங்கி 
+            நின்ற விட்டங்கள், சாரங்களிலிருந்து தெரிய வந்தது.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;இந்தக் கட்டடத்திற்குள், அப்புறம் இப்புறம் 
+            தன்னை ஒருவரும் கவனிக்கவில்லையா என்று பார்த்துக் கொண்டு அப்பாசாமி சரேலென்று 
+            நுழைந்தான். சில அடி தூரம் சென்றதும், நல்ல இருள் சூழ்ந்திருந்தது. காலால் 
+            தடவித் தடவி நடந்து நாலைந்து வாசற்படியைத் தாண்டி வெகு தூரம் உள்ளே சென்ற 
+            பிறகு மூட்டையை அவிழ்த்து உள்ளேயிருந்த டார்ச்லைட்டை எடுத்துப் பொத்தானை 
+            அமுக்கினான். வெளிச்சம் எதிரே பளிச்சென்று அடித்தது. அந்த வெளிச்சத்தில், 
+            அவன் என்ன பார்த்தான் என்று நினைக்கிறீர்கள்? பயங்கரம்! பயங்கரம்!! கயிற்றிலே 
+            தொங்கிக் கொண்டிருந்த ஒரு மனித தேகம் தெரிந்தது.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;எந்தக் கணத்தில் வெளிச்சம் அந்தத் தேகத்தின் 
+            மேல்பட்டதோ, அதே கணத்தில் அதன் தொண்டையிலிருந்து ஒரு உறுமல் சத்தம் வந்தது. 
+            இத்தகைய நிலைமையில் நீங்களும் நானுமாயிருந்தால், விழுந்தடித்து ஓடி, 
+            இருட்டில் எங்கேயாவது முட்டிக்கொண்டு திண்டாடுவோம்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ஆனால் அப்பாசாமி சாமான்ய மனிதன் அல்ல; 
+            நாடக மேடையில் இது மாதிரி சந்தர்ப்பங்களை எத்தனைமுறை பார்த்திருப்பவன்! 
+            அவன் ஒரு நொடியில் சட்டைப்பையிலிருந்த கத்தியை எடுத்துத் திறந்து கொண்டு 
+            அந்த மனிதன் உபயோகித்த அதே ஏணியில் ஏறி சட்டென்று கயிற்றை அறுத்து எறிந்தான்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;கீழே விழுந்த தேகம் சிறிது நேரம் பேச்சு 
+            மூச்சில்லாமல் கிடந்தது. டார்ச் லைட்டை முகத்துக்கு நேரே பிடித்துப் 
+            பதை பதைப்புடன் பார்த்துக் கொண்டிருந்தான் நமது ஹாஸ்ய நடிகன்! மெதுவாக 
+            மூச்சு வரத் தொடங்கியது. பிதுங்கிய விழிகள் உள் அமுங்கின. இன்னும் சில 
+            நிமிஷத்துக்கெல்லாம் அந்தத் தேகம் எழுந்து உட்கார்ந்து கம்மிய குரலுடன் 
+            "மாச்சுப் பெட்டி இருக்கிறதா?" என்று கேட்டது.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"மாச்சுப் பெட்டி எதற்கு? டார்ச்லைட் 
+            இருக்கிறதே?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"டார்ச் லைட் என்ன பிரயோசனம் பீடி பத்தவைப்பதற்கு?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;அப்பாசாமிக்கு வெகு கோபம் வந்தது, "அடே 
+            முட்டாள், இத்தனை பெரிய காரியம் செய்து விட்டு, சாவதானமாய் பீடி பத்த 
+            வைக்க வேண்டுமென்கிறாயே, என்ன துணிச்சல் உனக்கு" என்றான்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"அதற்காக என்ன பண்ணவேண்டுமென்கிறாய்?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"என்ன பண்ணுகிறதா! என் காலிலே விழுந்து 
+            கெஞ்சு, மன்னிப்புக் கேட்டுக் கொள். இல்லாவிடில் போலீஸ்காரனிடம் ஒப்புவித்து 
+            விடுவேன்."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"அப்படியா? உன் சமாசாரம் என்ன? நீ எதற்காக 
+            இங்கே வந்தாய்? கையிலே வைத்திருக்கும் கயிறு எதற்காகவோ?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;அப்பாசாமிக்குச் சிரிப்பு வந்தது. அதை 
+            அடக்கிக் கொண்டு "இதோ பார். நாம் இருவரும் ஒரே இடத்திற்கு, ஒரே காரியத்திற்காக 
+            வந்தது நல்லதுதான். நீ, எதற்காக இந்தக் காரியம் செய்யத் துணிந்தாய் என்று 
+            சொல்லு. அது சரியான காரியமாக இருந்தால், இந்தப் புதுக் கயிற்றை உனக்கே 
+            கொடுத்து விடுகிறேன். நான் வேறு கயிறு வாங்கிக் கொள்கிறேன்" என்றான்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"அதெல்லாம் முடியாது"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"என்ன முடியாது?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"இன்னொரு தடவை நான் தூக்குப் போட்டுக் 
+            கொள்வது முடியாத காரியம். நீ போட்டு விட்டுப் போவதாயிருந்தால் சொல்கிறேன்."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"அந்தப் பாவத்தையும் நான் சுமக்க வேண்டுமா? 
+            சரி சொல்லித் தொலை!"<br>
+            <br>
+            
+              <div class='f5 textcenter'>5</div>
+            
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;கயிற்றில் தொங்கிய மனிதன் சொல்லுகிறான்:-<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ஐந்து வருஷத்துக்கு முன்னால் வரையில் 
+            நான் சந்தோஷமாயிருந்தேன். வன்னியத் தேனாம்பேட்டையில் எனக்குச் சொந்த 
+            வீடு இருக்கிறது. மௌண்ட் ரோடில் பழக்கடை வைத்திருந்தேன். மாதம் 30, 40 
+            ரூபாய் வரும். வீட்டில் ஒரு பாதியை வாடகைக்கு விட்டிருந்ததிலும் பத்து 
+            ரூபாய் வந்தது. கவலை, கஷ்டம் இன்னதென்றே தெரியாமல் குஷியாக இருந்தேன்."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ஒரு நாள் இரவு நான் கடையை மூடிக்கொண்டு 
+            வீடு நோக்கிப் போன போது, எங்கள் வீதி மூலையில் ஓர் இளம் பெண் நின்று 
+            அழுது கொண்டிருந்தாள். அவளிடம் நெருங்கி, 'ஏனம்மா அழுகிறாய்?' என்று 
+            கேட்டேன். அவள், தானும் இன்னும் நாலைந்து ஸ்திரீகளும் ஒரு தனி வீட்டில் 
+            குடியிருந்ததாகவும் போலீஸ்காரர்கள் எல்லோரையும் அன்று விரட்டி விட்டதாகவும், 
+            அந்த ஸ்திரீகளைத் தனக்குப் பிடிக்காதபடியால் அவர்களோடு போகாமல் பின் 
+            தங்கியதாகவும் சொன்னாள். பத்திரிகையில் இது சம்பந்தமான சில விவரங்களை 
+            நான் படித்திருந்தேன். புதிய போலீஸ் சட்டம் அமுலுக்கு வந்திருப்பதாயும், 
+            அதன்படி சென்னைப் பட்டணத்தில் துன்மார்க்கத்தைத் தொழிலாகக் கொண்ட ஸ்திரீகள் 
+            எல்லோரும் அந்தந்த விடுதிகளிலிருந்து விரட்டி விடப்படுவதாகவும் பத்திரிகையில் 
+            போட்டிருந்தார்கள். இந்தச் சட்டத்தினால் எத்தனையோ பெண்கள் அநாதைகளாகத் 
+            தெருவில் நிற்க நேரிடுமென்றும், அவர்களை ஆதரிக்கப் பண உதவி செய்ய வேண்டுமென்றும், 
+            சில புண்யவதிகளும், புண்யவான்களும் பத்திரிகையில் விண்ணப்பம் செய்திருந்ததையும் 
+            படித்திருந்தேன். இதனாலெல்லாம் ஏற்கனவே கலக்க முற்றிருந்த எனக்குத் திக்கற்றுத் 
+            தெருவில் நின்ற அந்தப் பெண்ணைப் பார்த்ததும் 'இவளை ஏன் நாம் ஆதரிக்கக்கூடாது?' 
+            என்று தோன்றிற்று. அதன் பலன் தான் இப்போது என்னை இந்தக் காரியம் செய்யத் 
+            தூண்டிற்று..."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"சரி, வீட்டுக்கு அழைத்துப் போனாய்; அப்புறம் 
+            என்ன நடந்தது."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"அப்புறம் என்ன? இரண்டு நாளைக்குள் வீட்டில் 
+            குடியிருந்தவர்கள் காலி செய்து விட்டுப் போய் விட்டார்கள். பிறகு யாரும் 
+            குடி வரவேயில்லை. பழக்கடையும் நஷ்டமாகி வந்தது. தினம் ஒரு ரூபாய் பழம் 
+            - ஆரஞ்சும் ஆப்பிளும் அவளே தின்று விடுவாள்! வியாபாரத்தில் லாபம் எப்படி 
+            வரும்? இருந்த போதிலும் ஒரு மாதிரி சந்தோஷமாய்த் தானே இரண்டு மூன்று 
+            வருஷம் வாழ்க்கை நடத்தி வந்தோம். அவள் டாக்கியில் சேரும் வரையில்..."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"என்ன, டாக்கியில் சேர்ந்தாளா?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ஆமாம், டாக்கியில் சேர்ந்த பிறகு..."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"பெயர் என்ன? அவள் பெயர் என்ன?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"குப்பம்மாள்..."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"நல்ல வேளை. மேலே சொல்லு."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"டாக்கியில் அவள் சேர்ந்த பிறகு என்னுடைய 
+            வாழ்க்கை நரகமாயிற்று. அவளை தினம் நான் ஸ்டூடியோவுக்குக் கொண்டு போய் 
+            விடவேண்டும்; திருப்பி சாயங்காலம் அழைத்து வரவேண்டும். வீட்டில் சமையல் 
+            செய்து தயாராய் வைத்திருக்க வேண்டும். வெந்நீர் போட்டுக் கூட வைக்க வேண்டும். 
+            இதெல்லாமாவது போகட்டும். டாக்கி நடிப்புக்கு வீட்டில் ஒத்திகை பார்க்கத் 
+            தொடங்கி விடுவாள். நான் கோபித்துக் கொண்டால் இடி, இடியென்று சிரிப்பாள். 
+            இதெல்லாமிருக்கட்டும். நேற்றைக்கு என்ன செய்தாள் தெரியுமா? ஸ்டூடியோவில் 
+            ஒரு காட்சியில் தேள்கள் வரவேண்டியிருந்ததாம். இவள் அந்தத் தேள்களில் 
+            ஒன்றைப் பிடித்துக் கொண்டு வந்து என் படுக்கையில் வேண்டு மென்றுவிட்டு 
+            விட்டாள். நான் உளறி அடித்துக் கொண்டு எழுந்தோடியதைப் பார்த்துச் சிரிக்கிறாள்..."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"அடி பாவி!" என்றான் அப்பா சாமி. அவனுக்கு 
+            அந்த மனிதன் மேல் உண்மையாகவே இரக்கம் உண்டாயிற்று. "நீ உயிரை விடத் துணிந்ததில் 
+            ஆச்சரியமில்லை. ஆனால் எங்கேயாவது ஓடிப் போய் விடுவதுதானே, பினாங்கு, 
+            சிங்கப்பூரைப் பார்க்க?" என்றான்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"பணமிருந்தால் அப்படிச் செய்யலாம். என் 
+            கையில் தம்படி இல்லை. அவள் சம்பாதிப்பதையெல்லாம் தன் பேரிலேயே பாங்கியில் 
+            போட்டிருக்கிறாள். பணமில்லாமல் எப்படிக் கப்பல் ஏறுவது? நீ வாக்குக் 
+            கொடுத்தபடி என்னை மாட்டுவிட்டுத் தான் போக வேண்டும். இருக்கட்டும்; ஆனால் 
+            நீ எதற்காக வந்தாய்? என் மாதிரி காரணந்தானோ?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"இல்லவே, இல்லை!" என்று அப்பாசாமி அழுத்தமாய்ச் 
+            சொன்னான். "அதற்கு நேர் விரோதமான காரணம். ஒரு பெண்ணின் மீது நான் காதல் 
+            கொண்டேன். அவளைப் பிரிந்து என்னால் வாழ முடியாது. அவள் இணங்கமாட்டாள் 
+            என்றுதான் உயிர் மேல் வெறுப்பு வந்தது."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"அந்தப் பெண் யாரோ?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"அவளும் ஒரு டாக்கி ஸ்டார்தான், ஆனால்..."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"அவள் பெயர் என்னவோ?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"நாம் தான் இருவரும் சாகப் போகிறோமே? 
+            சொன்னால் மோசம் என்ன? அவள் பெயர் மிஸ் ஹம்ஸா"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;உட்கார்ந்திருந்த மனிதன் எழுந்து ஒரு 
+            குதி குதித்தான். "பேஷ்! பழம் நழுவிப் பாலில் விழுந்தது. அவள்தான் நம்பபேர்வழி" 
+            என்றான்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"என்ன உளறுகிறாய்?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"உளறல் இல்லை; அவளே அவள்தான்."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"வேறு பெயரல்லவா சொன்னாய்?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ஆமாம், குப்பம்மாள் என்று சொன்னேன். 
+            அந்தப் பெயர் டாக்கிக்கு சுகப்படாது என்று மிஸ் ஹம்ஸா என்று வைத்துக் 
+            கொண்டாள்."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"என்ன" என்று சத்தம் போட்டுக் கொண்டு 
+            அப்பாஸாமி எழுந்திருந்தான். டார்ச் லைட்டையும் கயிற்றையும் கெட்டியாகப் 
+            பிடித்துக் கொண்டான்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;மற்றவன் "ஆமாம்; ரொம்ப நல்லதாய்ப் போயிற்று. 
+            அவளுடன் வாழ முடியாமல் நான் தூக்குப் போட்டுக் கொள்ள வந்தேன். அவள் கிட்டவில்லையே 
+            என்று நீ சாக நினைத்தாய். இரண்டு பேரும் சாக வேண்டாம். எனக்கு ஆயிரம் 
+            ரூபாய் கொடுத்து விடு. நாளையே நான் கப்பலேறிக் கண் காணாத சீமைக்குப் 
+            போய் விடுகிறேன்."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"எவ்வளவு? ஆயிரம் ரூபாயா?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ஆமாம்; ஆயிரம் ரூபாய்தான். பிரமாதமில்லை. 
+            இருக்கட்டும், உன் பெயர் என்ன? ஒரு வேளை மாஸ்டர் மெதுவடை என்பது நீதானோ?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ஆமாம், நான் தான். உனக்கு எப்படித் தெரிந்தது?"<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"அடாடா! நான் என்னத்தைச் சொல்ல? உன் பேரில் 
+            அவளுக்கு இருக்கும் அபிமானத்துக்கு அளவில்லை. இதோ பார்! (கன்னத்தைக் 
+            காட்டி) கிள்ளுக் காயம் தெரிகிறதா? நேற்று அவள் கிள்ளியதுதான். நான் 
+            அழுதேன். அப்போது அவள் 'சீ! இந்த ஒரு கிள்ளுக்கு அழுகிறாயே? மெதுவடையை 
+            மொத்தம் 27 தடவை கிள்ளியிருக்கிறேன். இன்னும் அவருக்கு அலுக்கவில்லை. 
+            உனக்குப் பதில் அவர் இந்த வீட்டில் இருந்தால் எவ்வளவு சௌகரியமாயிருக்கும்?' 
+            என்று சொல்லிச் சொல்லி மாய்ந்து போனாள். ஐயையோ! அட பாவி! துரோகி! எங்கே 
+            ஓடுகிறாய்? ஐயோ கயிற்றைக் கூடக் கொடுக்காமல் போகிறாயே? என் கயிற்றையும் 
+            அறுத்து விட்டாயே! என்ன செய்வேன்! ஏ, மெதுவடை! நில்லு! நில்லு!..."<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;இதற்குள் ஒரே ஓட்டமாய் ஓடி வெளி வாசற்படி 
+            வரையில் சென்று விட்ட மாஸ்டர் மெதுவடை அங்கே நின்று திரும்பிப் பார்த்து, 
+            "அதெல்லாம் பலிக்காது அப்பனே! நேரே வீட்டுக்குப் போய்ச் சேர். இதோ போலீஸ் 
+            ஸ்டேஷனில் உன்னைப்பற்றி எழுதி வைக்கப் போகிறேன். நீ பாட்டுக்குச் செத்துப் 
+            போய் விட்டால், அப்புறம் என் கதி என்ன ஆவது? மெதுவாக அவளை என் கழுத்தில் 
+            கட்டிவிடலாமென்று பார்க்கிறாயோ?" என்று சொல்லிவிட்டு இரண்டே தாண்டலில் 
+            வீதியை அடைந்து ஓடினான்.<br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;கதை முடிந்தது. இந்தக் கதையை படமெடுத்து 
+            விடலாமென்று நினைக்கும் டாக்கி முதலாளிகளுக்கு மட்டும் ஒரு வார்த்தை 
+            சொல்லி முடிக்கிறேன். என்னுடைய அனுமதியில்லாமல் இதைப் படம் பிடிப்பவர்கள் 
+            கட்டாயம் கஷ்டத்திற்குள்ளாவார்கள். அவர்களில் யாராவது "மாஸ்டர் மெதுவடை" 
+            என்ற சமூகப் படம் பிடிக்கத் தொடங்குவார்களானால், அவர்கள் அதை முடிப்பதற்குள் 
+            "மிஸ்டர் ஆமைவடை" என்ற படம் வெளிவந்து விடுவது நிச்சயம். <br>
+            <br>
+            <div class=textright>ஆனந்த விகடன் 3-5-36</div>
+
+
+<hr><div class='f5 textleft'><a href=https://www.chennailibrary.com/kalki/kalki.html target=_top><strong>கல்கி (இரா. கிருஷ்ணமூர்த்தி) நூல்கள்</strong></a> | <a href=https://www.chennailibrary.com/ebooks/ebooks.html target=_top><strong>சென்னை நூலகம் - நூல்கள்</strong></a></div><hr>
+
+
+</div></td></tr></table>
+
+</div><!-- End of Content Layer -->
+
+<div id=footer><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4935207527375767"
+     crossorigin="anonymous"></script>
+<!-- gws horizontal responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4935207527375767"
+     data-ad-slot="9098887362"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script><br>
+<table class='tableleft w100 hauto bg2'>
+<tr><td class='textcenter bg3 veralignmiddle wauto'><div class='f4 fontsize14 textcenter'><strong>தரணிஷ்மார்ட் - www.dharanishmart.com </strong><span class='f3 fontsize14'><strong>(அனைத்து பதிப்பக நூல்கள் 10% தள்ளுபடியுடன்)</strong></span></div></td></tr>
+<tr><td class='textcenter bg3 veralignmiddle wauto'>
+
+<div class="column3">
+<table class='tableleft w100 hauto bg3'>
+<tr><td class='textleft bg3 veralignmiddle'><div class='f2'>
+
+<a  href='https://www.dharanishmart.com/books/publishers/sixth/sixth00033.html' target=_blank><div class='sp3 displayblock floatleft'><img src='https://www.dharanishmart.com/books/publishers/sixth/images/sixth00033.jpg' alt='ஸ்டீபன் ஹாக்கிங்' width=100 height=150></div><div class='f5 textcenter'><span class='fontsize12'><strong>ஸ்டீபன் ஹாக்கிங்</strong></span></div><span class=fontsize10><strong>ஆசிரியர்:</strong> நாகூர் ரூமி</span><br><span class=fontsize10><strong>வகைப்பாடு :</strong> வாழ்க்கை வரலாறு</span><br><span class=fontsize10><strong>விலை: ரூ. </strong>100.00</span><br><span class=fontsize10><strong>தள்ளுபடி விலை: ரூ. </strong>90.00</span><br><span class=fontsize10><strong>அஞ்சல்: ரூ. </strong> 40.00</span></a>
+</div></td></tr></table></div>
+
+<div class="column3"><table class='tableleft w100 hauto bg3'>
+<tr><td class='textleft bg3 veralignmiddle'><div class='f2'>
+
+<a  href='https://www.dharanishmart.com/books/publishers/jaico/jaico00012.html' target=_blank><div class='sp3 displayblock floatleft'><img src='https://www.dharanishmart.com/books/publishers/jaico/images/jaico00012.jpg' alt='The 5 AM Club' width=100 height=150></div><div class='f5 textcenter'><span class='fontsize12'><strong>The 5 AM Club</strong></span></div><span class=fontsize10><strong>ஆசிரியர்:</strong> Robin Sharma</span><br><span class=fontsize10><strong>வகைப்பாடு :</strong> Self Improvement</span><br><span class=fontsize10><strong>விலை: ரூ. </strong>350.00</span><br><span class=fontsize10><strong>தள்ளுபடி விலை: ரூ. </strong>315.00</span><br><span class=fontsize10><strong>அஞ்சல்: ரூ. </strong> 40.00</span></a>
+</div></td></tr></table></div>
+
+<div class="column3"><table class='tableleft w100 hauto bg3'>
+<tr><td class='textleft bg3 veralignmiddle'><div class='f2'>
+
+<a  href='https://www.dharanishmart.com/books/publishers/ethir/ethir00002.html' target=_blank><div class='sp3 displayblock floatleft'><img src='https://www.dharanishmart.com/books/publishers/ethir/images/ethir00002.jpg' alt='ஆடு ஜீவிதம்' width=100 height=150></div><div class='f5 textcenter'><span class='fontsize12'><strong>ஆடு ஜீவிதம்</strong></span></div><span class=fontsize10><strong>ஆசிரியர்:</strong> பென்யாமின்</span><br><span class=fontsize10><strong>மொழிபெயர்ப்பாளர்:</strong> விலாசினி</span><br><span class=fontsize10><strong>வகைப்பாடு :</strong> புதினம் (மொழி)</span><br><span class=fontsize10><strong>விலை: ரூ. </strong>300.00</span><br><span class=fontsize10><strong>தள்ளுபடி விலை: ரூ. </strong>270.00</span><br><span class=fontsize10><strong>அஞ்சல்: ரூ. </strong> 40.00</span></a>
+</div></td></tr></table></div>
+
+</td></tr><tr><td class='textcenter bg3 veralignmiddle wauto'>
+<div class='f2 textcenter'><span class=f5><strong>GPay / UPI ID:  dharanishmart@cub</strong></span> | <span class=f3><strong>பேசி: +91-9444086888 (Whatsapp)</strong></span></div>
+<div class='f2 textcenter'><a href=https://chat.whatsapp.com/Iso0E0GmhAAH19qsIPslVD target=_blank><span class='f4 fontsize11'><strong>எமது தரணிஷ்மார்ட் (www.dharanishmart.com) இணைய நூல் அங்காடி வாட்சப் குழுவில் (Ph: 9444086888) இணைந்து சலுகை விலையில் நூல்களைப் பெற இங்கே சொடுக்கவும்.</strong></span></a></div></td></tr></table><br>
+<table class='w100 bordertopsolid borderwidth1 hauto'><tr><td class='veralignmiddle  w100 textcenter hauto'><div class='f2 textcenter'><strong>&copy; </strong><span class='fontsize14'>2026</span> சென்னைநூலகம்.காம் | <a href=https://www.chennailibrary.com/siteinfo/disclaimer.html target=_top>பொறுப்பாகாமை அறிவிப்பு</a> | <a href=https://www.chennailibrary.com/siteinfo/privacypolicy.html target=_top>ரகசிய காப்பு கொள்கை</a></div></td></tr></table></div>
+</body></html>
