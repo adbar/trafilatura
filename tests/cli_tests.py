@@ -95,6 +95,41 @@ def test_config_file_from_pipe(tmp_path, run):
 
 
 @pytest.mark.skipif(os.name == "nt" or os.geteuid() == 0, reason="needs POSIX permissions as non-root")
+def test_output_dir_read_only(tmp_path, run):
+    "A read-only output directory is reported with exit code 1, not a traceback (#1119)."
+    locked = tmp_path / "out"
+    locked.mkdir()
+    locked.chmod(0o555)
+    infile = tmp_path / "page.html"
+    infile.write_text("<html><body><h1>Title</h1><p>Some text here.</p></body></html>")
+    try:
+        code, _, err = run(["-i", str(infile), "-o", str(locked)])
+    finally:
+        locked.chmod(0o700)
+    assert code == 1
+    assert "not writable" in err
+
+
+def test_markdown_extension(tmp_path):
+    "--markdown files get the .md extension (#1119)."
+    outdir = tmp_path / "out"
+    cli_utils.write_result("Some text here.", cli.parse_args(["-o", str(outdir), "--markdown"]))
+    files = list(outdir.glob("*"))
+    assert len(files) == 1
+    assert files[0].suffix == ".md"
+
+
+def test_wayback_url_filename():
+    "A Wayback URL is named after the archived page, not the archive (#1119)."
+    from trafilatura.cli_utils import generate_url_filename
+
+    name = generate_url_filename("https://web.archive.org/web/20240101/https://www.example.com/page3")
+    assert name.startswith("www.example.com_page3-")
+    plain = generate_url_filename("https://example.com/blog/post1")
+    assert plain.startswith("example.com_blog_post1-")
+
+
+@pytest.mark.skipif(os.name == "nt" or os.geteuid() == 0, reason="needs POSIX permissions as non-root")
 def test_input_file_unreadable_parent(tmp_path, run):
     "A file in an unreadable directory is reported, not a traceback."
     locked = tmp_path / "locked"
