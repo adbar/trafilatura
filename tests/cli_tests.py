@@ -25,7 +25,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from courlan import UrlStore
 
-from trafilatura import cli, cli_utils, settings, spider
+from trafilatura import cli, cli_utils, settings, sitemaps, spider
 from trafilatura.downloads import Response, add_to_compressed_dict, fetch_response
 from trafilatura.utils import LANGID_FLAG
 
@@ -1321,7 +1321,7 @@ def test_explore_crawls_seeds_without_links(tmp_path, list_mode):
     [
         (
             ["https://example.org/en/", "https://example.org/de/"],
-            ["https://example.org/en/", "sleep", "https://example.org/de/"],
+            ["https://example.org/", "sleep", "https://example.org/en/", "sleep", "https://example.org/de/"],
         ),
         (["https://example.org/en/", "https://example.com/de/"], ["https://example.org/en/", "https://example.com/de/"]),
     ],
@@ -1338,3 +1338,83 @@ def test_discovery_waits_between_urls_of_a_website(tmp_path, seeds, expected):
         cli_utils.cli_discovery(cli.parse_args(["--sitemap", "-i", str(tmp_path / "seeds.txt"), "--parallel", "2"]))
     # websites are processed in parallel, so only the order within a website is fixed
     assert log == expected if "sleep" in expected else sorted(log) == sorted(expected)
+
+
+SITEMAP = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{}</urlset>'
+ROBOTS = "https://example.org/robots.txt"
+MAIN = "https://example.org/sitemap.xml"
+OTHER = "https://example.org/other-sitemap.xml"
+
+
+@pytest.mark.parametrize(
+    "seeds, fetched, links, exit_code",
+    [
+        # one search for the website, each input URL is filtered on its own (and searched again if it has no links)
+        (["https://example.org/en/", "https://example.org/de/"], [ROBOTS, MAIN], ["/en/a", "/de/b"], 0),
+        (["https://example.org/en/", "https://example.org/xx/"], [ROBOTS, MAIN, ROBOTS, MAIN], ["/en/a"], 1),
+        (["https://example.org/", "https://example.org/en/"], [ROBOTS, MAIN], ["/en/a", "/de/b", "/fr/c"], 0),
+        # sitemap URLs are processed as before
+        ([OTHER], [OTHER], ["/other"], 0),
+        (["https://example.org/de/", OTHER], [ROBOTS, MAIN, OTHER], ["/de/b", "/other"], 0),
+    ],
+)
+def test_discovery_searches_sitemaps_once_per_website(tmp_path, monkeypatch, seeds, fetched, links, exit_code):
+    "The robots.txt and sitemaps of a website are downloaded once for all its input URLs."
+    urls = SITEMAP.format("".join(f"<url><loc>https://example.org{p}</loc></url>" for p in ("/en/a", "/de/b", "/fr/c")))
+    pages = {
+        ROBOTS: f"Sitemap: {MAIN}",
+        MAIN: urls,
+        OTHER: SITEMAP.format("<url><loc>https://example.org/other</loc></url>"),
+    }
+    downloads = []
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: downloads.append(url) or pages.get(url))
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+    monkeypatch.setattr(cli_utils, "sleep", lambda seconds: None)
+    (tmp_path / "seeds.txt").write_text("\n".join(seeds), encoding="utf-8")
+    found = []
+    with patch.object(cli_utils, "url_processing_pipeline", lambda args, store: found.extend(store.dump_urls()) or 0):
+        args = cli.parse_args(["--sitemap", "-i", str(tmp_path / "seeds.txt"), "--parallel", "1"])
+        assert cli_utils.cli_discovery(args) == exit_code
+    assert sorted(downloads) == sorted(fetched)
+    assert sorted(found) == sorted(f"https://example.org{p}" for p in links)
+
+
+GUESS = "https://example.org/sitemap.xml"
+GUESS_INDEX = "https://example.org/sitemap_index.xml"
+
+
+def test_discovery_falls_back_to_a_search_for_the_url(tmp_path, monkeypatch):
+    "Without robots.txt the website search stops at the first sitemap with links, other sections are searched on their own."
+    pages = {
+        GUESS: SITEMAP.format("<url><loc>https://example.org/de/b</loc></url>"),
+        GUESS_INDEX: SITEMAP.format("<url><loc>https://example.org/en/a</loc></url>"),
+    }
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: pages.get(url))
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+    monkeypatch.setattr(cli_utils, "sleep", lambda seconds: None)
+    (tmp_path / "seeds.txt").write_text("https://example.org/de/\nhttps://example.org/en/", encoding="utf-8")
+    found = []
+    with patch.object(cli_utils, "url_processing_pipeline", lambda args, store: found.extend(store.dump_urls()) or 0):
+        args = cli.parse_args(["--sitemap", "-i", str(tmp_path / "seeds.txt"), "--parallel", "1"])
+        assert cli_utils.cli_discovery(args) == 0
+    assert sorted(found) == ["https://example.org/de/b", "https://example.org/en/a"]
+
+
+def test_discovery_waits_after_a_sitemap_url(tmp_path, monkeypatch):
+    "A page searched after a sitemap URL of the same website is not searched without waiting."
+    log = []
+    pages = {
+        ROBOTS: f"Sitemap: {MAIN}",
+        MAIN: SITEMAP.format("<url><loc>https://example.org/de/b</loc></url>"),
+        OTHER: SITEMAP.format("<url><loc>https://example.org/other</loc></url>"),
+    }
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: log.append(url) or pages.get(url))
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: log.append("sleep"))
+    monkeypatch.setattr(cli_utils, "sleep", lambda seconds: log.append("sleep"))
+    (tmp_path / "seeds.txt").write_text(f"{OTHER}\nhttps://example.org/de/", encoding="utf-8")
+    with patch.object(cli_utils, "url_processing_pipeline", lambda args, store: 0):
+        cli_utils.cli_discovery(cli.parse_args(["--sitemap", "-i", str(tmp_path / "seeds.txt"), "--parallel", "1"]))
+    assert log == [OTHER, "sleep", ROBOTS, MAIN]

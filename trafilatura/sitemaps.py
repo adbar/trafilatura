@@ -282,6 +282,19 @@ def parse_sitemap(
     return filter_urls(sitemap.urls + sitemap.sitemap_urls, None)
 
 
+def is_sitemap_url(url: str) -> bool:
+    "Check if the URL points directly to a sitemap."
+    path = urlsplit(url).path.rstrip("/")
+    return path.endswith((".gz", "sitemap", ".xml", ".txt")) or "/sitemap/" in path
+
+
+def filter_by_prefix(links: list[str], prefix: str | None) -> list[str]:
+    "Keep the links starting with the prefix, regardless of scheme and www."
+    if prefix is None:
+        return links
+    return [u for u in links if SCHEME_AND_WWW.sub("", u).startswith(prefix)]
+
+
 def sitemap_search(
     url: str,
     target_lang: str | None = None,
@@ -331,8 +344,7 @@ def sitemap_search(
 
     urlfilter = None
 
-    path = urlsplit(url).path.rstrip("/")
-    if path.endswith((".gz", "sitemap", ".xml", ".txt")) or "/sitemap/" in path:
+    if is_sitemap_url(url):
         sitemapurls = [url]
     else:
         sitemapurls = []
@@ -378,8 +390,7 @@ def sitemap_search(
         # sanity check: keep track of visited sitemaps and exclude them
         sitemap.sitemap_urls = [s for s in sitemap.sitemap_urls if s not in sitemap.seen]
 
-    if prefix is not None:
-        sitemap.urls = [u for u in sitemap.urls if SCHEME_AND_WWW.sub("", u).startswith(prefix)]
+    sitemap.urls = filter_by_prefix(sitemap.urls, prefix)
     sitemap.urls = filter_urls(sitemap.urls, None)
 
     LOGGER.debug("%s sitemap links found for %s", len(sitemap.urls), domainname)
